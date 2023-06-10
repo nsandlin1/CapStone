@@ -1,3 +1,3 @@
-Keaton Love, Luke Moore, and Keaton Love
+Keaten Love, Luke Moore, and Novi Sandlin
 
 Capstone CSC405
