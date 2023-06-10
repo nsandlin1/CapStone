@@ -1,2 +1,3 @@
-# CapStone
-Senior capstone project; Novi, Luke, Keaton
+Keaton Love, Luke Moore, and Keaton Love
+
+Capstone CSC405
