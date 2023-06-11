@@ -1,4 +1,12 @@
+# byte cache
 __pycache__
+
+# environments
+.env
 .flaskenv
 
+# flask stuff
 instance/
+
+# api keys
+api_keys.py
