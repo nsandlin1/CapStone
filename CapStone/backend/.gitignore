@@ -10,3 +10,6 @@ instance/
 
 # api keys
 api_keys.py
+
+# other
+.DS_STORE

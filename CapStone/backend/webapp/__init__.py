@@ -8,9 +8,12 @@ def create_web_app(env="dev"):
 	# create and configure app
 	app = Flask(__name__, instance_relative_config=True)
 	app.debug = True
-	
-	# configure application
+
+	# configure application from root/config
 	app.config.from_object(configs[env])
+	
+	# configure application secrets from instance/config
+	app.config.from_pyfile('config.py')
 
 	# make sure instance folder exists
 	try:

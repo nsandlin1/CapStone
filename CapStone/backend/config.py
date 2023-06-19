@@ -1,7 +1,7 @@
 import os
 
 class Config:
-	SECRET_KEY = 'total secret'
+	pass
 
 class ProductionConfig(Config):
 	DEBUG = False
