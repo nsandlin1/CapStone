@@ -1,14 +1,15 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import React from 'react';
+import { useState } from 'react';
+import Home from './pages/index.jsx';
+import Navbar from './components/Navbar.jsx';
 import './App.css'
 
 function App() {
   return (
-    <h1 className="text-3xl font-bold underline">
-      Hello world!
-    </h1>
-  )
+    <React.Fragment>
+      <Navbar/>
+    </React.Fragment>
+  );
 }
 
 export default App
