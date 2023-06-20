@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import {CgProfile} from 'react-icons/cg'
-import {AiOutlineClose, AiOutlineMenu} from 'react-icons/ai'
+import {AiOutlineClose, AiOutlineMenu} from 'react-icons/ai' 
 
 
 function Navbar() {
@@ -32,14 +32,18 @@ function Navbar() {
   return (
     <div className='flex justify-between items-center h-24 max-w-[1240px] mx-auto px-4 text-white'>
       <h1 className='w-full text-3xl font-bold text-white'>AWARE</h1>
-      <ul className='hidden md:flex'>
-        <li className='p-4'>
+      <ul className='hidden md:flex '>
+        <li className='p-4 hover:underline'>
           <a href="/">Home</a>
         </li>
-        <li className='p-4'>Bill</li>
-        <li className='p-4'>Elections</li>
-        <li className='p-4'>Politicians</li>
-        <li className='p-4'>News</li>
+        <li className='p-4 hover:underline whitespace-nowrap'>
+          <a href="/">
+            Summarize Bills
+          </a>
+        </li>
+        <li className='p-4 hover:underline'>Elections</li>
+        <li className='p-4 hover:underline'>Politicians</li>
+        <li className='p-4 hover:underline'>News</li>
         <li className='p-4'><CgProfile size={28}/></li>
       </ul>
       <div onClick={handleNav} className='block md:hidden'>
