@@ -4,7 +4,8 @@ import requests
 # have access to the app.config because it is not in application
 # instance. That would be convenient but not necessary.
 
-def get_members(api_key, congress, chamber):
+# used
+def propublica_get_members(api_key, congress, chamber):
     """
     Returns list of members.
     congress int: 102-117 for House, 80-117 for Senate
@@ -19,6 +20,14 @@ def get_members(api_key, congress, chamber):
     result = result.json()
 
     return result
+
+# used
+def get_image(api_key, bioguide_id):
+    url = f"https://api.congress.gov/v3/member/{bioguide_id}?api_key={api_key}"
+    result = requests.get(url)
+    imageUrl = result.json()['member']['depiction']['imageUrl']
+
+    return imageUrl
 
 def get_member(api_key, member_id):
     """
@@ -250,5 +259,7 @@ def house_privately_funded_trips_by_member(api_key, member_id):
     return result
 
 if __name__ == '__main__':
-    res = get_member("K000388")
+    key = "JIVe962pF4EiPLlH5C9mOA78IPnDeBKdMvvHibp1"
+    # res = get_members(key, 118, "house")
+    # print(res["results"][0]["members"])
     
