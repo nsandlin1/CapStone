@@ -1,21 +1,29 @@
 import os
+from config import configs
 from flask import Flask
+from loguru import logger
 
-def create_web_app(test_config=None):
+def create_web_app(env="dev"):
 	# create and configure app
 	app = Flask(__name__, instance_relative_config=True)
-	app.config.from_mapping(
-		SECRET_KEY='dev',
-		DATABASE=os.path.join(app.instance_path, 'webapp.sqlite')
-	)
-	
-	if test_config is None:
-		# load the instance config when not testing
-		app.config.from_pyfile('config.py', silent=True)
-	else:
-		# load the test config when testing
-		app.config.from_mapping(test_config)
-	
+	app.debug = True
+
+	# logger.debug(app.config)
+	# configure application from root/config
+	app.config.from_object(configs[env])
+	# logger.debug(app.config)
+
+	# configure application secrets from instance/config
+	app.config.from_pyfile('config.py')
+
+	# register blueprints
+	from .Blueprints.senate import api
+	app.register_blueprint(api, url_prefix='/api')
+
+	# register database
+	from . import db
+	db.init_app(app)
+
 	# make sure instance folder exists
 	try:
 		os.makedirs(app.instance_path)
