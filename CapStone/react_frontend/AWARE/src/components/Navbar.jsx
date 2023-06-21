@@ -37,7 +37,7 @@ function Navbar() {
           <a href="/">Home</a>
         </li>
         <li className='p-4 hover:underline whitespace-nowrap'>
-          <a href="/">
+          <a href="/summarizer">
             Summarize Bills
           </a>
         </li>
