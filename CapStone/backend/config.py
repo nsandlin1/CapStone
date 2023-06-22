@@ -1,8 +1,12 @@
 import os
 
+basedir = os.path.abspath(os.path.dirname(__file__))
+
 class Config:
 	CURRENT_CONGRESS = 118
-
+	SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URI') or\
+		  'sqlite:///' + os.path.join(basedir, 'instance', 'database.db')
+	SQLALCHEMY_TRACK_MODIFICATIONS = False
 class ProductionConfig(Config):
 	DEBUG = False
 	TESTING = False
