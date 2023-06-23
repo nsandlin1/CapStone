@@ -30,7 +30,7 @@ function PoliticianBlock(senator) {
     );
 }
 
-export default Senator
+export { Politician, PoliticianBlock }
 
 // "Website": "https://www.barrasso.senate.gov",
 // "contact_form": "https://www.barrasso.senate.gov/public/index.cfm/contact-form",

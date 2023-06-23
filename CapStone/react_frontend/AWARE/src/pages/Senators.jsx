@@ -1,4 +1,4 @@
-import Senator from "../components/Senator"
+import { Politician, PoliticianBlock } from "../components/Senator"
 import Widget from "../components/widgets";
 
 function Senators() {
