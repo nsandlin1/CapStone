@@ -6,6 +6,7 @@
 :root {
   --border-radius: 8px;
   --speed: 500ms;
+  --navbar-height: 96px;
 }
 
 body {
@@ -14,4 +15,8 @@ body {
 
 .navitem:hover {
   color: #7A6EF5;
+}
+
+.navt {
+  height: var(--navbar-height);
 }
