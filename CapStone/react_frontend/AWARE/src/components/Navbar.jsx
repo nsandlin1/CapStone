@@ -66,11 +66,21 @@ function Navbar() {
           <CgProfile size={50} className='m-4 pt-3'/>
         </div>
         <ul className='pt-12 uppercase'>
-          <li className='p-4 border-b border-gray-600'>Home</li>
-          <li className='p-4 border-b border-gray-600'>Bill Summarizer</li>
-          <li className='p-4 border-b border-gray-600'>Elections</li>
-          <li className='p-4 border-b border-gray-600'>Politicians</li>
-          <li className='p-4 border-b border-gray-600'>News</li>
+          <li className='navitem p-4 border-b border-gray-600'>
+            <NavLink to="/Home">Home</NavLink>
+          </li>
+          <li className='navitem p-4 border-b border-gray-600'>
+            <NavLink to="/Summarizer">Summarize Bills</NavLink>
+          </li>
+          <li className='navitem p-4 border-b border-gray-600'>
+            <NavLink to="/Elections">Elections</NavLink>
+          </li>
+          <li className='navitem p-4 border-b border-gray-600'>
+            <NavLink to="/Politicians">Politicians</NavLink>
+          </li>
+          <li className='navitem p-4 border-b border-gray-600'>
+            <NavLink to="/News">News</NavLink>
+          </li>
         </ul>
       </div>
     </div>

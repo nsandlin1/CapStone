@@ -3,7 +3,7 @@ import { useState } from 'react';
 import Home from './pages/index.jsx';
 import Navbar from './components/Navbar.jsx';
 import Homepage from './pages/Homepage.jsx';
-import Senators from './pages/Senators.jsx';
+import Politicians from './pages/Politicians.jsx';
 import './App.css'
 import { Routes, Route } from 'react-router-dom'
 
@@ -13,7 +13,7 @@ function App() {
       <Navbar/>
       <Routes>
         <Route path="/Home" element={<Homepage />} />
-        <Route path="/Senators" element={<Senators />} />
+        <Route path="/Politicians" element={<Politicians />} />
       </Routes>
     </React.Fragment>
   );
