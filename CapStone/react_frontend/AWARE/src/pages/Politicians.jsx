@@ -21,13 +21,21 @@ function Politicians() {
 
     return (
         <div className="flex justify-center items-center h-[89vh] bg-slate-400">
-             <Wrapper width='w-[98%] md:w-[98%]' height='h-[98%]' color='bg-black'>
+             <Wrapper width='w-[98%] md:w-[98%]' height='h-[98%]' color='bg-white'>
+                <PoliticianBlock pol={p}/>
              </Wrapper>
         </div>
     );
 }
 
 export default Politicians;
+
+// loop this on list of politicians
+// <ul class="list-group list-group-horizontal">
+//   <li class="list-group-item">An item</li>
+//   <li class="list-group-item">A second item</li>
+//   <li class="list-group-item">A third item</li>
+// </ul> 
 
 // "Website": "https://www.barrasso.senate.gov",
 // "contact_form": "https://www.barrasso.senate.gov/public/index.cfm/contact-form",
