@@ -18,15 +18,18 @@ class Politician {
     }
 }
 
-function PoliticianBlock(senator) {
+function PoliticianBlock(props) {
     return (
-        <div class="card" style="width: 18rem;">
-            <img src={senator.image_url} class="card-img-top" alt="Image Unavailable" />
-            <div class="card-body">
-                <h5 class="card-title">senator.first_name senator.last_name</h5>
-                <p class="card-text">senator.state senator.party</p>
-            </div>
+        <div className="card" style="width: 18rem;">
+
         </div>
+        // <div class="card" style="width: 18rem;">
+        //     <img src={props.senator.image_url} class="card-img-top" alt="Image Unavailable" />
+        //     <div class="card-body">
+        //         <h5 class="card-title">props.senator.first_name props.senator.last_name</h5>
+        //         <p class="card-text">props.senator.state props.senator.party</p>
+        //     </div>
+        // </div>
     );
 }
 
