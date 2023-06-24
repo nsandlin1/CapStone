@@ -1,5 +1,6 @@
 import { Fragment } from "react";
 
+
 class Politician {
     constructor(website, contact_form, date_of_birth, facebook, first_name, id, last_name, middle_name, party, phone, state, twitter, image_url) {
         this.website = website
@@ -18,15 +19,22 @@ class Politician {
     }
 }
 
-function PoliticianBlock(senator) {
+function PoliticianBlock({ pol }) {
     return (
-        <div class="card" style="width: 18rem;">
-            <img src={senator.image_url} class="card-img-top" alt="Image Unavailable" />
-            <div class="card-body">
-                <h5 class="card-title">senator.first_name senator.last_name</h5>
-                <p class="card-text">senator.state senator.party</p>
-            </div>
+        <div className="card">
+            <img src={pol.image_url} className="card-img-top" alt="Image Unavailable" />
+            <div className="card-body">
+                    <h5 className="card-title">{pol.first_name} {pol.last_name}</h5>
+                    <p className="card-text">{pol.state} {pol.party}</p>
+                </div>
         </div>
+        // <div className="card" style="width: 18rem;">
+        //      <img src={pol.image_url} className="card-img-top" alt="Image Unavailable" />
+        //      <div className="card-body">
+        //          <h5 className="card-title">{pol.first_name} {pol.last_name}</h5>
+        //          <p className="card-text">{pol.state} {pol.party}</p>
+        //      </div>
+        // </div>
     );
 }
 

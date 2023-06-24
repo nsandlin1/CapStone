@@ -39,7 +39,7 @@ function Navbar() {
           <NavLink to="/">Home</NavLink>
         </li>
         <li className='navitem p-4 whitespace-nowrap'>
-          <NavLink to="/Summarizer">Summarize Bills</NavLink>
+          <NavLink to="/Summarize">Summarize Bills</NavLink>
         </li>
         <li className='navitem p-4'>
           <NavLink to="/Elections">Elections</NavLink>
@@ -63,14 +63,16 @@ function Navbar() {
         
         <div className='flex items-center'>
           <h1 className='w-full text-3xl font-bold text-white m-4 pt-3'>AWARE</h1>
-          <CgProfile size={50} className='m-4 pt-3'/>
+          <NavLink to="/Profile">
+            <CgProfile size={50} className='navitem m-4 pt-3'/>
+          </NavLink>
         </div>
         <ul className='pt-12 uppercase'>
           <li className='navitem p-4 border-b border-gray-600'>
             <NavLink to="/Home">Home</NavLink>
           </li>
           <li className='navitem p-4 border-b border-gray-600'>
-            <NavLink to="/Summarizer">Summarize Bills</NavLink>
+            <NavLink to="/Summarize">Summarize Bills</NavLink>
           </li>
           <li className='navitem p-4 border-b border-gray-600'>
             <NavLink to="/Elections">Elections</NavLink>

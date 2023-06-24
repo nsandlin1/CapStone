@@ -1,12 +1,9 @@
 
-function Widget(props) {
-
-    const className = `flex flex-col items-center bg-black rounded-xl overflow-auto ${props.width} ${props.height}`;
-
+export const Wrapper = (props) => {
+    const className = `flex flex-col items-center ${props.color} rounded-xl overflow-auto ${props.width} ${props.height}`;
     return (
         <div className={className}>
+            {props.children}
         </div>
-    )
+    );
 }
-
-export default Widget;
