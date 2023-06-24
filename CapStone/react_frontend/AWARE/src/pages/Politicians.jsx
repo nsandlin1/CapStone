@@ -1,6 +1,7 @@
 import { CgHello } from "react-icons/cg";
 import { Politician, PoliticianBlock } from "../components/Politician"
 import { Wrapper } from "../components/widgets";
+import React, { useEffect, useState } from "react"
 
 function Politicians() {
     var p = new Politician(
@@ -19,10 +20,29 @@ function Politicians() {
         "https://www.congress.gov/img/member/b001261_200.jpg"
     )
 
+    var branch = "senator"
+    var api_url = `/api/congress/members?${branch}`
+
+    const [pols, setPols] = useState([])
+
+    const fetchPolData = () => {
+      fetch(api_url)
+        .then(response => {
+          return response.json()
+        })
+        .then(data => {
+          setPols(data)
+        })
+    }
+
+    useEffect(() => {
+        fetchPolData()
+      }, [])
+
     return (
         <div className="flex justify-center items-center h-[89vh] bg-slate-400">
              <Wrapper width='w-[98%] md:w-[98%]' height='h-[98%]' color='bg-white'>
-                <PoliticianBlock pol={p}/>
+               <text>{pols.data}</text>
              </Wrapper>
         </div>
     );
