@@ -2,7 +2,7 @@ import Widget from "../components/widgets";
 
 function Homepage() {
     return (
-        <div className="flex justify-center items-center h-[89vh] bg-slate-400">
+        <div className="flex justify-center items-center h-[89vh] ">
             <div className="flex justify-center w-[90%] h-[calc(100vh - var(--navbar-height))]">
                 <div className="left flex flex-col w-[50%] md:w-[70%] h-[80vh] ">
                     <div className="toptwo flex flex-col md:flex-row p-2 gap-2 w-[100%] h-[55%]">

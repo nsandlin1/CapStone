@@ -32,11 +32,11 @@ function Navbar() {
 
   return (
     <div className='h-24 bg-[#001500]'>
-    <div className='navt flex justify-between items-center max-w-[1240px] mx-auto px-4 text-white bg-[#001500]'>
+    <div className='navt flex justify-between items-center max-w-[80%] mx-auto px-4 pd-2 text-white bg-[#001500]'>
       <h1 className='w-full text-3xl font-bold text-white'>AWARE</h1>
       <ul className='navbar hidden md:flex '>
         <li className='navitem p-4'>
-          <NavLink to="/Home">Home</NavLink>
+          <NavLink to="/">Home</NavLink>
         </li>
         <li className='navitem p-4 whitespace-nowrap'>
           <NavLink to="/Summarizer">Summarize Bills</NavLink>

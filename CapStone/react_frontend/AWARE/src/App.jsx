@@ -12,7 +12,7 @@ function App() {
     <React.Fragment>
       <Navbar/>
       <Routes>
-        <Route path="/Home" element={<Homepage />} />
+        <Route path="/" element={<Homepage />} />
         <Route path="/Politicians" element={<Politicians />} />
       </Routes>
     </React.Fragment>
