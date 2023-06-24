@@ -1,6 +1,6 @@
 import { CgHello } from "react-icons/cg";
 import { Politician, PoliticianBlock } from "../components/Politician"
-import Widget from "../components/widgets";
+import { Wrapper } from "../components/widgets";
 
 function Politicians() {
     var p = new Politician(
@@ -18,11 +18,12 @@ function Politicians() {
         "SenJohnBarrasso",
         "https://www.congress.gov/img/member/b001261_200.jpg"
     )
+
     return (
         <div className="flex justify-center items-center h-[89vh] bg-slate-400">
-            <Widget width='w-[90%] md:w-[95%]' height="h-[95%]" color='bg-white'>
-            </Widget>
-        </div>  
+             <Wrapper width='w-[98%] md:w-[98%]' height='h-[98%]' color='bg-black'>
+             </Wrapper>
+        </div>
     );
 }
 
