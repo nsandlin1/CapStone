@@ -35,6 +35,7 @@ def memberdata():
 @congress.route('/member_image')
 def memberimage():
     id = request.args.get("id")
+    logger.debug(f"id: {id}")
     jpgUrl = db.session.get(JpegUrl, id)
 
     if jpgUrl == None:

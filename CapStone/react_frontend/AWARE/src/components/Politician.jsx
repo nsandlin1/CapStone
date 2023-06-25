@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 
-
+// I don't think im even using this
 class Politician {
     constructor(website, contact_form, date_of_birth, facebook, first_name, id, last_name, middle_name, party, phone, state, twitter, image_url) {
         this.website = website
@@ -26,15 +26,8 @@ function PoliticianBlock({ pol }) {
             <div className="card-body">
                     <h5 className="card-title">{pol.first_name} {pol.last_name}</h5>
                     <p className="card-text">{pol.state} {pol.party}</p>
-                </div>
+            </div>
         </div>
-        // <div className="card" style="width: 18rem;">
-        //      <img src={pol.image_url} className="card-img-top" alt="Image Unavailable" />
-        //      <div className="card-body">
-        //          <h5 className="card-title">{pol.first_name} {pol.last_name}</h5>
-        //          <p className="card-text">{pol.state} {pol.party}</p>
-        //      </div>
-        // </div>
     );
 }
 
