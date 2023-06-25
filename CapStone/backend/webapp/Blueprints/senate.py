@@ -5,9 +5,9 @@ from ..models import JpegUrl
 from ..schemas import jpeg_url_schema
 from loguru import logger
 
-api = Blueprint('api', __name__)
+congress = Blueprint('congress', __name__)
 
-@api.route('/members')
+@congress.route('/members')
 def memberdata():
     # house or senate
     branch = request.args.get("branch")
@@ -32,13 +32,16 @@ def memberdata():
 
     return members_chopped
 
-@api.route('/member_image')
+@congress.route('/member_image')
 def memberimage():
     id = request.args.get("id")
     jpgUrl = db.session.get(JpegUrl, id)
 
     if jpgUrl == None:
-        image_url = get_image(current_app.config["CONGRESS_GOV_API_KEY"], id)
+        try:
+            image_url = get_image(current_app.config["CONGRESS_GOV_API_KEY"], id)
+        except Exception as e:
+            return str(e), 404
 
         jpgUrl = JpegUrl(id, image_url)
 
@@ -46,4 +49,3 @@ def memberimage():
         db.session.commit()
 
     return jpeg_url_schema.jsonify(jpgUrl)
-

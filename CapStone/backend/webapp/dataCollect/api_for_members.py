@@ -24,10 +24,14 @@ def propublica_get_members(api_key, congress, chamber):
 # used
 def get_image(api_key, bioguide_id):
     url = f"https://api.congress.gov/v3/member/{bioguide_id}?api_key={api_key}"
-    result = requests.get(url)
-    imageUrl = result.json()['member']['depiction']['imageUrl']
 
-    return imageUrl
+    try:
+        result = requests.get(url)
+        imageUrl = result.json()['member']['depiction']['imageUrl']
+
+        return imageUrl
+    except:
+        raise Exception("failed to get image url")
 
 def get_member(api_key, member_id):
     """
