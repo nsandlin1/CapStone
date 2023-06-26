@@ -4,48 +4,106 @@ import { Wrapper } from "../components/widgets";
 import React, { useEffect, useState } from "react"
 
 function Politicians() {
-    var p = new Politician(
-        "https://www.barrasso.senate.gov",
-        "https://www.barrasso.senate.gov/public/index.cfm/contact-form",
-        "1952-07-21",
-        "johnbarrasso",
-        "John",
-        "B001261",
-        "Barrasso",
-        null,
-        "R",
-        "202-224-6441",
-        "WY",
-        "SenJohnBarrasso",
-        "https://www.congress.gov/img/member/b001261_200.jpg"
-    )
 
-    var branch = "senator"
-    var api_url = `/api/congress/members?${branch}`
+    var branch = "senate"
+    var api_url = `http://localhost:5000/api/congress/members?branch=${branch}`
+    
+    const [pols, setPols] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [image_urls, setImageURLS] = useState({});
+    
+    function getPoliticiansList() {
+        /*
+        make api request to get politicians return to pols variable
+        */
+        console.log("fetching politicians")
+        fetch(api_url)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(
+                        `HTTP error: ${response.status}`
+                    );
+                }
+                return response.json()
+            })
+            .then((data) => {
+                setPols(data);
+                setError(null);
+            })
+            .catch((err) => {
+                setError(err);
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+    }
 
-    const [pols, setPols] = useState([])
-
-    const fetchPolData = () => {
-      fetch(api_url)
-        .then(response => {
-          return response.json()
-        })
-        .then(data => {
-          setPols(data)
-        })
+    function getImageUrls() {
+        console.log("fetching image urls")
+        for (let i = 0; i < pols.length; i++) {
+            // console.log(pols[i].id)
+            if (!(pols[i].id in image_urls)) {
+                console.log("isnull");
+                (async function (index) {
+                    fetch(`http://localhost:5000/api/congress/member_image?id=${pols[index].id}`)
+                    .then((response) => {
+                        if (!response.ok) {
+                            throw new Error(
+                                console.log("throwing error")
+                                `HTTP error: ${response.status}`
+                            );
+                        }
+                        return response.json();
+                    })
+                    .then((data) => {
+                        //data good here
+                        // console.log("before" + Object.keys(image_urls))
+                        setImageURLS(prevState => ({...prevState, [data.id]: data.image_url}));
+                        // console.log("after" + Object.keys(image_urls))
+                    })
+                    .catch((err) => {
+                        setError(err)
+                        console.log(err.message)
+                    });
+                })(i);
+            }
+        }
     }
 
     useEffect(() => {
-        fetchPolData()
-      }, [])
+        getPoliticiansList()
+    }, [])
+    useEffect(() => {
+        console.log(Object.keys(image_urls).length)
+        if (pols) {
+            getImageUrls()
+            setTimeout(() => console.log(image_urls), 3000)
+        }
+    }, [pols])
 
     return (
         <div className="flex justify-center items-center h-[89vh] bg-slate-400">
-             <Wrapper width='w-[98%] md:w-[98%]' height='h-[98%]' color='bg-white'>
-               <text>{pols.data}</text>
-             </Wrapper>
+            <Wrapper width='w-[98%] md:w-[98%]' height='h-[98%]' color='bg-white'>
+                {loading && <div>Loading...</div>}
+                {error && (
+                    <div>{`There has been a problem -- ${error}`}</div>
+                )}
+                {!loading && (
+                    <div>
+                        <ul>
+                            {
+                                pols.map((pol) => {
+                                    return <PoliticianBlock key={pol.id} pol={pol} image_url={image_urls[pol.id]}/>
+                                })
+                            }
+                        </ul>
+                    </div>
+                )}
+            </Wrapper>
         </div>
     );
+    
 }
 
 export default Politicians;
