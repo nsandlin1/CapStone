@@ -1,4 +1,5 @@
 import { Fragment } from "react";
+import { Wrapper } from "../components/widgets";
 
 // I don't think im even using this
 class Politician {
@@ -26,13 +27,17 @@ class Politician {
 
 function PoliticianBlock({ pol, image_url}) {
     return (
-        <div className="card">
-            <img src={image_url} className="card-img-top" alt="Image Unavailable" />
-            <div className="card-body">
-                    <h5 className="card-title">{pol.first_name} {pol.last_name}</h5>
-                    <p className="card-text">{pol.state} {pol.party}</p>
+        // make where you can click on the card and go to a dynamically
+        // generated link about the individual senator
+        <Wrapper width='w-[100%] md:w-[75%]' height="h-[100%]" color='bg-white'>
+            <div className="card" color="bg-black">
+                <img src={image_url} className="card-img-top" alt="Image Unavailable" />
+                <div className="card-body">
+                        <h5 className="card-title">{pol.first_name} {pol.last_name}</h5>
+                        <p className="card-text">{pol.state} {pol.party}</p>
+                </div>
             </div>
-        </div>
+        </Wrapper>
     );
 }
 
