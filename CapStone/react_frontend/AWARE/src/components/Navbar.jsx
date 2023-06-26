@@ -39,7 +39,7 @@ function Navbar() {
           <NavLink to="/">Home</NavLink>
         </li>
         <li className='navitem p-4 whitespace-nowrap'>
-          <NavLink to="/Summarize">Summarize Bills</NavLink>
+          <NavLink to="/Bills">Summarize Bills</NavLink>
         </li>
         <li className='navitem p-4'>
           <NavLink to="/Elections">Elections</NavLink>
@@ -69,10 +69,10 @@ function Navbar() {
         </div>
         <ul className='pt-12 uppercase'>
           <li className='navitem p-4 border-b border-gray-600'>
-            <NavLink to="/Home">Home</NavLink>
+            <NavLink to="/">Home</NavLink>
           </li>
           <li className='navitem p-4 border-b border-gray-600'>
-            <NavLink to="/Summarize">Summarize Bills</NavLink>
+            <NavLink to="/Bills">Summarize Bills</NavLink>
           </li>
           <li className='navitem p-4 border-b border-gray-600'>
             <NavLink to="/Elections">Elections</NavLink>
