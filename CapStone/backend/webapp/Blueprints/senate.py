@@ -27,7 +27,7 @@ def memberdata():
               "phone": member["phone"],
               "facebook": member["facebook_account"],
               "twitter": member["twitter_account"],
-              "Website": member["url"]
+              "website": member["url"]
         })
 
     return members_chopped

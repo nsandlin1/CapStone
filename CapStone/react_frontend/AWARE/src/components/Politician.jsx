@@ -17,12 +17,17 @@ class Politician {
         this.twitter = twitter
         this.image_url = image_url
     }
+
+    setImageURL(image_url){
+        this.image_url = image_url
+    }
+
 }
 
-function PoliticianBlock({ pol }) {
+function PoliticianBlock({ pol, image_url}) {
     return (
         <div className="card">
-            <img src={pol.image_url} className="card-img-top" alt="Image Unavailable" />
+            <img src={image_url} className="card-img-top" alt="Image Unavailable" />
             <div className="card-body">
                     <h5 className="card-title">{pol.first_name} {pol.last_name}</h5>
                     <p className="card-text">{pol.state} {pol.party}</p>
