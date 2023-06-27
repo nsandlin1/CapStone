@@ -27,7 +27,7 @@ def memberdata():
               "phone": member["phone"],
               "facebook": member["facebook_account"],
               "twitter": member["twitter_account"],
-              "Website": member["url"]
+              "website": member["url"]
         })
 
     return members_chopped
@@ -35,6 +35,7 @@ def memberdata():
 @congress.route('/member_image')
 def memberimage():
     id = request.args.get("id")
+    logger.debug(f"id: {id}")
     jpgUrl = db.session.get(JpegUrl, id)
 
     if jpgUrl == None:

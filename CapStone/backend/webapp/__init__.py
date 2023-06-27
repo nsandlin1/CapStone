@@ -3,7 +3,7 @@ from config import configs
 from flask import Flask, g
 from loguru import logger
 from flask_sqlalchemy import SQLAlchemy
-from .extensions import db, ma
+from .extensions import db, ma, crs
 from .schemas import *
 from .db_util import reset_db
 
@@ -33,6 +33,9 @@ def create_web_app(env="dev"):
 
 	# initialize marshmallow
 	ma.init_app(app)
+
+	# initialize CORS (using this allows api request from react ig)
+	crs.init_app(app)
 
 	# make sure instance folder exists
 	try:
