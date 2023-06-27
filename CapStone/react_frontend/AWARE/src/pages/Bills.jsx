@@ -1,16 +1,31 @@
+import React, { useState } from "react";
 import { Wrapper} from "../components/widgets";
 import { BsCircle } from 'react-icons/Bs';
+import { FederalButton } from "../components/FederalButton";
+import { StateButton } from "../components/StateButton";
 
 function Bills() {
+
+    const [selectedButton, setSelectedButton] = useState('federal');
+
+    const handleButtonClick = (buttonType) => {
+        setSelectedButton(buttonType);
+    }
+
     return (
-        <div className="flex flex-col items-center h-[89vh] py-4">
+        <div className="flex flex-col items-center h-[89vh] py-4 gap-1">
             <div className="flex items-start w-[90%] h-[10%] flex-grow rounded-xl gap-2 p-2">
-                <div className="flex items-center justify-center bg-zinc-800 rounded-xl w-[7%] h-[55%] mt-auto">
+                {/* <div className="flex items-center justify-center bg-zinc-800 rounded-xl w-[7%] h-[55%] mt-auto">
                     <p className="text-white">Federal</p>
-                </div>
-                <div className="flex items-center justify-center bg-zinc-800 rounded-xl w-[7%] h-[55%] mt-auto ">
-                    <p className="text-white">State</p>
-                </div>                
+                </div> */}
+                <FederalButton 
+                    selected={selectedButton === 'federal'}
+                    onClick={() => handleButtonClick('federal')}
+                />
+                <StateButton
+                    selected={selectedButton === 'state'}
+                    onClick={() => handleButtonClick('state')}
+                />
             </div>
             <div className="flex items-center gap-3 w-[90%] h-[90%] rounded-xl bg-slate-700 p-2">
                 <div className="flex flex-col p-2 gap-2 w-[25%] h-[100%] rounded-xl bg-slate-300">

@@ -2,6 +2,8 @@ import { CgHello } from "react-icons/cg";
 import { Politician, PoliticianBlock } from "../components/Politician"
 import { Wrapper } from "../components/widgets";
 import React, { useEffect, useState } from "react"
+import { FederalButton } from "../components/FederalButton";
+import { StateButton } from "../components/StateButton";
 
 function Politicians() {
 
@@ -82,25 +84,44 @@ function Politicians() {
         }
     }, [pols])
 
+    const [selectedButton, setSelectedButton] = useState('federal');
+
+    const handleButtonClick = (buttonType) => {
+        setSelectedButton(buttonType);
+    }
+
     return (
-        <div className="flex justify-center items-center h-[89vh] bg-slate-400">
-            <Wrapper width='w-[98%] md:w-[98%]' height='h-[98%]' color='bg-white'>
-                {loading && <div>Loading...</div>}
-                {error && (
-                    <div>{`There has been a problem -- ${error}`}</div>
-                )}
-                {!loading && (
-                    <div>
-                        <ul>
-                            {
-                                pols.map((pol) => {
-                                    return <PoliticianBlock key={pol.id} pol={pol} image_url={image_urls[pol.id]}/>
-                                })
-                            }
-                        </ul>
-                    </div>
-                )}
-            </Wrapper>
+        <div className="flex flex-col justify-center items-center h-[89vh] w-[100%] py-4 gap-1 bg-slate-400">
+            <div className="flex h-[10%] rounded-xl gap-2 p-2 overflow-auto w-[90%]">
+                <FederalButton 
+                    selected={selectedButton === 'federal'}
+                    onClick={() => handleButtonClick('federal')}
+                />
+                <StateButton
+                    selected={selectedButton === 'state'}
+                    onClick={() => handleButtonClick('state')}
+                />
+                {/* <Wrapper width='w-[98%] md:w-[98%]' height='h-[98%]' color='bg-white'>
+                    {loading && <div>Loading...</div>}
+                    {error && (
+                        <div>{`There has been a problem -- ${error}`}</div>
+                    )}
+                    {!loading && (
+                        <div>
+                            <ul>
+                                {
+                                    pols.map((pol) => {
+                                        return <PoliticianBlock key={pol.id} pol={pol} image_url={image_urls[pol.id]}/>
+                                    })
+                                }
+                            </ul>
+                        </div>
+                    )}
+                </Wrapper> */}
+            </div>
+            <div className="flex items-center w-[90%] h-[90%] bg-slate-700 rounded-xl p-2">
+
+            </div>
         </div>
     );
     
