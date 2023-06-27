@@ -43,7 +43,7 @@ function PoliticianBlock({ pol, image_url}) {
 
 export { Politician, PoliticianBlock }
 
-// "Website": "https://www.barrasso.senate.gov",
+// "Website": "https://www.barrasso.senate.gov", h
 // "contact_form": "https://www.barrasso.senate.gov/public/index.cfm/contact-form",
 // "date_of_birth": "1952-07-21",
 // "facebook": "johnbarrasso",
