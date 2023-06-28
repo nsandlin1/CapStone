@@ -4,7 +4,7 @@ from ..extensions import db
 from ..models import JpegUrl
 from ..schemas import jpeg_url_schema
 from loguru import logger
-from PyPDF2 import PdfReader
+
 
 congress = Blueprint('congress', __name__)
 
@@ -61,19 +61,34 @@ def get_bills():
     for bill in bills:
         print(bill["title"])
         try:
-            content_url = congressgov_get_bill_contents(current_app.config["CONGRESS_GOV_API_KEY"], bill["congress"], bill["type"].lower(), bill["number"])
+            content_url = congressgov_get_bill_contents_url(current_app.config["CONGRESS_GOV_API_KEY"], bill["congress"], bill["type"].lower(), bill["number"])
             print("contents got")
+
+            if content_url == None:
+                print("is none")
+                continue
+            
+            content_json = congressgov_get_bill_contents(current_app.config["CONGRESS_GOV_API_KEY"], content_url)
+            content = content_json["html"]["body"]["pre"]
+
+            content_filtered = content.strip()
+
+            # TODO make this reliable, returns errors for most and null for many others
+            summary = summ_model(current_app.config["MOD_AUTH"], content_filtered)
+
         except:
             content_url = None
+            content = None
+            summary = None
 
-        bill["content_url"] = content_url
 
         refactored.append({
                 "title": bill["title"],
                 "originChamber": bill["originChamber"],
                 "number": bill["number"],
                 "updateDate": bill["updateDate"],
-                "content_url": bill["content_url"]
+                "content_url": content_url,
+                "summary": summary
         }) 
 
     return refactored

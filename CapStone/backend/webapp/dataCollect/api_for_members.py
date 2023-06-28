@@ -1,5 +1,6 @@
 import requests
 import datetime
+import xmltodict
 
 # for now api_key must be passed, because this package does not
 # have access to the app.config because it is not in application
@@ -59,7 +60,7 @@ def congressgov_get_bills(api_key):
     except:
         raise Exception("failed to get bills")
 
-def congressgov_get_bill_contents(api_key, congress, bill_type, bill_number):
+def congressgov_get_bill_contents_url(api_key, congress, bill_type, bill_number):
     # url = f"https://xwww.congress.gov/{congress}/bills/{bill_type}{bill_number}/BILLS-{congress}{bill_type}{bill_number}rs.xml"
     # works better below
     url = f"https://api.congress.gov/v3/bill/{congress}/{bill_type.lower()}/{bill_number}/text?format=json"
@@ -71,8 +72,12 @@ def congressgov_get_bill_contents(api_key, congress, bill_type, bill_number):
     try:
         result = requests.get(url, params=params)
         result = result.text
+
         # extract url, it is the first one in the list
         i = result.find('https://www.congress.gov')
+        if i == -1:
+            # i = result.find('https://api.congress.gov')
+            return None
         k = i
         while result[k] != '\n':
             k += 1
@@ -80,7 +85,26 @@ def congressgov_get_bill_contents(api_key, congress, bill_type, bill_number):
 
         return bill_contents_url
     except:
+        raise Exception("failed to get bill contents url")
+
+def congressgov_get_bill_contents(api_key, content_url):
+    try:
+        content_raw = requests.get(content_url, params={"api_key": api_key})
+        content = xmltodict.parse(content_raw.content)
+    except:
         raise Exception("failed to get bill contents")
-    
+    return content
+
+def summ_model(auth_key, payload):
+    api_url = "https://api-inference.huggingface.co/models/LukeMoore11/Big-Benjamin"
+    headers = {"Authorization": auth_key}
+
+    try:
+        response = requests.post(api_url, headers=headers, json=payload, timeout=30)
+        return response.json()
+    except requests.exceptions.Timeout:
+        print("Model request Timed Out")
+
 if __name__ == '__main__':
-    print(congressgov_get_bill_contents("BLBBwtEM5wcueO0Y7zjUKBYkGjlmiScLLOZNVXKV", 118, 'S', 467))
+    x = requests.get("https://api.congress.gov/v3/bill/118/hr/4333?format=xml", params={"api_key": "BLBBwtEM5wcueO0Y7zjUKBYkGjlmiScLLOZNVXKV"})
+    print(str(x.content))
