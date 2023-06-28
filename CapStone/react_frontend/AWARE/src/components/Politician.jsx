@@ -29,21 +29,23 @@ function PoliticianBlock({ pol, image_url}) {
     return (
         // make where you can click on the card and go to a dynamically
         // generated link about the individual senator
-        <Wrapper width='w-[100%] md:w-[75%]' height="h-[100%]" color='bg-white'>
-            <div className="card" color="bg-black">
-                <img src={image_url} className="card-img-top" alt="Image Unavailable" />
-                <div className="card-body">
+            <div className="flex flex-col justify-center items-center bg-white gap-2 py-2 rounded-xl w-[45%] h-[2%] md:w-[30%] md:h-[4%] lg:w-[15.5%] lg:h-[8%]">
+                <div className="flex flex-shrink-0 ">
+                    <div className="rounded-full overflow-hidden w-24 h-24 md:h-36 md:w-36 ">
+                        <img src={image_url} className="object-cover h-full w-full" alt="Image Unavailable" />
+                    </div>
+                </div>
+                <div className="flex flex-col justify-center items-center">
                         <h5 className="card-title">{pol.first_name} {pol.last_name}</h5>
                         <p className="card-text">{pol.state} {pol.party}</p>
                 </div>
             </div>
-        </Wrapper>
     );
 }
 
 export { Politician, PoliticianBlock }
 
-// "Website": "https://www.barrasso.senate.gov", h
+// "Website": "https://www.barrasso.senate.gov",
 // "contact_form": "https://www.barrasso.senate.gov/public/index.cfm/contact-form",
 // "date_of_birth": "1952-07-21",
 // "facebook": "johnbarrasso",

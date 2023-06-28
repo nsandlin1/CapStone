@@ -31,6 +31,7 @@ function Politicians() {
             })
             .then((data) => {
                 setPols(data);
+                console.log(pols)
                 setError(null);
             })
             .catch((err) => {
@@ -101,26 +102,22 @@ function Politicians() {
                     selected={selectedButton === 'state'}
                     onClick={() => handleButtonClick('state')}
                 />
-                {/* <Wrapper width='w-[98%] md:w-[98%]' height='h-[98%]' color='bg-white'>
-                    {loading && <div>Loading...</div>}
+                    
+            </div>
+            <div className="flex flex-col items-center w-[90%] h-[90%] bg-slate-700 rounded-xl overflow-auto p-2">
+                {loading && <div>Loading...</div>}
                     {error && (
                         <div>{`There has been a problem -- ${error}`}</div>
                     )}
                     {!loading && (
-                        <div>
-                            <ul>
-                                {
+                        <div className="flex flex-wrap items-center justify-center gap-4">
+                                { 
                                     pols.map((pol) => {
                                         return <PoliticianBlock key={pol.id} pol={pol} image_url={image_urls[pol.id]}/>
                                     })
                                 }
-                            </ul>
                         </div>
                     )}
-                </Wrapper> */}
-            </div>
-            <div className="flex items-center w-[90%] h-[90%] bg-slate-700 rounded-xl p-2">
-
             </div>
         </div>
     );
