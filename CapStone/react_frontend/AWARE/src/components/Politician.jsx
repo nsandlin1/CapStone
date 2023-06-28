@@ -28,9 +28,10 @@ class Politician {
 function PoliticianBlock({ pol, image_url}) {
 
     const cardClass = `flex flex-col justify-center items-center bg-white gap-2 py-2 
-                        rounded-xl w-[45%] h-[2%] md:w-[30%] md:h-[4%] lg:w-[12%] lg:h-[7%]`
+                        rounded-xl w-[45%] h-[2%] md:w-[30%] md:h-[3%] lg:w-[13%] lg:h-[7%]`
 
-    const imageClass = `${pol.party === 'D' ? 'border-blue-800' : 'border-red-500'} border-4 rounded-full overflow-hidden w-24 h-24 md:h-36 md:w-36 `
+    const imageClass = `${pol.party === 'D' ? 'border-blue-800' : 'border-red-500'} border-4 rounded-full overflow-hidden w-20 h-20 
+                        md:h-24 md:w-24 lg:h-28 lg:w-28 xl:h-36 xl:w-36`
 
     return (
         // make where you can click on the card and go to a dynamically

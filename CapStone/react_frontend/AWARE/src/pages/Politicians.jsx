@@ -110,7 +110,7 @@ function Politicians() {
                         <div>{`There has been a problem -- ${error}`}</div>
                     )}
                     {!loading && (
-                        <div className="flex flex-wrap items-center justify-center gap-6">
+                        <div className="flex flex-wrap items-center justify-center gap-4">
                                 { 
                                     pols.map((pol) => {
                                         return <PoliticianBlock key={pol.id} pol={pol} image_url={image_urls[pol.id]}/>
