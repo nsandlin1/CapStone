@@ -104,7 +104,7 @@ function Politicians() {
                 />
                     
             </div>
-            <div className="flex flex-col items-center w-[90%] h-[90%] bg-slate-700 rounded-xl overflow-auto p-2">
+            <div className="flex flex-col items-center w-[90%] h-[90%]  bg-zinc-800 rounded-xl overflow-auto p-2">
                 {loading && <div>Loading...</div>}
                     {error && (
                         <div>{`There has been a problem -- ${error}`}</div>

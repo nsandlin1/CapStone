@@ -26,18 +26,24 @@ class Politician {
 }
 
 function PoliticianBlock({ pol, image_url}) {
+
+    const cardClass = `flex flex-col justify-center items-center bg-white gap-2 py-2 
+                        rounded-xl w-[45%] h-[2%] md:w-[30%] md:h-[4%] lg:w-[15.5%] lg:h-[7%]`
+
+    const imageClass = `${pol.party === 'D' ? 'border-blue-800' : 'border-red-500'} border-4 rounded-full overflow-hidden w-24 h-24 md:h-36 md:w-36 `
+
     return (
         // make where you can click on the card and go to a dynamically
         // generated link about the individual senator
-            <div className="flex flex-col justify-center items-center bg-white gap-2 py-2 rounded-xl w-[45%] h-[2%] md:w-[30%] md:h-[4%] lg:w-[15.5%] lg:h-[8%]">
-                <div className="flex flex-shrink-0 ">
-                    <div className="rounded-full overflow-hidden w-24 h-24 md:h-36 md:w-36 ">
+            <div className={cardClass}>
+                <div className="flex flex-shrink-0">
+                    <div className={imageClass}>
                         <img src={image_url} className="object-cover h-full w-full" alt="Image Unavailable" />
                     </div>
                 </div>
                 <div className="flex flex-col justify-center items-center">
                         <h5 className="card-title">{pol.first_name} {pol.last_name}</h5>
-                        <p className="card-text">{pol.state} {pol.party}</p>
+                        <p className="card-text">{pol.state}</p>
                 </div>
             </div>
     );
