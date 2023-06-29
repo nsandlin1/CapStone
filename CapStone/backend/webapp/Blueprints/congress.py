@@ -96,7 +96,7 @@ def get_bills():
                 "number": bill["number"],
                 "updateDate": bill["updateDate"],
                 "content_url": content_url,
-                "summary": summary_filtered,
+                "summary": summary,
         }) 
 
     return refactored

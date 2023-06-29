@@ -18,3 +18,10 @@ class JpegUrlSchema(ma.Schema):
         fields = ('id', 'image_url')
 
 jpeg_url_schema = JpegUrlSchema()
+
+# class BillSchema(ma.Schema):
+#     class Meta:
+#         model = Bill
+#         fields = ("content_url", "number", "originChamber", "summary", "title", "updateDate")
+
+# bill_schema = BillSchema()
