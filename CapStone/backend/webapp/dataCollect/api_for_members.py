@@ -1,6 +1,7 @@
 import requests
 import datetime
 import xmltodict
+from huggingface_hub import InferenceClient
 
 # for now api_key must be passed, because this package does not
 # have access to the app.config because it is not in application
@@ -53,7 +54,7 @@ def congressgov_get_bills(api_key):
     }
 
     try:
-        result = requests.get(url, params=params)
+        result = requests.get(url, params=params, timeout=5)
         bills = result.json()
 
         return bills['bills']
@@ -70,7 +71,7 @@ def congressgov_get_bill_contents_url(api_key, congress, bill_type, bill_number)
     }
 
     try:
-        result = requests.get(url, params=params)
+        result = requests.get(url, params=params, timeout=5)
         result = result.text
 
         # extract url, it is the first one in the list
@@ -89,22 +90,17 @@ def congressgov_get_bill_contents_url(api_key, congress, bill_type, bill_number)
 
 def congressgov_get_bill_contents(api_key, content_url):
     try:
-        content_raw = requests.get(content_url, params={"api_key": api_key})
+        content_raw = requests.get(content_url, params={"api_key": api_key}, timeout=5)
         content = xmltodict.parse(content_raw.content)
     except:
         raise Exception("failed to get bill contents")
     return content
 
 def summ_model(auth_key, payload):
-    api_url = "https://api-inference.huggingface.co/models/LukeMoore11/Big-Benjamin"
-    headers = {"Authorization": auth_key}
+    client = InferenceClient(token=auth_key, timeout=20)
+    out_data = client.summarization(text=payload, model="LukeMoore11/Big-Benjamin")
 
-    try:
-        response = requests.post(api_url, headers=headers, json=payload, timeout=30)
-        return response.json()
-    except requests.exceptions.Timeout:
-        print("Model request Timed Out")
+    return out_data
 
 if __name__ == '__main__':
     x = requests.get("https://api.congress.gov/v3/bill/118/hr/4333?format=xml", params={"api_key": "BLBBwtEM5wcueO0Y7zjUKBYkGjlmiScLLOZNVXKV"})
-    print(str(x.content))
