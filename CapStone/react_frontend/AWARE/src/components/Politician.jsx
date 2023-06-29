@@ -1,5 +1,6 @@
 import { Fragment, useEffect, useState, useRef} from "react";
 import { Wrapper } from "../components/widgets";
+import { FcCollapse } from "react-icons/fc";
 
 // I don't think im even using this
 class Politician {
@@ -35,15 +36,17 @@ function PoliticianBlock({ pol, image_url, isExpanded, toggleCollapse}) {
         }
     }, [isExpanded]);
 
+    const cardClassCollapsed = `relative flex flex-col justify-center items-center bg-white gap-2 py-2 
+                                rounded-xl w-[45%] h-[2%] md:w-[30%] md:h-[3%] lg:w-[15%] lg:h-[7%]`
 
-    const cardClassCollapsed = `flex flex-col justify-center items-center bg-white gap-2 py-2 
-                        rounded-xl w-[45%] h-[2%] md:w-[30%] md:h-[3%] lg:w-[15%] lg:h-[7%]`
+    const cardClassExpanded = `relative flex flex-col justify-center items-center bg-white gap-2 py-2 
+                                rounded-xl w-[93%] h-[5%] md:w-[93%] md:h-[8%] lg:w-[94%] lg:h-[10%]`
 
-    const cardClassExpanded = `flex flex-col justify-center items-center bg-white gap-2 py-2 
-    rounded-xl w-[93%] h-[5%] md:w-[93%] md:h-[8%] lg:w-[94%] lg:h-[10%]`
+    const imageClassCollapsed = `${pol.party === 'D' ? 'border-blue-800' : 'border-red-500'} border-4 rounded-full overflow-hidden w-20 h-20 
+                                md:h-24 md:w-24 lg:h-28 lg:w-28 xl:h-36 xl:w-36`
 
-    const imageClass = `${pol.party === 'D' ? 'border-blue-800' : 'border-red-500'} border-4 rounded-full overflow-hidden w-20 h-20 
-                        md:h-24 md:w-24 lg:h-28 lg:w-28 xl:h-36 xl:w-36`
+    const imageClassExpanded = `${pol.party === 'D' ? 'border-blue-800' : 'border-red-500'} absolute left-4 top-12 border-4 rounded-full overflow-hidden w-36 h-36 
+                                md:h-40 md:w-40 lg:h-56 lg:w-56 xl:h-36 xl:w-36`
 
     return (
         // make where you can click on the card and go to a dynamically
@@ -53,14 +56,16 @@ function PoliticianBlock({ pol, image_url, isExpanded, toggleCollapse}) {
                 className={!isExpanded ? cardClassCollapsed : cardClassExpanded} 
                 onClick={toggleCollapse}
             >
+                {isExpanded ? < FcCollapse size={30}  className="absolute top-2 right-2" /> : ""}
                 <div className="flex flex-shrink-0">
-                    <div className={imageClass}>
+                    <div className={isExpanded ? imageClassExpanded : imageClassCollapsed}>
                         <img src={image_url} className="object-cover h-full w-full" alt="Image Unavailable" />
                     </div>
                 </div>
                 <div className="flex flex-col justify-center items-center">
                         <h5 className="card-title">{pol.first_name} {pol.last_name}</h5>
                         <p className="card-text">{pol.state}</p>
+                        {!isExpanded ? "" : <p>Bye</p>}
                 </div>
             </div>
     );
