@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useEffect, useState, useRef} from "react";
 import { Wrapper } from "../components/widgets";
 
 // I don't think im even using this
@@ -25,10 +25,22 @@ class Politician {
 
 }
 
-function PoliticianBlock({ pol, image_url}) {
+function PoliticianBlock({ pol, image_url, isExpanded, toggleCollapse}) {
 
-    const cardClass = `flex flex-col justify-center items-center bg-white gap-2 py-2 
-                        rounded-xl w-[45%] h-[2%] md:w-[30%] md:h-[3%] lg:w-[13%] lg:h-[7%]`
+    const blockRef = useRef(null);
+
+    useEffect(() => {
+        if (isExpanded && blockRef.current) {
+        blockRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }, [isExpanded]);
+
+
+    const cardClassCollapsed = `flex flex-col justify-center items-center bg-white gap-2 py-2 
+                        rounded-xl w-[45%] h-[2%] md:w-[30%] md:h-[3%] lg:w-[15%] lg:h-[7%]`
+
+    const cardClassExpanded = `flex flex-col justify-center items-center bg-white gap-2 py-2 
+    rounded-xl w-[93%] h-[5%] md:w-[93%] md:h-[8%] lg:w-[94%] lg:h-[10%]`
 
     const imageClass = `${pol.party === 'D' ? 'border-blue-800' : 'border-red-500'} border-4 rounded-full overflow-hidden w-20 h-20 
                         md:h-24 md:w-24 lg:h-28 lg:w-28 xl:h-36 xl:w-36`
@@ -36,7 +48,11 @@ function PoliticianBlock({ pol, image_url}) {
     return (
         // make where you can click on the card and go to a dynamically
         // generated link about the individual senator
-            <div className={cardClass}>
+            <div
+                ref={blockRef} 
+                className={!isExpanded ? cardClassCollapsed : cardClassExpanded} 
+                onClick={toggleCollapse}
+            >
                 <div className="flex flex-shrink-0">
                     <div className={imageClass}>
                         <img src={image_url} className="object-cover h-full w-full" alt="Image Unavailable" />

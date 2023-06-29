@@ -77,6 +77,7 @@ function Politicians() {
     useEffect(() => {
         getPoliticiansList()
     }, [])
+
     useEffect(() => {
         console.log(Object.keys(image_urls).length)
         if (pols) {
@@ -86,10 +87,16 @@ function Politicians() {
     }, [pols])
 
     const [selectedButton, setSelectedButton] = useState('federal');
+    const [expandedId, setExpandedId] = useState(null);
 
-    const handleButtonClick = (buttonType) => {
-        setSelectedButton(buttonType);
-    }
+    const handleButtonClick = (level) => {
+        setSelectedButton(level);
+    };
+
+    const handleToggleCollapse = (id) => {
+        setExpandedId((prevId) => (prevId === id ? null : id))
+    };
+
 
     return (
         <div className="flex flex-col justify-center items-center h-[89vh] w-[100%] py-4 gap-1 bg-slate-400">
@@ -113,7 +120,13 @@ function Politicians() {
                         <div className="flex flex-wrap items-center justify-center gap-4">
                                 { 
                                     pols.map((pol) => {
-                                        return <PoliticianBlock key={pol.id} pol={pol} image_url={image_urls[pol.id]}/>
+                                        return <PoliticianBlock 
+                                            key={pol.id}
+                                            pol={pol}
+                                            image_url={image_urls[pol.id]}
+                                            isExpanded={expandedId === pol.id}
+                                            toggleCollapse={() => handleToggleCollapse(pol.id)}
+                                            />
                                     })
                                 }
                         </div>
