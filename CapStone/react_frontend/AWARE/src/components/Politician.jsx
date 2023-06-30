@@ -1,5 +1,6 @@
-import { Fragment } from "react";
+import { Fragment, useEffect, useState, useRef} from "react";
 import { Wrapper } from "../components/widgets";
+import { FcCollapse } from "react-icons/fc";
 
 // I don't think im even using this
 class Politician {
@@ -25,19 +26,66 @@ class Politician {
 
 }
 
-function PoliticianBlock({ pol, image_url}) {
+function borderColor(party) {
+    if (party == 'D'){
+        return 'border-blue-800'
+    }
+    else if (party == 'R'){
+        return 'border-red-500'
+    }
+    else { return('border-gray-600') }
+}
+
+
+
+
+function PoliticianBlock({ pol, image_url, isExpanded, toggleCollapse}) {
+
+    const blockRef = useRef(null);
+
+
+
+    useEffect(() => {
+        if (isExpanded && blockRef.current) {
+        blockRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }, [isExpanded]);
+
+    const cardClassCollapsed = `relative flex flex-col justify-center items-center bg-white gap-2 py-2 
+                                rounded-xl w-[45%] h-[2%] md:w-[30%] md:h-[3%] lg:w-[15%] lg:h-[7%]`
+
+    const cardClassExpanded = `relative flex flex-col justify-center items-center bg-white gap-2 py-2 
+                                rounded-xl w-[93%] h-[5%] md:w-[93%] md:h-[8%] lg:w-[94%] lg:h-[10%]`
+
+    const imageClassCollapsed = `${borderColor(pol.party)} border-4 rounded-full overflow-hidden w-20 h-20 
+                                md:h-24 md:w-24 lg:h-28 lg:w-28 xl:h-36 xl:w-36`
+
+    const imageClassExpanded = `${borderColor(pol.party)}  absolute top-6 left-4 border-4 rounded-full 
+                                overflow-hidden w-36 h-36 
+                                md:h-40 md:w-40
+                                lg:h-44 lg:w-44
+                                xl:h-52 xl:w-52`
+
     return (
         // make where you can click on the card and go to a dynamically
         // generated link about the individual senator
-        <Wrapper width='w-[100%] md:w-[75%]' height="h-[100%]" color='bg-white'>
-            <div className="card" color="bg-black">
-                <img src={image_url} className="card-img-top" alt="Image Unavailable" />
-                <div className="card-body">
+            <div
+                ref={blockRef} 
+                className={!isExpanded ? cardClassCollapsed : cardClassExpanded} 
+                onClick={!isExpanded ? toggleCollapse : ""}
+            >
+                {isExpanded ? < FcCollapse size={30}  className="absolute top-2 right-2" onClick={toggleCollapse} /> : ""}
+                <div className="flex flex-shrink-0">
+                    <div className={isExpanded ? imageClassExpanded : imageClassCollapsed}>
+                        <img src={image_url} className="object-cover h-full w-full" alt="Image Unavailable" />
+                    </div>
+                </div>
+                <div className="flex flex-col justify-center items-center">
                         <h5 className="card-title">{pol.first_name} {pol.last_name}</h5>
-                        <p className="card-text">{pol.state} {pol.party}</p>
+                        <p className="card-text">{pol.state}</p>
+                        {!isExpanded ? "" : <p>{pol.website} {pol.facebook}</p>}
                 </div>
             </div>
-        </Wrapper>
     );
 }
 

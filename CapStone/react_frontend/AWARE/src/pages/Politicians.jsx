@@ -2,6 +2,8 @@ import { CgHello } from "react-icons/cg";
 import { Politician, PoliticianBlock } from "../components/Politician"
 import { Wrapper } from "../components/widgets";
 import React, { useEffect, useState } from "react"
+import { FederalButton } from "../components/FederalButton";
+import { StateButton } from "../components/StateButton";
 
 function Politicians() {
 
@@ -29,6 +31,7 @@ function Politicians() {
             })
             .then((data) => {
                 setPols(data);
+                console.log(pols)
                 setError(null);
             })
             .catch((err) => {
@@ -74,6 +77,7 @@ function Politicians() {
     useEffect(() => {
         getPoliticiansList()
     }, [])
+
     useEffect(() => {
         console.log(Object.keys(image_urls).length)
         if (pols) {
@@ -82,25 +86,52 @@ function Politicians() {
         }
     }, [pols])
 
+    const [selectedButton, setSelectedButton] = useState('federal');
+    const [expandedId, setExpandedId] = useState(null);
+
+    const handleButtonClick = (level) => {
+        setSelectedButton(level);
+    };
+
+    const handleToggleCollapse = (id) => {
+        setExpandedId((prevId) => (prevId === id ? null : id))
+    };
+
+
     return (
-        <div className="flex justify-center items-center h-[89vh] bg-slate-400">
-            <Wrapper width='w-[98%] md:w-[98%]' height='h-[98%]' color='bg-white'>
+        <div className="flex flex-col justify-center items-center h-[89vh] w-[100%] py-4 gap-1 bg-slate-400">
+            <div className="flex h-[10%] rounded-xl gap-2 p-2 overflow-auto w-[90%]">
+                <FederalButton 
+                    selected={selectedButton === 'federal'}
+                    onClick={() => handleButtonClick('federal')}
+                />
+                <StateButton
+                    selected={selectedButton === 'state'}
+                    onClick={() => handleButtonClick('state')}
+                />
+                    
+            </div>
+            <div className="flex flex-col items-center w-[90%] h-[90%]  bg-zinc-800 rounded-xl overflow-auto p-2">
                 {loading && <div>Loading...</div>}
-                {error && (
-                    <div>{`There has been a problem -- ${error}`}</div>
-                )}
-                {!loading && (
-                    <div>
-                        <ul>
-                            {
-                                pols.map((pol) => {
-                                    return <PoliticianBlock key={pol.id} pol={pol} image_url={image_urls[pol.id]}/>
-                                })
-                            }
-                        </ul>
-                    </div>
-                )}
-            </Wrapper>
+                    {error && (
+                        <div>{`There has been a problem -- ${error}`}</div>
+                    )}
+                    {!loading && (
+                        <div className="flex flex-wrap items-center justify-center gap-4">
+                                { 
+                                    pols.map((pol) => {
+                                        return <PoliticianBlock 
+                                            key={pol.id}
+                                            pol={pol}
+                                            image_url={image_urls[pol.id]}
+                                            isExpanded={expandedId === pol.id}
+                                            toggleCollapse={() => handleToggleCollapse(pol.id)}
+                                            />
+                                    })
+                                }
+                        </div>
+                    )}
+            </div>
         </div>
     );
     
