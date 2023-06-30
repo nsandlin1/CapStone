@@ -21,7 +21,7 @@ def create_web_app(env="dev"):
 	app.config.from_pyfile('config.py')
 
 	# register blueprints
-	from .Blueprints.senate import congress
+	from .Blueprints.congress import congress
 	app.register_blueprint(congress, url_prefix='/api/congress')
 
 	# initialize database with relative instance_path

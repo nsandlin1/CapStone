@@ -50,3 +50,8 @@ class JpegUrl(db.Model):
 
     def __repr__(self):
         return f'<JpegUrl "{self.id} {self.image_url}">'
+    
+# class Bill(db.Model):
+#     __tablename__ = 'bills'
+
+#     ...
