@@ -40,10 +40,12 @@ function Politicians() {
                     />
                         
                 </div>
-                <div className="mt-auto p-2 rounded-xl bg-zinc-700 text-white  hover:visible">
-                    Select Branch
-                </div>
-            </div>
+                    <select id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 mt-auto m-2 text-xs rounded-lg 
+                                                    focus:ring-blue-500 focus:border-blue-500 block w-[10%] h-[70%] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option selected>Federal</option>
+                        <option value="US">House</option>
+                    </select>
+        </div>
             
             {/* < SenateReps /> */}
             < HouseReps />
