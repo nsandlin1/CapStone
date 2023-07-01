@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Wrapper} from "../components/widgets";
 import { BsCircle } from 'react-icons/Bs';
 import { FederalButton } from "../components/FederalButton";
@@ -6,11 +6,51 @@ import { StateButton } from "../components/StateButton";
 
 function Bills() {
 
+    var api_url = `http://localhost:5000/api/congress/get_bills`
+
     const [selectedButton, setSelectedButton] = useState('federal');
+    const [bills, setBills] = useState([]);
+    const [loadingBills, setLoadingBills] = useState(true);
+    const [error, setError] = useState(null);
+
+    function getBillsList() {
+        /*
+        make api call for list of bills
+        */
+        console.log("fetching bills")
+        fetch(api_url)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(
+                        `HTTP error: ${response.status}`
+                    );
+                }
+                return response.json()
+            })
+            .then((data) => {
+                setBills(data);
+                console.log(data)
+                setError(null);
+            })
+            .catch((err) => {
+                console.log(err.message)
+                setError(err);
+            })
+            .finally(() => {
+                console.log("loading is false")
+                setLoadingBills(false);
+            });
+    }
 
     const handleButtonClick = (buttonType) => {
         setSelectedButton(buttonType);
     }
+
+    useEffect(() => {
+        if (bills.length == 0) {
+            getBillsList();
+        }
+    }, [bills])
 
     return (
         <div className="flex flex-col items-center h-[89vh] py-4 gap-1">
@@ -27,13 +67,18 @@ function Bills() {
                     onClick={() => handleButtonClick('state')}
                 />
             </div>
-            <div className="flex items-center gap-3 w-[90%] h-[90%] rounded-xl bg-slate-700 p-2">
+            <div className="flex items-center gap-3 w-[98%] h-[95%] rounded-xl bg-slate-700 p-2">
                 <div className="flex flex-col p-2 gap-2 w-[25%] h-[100%] rounded-xl bg-slate-300">
                     <div className="search flex items-center justify-center rounded-xl bg-orange-400 h-[8%]">
                         Search bar
                     </div>
                     <div className="flex flex-col items-center justify-center rounded-xl h-[92%] bg-zinc-800 overflow-auto">
-
+                        {loadingBills && <font color="#ffffff">Loading...</font>}
+                        {error && <font color="#ffffff">There has been a problem loading bills.</font>}
+                        {!loadingBills && (
+                            // display bills here
+                            <p>hello</p> // so no error
+                        )}
                     </div>
                 </div>
                 <div className="flex p-2 w-[75%] h-[100%] rounded-xl bg-slate-300">
