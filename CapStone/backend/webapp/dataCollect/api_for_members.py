@@ -97,8 +97,14 @@ def congressgov_get_bill_contents(api_key, content_url):
     return content
 
 def summ_model(auth_key, payload):
-    client = InferenceClient(token=auth_key, timeout=20)
-    out_data = client.summarization(text=payload, model="LukeMoore11/Big-Benjamin")
+    params = {
+        "min_length":130,
+        "repetition_penalty":1.2, 
+        "length_penalty":1.0
+    }
+
+    client = InferenceClient(model="google/pegasus-billsum",token=auth_key, timeout=300)
+    out_data = client.summarization(text=payload, parameters=params)
 
     return out_data
 
