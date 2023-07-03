@@ -24,7 +24,6 @@ Current pages include:
 ### Components
 
 This is where all of the components of the application live.<br/>
-
 The current components are:
 
 * BillCard - displays the title of the bill in a side div on Bills.jsx
