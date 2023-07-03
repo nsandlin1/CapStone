@@ -59,7 +59,7 @@ def get_bills():
 
     # probably need to thread this it's slow af
     refactored = []
-    for bill in bills[0:4]:
+    for bill in bills[0:7]:
         print(bill["title"])
         try:
             content_url = congressgov_get_bill_contents_url(current_app.config["CONGRESS_GOV_API_KEY"], bill["congress"], bill["type"].lower(), bill["number"])
@@ -67,27 +67,24 @@ def get_bills():
             if content_url == None:
                 print("is none")
                 continue
-            else:
-                print(content_url)
             
             content_json = congressgov_get_bill_contents(current_app.config["CONGRESS_GOV_API_KEY"], content_url)
             content = content_json["html"]["body"]["pre"]
 
             # preprocess
             content_filtered = content.strip()
-            # content_filtered = content_filtered.replace('\n', ' ')
+            content_filtered = content_filtered.replace('\n', ' ')
             content_filtered = re.sub(' +', ' ', content_filtered)
-            print("content_filtered")
+
 
             # TODO make this reliable, returns errors for most and null for many others
             summary = summ_model(current_app.config["MOD_AUTH"], content_filtered)
 
-            # if summary[(len(summary)-1)] != ".":
-                # separator = '.'
-                # summary_filtered = summary.rsplit(separator, 1)[0] + separator
+            if summary[(len(summary)-1)] != ".":
+                separator = '.'
+                summary_filtered = summary.rsplit(separator, 1)[0] + separator
 
-        except Exception as e:
-            print(e)
+        except:
             content_url = None
             content = None
             summary = None
@@ -100,7 +97,6 @@ def get_bills():
                 "updateDate": bill["updateDate"],
                 "content_url": content_url,
                 "summary": summary,
-                # "content_filtered": content_filtered
         }) 
 
     return refactored
