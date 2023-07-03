@@ -50,7 +50,6 @@ export const HouseReps = () => {
                     .then((response) => {
                         if (!response.ok) {
                             throw new Error(
-                                console.log("throwing error")
                                 `HTTP error: ${response.status}`
                             );
                         }
@@ -64,7 +63,6 @@ export const HouseReps = () => {
                     })
                     .catch((err) => {
                         setError(err)
-                        console.log(err.message)
                     });
                 })(i);
             }
@@ -96,10 +94,10 @@ export const HouseReps = () => {
 
     return (
         <div className="flex flex-col items-center w-[90%] h-[90%]  bg-zinc-800 rounded-xl overflow-scroll p-2">
-            {loading && <div>Loading...</div>}
-                {error && (
+            {loading && <div className="text-white">Loading...</div>}
+                {/* {error && (
                     <div>{`There has been a problem -- ${error}`}</div>
-                )}
+                )} */}
                 {!loading && (
                     <div className="flex flex-wrap items-center justify-center gap-4">
                         { 

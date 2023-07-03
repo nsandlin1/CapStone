@@ -99,7 +99,7 @@ export const SenateReps = () => {
 
     return (
         <div className="flex flex-col items-center w-[90%] h-[90%]  bg-zinc-800 rounded-xl overflow-scroll p-2">
-            {loading && <div>Loading...</div>}
+            {loading && <div className="text-white">Loading...</div>}
                 {error && (
                     <div>{`There has been a problem -- ${error}`}</div>
                 )}
