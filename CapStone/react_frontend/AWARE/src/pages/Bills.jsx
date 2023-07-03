@@ -72,7 +72,7 @@ function Bills() {
                     <div className="search flex items-center justify-center rounded-xl bg-orange-400 h-[8%]">
                         Search bar
                     </div>
-                    <div className="flex flex-col items-center justify-center rounded-xl h-[92%] bg-zinc-800 overflow-scroll p-2 gap-2">
+                    <div className="flex flex-col items-center justify-center rounded-xl h-[92%] bg-zinc-800 overflow-auto p-2 gap-2">
                         {loadingBills && <font color="#ffffff">Loading...</font>}
                         {error && <font color="#ffffff">There has been a problem loading bills.</font>}
                         {!loadingBills && (
