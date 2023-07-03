@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Wrapper} from "../components/widgets";
 import { BsCircle } from 'react-icons/Bs';
 import { FederalButton } from "../components/FederalButton";
 import { StateButton } from "../components/StateButton";
+import { BillCard } from "../components/BillCard";
 
 function Bills() {
 
@@ -67,17 +67,22 @@ function Bills() {
                     onClick={() => handleButtonClick('state')}
                 />
             </div>
-            <div className="flex items-center gap-3 w-[98%] h-[95%] rounded-xl bg-slate-700 p-2">
+            <div className="flex items-center gap-3 w-[90%] h-[95%] rounded-xl bg-slate-700 p-2">
                 <div className="flex flex-col p-2 gap-2 w-[25%] h-[100%] rounded-xl bg-slate-300">
                     <div className="search flex items-center justify-center rounded-xl bg-orange-400 h-[8%]">
                         Search bar
                     </div>
-                    <div className="flex flex-col items-center justify-center rounded-xl h-[92%] bg-zinc-800 overflow-auto">
+                    <div className="flex flex-col items-center justify-center rounded-xl h-[92%] bg-zinc-800 overflow-auto p-2 gap-2">
                         {loadingBills && <font color="#ffffff">Loading...</font>}
                         {error && <font color="#ffffff">There has been a problem loading bills.</font>}
                         {!loadingBills && (
-                            // display bills here
-                            <p>hello</p> // so no error
+                            bills.map((bill) => {
+                                return <BillCard
+                                    key={bill.number}
+                                    bill = {bill}
+                                    />
+                            })
+                            
                         )}
                     </div>
                 </div>

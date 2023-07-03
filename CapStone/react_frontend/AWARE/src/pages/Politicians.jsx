@@ -4,90 +4,18 @@ import { Wrapper } from "../components/widgets";
 import React, { useEffect, useState } from "react"
 import { FederalButton } from "../components/FederalButton";
 import { StateButton } from "../components/StateButton";
+import { SenateReps } from "../components/FedSenateReps";
+import { HouseReps } from "../components/FedHouseReps"
 
 function Politicians() {
 
-    var branch = "senate"
-    var api_url = `http://localhost:5000/api/congress/members?branch=${branch}`
-    
-    const [pols, setPols] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [image_urls, setImageURLS] = useState({});
-    
-    function getPoliticiansList() {
-        /*
-        make api request to get politicians return to pols variable
-        */
-        console.log("fetching politicians")
-        fetch(api_url)
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error(
-                        `HTTP error: ${response.status}`
-                    );
-                }
-                return response.json()
-            })
-            .then((data) => {
-                setPols(data);
-                console.log(pols)
-                setError(null);
-            })
-            .catch((err) => {
-                setError(err);
-            })
-            .finally(() => {
-                setLoading(false);
-            });
-    }
-
-    function getImageUrls() {
-        console.log("fetching image urls")
-        for (let i = 0; i < pols.length; i++) {
-            // console.log(pols[i].id)
-            if (!(pols[i].id in image_urls)) {
-                console.log("isnull");
-                (async function (index) {
-                    fetch(`http://localhost:5000/api/congress/member_image?id=${pols[index].id}`)
-                    .then((response) => {
-                        if (!response.ok) {
-                            throw new Error(
-                                console.log("throwing error")
-                                `HTTP error: ${response.status}`
-                            );
-                        }
-                        return response.json();
-                    })
-                    .then((data) => {
-                        //data good here
-                        // console.log("before" + Object.keys(image_urls))
-                        setImageURLS(prevState => ({...prevState, [data.id]: data.image_url}));
-                        // console.log("after" + Object.keys(image_urls))
-                    })
-                    .catch((err) => {
-                        setError(err)
-                        console.log(err.message)
-                    });
-                })(i);
-            }
-        }
-    }
-
-    useEffect(() => {
-        getPoliticiansList()
-    }, [])
-
-    useEffect(() => {
-        console.log(Object.keys(image_urls).length)
-        if (pols) {
-            getImageUrls()
-            setTimeout(() => console.log(image_urls), 3000)
-        }
-    }, [pols])
-
     const [selectedButton, setSelectedButton] = useState('federal');
     const [expandedId, setExpandedId] = useState(null);
+    const [branch, setBranch] = useState('senate');
+
+    const handleBranchChange = (brnch) => {
+        setBranch(brnch);
+    };
 
     const handleButtonClick = (level) => {
         setSelectedButton(level);
@@ -100,38 +28,25 @@ function Politicians() {
 
     return (
         <div className="flex flex-col justify-center items-center h-[89vh] w-[100%] py-4 gap-1 bg-slate-400">
-            <div className="flex h-[10%] rounded-xl gap-2 p-2 overflow-auto w-[90%]">
-                <FederalButton 
-                    selected={selectedButton === 'federal'}
-                    onClick={() => handleButtonClick('federal')}
-                />
-                <StateButton
-                    selected={selectedButton === 'state'}
-                    onClick={() => handleButtonClick('state')}
-                />
-                    
-            </div>
-            <div className="flex flex-col items-center w-[90%] h-[90%]  bg-zinc-800 rounded-xl overflow-auto p-2">
-                {loading && <div>Loading...</div>}
-                    {error && (
-                        <div>{`There has been a problem -- ${error}`}</div>
-                    )}
-                    {!loading && (
-                        <div className="flex flex-wrap items-center justify-center gap-4">
-                                { 
-                                    pols.map((pol) => {
-                                        return <PoliticianBlock 
-                                            key={pol.id}
-                                            pol={pol}
-                                            image_url={image_urls[pol.id]}
-                                            isExpanded={expandedId === pol.id}
-                                            toggleCollapse={() => handleToggleCollapse(pol.id)}
-                                            />
-                                    })
-                                }
-                        </div>
-                    )}
-            </div>
+            <div className="flex flex-row items-center justify-center h-[10%] w-[90%]">
+                <div className="flex flex-row h-[100%] rounded-xl gap-2 p-2 w-[90%]">
+                    <FederalButton 
+                        selected={selectedButton === 'federal'}
+                        onClick={() => handleButtonClick('federal')}
+                    />
+                    <StateButton
+                        selected={selectedButton === 'state'}
+                        onClick={() => handleButtonClick('state')}
+                    />
+                        
+                </div>
+                    <select id="countries" onChange={(event) => handleBranchChange(event.target.value)} className="bg-gray-50 border border-gray-300 text-gray-900 mt-auto m-2 text-xs rounded-lg 
+                                                    focus:ring-blue-500 focus:border-blue-500 block w-[10%] h-[70%] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option selected value={"senate"} >Senate</option>
+                        <option value="house" >House</option>
+                    </select>
+        </div>
+            {branch === "senate" ? < SenateReps /> : < HouseReps />}
         </div>
     );
     
