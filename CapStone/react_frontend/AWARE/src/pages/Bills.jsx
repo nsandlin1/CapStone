@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Wrapper} from "../components/widgets";
 import { BsCircle } from 'react-icons/Bs';
 import { FederalButton } from "../components/FederalButton";
 import { StateButton } from "../components/StateButton";
+import { BillCard } from "../components/BillCard";
 
 function Bills() {
 
@@ -72,12 +72,17 @@ function Bills() {
                     <div className="search flex items-center justify-center rounded-xl bg-orange-400 h-[8%]">
                         Search bar
                     </div>
-                    <div className="flex flex-col items-center justify-center rounded-xl h-[92%] bg-zinc-800 overflow-auto">
+                    <div className="flex flex-col items-center justify-center rounded-xl h-[92%] bg-zinc-800 overflow-scroll p-2 gap-2">
                         {loadingBills && <font color="#ffffff">Loading...</font>}
                         {error && <font color="#ffffff">There has been a problem loading bills.</font>}
                         {!loadingBills && (
-                            // display bills here
-                            <p>hello</p> // so no error
+                            bills.map((bill) => {
+                                return <BillCard
+                                    key={bill.number}
+                                    bill = {bill}
+                                    />
+                            })
+                            
                         )}
                     </div>
                 </div>
