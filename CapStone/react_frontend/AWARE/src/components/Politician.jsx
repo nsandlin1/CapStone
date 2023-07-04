@@ -45,7 +45,12 @@ function PoliticianBlock({ pol, image_url, isExpanded, toggleCollapse}) {
 
     useEffect(() => {
         if (isExpanded && blockRef.current) {
-        blockRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            blockRef.current.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'start',
+            });
+
+
         }
     }, [isExpanded]);
 
@@ -53,7 +58,7 @@ function PoliticianBlock({ pol, image_url, isExpanded, toggleCollapse}) {
                                 rounded-xl w-[45%] h-[2%] md:w-[30%] md:h-[3%] lg:w-[15%] lg:h-[7%]`
 
     const cardClassExpanded = `relative flex flex-col justify-center items-center bg-white gap-2 py-2 
-                                rounded-xl w-[93%] h-[5%] md:w-[93%] md:h-[8%] lg:w-[94%] lg:h-[10%]`
+                                rounded-xl w-[93%] h-[5%] md:w-[93%] md:h-[8%] lg:w-[94%] lg:h-[10%] scroll-mt-4`
 
     const imageClassCollapsed = `${borderColor(pol.party)} border-4 rounded-full overflow-hidden w-20 h-20 
                                 md:h-24 md:w-24 lg:h-28 lg:w-28 xl:h-36 xl:w-36`
