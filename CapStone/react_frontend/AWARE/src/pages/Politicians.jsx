@@ -27,7 +27,7 @@ function Politicians() {
 
 
     return (
-        <div className="flex flex-col justify-center items-center h-[89vh] w-[100%] py-4 gap-1 bg-slate-400">
+        <div className="flex flex-col justify-center items-center h-[89vh] w-[100%] pb-4 gap-1 bg-slate-400">
             <div className="flex flex-row items-center justify-center h-[10%] w-[90%]">
                 <div className="flex flex-row h-[100%] rounded-xl gap-2 p-2 w-[90%]">
                     <FederalButton 
@@ -40,13 +40,17 @@ function Politicians() {
                     />
                         
                 </div>
-                    <select id="branches" onChange={(event) => handleBranchChange(event.target.value)} className="bg-gray-50 border border-gray-300 text-gray-900 mt-auto m-2 text-xs rounded-lg 
-                                                    focus:ring-blue-500 focus:border-blue-500 block w-[10%] h-[70%] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <select id="branches" onChange={(event) => handleBranchChange(event.target.value)} 
+                        className="bg-gray-50 border border-gray-300 text-gray-900 mt-auto m-2 text-xs rounded-lg 
+                                   focus:ring-blue-500 focus:border-blue-500 block w-[10%] h-[50%] p-2.5 dark:bg-gray-700 dark:border-gray-600
+                                   dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option selected value={"senate"} >Senate</option>
                         <option value="house" >House</option>
                     </select>
-        </div>
-            {branch === "senate" ? < SenateReps /> : < HouseReps />}
+            </div>
+            <div className="flex flex-col items-center w-[90%] h-[90%]  bg-zinc-800 rounded-xl overflow-scroll p-2">
+                {branch === "senate" ? < SenateReps /> : < HouseReps />}
+            </div>
         </div>
     );
     

@@ -81,7 +81,6 @@ export const HouseReps = () => {
         }
     }, [pols])
 
-    const [selectedButton, setSelectedButton] = useState('federal');
     const [expandedId, setExpandedId] = useState(null);
 
     const handleButtonClick = (level) => {
@@ -93,13 +92,13 @@ export const HouseReps = () => {
     };
 
     return (
-        <div className="flex flex-col items-center w-[90%] h-[90%]  bg-zinc-800 rounded-xl overflow-scroll p-2">
+        <div className="flex">
             {loading && <div className="text-white">Loading...</div>}
                 {/* {error && (
                     <div>{`There has been a problem -- ${error}`}</div>
                 )} */}
                 {!loading && (
-                    <div className="flex flex-wrap items-center justify-center gap-4">
+                    <div className="flex flex-wrap items-center justify-center gap-4 h-[20%]">
                         { 
                             pols.map((pol) => {
                                 return <PoliticianBlock 
