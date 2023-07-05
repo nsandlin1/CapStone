@@ -1,12 +1,14 @@
 from flask import current_app, Blueprint, request
 from ..dataCollect.api_for_members import *
 from ..extensions import db
-from ..models import JpegUrl, Congressman
-from ..schemas import jpeg_url_schema, congressmen_schema
+from ..models import JpegUrl, Congressman, Bill
+from ..schemas import jpeg_url_schema, congressmen_schema, bills_schema
 from loguru import logger
 import re
 from datetime import datetime
 
+
+# TODO: make where if data is pulled as a group, insert if not already in database. Right now it only inserts if database is empty, so on initialization
 
 congress = Blueprint('congress', __name__)
 
@@ -74,55 +76,71 @@ def member_image():
 
 @congress.route('/get_bills')
 def get_bills():
-    bills = congressgov_get_bills(current_app.config["CONGRESS_GOV_API_KEY"])
 
-    # probably need to thread this it's slow af
-    refactored = []
-    for bill in bills[0:8]:
-        print(bill["title"])
+    bills = Bill.query.all()
+    logger.debug(bills)
+
+    if bills == []:
+
         try:
-            content_url = congressgov_get_bill_contents_url(current_app.config["CONGRESS_GOV_API_KEY"], bill["congress"], bill["type"].lower(), bill["number"])
+            raw_bills = congressgov_get_bills(current_app.config["CONGRESS_GOV_API_KEY"])
+        except Exception as e:
+            logger.debug(str(e))
 
-            if content_url == None:
+        # probably need to thread this it's slow af
+        bills = []
+        for bill in raw_bills:
+            print(bill["title"])
+            try:
+                content_url = congressgov_get_bill_contents_url(current_app.config["CONGRESS_GOV_API_KEY"], bill["congress"], bill["type"].lower(), bill["number"])
+                print("content_url" + content_url)
+            except:
+                content_url = None
                 print("is none")
                 continue
-            else:
-                print(content_url)
-            
-            content_json = congressgov_get_bill_contents(current_app.config["CONGRESS_GOV_API_KEY"], content_url)
-            content = content_json["html"]["body"]["pre"]
+                
+            try:
+                content_json = congressgov_get_bill_contents(current_app.config["CONGRESS_GOV_API_KEY"], content_url)
+                content = content_json["html"]["body"]["pre"]
 
-            # preprocess
-            content_filtered = content.strip()
-            # content_filtered = content_filtered.replace('\n', ' ')
-            content_filtered = re.sub(' +', ' ', content_filtered)
-            print("content_filtered")
+                # preprocess
+                content_filtered = content.strip()
+                # content_filtered = content_filtered.replace('\n', ' ')
+                content_filtered = re.sub(' +', ' ', content_filtered)
+                print("content_filtered")
 
-            # TODO make this reliable, returns errors for most and null for many others
-            summary = summ_model(current_app.config["MOD_AUTH"], content_filtered)
+                # TODO make this reliable, returns errors for most and null for many others
+                summary = summ_model(current_app.config["MOD_AUTH"], content_filtered)
 
-            # if summary[(len(summary)-1)] != ".":
-                # separator = '.'
-                # summary_filtered = summary.rsplit(separator, 1)[0] + separator
+                # delete everythin after last period
+                # if summary[(len(summary)-1)] != ".":
+                    # separator = '.'
+                    # summary_filtered = summary.rsplit(separator, 1)[0] + separator
 
-        except Exception as e:
-            print(e)
-            content_url = None
-            content = None
-            summary = None
+            except Exception as e:
+                print(e)
+                content = None
+                summary = None
 
+            print("appending")
+            bills.append(Bill(
+                    bill["title"],
+                    bill["number"],
+                    content_url,
+                    summary,
+                    bill["originChamber"],
+                    datetime.strptime(bill["updateDate"], '%Y-%m-%d').date()
+            ))
 
-        refactored.append({
-                "title": bill["title"],
-                "originChamber": bill["originChamber"],
-                "number": bill["number"],
-                "updateDate": bill["updateDate"],
-                "content_url": content_url,
-                "summary": summary,
-                # "content_filtered": content_filtered
-        }) 
-
-    return refactored
+        # bills could still be [] though unlikely
+        for bill in bills:
+            if not Bill.query.get(bill.title):
+                db.session.add(bill)
+                
+        db.session.commit()
+    
+    logger.debug(bills)
+    return bills_schema.jsonify(bills)
 
 
 # GET /bill/{congress}/{billType}/{billNumber}/text for bill contents

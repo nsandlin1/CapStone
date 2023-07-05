@@ -55,7 +55,23 @@ class JpegUrl(db.Model):
     def __repr__(self):
         return f'<JpegUrl "{self.id} {self.image_url}">'
     
-# class Bill(db.Model):
-#     __tablename__ = 'bills'
+class Bill(db.Model):
+    __tablename__ = 'bills'
 
-#     ...
+    title = Column(String(255), primary_key=True)
+    number = Column(Integer, nullable=False)
+    content_url = Column(String(255), nullable=False)
+    summary = Column(String(1500))
+    origin_chamber = Column(String(6))
+    update_date = Column(Date)
+
+    def __init__(self, title, number, content_url, summary=None, origin_chamber=None, update_date=None):
+        self.title = title
+        self.number = number
+        self.content_url = content_url
+        self.summary = summary
+        self.origin_chamber = origin_chamber
+        self.update_date = update_date
+
+    def __repr__(self):
+        return f'<Bill "{self.title}">'
