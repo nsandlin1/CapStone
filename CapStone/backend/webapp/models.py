@@ -9,6 +9,7 @@ class Congressman(db.Model):
     )
 
     id = Column(String(7), primary_key=True)
+    branch = Column(String(6))
     first_name = Column(String(50), nullable=False)
     last_name = Column(String(50), nullable=False)
     state = Column(String(2), nullable=False)
@@ -19,10 +20,12 @@ class Congressman(db.Model):
     phone = Column(String(13))
     facebook = Column(String(255))
     twitter = Column(String(255))
+    youtube = Column(String(255))
     website = Column(String(255))
 
-    def __init__(self, id, first_name, last_name, state, dob, party, middle_name=None, contact_form=None, phone=None, facebook=None, twitter=None, website=None):
+    def __init__(self, id, branch, first_name, last_name, state, dob, party, middle_name=None, contact_form=None, phone=None, facebook=None, twitter=None, youtube=None, website=None):
         self.id = id
+        self.branch = branch
         self.first_name = first_name
         self.last_name = last_name
         self.state = state
@@ -33,6 +36,7 @@ class Congressman(db.Model):
         self.phone = phone
         self.facebook = facebook
         self.twitter = twitter
+        self.youtube = youtube
         self.website = website
 
     def __repr__(self):
@@ -51,7 +55,23 @@ class JpegUrl(db.Model):
     def __repr__(self):
         return f'<JpegUrl "{self.id} {self.image_url}">'
     
-# class Bill(db.Model):
-#     __tablename__ = 'bills'
+class Bill(db.Model):
+    __tablename__ = 'bills'
 
-#     ...
+    title = Column(String(255), primary_key=True)
+    number = Column(Integer, nullable=False)
+    content_url = Column(String(255), nullable=False)
+    summary = Column(String(1500))
+    origin_chamber = Column(String(6))
+    update_date = Column(Date)
+
+    def __init__(self, title, number, content_url, summary=None, origin_chamber=None, update_date=None):
+        self.title = title
+        self.number = number
+        self.content_url = content_url
+        self.summary = summary
+        self.origin_chamber = origin_chamber
+        self.update_date = update_date
+
+    def __repr__(self):
+        return f'<Bill "{self.title}">'
