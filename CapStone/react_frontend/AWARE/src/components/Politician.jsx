@@ -73,7 +73,7 @@ function PoliticianBlock({ pol, image_url, isExpanded, toggleCollapse}) {
     const cardClassExpanded = `relative flex flex-col justify-center items-center bg-white gap-2 py-2 
                                 rounded-xl w-[50%] h-[5%] md:w-[95%] md:h-[3%] lg:w-[31%] lg:h-[7%] scroll-mt-4`
 
-    const imageClassCollapsed = `${borderColor(pol.party)} border-4 rounded-full overflow-hidden w-20 h-20 
+    const imageClassCollapsed = `${borderColor(pol.party)} transition hover:scale-110 border-4 rounded-full overflow-hidden w-20 h-20 
                                 md:h-24 md:w-24 lg:h-28 lg:w-28 xl:h-36 xl:w-36`
 
     const imageClassExpanded = `${borderColor(pol.party)}  absolute top-6 left-4 border-4 rounded-full 
