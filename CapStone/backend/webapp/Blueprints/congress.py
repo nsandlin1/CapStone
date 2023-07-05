@@ -1,10 +1,11 @@
 from flask import current_app, Blueprint, request
 from ..dataCollect.api_for_members import *
 from ..extensions import db
-from ..models import JpegUrl
-from ..schemas import jpeg_url_schema
+from ..models import JpegUrl, Congressman
+from ..schemas import jpeg_url_schema, congressmen_schema
 from loguru import logger
 import re
+from datetime import datetime
 
 
 congress = Blueprint('congress', __name__)
@@ -12,36 +13,53 @@ congress = Blueprint('congress', __name__)
 @congress.route('/members')
 def members():
     # house or senate
-    branch = request.args.get("branch")
-    members = propublica_get_members(current_app.config["PROPUBLICA_API_KEY"], current_app.config["CURRENT_CONGRESS"], branch)
-    members_chopped = []
+    branch_id = request.args.get("branch")
 
-    for member in members["results"][0]["members"]:
-        members_chopped.append({
-              "id": member["id"],
-              "first_name": member["first_name"],
-              "middle_name": member["middle_name"],
-              "last_name": member["last_name"],
-              "party": member["party"],
-              "state": member["state"],
-              "date_of_birth": member["date_of_birth"],
-              "contact_form": member["contact_form"],
-              "phone": member["phone"],
-              "facebook": member["facebook_account"],
-              "twitter": member["twitter_account"],
-              "youtube": member["youtube_account"],
-              "website": member["url"]
-        })
+    congressmen = Congressman.query.filter_by(branch=branch_id).all()
+    logger.debug(branch_id)
+    logger.debug(congressmen)
 
-    return members_chopped
+    if congressmen == []:
+        logger.debug("congressmen is none, pulling")
+        try:
+            congressmen = propublica_get_members(current_app.config["PROPUBLICA_API_KEY"], current_app.config["CURRENT_CONGRESS"], branch_id)["results"][0]["members"]
+        except Exception as e:
+            str(e), 404
+
+        congressmen = [
+            Congressman(
+                c["id"],
+                branch_id,
+                c["first_name"],
+                c["last_name"],
+                c["state"],
+                datetime.strptime(c["date_of_birth"], '%Y-%m-%d').date(),
+                c["party"],
+                c["middle_name"],
+                c["contact_form"],
+                c["phone"],
+                c["facebook_account"],
+                c["twitter_account"],
+                c["youtube_account"],
+                c["url"]
+            ) for c in congressmen
+        ]
+
+        db.session.add_all(congressmen)
+        db.session.commit()
+
+    return congressmen_schema.jsonify(congressmen)
 
 @congress.route('/member_image')
 def member_image():
     id = request.args.get("id")
     logger.debug(f"id: {id}")
-    jpgUrl = db.session.get(JpegUrl, id)
+
+    jpgUrl = JpegUrl.query.get(id)
+    logger.debug(jpgUrl)
 
     if jpgUrl == None:
+        print("it is none, pulling")
         try:
             image_url = congressgov_get_image(current_app.config["CONGRESS_GOV_API_KEY"], id)
         except Exception as e:

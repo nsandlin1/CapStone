@@ -6,11 +6,10 @@ from .models import *
 class CongressmanSchema(ma.Schema):
     class Meta:
         model = Congressman
-        fields = ('id', 'first_name', 'last_name', 'state', 'dob', 'party', 'middle_name', 'contact_form', 'phone', 'facebook', 'twitter', 'website')
+        fields = ('id', 'branch', 'first_name', 'last_name', 'state', 'dob', 'party', 'middle_name', 'contact_form', 'phone', 'facebook', 'twitter', 'youtube', 'website')
     
 congressman_schema = CongressmanSchema()
-# same but plural, don't know if I need
-# congressmen_schema = CongressmanSchema(many=True, strict=True)
+congressmen_schema = CongressmanSchema(many=True)
 
 class JpegUrlSchema(ma.Schema):
     class Meta:
