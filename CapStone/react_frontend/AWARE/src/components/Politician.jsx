@@ -67,7 +67,7 @@ function PoliticianBlock({ pol, image_url, isExpanded, toggleCollapse}) {
     {pol.youtube !== null ? youtube = `https://www.youtube.com/${pol.youtube}` : ""}
     {pol.wesbite !== null ? website = pol.website : ""}
 
-    const cardClassCollapsed = `relative flex flex-col justify-center items-center bg-white gap-2 py-2 
+    const cardClassCollapsed = `relative flex flex-col justify-center items-center bg-white gap-2 py-2 cursor-pointer 
                                 rounded-xl w-[45%] h-[2%] md:w-[30%] md:h-[3%] lg:w-[15%] lg:h-[7%]`
 
     const cardClassExpanded = `relative flex flex-col justify-center items-center bg-white gap-2 py-2 
@@ -90,7 +90,7 @@ function PoliticianBlock({ pol, image_url, isExpanded, toggleCollapse}) {
                 className={!isExpanded ? cardClassCollapsed : cardClassExpanded} 
                 onClick={!isExpanded ? toggleCollapse : ""}
             >
-                {isExpanded ? < FcCollapse size={30}  className="absolute top-2 right-2" onClick={toggleCollapse} /> : ""}
+                {isExpanded ? < FcCollapse size={30}  className="absolute top-2 right-2 cursor-pointer" onClick={toggleCollapse} /> : ""}
                 <div className="flex flex-shrink-0">
                     <div className={isExpanded ? imageClassExpanded : imageClassCollapsed}>
                         <img src={image_url === null ? "../assets/Photo-unavailable.png" : image_url} className="object-cover h-full w-full" alt="Image Unavailable" />
