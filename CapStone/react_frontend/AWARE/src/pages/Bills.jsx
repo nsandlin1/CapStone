@@ -12,6 +12,8 @@ function Bills() {
     const [bills, setBills] = useState([]);
     const [loadingBills, setLoadingBills] = useState(true);
     const [error, setError] = useState(null);
+    const [billInfo, setBillInfo] = useState(null);
+    const [summary, setSummary] = useState(null);
 
     function getBillsList() {
         /*
@@ -52,6 +54,12 @@ function Bills() {
         }
     }, [bills])
 
+    const dataFromBill = (info) => {
+        setBillInfo(info);
+        setSummary(info.summary)
+        console.log(info);
+    };
+
     return (
         <div className="flex flex-col items-center h-[89vh] py-4 gap-1">
             <div className="flex items-start w-[90%] h-[10%] flex-grow rounded-xl gap-2 p-2">
@@ -72,12 +80,13 @@ function Bills() {
                     <div className="search flex items-center justify-center rounded-xl bg-orange-400 h-[8%]">
                         Search bar
                     </div>
-                    <div className="flex flex-col items-center justify-center rounded-xl h-[92%] bg-zinc-800 overflow-auto p-2 gap-2">
+                    <div className="flex flex-wrap items-center justify-center rounded-xl h-[92%] bg-zinc-800 overflow-auto p-2 gap-2">
                         {loadingBills && <font color="#ffffff">Loading...</font>}
                         {error && <font color="#ffffff">There has been a problem loading bills.</font>}
                         {!loadingBills && (
                             bills.map((bill) => {
                                 return <BillCard
+                                    onClass={dataFromBill}
                                     key={bill.number}
                                     bill = {bill}
                                     />
@@ -87,7 +96,7 @@ function Bills() {
                     </div>
                 </div>
                 <div className="flex p-2 w-[75%] h-[100%] rounded-xl bg-slate-300">
-
+                    <p>{summary}</p>
                 </div>
             </div>
         </div>  
