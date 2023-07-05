@@ -60,7 +60,7 @@ def get_bills():
 
     # probably need to thread this it's slow af
     refactored = []
-    for bill in bills[0:4]:
+    for bill in bills[0:8]:
         print(bill["title"])
         try:
             content_url = congressgov_get_bill_contents_url(current_app.config["CONGRESS_GOV_API_KEY"], bill["congress"], bill["type"].lower(), bill["number"])

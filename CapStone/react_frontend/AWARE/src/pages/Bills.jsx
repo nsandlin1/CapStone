@@ -13,7 +13,7 @@ function Bills() {
     const [loadingBills, setLoadingBills] = useState(true);
     const [error, setError] = useState(null);
     const [billInfo, setBillInfo] = useState(null);
-    const [summary, setSummary] = useState("Hello");
+    const [summary, setSummary] = useState(null);
 
     function getBillsList() {
         /*
@@ -56,7 +56,7 @@ function Bills() {
 
     const dataFromBill = (info) => {
         setBillInfo(info);
-        setSummary(info.number);
+        setSummary(info.summary)
         console.log(info);
     };
 
@@ -80,7 +80,7 @@ function Bills() {
                     <div className="search flex items-center justify-center rounded-xl bg-orange-400 h-[8%]">
                         Search bar
                     </div>
-                    <div className="flex flex-col items-center justify-center rounded-xl h-[92%] bg-zinc-800 overflow-auto p-2 gap-2">
+                    <div className="flex flex-wrap items-center justify-center rounded-xl h-[92%] bg-zinc-800 overflow-auto p-2 gap-2">
                         {loadingBills && <font color="#ffffff">Loading...</font>}
                         {error && <font color="#ffffff">There has been a problem loading bills.</font>}
                         {!loadingBills && (
@@ -95,8 +95,8 @@ function Bills() {
                         )}
                     </div>
                 </div>
-                <div className="flex p-2 w-[75%] h-[100%] rounded-xl p-2 bg-slate-300">
-                    <p>Bill Number: {summary}</p>
+                <div className="flex p-2 w-[75%] h-[100%] rounded-xl bg-slate-300">
+                    <p>{summary}</p>
                 </div>
             </div>
         </div>  
