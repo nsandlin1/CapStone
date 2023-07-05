@@ -29,6 +29,7 @@ def members():
               "phone": member["phone"],
               "facebook": member["facebook_account"],
               "twitter": member["twitter_account"],
+              "youtube": member["youtube_account"],
               "website": member["url"]
         })
 

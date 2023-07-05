@@ -1,6 +1,8 @@
 import { Fragment, useEffect, useState, useRef} from "react";
 import { Wrapper } from "../components/widgets";
 import { FcCollapse } from "react-icons/fc";
+import { IoLogoFacebook, IoLogoTwitter, IoLogoYoutube, IoIosGlobe } from "react-icons/io";
+import { Link } from 'react-router-dom';
 
 // I don't think im even using this
 class Politician {
@@ -54,11 +56,22 @@ function PoliticianBlock({ pol, image_url, isExpanded, toggleCollapse}) {
         }
     }, [isExpanded]);
 
+
+    let facebook = null;
+    let twitter = null;
+    let youtube = null;
+    let website = null;
+    let image = null;
+    {pol.facebook !== null ? facebook = `https://www.facebook.com/${pol.facebook}` : ""}
+    {pol.twitter !== null ? twitter = `https://www.twitter.com/${pol.twitter}` : ""}
+    {pol.youtube !== null ? youtube = `https://www.youtube.com/${pol.youtube}` : ""}
+    {pol.wesbite !== null ? website = pol.website : ""}
+
     const cardClassCollapsed = `relative flex flex-col justify-center items-center bg-white gap-2 py-2 
                                 rounded-xl w-[45%] h-[2%] md:w-[30%] md:h-[3%] lg:w-[15%] lg:h-[7%]`
 
     const cardClassExpanded = `relative flex flex-col justify-center items-center bg-white gap-2 py-2 
-                                rounded-xl w-[93%] h-[5%] md:w-[93%] md:h-[8%] lg:w-[94%] lg:h-[10%] scroll-mt-4`
+                                rounded-xl w-[50%] h-[5%] md:w-[95%] md:h-[3%] lg:w-[31%] lg:h-[7%] scroll-mt-4`
 
     const imageClassCollapsed = `${borderColor(pol.party)} border-4 rounded-full overflow-hidden w-20 h-20 
                                 md:h-24 md:w-24 lg:h-28 lg:w-28 xl:h-36 xl:w-36`
@@ -66,8 +79,8 @@ function PoliticianBlock({ pol, image_url, isExpanded, toggleCollapse}) {
     const imageClassExpanded = `${borderColor(pol.party)}  absolute top-6 left-4 border-4 rounded-full 
                                 overflow-hidden w-36 h-36 
                                 md:h-40 md:w-40
-                                lg:h-44 lg:w-44
-                                xl:h-52 xl:w-52`
+                                lg:h-40 lg:w-40
+                                xl:h-44 xl:w-44`
 
     return (
         // make where you can click on the card and go to a dynamically
@@ -80,14 +93,46 @@ function PoliticianBlock({ pol, image_url, isExpanded, toggleCollapse}) {
                 {isExpanded ? < FcCollapse size={30}  className="absolute top-2 right-2" onClick={toggleCollapse} /> : ""}
                 <div className="flex flex-shrink-0">
                     <div className={isExpanded ? imageClassExpanded : imageClassCollapsed}>
-                        <img src={image_url} className="object-cover h-full w-full" alt="Image Unavailable" />
+                        <img src={image_url === null ? "../assets/Photo-unavailable.png" : image_url} className="object-cover h-full w-full" alt="Image Unavailable" />
                     </div>
                 </div>
+                {!isExpanded ? 
                 <div className="flex flex-col justify-center items-center">
                         <h5 className="card-title">{pol.first_name} {pol.last_name}</h5>
                         <p className="card-text">{pol.state}</p>
-                        {!isExpanded ? "" : <a href={pol.website} target="_blank">View Website</a>}
                 </div>
+                : 
+                <div className="flex flex-col h-[100%] w-[100%] justify-center items-center">
+                    <div className="h-[100%] w-[90%] justify-center items-center">
+                        <div className="w-[100%] pl-[40%] pt-12">
+                            
+                            <h1 className="font-bold text-3xl">{pol.first_name} {pol.last_name}</h1>
+                            <div className="flex flex-row gap-3">
+                            {facebook !== null ? 
+                                <Link to={facebook} target="_blank">
+                                    < IoLogoFacebook size={48} />
+                                </Link> :
+                                < IoLogoFacebook size={48} />}
+                            {twitter !== null ?
+                                <Link to={twitter} target="_blank">
+                                    < IoLogoTwitter size={48} />
+                                </Link> :
+                                < IoLogoTwitter size={48}/>}      
+                            {youtube !== null ?
+                                <Link to={youtube} target="_blank">
+                                    < IoLogoYoutube size={48} />
+                                </Link> :
+                                < IoLogoYoutube size={48}/>}
+                            {website !== null ?
+                            <Link to={pol.website} target="_blank">
+                                < IoIosGlobe size={48} />
+                            </Link> :
+                            < IoIosGlobe size={48} />}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                }
             </div>
     );
 }
