@@ -26,7 +26,7 @@ def create_web_app(env="dev"):
 
 	# initialize database with relative instance_path
 	db.init_app(app)
-	restart = True
+	restart = False
 	if restart == True:
 		with app.app_context():
 			reset_db()
