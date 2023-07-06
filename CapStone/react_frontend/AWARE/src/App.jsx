@@ -6,7 +6,8 @@ import Homepage from './pages/Homepage.jsx';
 import Politicians from './pages/Politicians.jsx';
 import Bills from './pages/Bills.jsx';
 import './App.css'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom';
+import Map from './pages/PoliticianLanding.jsx';
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
         <Route path="/" element={<Homepage />} />
         <Route path="/Politicians" element={<Politicians />} />
         <Route path="/Bills" element={<Bills />}></Route>
+        <Route path="/Map" element={<Map />}/>
       </Routes>
     </React.Fragment>
   );

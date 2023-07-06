@@ -5,7 +5,8 @@ import React, { useEffect, useState } from "react"
 import { FederalButton } from "../components/FederalButton";
 import { StateButton } from "../components/StateButton";
 import { SenateReps } from "../components/FedSenateReps";
-import { HouseReps } from "../components/FedHouseReps"
+import { HouseReps } from "../components/FedHouseReps";
+import Map from "./PoliticianLanding";
 
 function Politicians() {
 
@@ -48,9 +49,14 @@ function Politicians() {
                         <option value="house" >House</option>
                     </select>
             </div>
-            <div className="flex flex-col items-center w-[90%] h-[90%]  bg-zinc-800 rounded-xl overflow-scroll p-2">
-                {branch === "senate" ? < SenateReps /> : < HouseReps />}
-            </div>
+            {selectedButton === "federal" ?
+                <div className="flex flex-col items-center w-[90%] h-[90%]  bg-zinc-800 rounded-xl overflow-scroll p-2">
+                    {branch === "senate" ? < SenateReps /> : < HouseReps />} 
+                </div> :
+                <div className="flex flex-col items-center w-[90%] h-[90%]  bg-zinc-800 rounded-xl overflow-scroll p-2">
+                    < Map />
+                </div>
+            }
         </div>
     );
     
