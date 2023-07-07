@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BsCircle } from 'react-icons/Bs';
+import { BsCircle } from 'react-icons/bs';
 import { FederalButton } from "../components/FederalButton";
 import { StateButton } from "../components/StateButton";
 import { BillCard } from "../components/BillCard";
