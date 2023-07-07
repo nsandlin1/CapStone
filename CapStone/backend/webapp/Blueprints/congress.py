@@ -76,69 +76,80 @@ def member_image():
 
 @congress.route('/get_bills')
 def get_bills():
+    # true or false
+    update = request.args.get("update")
 
-    bills = Bill.query.all()
-    logger.debug(bills)
-
-    if bills == []:
-
+    if update == "True":
+        num_new = 0
+        
         try:
-            raw_bills = congressgov_get_bills(current_app.config["CONGRESS_GOV_API_KEY"])
+            new_bills = congressgov_get_bills(current_app.config["CONGRESS_GOV_API_KEY"])
         except Exception as e:
             logger.debug(str(e))
 
         # probably need to thread this it's slow af
         bills = []
-        for bill in raw_bills:
-            print(bill["title"])
-            try:
-                content_url = congressgov_get_bill_contents_url(current_app.config["CONGRESS_GOV_API_KEY"], bill["congress"], bill["type"].lower(), bill["number"])
-                print("content_url" + content_url)
-            except:
-                content_url = None
-                print("is none")
-                continue
+        for bill in new_bills:
+            bill_in_db = Bill.query.get(bill["title"]) is not None
+            if not bill_in_db:
+                print(bill["title"])
+                print("not in db")
+                try:
+                    content_url = congressgov_get_bill_contents_url(current_app.config["CONGRESS_GOV_API_KEY"], bill["congress"], bill["type"].lower(), bill["number"])
+                    print("content_url" + content_url)
+                except:
+                    content_url = None
+                    print("is none")
+                    continue
                 
-            try:
-                content_json = congressgov_get_bill_contents(current_app.config["CONGRESS_GOV_API_KEY"], content_url)
-                content = content_json["html"]["body"]["pre"]
+                try:
+                    content_json = congressgov_get_bill_contents(current_app.config["CONGRESS_GOV_API_KEY"], content_url)
+                    content = content_json["html"]["body"]["pre"]
 
-                # preprocess
-                content_filtered = content.strip()
-                # content_filtered = content_filtered.replace('\n', ' ')
-                content_filtered = re.sub(' +', ' ', content_filtered)
-                print("content_filtered")
+                    # preprocess
+                    content_filtered = content.strip()
+                    # content_filtered = content_filtered.replace('\n', ' ')
+                    content_filtered = re.sub(' +', ' ', content_filtered)
+                    print("content_filtered")
 
-                # TODO make this reliable, returns errors for most and null for many others
-                summary = summ_model(current_app.config["MOD_AUTH"], content_filtered)
+                    # TODO make this reliable, returns errors for most and null for many others
+                    summary = summ_model(current_app.config["MOD_AUTH"], content_filtered)
 
-                # delete everythin after last period
-                # if summary[(len(summary)-1)] != ".":
-                    # separator = '.'
-                    # summary_filtered = summary.rsplit(separator, 1)[0] + separator
+                    # delete everythin after last period
+                    # if summary[(len(summary)-1)] != ".":
+                        # separator = '.'
+                        # summary_filtered = summary.rsplit(separator, 1)[0] + separator
 
-            except Exception as e:
-                print(e)
-                content = None
-                summary = None
+                except Exception as e:
+                    print(e)
+                    content = None
+                    summary = None
 
-            print("appending")
-            bills.append(Bill(
+                new_bill = Bill(
                     bill["title"],
                     bill["number"],
                     content_url,
                     summary,
                     bill["originChamber"],
                     datetime.strptime(bill["updateDate"], '%Y-%m-%d').date()
-            ))
+                )
+
+                num_new += 1
+                bills.append(new_bill)
 
         # bills could still be [] though unlikely
-        for bill in bills:
-            if not Bill.query.get(bill.title):
-                db.session.add(bill)
-                
+        # for bill in bills:
+        #     if not Bill.query.get(bill.title):
+        #         db.session.add(bill)
+
+        db.session.add_all(bills)
         db.session.commit()
-    
+        
+        return str(num_new)
+
+    else:
+        bills = Bill.query.all()
+
     logger.debug(bills)
     return bills_schema.jsonify(bills)
 
