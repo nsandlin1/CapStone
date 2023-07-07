@@ -1,4 +1,4 @@
-import { Wrapper} from "../components/widgets";
+import { Wrapper } from "../components/widgets";
 
 function Homepage() {
     return (

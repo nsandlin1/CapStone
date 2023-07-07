@@ -29,6 +29,8 @@ def create_web_app(env, initdb):
 	if initdb == True:
 		with app.app_context():
 			init_db()
+		# so that db only initialized on initial startup
+		initdb = False
 
 	# initialize marshmallow
 	ma.init_app(app)
