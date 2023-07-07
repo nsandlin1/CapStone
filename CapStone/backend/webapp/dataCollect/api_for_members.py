@@ -108,5 +108,8 @@ def summ_model(auth_key, payload):
 
     return out_data
 
+def get_state_politicians(api_key, state, branch):
+    ...
+
 if __name__ == '__main__':
     x = requests.get("https://api.congress.gov/v3/bill/118/hr/4333?format=xml", params={"api_key": "BLBBwtEM5wcueO0Y7zjUKBYkGjlmiScLLOZNVXKV"})

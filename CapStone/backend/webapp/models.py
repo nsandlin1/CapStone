@@ -4,9 +4,6 @@ from .extensions import db
 
 class Congressman(db.Model):
     __tablename__ = 'congressmen'
-    __table_args__ = (
-        UniqueConstraint('first_name', 'last_name', name='_fn_ln_uc'),
-    )
 
     id = Column(String(7), primary_key=True)
     branch = Column(String(6))
