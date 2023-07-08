@@ -108,8 +108,89 @@ def summ_model(auth_key, payload):
 
     return out_data
 
-def get_state_politicians(api_key, state, branch):
-    ...
+def openstates_get_state_politicians(apikey, state_abb, branch):
+    state_full = {
+        "AL": "Alabama",
+        "AK": "Alaska",
+        "AZ": "Arizona",
+        "AR": "Arkansas",
+        "CA": "California",
+        "CO": "Colorado",
+        "CT": "Connecticut",
+        "DE": "Delaware",
+        "FL": "Florida",
+        "GA": "Georgia",
+        "HI": "Hawaii",
+        "ID": "Idaho",
+        "IL": "Illinois",
+        "IN": "Indiana",
+        "IA": "Iowa",
+        "KS": "Kansas",
+        "KY": "Kentucky",
+        "LA": "Louisiana",
+        "ME": "Maine",
+        "MD": "Maryland",
+        "MA": "Massachusetts",
+        "MI": "Michigan",
+        "MN": "Minnesota",
+        "MS": "Mississippi",
+        "MO": "Missouri",
+        "MT": "Montana",
+        "NE": "Nebraska",
+        "NV": "Nevada",
+        "NH": "New Hampshire",
+        "NJ": "New Jersey",
+        "NM": "New Mexico",
+        "NY": "New York",
+        "NC": "North Carolina",
+        "ND": "North Dakota",
+        "OH": "Ohio",
+        "OK": "Oklahoma",
+        "OR": "Oregon",
+        "PA": "Pennsylvania",
+        "RI": "Rhode Island",
+        "SC": "South Carolina",
+        "SD": "South Dakota",
+        "TN": "Tennessee",
+        "TX": "Texas",
+        "UT": "Utah",
+        "VT": "Vermont",
+        "VA": "Virginia",
+        "WA": "Washington",
+        "WV": "West Virginia",
+        "WI": "Wisconsin",
+        "WY": "Wyoming"
+    }
+    branch_sudonym = {
+        "House": "lower",
+        "Senate": "upper"
+    }
+    url = f"https://v3.openstates.org/people"
+
+    params = {
+        "jurisdiction": state_full[state_abb],
+        "org_classification": branch_sudonym[branch],
+        "page": 1,
+        "per_page": 50,
+        "apikey": apikey
+    }
+
+    try:
+        congressmen = []
+        while True:
+            print(params)
+            data = requests.get(url, params=params).json()
+
+            for c in data["results"]:
+                congressmen.append(c)
+
+            params["page"] += 1
+            if params["page"] > data["pagination"]["max_page"]:
+                break
+        
+        return congressmen
+    except Exception as e:
+        raise Exception(f"Failed to get state congressmen: {str(e)}")
 
 if __name__ == '__main__':
     x = requests.get("https://api.congress.gov/v3/bill/118/hr/4333?format=xml", params={"api_key": "BLBBwtEM5wcueO0Y7zjUKBYkGjlmiScLLOZNVXKV"})

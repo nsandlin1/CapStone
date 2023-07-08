@@ -1,8 +1,8 @@
 from flask import current_app, Blueprint, request
 from ..dataCollect.api_for_members import *
 from ..extensions import db
-from ..models import JpegUrl, Congressman, Bill
-from ..schemas import jpeg_url_schema, congressmen_schema, bills_schema
+from ..models import JpegUrl, Congressman, Bill, StateCongressman
+from ..schemas import jpeg_url_schema, congressmen_schema, bills_schema, state_congressmen_schema
 from loguru import logger
 import re
 from datetime import datetime
@@ -125,22 +125,16 @@ def get_bills():
                     content = None
                     summary = None
 
-                new_bill = Bill(
-                    bill["title"],
-                    bill["number"],
-                    content_url,
-                    summary,
-                    bill["originChamber"],
-                    datetime.strptime(bill["updateDate"], '%Y-%m-%d').date()
-                )
-
-                num_new += 1
-                bills.append(new_bill)
-
-        # bills could still be [] though unlikely
-        # for bill in bills:
-        #     if not Bill.query.get(bill.title):
-        #         db.session.add(bill)
+                if not Bill.query.get(bill["title"]):
+                    bills.append(Bill(
+                        bill["title"],
+                        bill["number"],
+                        content_url,
+                        summary,
+                        bill["originChamber"],
+                        datetime.strptime(bill["updateDate"], '%Y-%m-%d').date()
+                    ))
+                    num_new += 1
 
         db.session.add_all(bills)
         db.session.commit()
@@ -153,5 +147,53 @@ def get_bills():
     logger.debug(bills)
     return bills_schema.jsonify(bills)
 
+@congress.route('/state_members')
+def state_members():
+    """
+    state: 2 letter state abbreviation
+    branch: House or Senate
+    update: to update the db
+    """
+    state = request.args.get("state")
+    branch = request.args.get("branch")
+    update = request.args.get("update")
+
+    num_new = 0
+
+    if update == "True":
+        try:
+
+            state_congressmen_raw = openstates_get_state_politicians(current_app.config["OPENSTATES_API_KEY"], state, branch)
+
+            if state_congressmen_raw == None:
+                return "Failed to retrieve, check url validity", 400
+
+            state_congressmen = []
+            for c in state_congressmen_raw:
+                # if not in db
+                if not StateCongressman.query.get(c["id"]):
+                    state_congressmen.append(StateCongressman(
+                        c["id"],
+                        c["name"],
+                        c["party"],
+                        branch,
+                        c["current_role"]["district"],
+                        state,
+                        c["image"],
+                        c["openstates_url"]                    
+                    ))
+                    num_new += 1
+            
+            db.session.add_all(state_congressmen)
+            db.session.commit()
+
+            return str(num_new)
+
+        except Exception as e:
+            return str(e), 500
+    else:
+        print("not updating")
+        congressmen = StateCongressman.query.filter_by(state=state, branch=branch).all()
+        return state_congressmen_schema.jsonify(congressmen)
 
 # GET /bill/{congress}/{billType}/{billNumber}/text for bill contents

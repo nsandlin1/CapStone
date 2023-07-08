@@ -51,7 +51,32 @@ class JpegUrl(db.Model):
 
     def __repr__(self):
         return f'<JpegUrl "{self.id} {self.image_url}">'
-    
+
+class StateCongressman(db.Model):
+    __tablename__ = 'state_congressmen'
+
+    id = Column(String(100), primary_key=True)
+    name = Column(String(50), nullable=False)
+    party = Column(String(10), nullable=False)
+    branch = Column(String(14), nullable=False)
+    district = Column(Integer, nullable=False)
+    state = Column(String(2), nullable=False)
+    image_url = Column(String(255))
+    openstates_url = Column(String(255))
+
+    def __init__(self, id, name, party, branch, district, state, image_url=None, openstates_url=None):
+        self.id = id
+        self.name = name
+        self.party = party
+        self.branch = branch
+        self.district = district
+        self.state = state
+        self.image_url = image_url
+        self.openstates_url = openstates_url
+
+    def __repr__(self):
+        return f'<StateCongressman "{self.name}">'
+
 class Bill(db.Model):
     __tablename__ = 'bills'
 
