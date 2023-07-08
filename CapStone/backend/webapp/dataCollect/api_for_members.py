@@ -180,16 +180,18 @@ def openstates_get_state_politicians(apikey, state_abb, branch):
         while True:
             print(params)
             data = requests.get(url, params=params).json()
-
+            print('data got')
+            print(data)
             for c in data["results"]:
                 congressmen.append(c)
-
+            print('loop done')
             params["page"] += 1
             if params["page"] > data["pagination"]["max_page"]:
                 break
-        
+            print('page done')
         return congressmen
     except Exception as e:
+        print(e)
         raise Exception(f"Failed to get state congressmen: {str(e)}")
 
 if __name__ == '__main__':

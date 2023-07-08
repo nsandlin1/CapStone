@@ -162,13 +162,14 @@ def state_members():
 
     if update == "True":
         try:
-
+            print('1')
             state_congressmen_raw = openstates_get_state_politicians(current_app.config["OPENSTATES_API_KEY"], state, branch)
-
+            print('2')
             if state_congressmen_raw == None:
                 return "Failed to retrieve, check url validity", 400
 
             state_congressmen = []
+            print('3')
             for c in state_congressmen_raw:
                 # if not in db
                 if not StateCongressman.query.get(c["id"]):
@@ -183,7 +184,7 @@ def state_members():
                         c["openstates_url"]                    
                     ))
                     num_new += 1
-            
+            print('4')
             db.session.add_all(state_congressmen)
             db.session.commit()
 
