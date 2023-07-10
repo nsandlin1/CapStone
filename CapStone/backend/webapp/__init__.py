@@ -1,6 +1,6 @@
 import os
 from config import configs
-from flask import Flask, g
+from flask import Flask
 from loguru import logger
 from flask_sqlalchemy import SQLAlchemy
 from .extensions import db, ma, crs

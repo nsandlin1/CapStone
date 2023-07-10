@@ -14,6 +14,7 @@ function Bills() {
     const [error, setError] = useState(null);
     const [billInfo, setBillInfo] = useState(null);
     const [summary, setSummary] = useState(null);
+    const [more, setMore] = useState('None');
 
     function getBillsList() {
         /*
@@ -60,6 +61,7 @@ function Bills() {
         console.log(info);
     };
 
+
     return (
         <div className="flex flex-col items-center h-[89vh] py-4 gap-1">
             <div className="flex items-start w-[90%] h-[10%] flex-grow rounded-xl gap-2 p-2">
@@ -77,8 +79,8 @@ function Bills() {
             </div>
             <div className="flex items-center gap-3 w-[90%] h-[95%] rounded-xl bg-slate-700 p-2">
                 <div className="flex flex-col p-2 gap-2 w-[25%] h-[100%] rounded-xl bg-slate-300">
-                    <div className="search flex items-center justify-center rounded-xl bg-orange-400 h-[8%]">
-                        Search bar
+                    <div className="search flex items-center justify-center rounded-xl bg-sky-50 h-[8%] hover:bg-sky-100 font-bold py-1 px-3 rounded">
+                        Click Here to Search a Bill
                     </div>
                     <div className="flex flex-wrap items-center justify-center rounded-xl h-[92%] bg-zinc-800 overflow-auto p-2 gap-2">
                         {loadingBills && <font color="#ffffff">Loading...</font>}
@@ -95,8 +97,22 @@ function Bills() {
                         )}
                     </div>
                 </div>
-                <div className="flex p-2 w-[75%] h-[100%] rounded-xl bg-slate-300">
-                    <p>{summary}</p>
+                
+                <div className="flex-col p-2 w-[75%] h-[100%] rounded-xl bg-slate-300">
+                    <div className="flex-col p-2 w-[100%] h-[45%] rounded-xl bg-white">
+                    <p>Recommended Summary:</p>
+                    <p>{summary}</p> </div>
+                    <div className="flex items-center justify-center p-2 m-1 w-[100%] h-[8%] rounded-xl bg-transparent">
+                        <button onClick={() => setMore("high")} className="bg-slate-800 hover:bg-slate-500 text-white font-bold py-1 px-3 rounded mr-4">
+                            See More
+                        </button>
+                        <button onClick={() => setMore("low")} className="bg-slate-800 hover:bg-slate-500 text-white font-bold py-1 px-3 rounded">
+                            See Less
+                        </button>
+                    </div>
+                    <div className="flex-col p-2 w-[100%] h-[45%] rounded-xl bg-white">
+                    <p>Additional Summary:</p>
+                    <p>{more}</p></div>
                 </div>
             </div>
         </div>  
