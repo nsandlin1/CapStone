@@ -55,9 +55,15 @@ function Politicians() {
                 <div className="flex flex-col items-center w-[90%] h-[90%]  bg-zinc-800 rounded-xl overflow-scroll p-2">
                     {branch === "senate" ? < SenateReps /> : < HouseReps />} 
                 </div> :
-                <div className="flex flex-col items-center justify-center w-[90%] h-[75vh] bg-zinc-800 rounded-xl overflow-scroll p-2">
+                <div className="flex flex-col items-center justify-center w-[90%] h-[75vh] bg-zinc-800 rounded-xl p-2">
+                    <div className="hidden lg:flex">
                     < Map width="800px" height="600px"/>
+                    </div>
+                    <div>
+
+                    </div>
                 </div>
+                
             }
         </div>
     );
