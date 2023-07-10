@@ -8,6 +8,8 @@ import { SenateReps } from "../components/FedSenateReps";
 import { HouseReps } from "../components/FedHouseReps";
 import Map from "./PoliticianLanding";
 
+
+
 function Politicians() {
 
     const [selectedButton, setSelectedButton] = useState('federal');
@@ -43,7 +45,7 @@ function Politicians() {
                 </div>
                     <select id="branches" onChange={(event) => handleBranchChange(event.target.value)} 
                         className="bg-gray-50 border border-gray-300 text-gray-900 mt-auto m-2 text-xs rounded-lg 
-                                   focus:ring-blue-500 focus:border-blue-500 block w-[10%] h-[50%] p-2.5 dark:bg-gray-700 dark:border-gray-600
+                                   focus:ring-blue-500 focus:border-blue-500 block w-[10%] h-[60%] p-2.5 dark:bg-gray-700 dark:border-gray-600
                                    dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option selected value={"senate"} >Senate</option>
                         <option value="house" >House</option>
@@ -53,8 +55,8 @@ function Politicians() {
                 <div className="flex flex-col items-center w-[90%] h-[90%]  bg-zinc-800 rounded-xl overflow-scroll p-2">
                     {branch === "senate" ? < SenateReps /> : < HouseReps />} 
                 </div> :
-                <div className="flex flex-col items-center w-[90%] h-[90%]  bg-zinc-800 rounded-xl overflow-scroll p-2">
-                    < Map />
+                <div className="flex flex-col items-center justify-center w-[90%] h-[75vh] bg-zinc-800 rounded-xl overflow-scroll p-2">
+                    < Map width="800px" height="600px"/>
                 </div>
             }
         </div>

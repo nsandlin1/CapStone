@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
 import USAMap from "react-usa-map";
 
-class Map extends Component {
+
+class Map extends Component{
+
+    containerStyle = {
+      width: this.props.width,
+      height: this.props.height
+    }
 
     mapHandler = (event) => {
         alert(event.target.dataset.name);
@@ -9,7 +15,7 @@ class Map extends Component {
 
     render() {
         return (
-          <div className="flex items-center justify-center h-[89vh]">
+          <div style={this.containerStyle} className="flex items-center justify-center">
             <USAMap onClick={this.mapHandler} />
           </div>
         );
