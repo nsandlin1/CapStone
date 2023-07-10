@@ -34,10 +34,20 @@ def congressgov_get_image(api_key, bioguide_id):
     try:
         result = requests.get(url)
         imageUrl = result.json()
+        print(imageUrl)
 
-        return imageUrl['member']['depiction']['imageUrl']
-    except:
-        raise Exception("failed to get image url")
+        if "error" in imageUrl.keys():
+            print("error")
+            print(imageUrl)
+            raise Exception(imageUrl["error"]["code"])
+        
+        if "depiction" in imageUrl['member'].keys():
+            return imageUrl['member']['depiction']['imageUrl']
+        else:
+            return "https://static.vecteezy.com/system/resources/thumbnails/010/260/479/small/default-avatar-profile-icon-of-social-media-user-in-clipart-style-vector.jpg"
+
+    except Exception as e:
+        raise e
 
 # used
 def congressgov_get_bills(api_key):

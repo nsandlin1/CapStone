@@ -58,12 +58,15 @@ def member_image():
     logger.debug(f"id: {id}")
 
     jpgUrl = JpegUrl.query.get(id)
+    print(jpgUrl)
     logger.debug(jpgUrl)
 
     if jpgUrl == None:
         print("it is none, pulling")
         try:
+            print(id, jpgUrl)
             image_url = congressgov_get_image(current_app.config["CONGRESS_GOV_API_KEY"], id)
+            print(image_url)
         except Exception as e:
             return str(e), 404
 
