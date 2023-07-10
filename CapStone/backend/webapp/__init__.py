@@ -26,6 +26,7 @@ def create_web_app(env, initdb):
 
 	# initialize database with relative instance_path
 	db.init_app(app)
+	print(initdb)
 	if initdb == True:
 		with app.app_context():
 			init_db()
