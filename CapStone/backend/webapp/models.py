@@ -83,15 +83,19 @@ class Bill(db.Model):
     title = Column(String(255), primary_key=True)
     number = Column(Integer, nullable=False)
     content_url = Column(String(255), nullable=False)
-    summary = Column(String(1500))
+    summary_short = Column(String(1500))
+    summary_med = Column(String(2000))
+    summary_long = Column(String(2500))
     origin_chamber = Column(String(6))
     update_date = Column(Date)
 
-    def __init__(self, title, number, content_url, summary=None, origin_chamber=None, update_date=None):
+    def __init__(self, title, number, content_url, summary_short=None, summary_med=None, summary_long=None, origin_chamber=None, update_date=None):
         self.title = title
         self.number = number
         self.content_url = content_url
-        self.summary = summary
+        self.summary_short = summary_short
+        self.summary_med = summary_med
+        self.summary_long = summary_long
         self.origin_chamber = origin_chamber
         self.update_date = update_date
 
