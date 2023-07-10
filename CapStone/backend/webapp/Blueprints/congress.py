@@ -1,8 +1,8 @@
 from flask import current_app, Blueprint, request
 from ..dataCollect.api_for_members import *
 from ..extensions import db
-from ..models import JpegUrl, Congressman, Bill
-from ..schemas import jpeg_url_schema, congressmen_schema, bills_schema
+from ..models import JpegUrl, Congressman, Bill, StateCongressman
+from ..schemas import jpeg_url_schema, congressmen_schema, bills_schema, state_congressmen_schema
 from loguru import logger
 import re
 from datetime import datetime
@@ -76,71 +76,125 @@ def member_image():
 
 @congress.route('/get_bills')
 def get_bills():
+    # true or false
+    update = request.args.get("update")
 
-    bills = Bill.query.all()
-    logger.debug(bills)
-
-    if bills == []:
-
+    if update == "True":
+        num_new = 0
+        
         try:
-            raw_bills = congressgov_get_bills(current_app.config["CONGRESS_GOV_API_KEY"])
+            new_bills = congressgov_get_bills(current_app.config["CONGRESS_GOV_API_KEY"])
         except Exception as e:
             logger.debug(str(e))
 
         # probably need to thread this it's slow af
         bills = []
-        for bill in raw_bills:
-            print(bill["title"])
-            try:
-                content_url = congressgov_get_bill_contents_url(current_app.config["CONGRESS_GOV_API_KEY"], bill["congress"], bill["type"].lower(), bill["number"])
-                print("content_url" + content_url)
-            except:
-                content_url = None
-                print("is none")
-                continue
+        for bill in new_bills:
+            bill_in_db = Bill.query.get(bill["title"]) is not None
+            if not bill_in_db:
+                print(bill["title"])
+                print("not in db")
+                try:
+                    content_url = congressgov_get_bill_contents_url(current_app.config["CONGRESS_GOV_API_KEY"], bill["congress"], bill["type"].lower(), bill["number"])
+                    print("content_url" + content_url)
+                except:
+                    content_url = None
+                    print("is none")
+                    continue
                 
-            try:
-                content_json = congressgov_get_bill_contents(current_app.config["CONGRESS_GOV_API_KEY"], content_url)
-                content = content_json["html"]["body"]["pre"]
+                try:
+                    content_json = congressgov_get_bill_contents(current_app.config["CONGRESS_GOV_API_KEY"], content_url)
+                    content = content_json["html"]["body"]["pre"]
 
-                # preprocess
-                content_filtered = content.strip()
-                # content_filtered = content_filtered.replace('\n', ' ')
-                content_filtered = re.sub(' +', ' ', content_filtered)
-                print("content_filtered")
+                    # preprocess
+                    content_filtered = content.strip()
+                    # content_filtered = content_filtered.replace('\n', ' ')
+                    content_filtered = re.sub(' +', ' ', content_filtered)
+                    print("content_filtered")
 
-                # TODO make this reliable, returns errors for most and null for many others
-                summary = summ_model(current_app.config["MOD_AUTH"], content_filtered)
+                    # TODO make this reliable, returns errors for most and null for many others
+                    summary = summ_model(current_app.config["MOD_AUTH"], content_filtered)
 
-                # delete everythin after last period
-                # if summary[(len(summary)-1)] != ".":
-                    # separator = '.'
-                    # summary_filtered = summary.rsplit(separator, 1)[0] + separator
+                    # delete everythin after last period
+                    # if summary[(len(summary)-1)] != ".":
+                        # separator = '.'
+                        # summary_filtered = summary.rsplit(separator, 1)[0] + separator
 
-            except Exception as e:
-                print(e)
-                content = None
-                summary = None
+                except Exception as e:
+                    print(e)
+                    content = None
+                    summary = None
 
-            print("appending")
-            bills.append(Bill(
-                    bill["title"],
-                    bill["number"],
-                    content_url,
-                    summary,
-                    bill["originChamber"],
-                    datetime.strptime(bill["updateDate"], '%Y-%m-%d').date()
-            ))
+                if not Bill.query.get(bill["title"]):
+                    bills.append(Bill(
+                        bill["title"],
+                        bill["number"],
+                        content_url,
+                        summary,
+                        bill["originChamber"],
+                        datetime.strptime(bill["updateDate"], '%Y-%m-%d').date()
+                    ))
+                    num_new += 1
 
-        # bills could still be [] though unlikely
-        for bill in bills:
-            if not Bill.query.get(bill.title):
-                db.session.add(bill)
-                
+        db.session.add_all(bills)
         db.session.commit()
-    
+        
+        return str(num_new)
+
+    else:
+        bills = Bill.query.all()
+
     logger.debug(bills)
     return bills_schema.jsonify(bills)
 
+@congress.route('/state_members')
+def state_members():
+    """
+    state: 2 letter state abbreviation
+    branch: House or Senate
+    update: to update the db
+    """
+    state = request.args.get("state")
+    branch = request.args.get("branch")
+    update = request.args.get("update")
+
+    num_new = 0
+
+    if update == "True":
+        try:
+            print('1')
+            state_congressmen_raw = openstates_get_state_politicians(current_app.config["OPENSTATES_API_KEY"], state, branch)
+            print('2')
+            if state_congressmen_raw == None:
+                return "Failed to retrieve, check url validity", 400
+
+            state_congressmen = []
+            print('3')
+            for c in state_congressmen_raw:
+                # if not in db
+                if not StateCongressman.query.get(c["id"]):
+                    state_congressmen.append(StateCongressman(
+                        c["id"],
+                        c["name"],
+                        c["party"],
+                        branch,
+                        c["current_role"]["district"],
+                        state,
+                        c["image"],
+                        c["openstates_url"]                    
+                    ))
+                    num_new += 1
+            print('4')
+            db.session.add_all(state_congressmen)
+            db.session.commit()
+
+            return str(num_new)
+
+        except Exception as e:
+            return str(e), 500
+    else:
+        print("not updating")
+        congressmen = StateCongressman.query.filter_by(state=state, branch=branch).all()
+        return state_congressmen_schema.jsonify(congressmen)
 
 # GET /bill/{congress}/{billType}/{billNumber}/text for bill contents

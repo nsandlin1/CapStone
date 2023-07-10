@@ -26,3 +26,11 @@ class BillSchema(ma.Schema):
 
 bill_schema = BillSchema()
 bills_schema = BillSchema(many=True)
+
+class StateCongressmanSchema(ma.Schema):
+    class Meta:
+        model = StateCongressman
+        fields = ("id", "name", "party", "branch", "district", "state", "image_url", "openstates_url")
+
+state_congressman_schema = StateCongressmanSchema()
+state_congressmen_schema = StateCongressmanSchema(many=True)

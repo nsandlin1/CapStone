@@ -38,6 +38,9 @@ function Navbar() {
         <li className='navitem p-4'>
           <NavLink to="/">Home</NavLink>
         </li>
+        <li className='navitem p-4'>
+          <NavLink to="/Calendar">Calendar</NavLink>
+        </li>
         <li className='navitem p-4 whitespace-nowrap'>
           <NavLink to="/Bills">Summarize Bills</NavLink>
         </li>
@@ -70,6 +73,9 @@ function Navbar() {
         <ul className='pt-12 uppercase'>
           <li className='navitem p-4 border-b border-gray-600'>
             <NavLink to="/">Home</NavLink>
+          </li>
+          <li className='navitem p-4 border-b border-gray-600'>
+            <NavLink to="/Calendar">Calendar</NavLink>
           </li>
           <li className='navitem p-4 border-b border-gray-600'>
             <NavLink to="/Bills">Summarize Bills</NavLink>

@@ -6,7 +6,7 @@ import { BillCard } from "../components/BillCard";
 
 function Bills() {
 
-    var api_url = `http://localhost:5000/api/congress/get_bills`
+    var api_url = `http://localhost:5000/api/congress/get_bills?`
 
     const [selectedButton, setSelectedButton] = useState('federal');
     const [bills, setBills] = useState([]);

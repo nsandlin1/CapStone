@@ -5,9 +5,9 @@ from loguru import logger
 from flask_sqlalchemy import SQLAlchemy
 from .extensions import db, ma, crs
 from .schemas import *
-from .db_util import reset_db
+from .db_util import init_db
 
-def create_web_app(env="dev"):
+def create_web_app(env, initdb):
 	# create and configure app
 	app = Flask(__name__, instance_relative_config=True)
 	app.debug = True
@@ -26,10 +26,11 @@ def create_web_app(env="dev"):
 
 	# initialize database with relative instance_path
 	db.init_app(app)
-	restart = True
-	if restart == True:
+	if initdb == True:
 		with app.app_context():
-			reset_db()
+			init_db()
+		# so that db only initialized on initial startup
+		initdb = False
 
 	# initialize marshmallow
 	ma.init_app(app)
