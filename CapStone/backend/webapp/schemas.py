@@ -22,7 +22,7 @@ jpeg_urls_schema = JpegUrlSchema(many=True)
 class BillSchema(ma.Schema):
     class Meta:
         model = Bill
-        fields = ("title",  "number", "content_url", "summary", "originChamber", "updateDate")
+        fields = ("title",  "number", "content_url", "summary_short", "summary_med", "summary_long", "originChamber", "updateDate")
 
 bill_schema = BillSchema()
 bills_schema = BillSchema(many=True)
