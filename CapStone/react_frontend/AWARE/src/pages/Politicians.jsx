@@ -1,6 +1,5 @@
 import { CgHello } from "react-icons/cg";
 import { Politician, PoliticianBlock } from "../components/Politician"
-import { Wrapper } from "../components/widgets";
 import React, { useEffect, useState } from "react"
 import { FederalButton } from "../components/FederalButton";
 import { StateButton } from "../components/StateButton";
@@ -8,25 +7,31 @@ import { SenateReps } from "../components/FedSenateReps";
 import { HouseReps } from "../components/FedHouseReps";
 import Map from "./PoliticianLanding";
 
-
-
 function Politicians() {
 
     const [selectedButton, setSelectedButton] = useState('federal');
     const [expandedId, setExpandedId] = useState(null);
     const [branch, setBranch] = useState('senate');
+    const [state, setState] = useState(null);
+
+    const mapClass = ""
 
     const handleBranchChange = (brnch) => {
         setBranch(brnch);
     };
 
     const handleButtonClick = (level) => {
+        setState(null)
         setSelectedButton(level);
     };
 
     const handleToggleCollapse = (id) => {
         setExpandedId((prevId) => (prevId === id ? null : id))
     };
+
+    function stateCallback (stateData) {
+        setState(stateData)
+    }
 
 
     return (
@@ -55,19 +60,16 @@ function Politicians() {
                 <div className="flex flex-col items-center w-[90%] h-[90%]  bg-zinc-800 rounded-xl overflow-scroll p-2">
                     {branch === "senate" ? < SenateReps /> : < HouseReps />} 
                 </div> :
-                <div className="flex flex-col items-center justify-center w-[90%] h-[75vh] bg-zinc-800 rounded-xl p-2">
-                    <div className="hidden lg:flex">
-                    < Map width="800px" height="600px"/>
-                    </div>
-                    <div>
-
+                <div className="flex flex-col items-center justify-center w-[90%] h-[90%] bg-zinc-800 rounded-xl p-2">
+                    <div className="hidden md:flex">
+                        {state === null ?
+                        < Map width="800px xl:1000px" height="600px xl:800px" parentCallback={stateCallback}/> :
+                        <h1>{state}</h1>}
                     </div>
                 </div>
-                
             }
         </div>
     );
-    
 }
 
 export default Politicians;

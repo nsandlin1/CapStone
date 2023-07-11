@@ -1,8 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import USAMap from "react-usa-map";
 
 
 class Map extends Component{
+    state = {
+      selectedState: null
+    };
 
     containerStyle = {
       width: this.props.width,
@@ -10,7 +13,7 @@ class Map extends Component{
     }
 
     mapHandler = (event) => {
-        alert(event.target.dataset.name);
+        this.props.parentCallback(event.target.dataset.name);
     };
 
     render() {
