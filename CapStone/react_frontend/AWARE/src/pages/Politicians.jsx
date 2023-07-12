@@ -5,6 +5,7 @@ import { FederalButton } from "../components/FederalButton";
 import { StateButton } from "../components/StateButton";
 import { SenateReps } from "../components/FedSenateReps";
 import { HouseReps } from "../components/FedHouseReps";
+import { StatePoliticians } from "../components/StatePoliticians";
 import Map from "./PoliticianLanding";
 
 function Politicians() {
@@ -32,6 +33,8 @@ function Politicians() {
     function stateCallback (stateData) {
         setState(stateData)
     }
+
+
 
 
     return (
@@ -63,8 +66,8 @@ function Politicians() {
                 <div className="flex flex-col items-center justify-center w-[90%] h-[90%] bg-zinc-800 rounded-xl p-2">
                     <div className="hidden md:flex">
                         {state === null ?
-                        < Map width="800px xl:1000px" height="600px xl:800px" parentCallback={stateCallback}/> :
-                        <h1>{state}</h1>}
+                        < Map width="800px 2xl:1000px" height="600px 2xl:800px" parentCallback={stateCallback}/> :
+                        < StatePoliticians state={state} setState={setState}/> }
                     </div>
                 </div>
             }
