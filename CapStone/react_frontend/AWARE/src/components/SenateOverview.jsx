@@ -27,14 +27,23 @@ const SenateOverview = () => {
     });
   
     return (
-      <svg width={radius * 2} height={radius}>
-        <path
-          d={`M${centerX - radius} ${centerY} A${radius} ${radius} 0 0 1 ${centerX + radius} ${centerY}`}
-          fill="blue"
-        />
-        {circles}
-      </svg>
+        <div className='semi flex flex-col'>
+            <div>
+                Hello
+            </div>
+            <div>
+                World
+            </div>
+        </div>
     );
   };
   
 export default SenateOverview;
+
+    {/* //   <svg width={radius * 2} height={radius}>
+    //     <path
+    //       d={`M${centerX - radius} ${centerY} A${radius} ${radius} 0 0 1 ${centerX + radius} ${centerY}`}
+    //       fill="blue"
+    //     />
+    //     {circles}
+    //   </svg> */}
