@@ -33,9 +33,12 @@ path:hover {
 }
 
 .semi {
-    background: blue;
-    width: 180px;
-    height: 90px;
-    border-radius: 12rem 12rem 0 0;
+    width: 200px;
+    height: 100px; /* as the half of the width */
+    background-color: blue;
+    border-top-left-radius: 110px;  /* 100px of height + 10px of border */
+    border-top-right-radius: 110px; /* 100px of height + 10px of border */
+    border: 70px solid gray;
+    border-bottom: 0;
 }
 
