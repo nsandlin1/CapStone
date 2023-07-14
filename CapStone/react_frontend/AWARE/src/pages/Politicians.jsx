@@ -34,9 +34,6 @@ function Politicians() {
         setState(stateData)
     }
 
-
-
-
     return (
         <div className="flex flex-col justify-center items-center h-[89vh] w-[100%] pb-4 gap-1 bg-slate-400">
             <div className="flex flex-row items-center justify-center h-[10%] w-[90%]">

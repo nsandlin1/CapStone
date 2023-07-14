@@ -31,3 +31,11 @@ path:hover {
     opacity: 0.50;
     cursor: pointer;
 }
+
+.semi {
+    background: blue;
+    width: 180px;
+    height: 90px;
+    border-radius: 12rem 12rem 0 0;
+}
+

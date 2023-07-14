@@ -11,6 +11,7 @@ import './App.css'
 import { Routes, Route } from 'react-router-dom';
 import Map from './pages/PoliticianLanding.jsx';
 import Elections from './pages/Elections.jsx';
+import PolyLanding from './pages/PolyLanding.jsx'
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
         <Route path="/Bills" element={<Bills />}></Route>
         <Route path="/Map" element={<Map />}/>
         <Route path="/News" element={<News />} />
+        <Route path="/Overview" element={<PolyLanding />} />
       </Routes>
     </React.Fragment>
   );
