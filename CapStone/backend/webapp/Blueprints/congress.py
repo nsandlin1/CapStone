@@ -16,41 +16,45 @@ congress = Blueprint('congress', __name__)
 def members():
     # house or senate
     branch_id = request.args.get("branch")
+    update = request.args.get("update")
 
-    congressmen = Congressman.query.filter_by(branch=branch_id).all()
-    logger.debug(branch_id)
-    logger.debug(congressmen)
-
-    if congressmen == []:
-        logger.debug("congressmen is none, pulling")
+    if update == "True":
         try:
             congressmen = propublica_get_members(current_app.config["PROPUBLICA_API_KEY"], current_app.config["CURRENT_CONGRESS"], branch_id)["results"][0]["members"]
+            logger.debug(congressmen)
         except Exception as e:
-            str(e), 404
+            print("error")
+            raise Exception(e)
 
-        congressmen = [
-            Congressman(
-                c["id"],
-                branch_id,
-                c["first_name"],
-                c["last_name"],
-                c["state"],
-                datetime.strptime(c["date_of_birth"], '%Y-%m-%d').date(),
-                c["party"],
-                c["middle_name"],
-                c["contact_form"],
-                c["phone"],
-                c["facebook_account"],
-                c["twitter_account"],
-                c["youtube_account"],
-                c["url"]
-            ) for c in congressmen
-        ]
-
-        db.session.add_all(congressmen)
+        congressmen_objs = []
+        for c in congressmen:
+            if Congressman.query.get(c["id"]) == None:
+                congressmen_objs.append(
+                    Congressman(
+                        c["id"],
+                        branch_id,
+                        c["first_name"],
+                        c["last_name"],
+                        c["state"],
+                        datetime.strptime(c["date_of_birth"], '%Y-%m-%d').date(),
+                        c["party"],
+                        c["middle_name"],
+                        c["contact_form"],
+                        c["phone"],
+                        c["facebook_account"],
+                        c["twitter_account"],
+                        c["youtube_account"],
+                        c["url"]
+                    )
+                )
+        
+        db.session.add_all(congressmen_objs)
         db.session.commit()
 
-    return congressmen_schema.jsonify(congressmen)
+        return str(len(congressmen_objs))
+
+    else:
+        return Congressman.query.filter_by(branch=branch_id).all()
 
 @congress.route('/member_image')
 def member_image():
@@ -64,9 +68,9 @@ def member_image():
     if jpgUrl == None:
         print("it is none, pulling")
         try:
-            print(id, jpgUrl)
+            # print(id, jpgUrl)
             image_url = congressgov_get_image(current_app.config["CONGRESS_GOV_API_KEY"], id)
-            print(image_url)
+            # print(image_url)
         except Exception as e:
             return str(e), 404
 
