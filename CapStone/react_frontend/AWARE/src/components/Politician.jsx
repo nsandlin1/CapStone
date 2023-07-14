@@ -76,7 +76,7 @@ function PoliticianBlock({ pol, image_url, isExpanded, toggleCollapse}) {
     const imageClassCollapsed = `${borderColor(pol.party)} transition hover:scale-110 border-4 rounded-full overflow-hidden w-20 h-20 
                                 md:h-24 md:w-24 lg:h-28 lg:w-28 xl:h-36 xl:w-36`
 
-    const imageClassExpanded = `${borderColor(pol.party)}  absolute top-6 left-4 border-4 rounded-full 
+    const imageClassExpanded = `${borderColor(pol.party)}  absolute top-2 left-2 border-4 rounded-full 
                                 overflow-hidden w-36 h-36 
                                 md:h-40 md:w-40
                                 lg:h-40 lg:w-40

@@ -25,3 +25,9 @@ for state in ${states[@]}; do
 done
 echo "State Congressmen added:" $updated
 echo -------------------------------
+echo "Updating Fed. Congressmen"
+updated=0
+updated=$(($updated + $(curl -s http://127.0.0.1:5000/api/congress/members?branch=senate\&update=True)))
+updated=$(($updated + $(curl -s http://localhost:5000/api/congress/members?branch=house\&update=True)))
+echo "Fed. Congressmen added:" $updated
+echo -------------------------------
