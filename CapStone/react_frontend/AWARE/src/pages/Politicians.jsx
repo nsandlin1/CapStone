@@ -73,23 +73,3 @@ function Politicians() {
 }
 
 export default Politicians;
-
-// loop this on list of politicians
-// <ul class="list-group list-group-horizontal">
-//   <li class="list-group-item">An item</li>
-//   <li class="list-group-item">A second item</li>
-//   <li class="list-group-item">A third item</li>
-// </ul> 
-
-// "Website": "https://www.barrasso.senate.gov",
-// "contact_form": "https://www.barrasso.senate.gov/public/index.cfm/contact-form",
-// "date_of_birth": "1952-07-21",
-// "facebook": "johnbarrasso",
-// "first_name": "John",
-// "id": "B001261",
-// "last_name": "Barrasso",
-// "middle_name": null,
-// "party": "R",
-// "phone": "202-224-6441",
-// "state": "WY",
-// "twitter": "SenJohnBarrasso"
