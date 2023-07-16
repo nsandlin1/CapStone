@@ -13,6 +13,10 @@ body {
   background-color: rgb(148 163 184);
 }
 
+.light-blue {
+  background-color: rgb(148 163 184)
+}
+
 .navitem:hover {
   color: #7A6EF5;
 }
