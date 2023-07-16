@@ -14,6 +14,7 @@ function Politicians() {
     const [expandedId, setExpandedId] = useState(null);
     const [branch, setBranch] = useState('senate');
     const [state, setState] = useState(null);
+    let size = window.innerWidth;
 
     const mapClass = ""
 
@@ -33,6 +34,21 @@ function Politicians() {
     function stateCallback (stateData) {
         setState(stateData)
     }
+
+    useEffect(() => {
+        const handleResize = () => {
+          console.log('Window was resized!');
+          
+          size = window.innerWidth;
+          console.log(size);
+        };
+    
+        window.addEventListener('resize', handleResize);
+    
+        return() => {
+          window.removeEventListener('resize', handleResize);
+        };
+      }, []);    
 
     return (
         <div className="flex flex-col justify-center items-center h-[89vh] w-[100%] pb-4 gap-1 bg-slate-400">
@@ -62,9 +78,16 @@ function Politicians() {
                 </div> :
                 <div className="flex flex-col items-center justify-center w-[90%] h-[90%] bg-zinc-800 rounded-xl p-2">
                     <div className="hidden md:flex">
-                        {state === null ?
-                        < Map width="800px 2xl:1000px" height="600px 2xl:800px" parentCallback={stateCallback}/> :
-                        < StatePoliticians state={state} setState={setState}/> }
+                        {state !== null ?  ( < StatePoliticians state={state} setState={setState}/> ) :
+                            <div>
+                                <div className="hidden lg:flex">
+                                < Map width="1000px" height="800px" parentCallback={stateCallback}/> 
+                                </div>
+                                <div className="flex lg:hidden">
+                                < Map width="650px" height="500px"  parentCallback={stateCallback}/> 
+                                </div>
+                            </div>
+                        }
                     </div>
                 </div>
             }
