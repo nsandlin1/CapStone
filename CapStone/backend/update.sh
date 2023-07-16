@@ -8,6 +8,7 @@ echo "Bills added:" $updated
 echo -------------------------------
 # update state-level congressmen db
 # need for every state and branch, but jsut doing louisiana senate for now
+no_more_reqs="Failed to get state congressmen: Request limit exceeded."
 states=(
     "AL" "AK" "AZ" "AR" "CA" "CO" "CT" "DE" "FL" "GA" 
     "HI" "ID" "IL" "IN" "IA" "KS" "KY" "LA" "ME" "MD" 
@@ -18,8 +19,15 @@ states=(
 echo "Updating State Congressmen..."
 updated=0
 for state in ${states[@]}; do
-    updated=$(($updated + $(curl -s http://127.0.0.1:5000/api/congress/state_members?update=True\&state=$state\&branch=Senate)))
-    updated=$(($updated + $(curl -s http://127.0.0.1:5000/api/congress/state_members?update=True\&state=$state\&branch=House)))
+    new_state_senate=$(curl -s http://127.0.0.1:5000/api/congress/state_members?update=True\&state=$state\&branch=Senate)
+    new_state_house=$(curl -s http://127.0.0.1:5000/api/congress/state_members?update=True\&state=$state\&branch=House)
+    if [[ $new_state_senate == $no_more_reqs ]] || [[ $new_state_house == $no_more_reqs ]]
+    then
+        echo $no_more_reqs
+        break
+    fi
+    updated=$(($updated + $new_state_senate))
+    updated=$(($updated + $new_state_house))
     # to avoid 10 requests per minutes cap
     sleep 65
 done
