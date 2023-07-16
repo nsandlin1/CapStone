@@ -121,8 +121,8 @@ function Politicians() {
                 </div>
                     <select id="branches" onChange={(event) => handleBranchChange(event.target.value)} 
                         className="bg-gray-50 border border-gray-300 text-gray-900 mt-auto m-2 text-xs rounded-lg 
-                                   focus:ring-blue-500 focus:border-blue-500 block w-[30%] h-[60%] p-2.5 dark:bg-gray-700 dark:border-gray-600
-                                   dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 lg:w-[10%]">
+                                   focus:ring-blue-500 focus:border-blue-500 block w-[30%] h-[70%] p-2.5 dark:bg-gray-700 dark:border-gray-600
+                                   dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 lg:w-[10%] lg:h-[60%]">
                         <option selected value={"senate"} >Senate</option>
                         <option value="house" >House</option>
                     </select>
