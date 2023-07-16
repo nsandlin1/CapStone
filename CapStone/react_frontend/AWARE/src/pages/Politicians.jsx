@@ -88,7 +88,7 @@ function Politicians() {
 
     function stateCallback (stateData) {
         setState(stateData)
-    }
+    };
 
     useEffect(() => {
         const handleResize = () => {
@@ -132,8 +132,8 @@ function Politicians() {
                     {branch === "senate" ? < SenateReps /> : < HouseReps />} 
                 </div> :
                 <div className="flex flex-col items-center justify-center w-[90%] h-[90%] bg-zinc-800 rounded-xl p-2">
-                    <div className="hidden md:flex">
-                        {state !== null ?  ( < StatePoliticians state={state} setState={setState}/> ) :
+                    <div className="hidden items-center justify-center md:flex w-[100%]">
+                        {state !== null ?  ( < StatePoliticians state={state} setState={setState} states={states}/> ) :
                             <div>
                                 <div className="hidden lg:flex">
                                 < Map width="1000px" height="800px" parentCallback={stateCallback}/> 
@@ -144,14 +144,16 @@ function Politicians() {
                             </div>
                         }
                     </div>
-                    <div className="flex flex-col gap-2 md:hidden w-[100%] h-[100%] rounded-xl overflow-auto">
-                        <div className="gap-2">
-                            {Object.entries(states).map(([key, value]) => 
-                                <div className="h-[5%] py-1">
-                                    <StateCard state={value} /> 
-                                </div>
-                            )}
-                        </div>
+                    <div className="flex flex-col md:hidden w-[100%] h-[100%] rounded-xl overflow-auto">
+                        {state !== null ?  ( < StatePoliticians state={state} setState={setState} states={states}/> ) :
+                            <div className="gap-2 p-1">
+                                {Object.entries(states).map(([key, value]) => 
+                                    <div className="h-[5%] py-1">
+                                        <StateCard abbreviation={key} state={value} parentCallback={stateCallback} /> 
+                                    </div>
+                                )}
+                            </div>
+                        }
                     </div>
                 </div>
             }
