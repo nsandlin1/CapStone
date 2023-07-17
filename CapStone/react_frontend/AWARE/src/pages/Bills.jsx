@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BsCircle } from 'react-icons/Bs';
+import { BsCircle } from 'react-icons/bs';
 import { FederalButton } from "../components/FederalButton";
 import { StateButton } from "../components/StateButton";
 import { BillCard } from "../components/BillCard";
@@ -52,7 +52,7 @@ function Bills() {
         if (bills.length == 0) {
             getBillsList();
         }
-    }, [bills])
+    }, [])
 
     const dataFromBill = (info) => {
         setBillInfo(info);
@@ -75,7 +75,7 @@ function Bills() {
                     onClick={() => handleButtonClick('state')}
                 />
             </div>
-            <div className="flex items-center gap-3 w-[90%] h-[95%] rounded-xl bg-slate-700 p-2">
+            <div className="flex items-center gap-3 w-[90%] h-[90%] rounded-xl bg-slate-700 p-2">
                 <div className="flex flex-col p-2 gap-2 w-[25%] h-[100%] rounded-xl bg-slate-300">
                     <div className="search flex items-center justify-center rounded-xl bg-orange-400 h-[8%]">
                         Search bar

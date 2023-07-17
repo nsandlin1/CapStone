@@ -62,7 +62,7 @@ function Navbar() {
       <div onClick={handleNav} className='block md:hidden'>
           {nav ? <AiOutlineClose size={20} /> : <AiOutlineMenu size={20} />}
         </div>
-      <div className={nav ? 'mnavbar fixed left-0 top-0 w-[60%] h-full border-r border-r-gray-900 bg-[#001500]' : 'fixed hidden'}>
+      <div className={nav ? 'mnavbar fixed left-0 top-0 w-[60%] h-full border-r border-r-gray-900 bg-zinc-800' : 'fixed hidden'}>
         
         <div className='flex items-center'>
           <h1 className='w-full text-3xl font-bold text-white m-4 pt-3'>AWARE</h1>
