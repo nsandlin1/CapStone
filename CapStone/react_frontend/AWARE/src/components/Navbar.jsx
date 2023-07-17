@@ -1,15 +1,20 @@
 import React, {useState, useEffect} from 'react'
 import {CgProfile} from 'react-icons/cg'
 import {AiOutlineClose, AiOutlineMenu} from 'react-icons/ai'
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 
 
 function Navbar() {
   const [nav, setNav] = useState(false);
+  const location = useLocation();
 
   const handleNav = () => {
     setNav(!nav);
   };
+
+  useEffect(() => {
+    setNav(false);
+  }, [location]);
 
   useEffect(() => {
     const handleResize = () => {
