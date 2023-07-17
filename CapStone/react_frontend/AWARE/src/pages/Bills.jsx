@@ -52,7 +52,7 @@ function Bills() {
         if (bills.length == 0) {
             getBillsList();
         }
-    }, [bills])
+    }, [])
 
     const dataFromBill = (info) => {
         setBillInfo(info);
