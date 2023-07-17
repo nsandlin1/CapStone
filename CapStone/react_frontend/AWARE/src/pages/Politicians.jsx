@@ -136,7 +136,7 @@ function Politicians() {
                         {state !== null ?  ( < StatePoliticians state={state} setState={setState} states={states}/> ) :
                             <div>
                                 <div className="hidden lg:flex">
-                                < Map width="1000px" height="800px" parentCallback={stateCallback}/> 
+                                < Map width="900px" height="700px" parentCallback={stateCallback}/> 
                                 </div>
                                 <div className="flex lg:hidden">
                                 < Map width="650px" height="500px"  parentCallback={stateCallback}/> 
