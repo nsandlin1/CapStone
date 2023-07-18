@@ -14,8 +14,8 @@ export const StatePoliticians = ({ state, setState, states }) => {
                 <div className="w-[20%]">
                     <IoIosArrowRoundBack className="text-white" onClick={goBack} size={70}/>
                 </div>
-                <div className="w-[60%] flex justify-center">
-                <h1 className="text-4xl font-bold text-white md:text-5xl">{states[state]}</h1>
+                <div className="w-[60%] flex justify-center text-center">
+                    <h1 className="text-3xl font-bold text-white md:text-5xl">{states[state]}</h1>
                 </div>
                 <div className="w-[20%]">
 

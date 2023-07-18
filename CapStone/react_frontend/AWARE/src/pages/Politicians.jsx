@@ -148,7 +148,7 @@ function Politicians() {
                         {state !== null ?  ( < StatePoliticians state={state} setState={setState} states={states}/> ) :
                             <div className="gap-2 p-1">
                                 {Object.entries(states).map(([key, value]) => 
-                                    <div className="h-[5%] py-1">
+                                    <div className="h-[5%] py-1 text-xl">
                                         <StateCard abbreviation={key} state={value} parentCallback={stateCallback} /> 
                                     </div>
                                 )}
