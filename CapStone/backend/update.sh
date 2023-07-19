@@ -1,10 +1,10 @@
 #!/bin/bash
 
 echo -------------------------------
-# # update bills db
-# echo "Updating bills..."
-# updated=$(curl -s http://127.0.0.1:5000/api/congress/get_bills?update=True)
-# echo "Bills added:" $updated
+# update bills db
+echo "Updating bills..."
+updated=$(curl -s http://127.0.0.1:5000/api/congress/get_bills?update=True)
+echo "Bills added:" $updated
 echo -------------------------------
 # update state-level congressmen db
 # need for every state and branch, but jsut doing louisiana senate for now
@@ -42,9 +42,9 @@ for state in ${states[@]}; do
 done
 echo "State Congressmen added:" $updated
 echo -------------------------------
-# echo "Updating Fed. Congressmen"
-# updated=0
-# updated=$(($updated + $(curl -s http://127.0.0.1:5000/api/congress/members?branch=senate\&update=True)))
-# updated=$(($updated + $(curl -s http://localhost:5000/api/congress/members?branch=house\&update=True)))
-# echo "Fed. Congressmen added:" $updated
+echo "Updating Fed. Congressmen"
+updated=0
+updated=$(($updated + $(curl -s http://127.0.0.1:5000/api/congress/members?branch=senate\&update=True)))
+updated=$(($updated + $(curl -s http://localhost:5000/api/congress/members?branch=house\&update=True)))
+echo "Fed. Congressmen added:" $updated
 echo -------------------------------
