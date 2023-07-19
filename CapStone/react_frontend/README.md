@@ -33,3 +33,5 @@ The current components are:
 * FedSenateReps - holds data for current senators
 * Navbar - the navbar
 * Politician - this is the card that houses the politians information
+
+# Testing

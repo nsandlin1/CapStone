@@ -16,41 +16,45 @@ congress = Blueprint('congress', __name__)
 def members():
     # house or senate
     branch_id = request.args.get("branch")
+    update = request.args.get("update")
 
-    congressmen = Congressman.query.filter_by(branch=branch_id).all()
-    logger.debug(branch_id)
-    logger.debug(congressmen)
-
-    if congressmen == []:
-        logger.debug("congressmen is none, pulling")
+    if update == "True":
         try:
             congressmen = propublica_get_members(current_app.config["PROPUBLICA_API_KEY"], current_app.config["CURRENT_CONGRESS"], branch_id)["results"][0]["members"]
+            # logger.debug(congressmen)
         except Exception as e:
-            str(e), 404
+            print("error")
+            raise Exception(e)
 
-        congressmen = [
-            Congressman(
-                c["id"],
-                branch_id,
-                c["first_name"],
-                c["last_name"],
-                c["state"],
-                datetime.strptime(c["date_of_birth"], '%Y-%m-%d').date(),
-                c["party"],
-                c["middle_name"],
-                c["contact_form"],
-                c["phone"],
-                c["facebook_account"],
-                c["twitter_account"],
-                c["youtube_account"],
-                c["url"]
-            ) for c in congressmen
-        ]
-
-        db.session.add_all(congressmen)
+        congressmen_objs = []
+        for c in congressmen:
+            if Congressman.query.get(c["id"]) == None:
+                congressmen_objs.append(
+                    Congressman(
+                        c["id"],
+                        branch_id,
+                        c["first_name"],
+                        c["last_name"],
+                        c["state"],
+                        datetime.strptime(c["date_of_birth"], '%Y-%m-%d').date(),
+                        c["party"],
+                        c["middle_name"],
+                        c["contact_form"],
+                        c["phone"],
+                        c["facebook_account"],
+                        c["twitter_account"],
+                        c["youtube_account"],
+                        c["url"]
+                    )
+                )
+        
+        db.session.add_all(congressmen_objs)
         db.session.commit()
 
-    return congressmen_schema.jsonify(congressmen)
+        return str(len(congressmen_objs))
+
+    else:
+        return Congressman.query.filter_by(branch=branch_id).all()
 
 @congress.route('/member_image')
 def member_image():
@@ -58,12 +62,15 @@ def member_image():
     logger.debug(f"id: {id}")
 
     jpgUrl = JpegUrl.query.get(id)
+    print(jpgUrl)
     logger.debug(jpgUrl)
 
     if jpgUrl == None:
         print("it is none, pulling")
         try:
+            # print(id, jpgUrl)
             image_url = congressgov_get_image(current_app.config["CONGRESS_GOV_API_KEY"], id)
+            # print(image_url)
         except Exception as e:
             return str(e), 404
 
@@ -113,7 +120,7 @@ def get_bills():
                     print("content_filtered")
 
                     # TODO make this reliable, returns errors for most and null for many others
-                    summary = summ_model(current_app.config["MOD_AUTH"], content_filtered)
+                    summary_short, summary_med, summary_long = summ_model(current_app.config["MOD_AUTH"], content_filtered)
 
                     # delete everythin after last period
                     # if summary[(len(summary)-1)] != ".":
@@ -123,14 +130,18 @@ def get_bills():
                 except Exception as e:
                     print(e)
                     content = None
-                    summary = None
+                    summary_short = None
+                    summary_med = None
+                    summary_long = None
 
                 if not Bill.query.get(bill["title"]):
                     bills.append(Bill(
                         bill["title"],
                         bill["number"],
                         content_url,
-                        summary,
+                        summary_short,
+                        summary_med,
+                        summary_long,
                         bill["originChamber"],
                         datetime.strptime(bill["updateDate"], '%Y-%m-%d').date()
                     ))
@@ -160,16 +171,20 @@ def state_members():
 
     num_new = 0
 
+    if branch == "House":
+        api_key = current_app.config["OPENSTATES_API_KEY"]
+    else:
+        api_key = current_app.config["OPENSTATES_API_KEY_"]
+
+    print(api_key)
+
     if update == "True":
         try:
-            print('1')
-            state_congressmen_raw = openstates_get_state_politicians(current_app.config["OPENSTATES_API_KEY"], state, branch)
-            print('2')
+            state_congressmen_raw = openstates_get_state_politicians(api_key, state, branch)
             if state_congressmen_raw == None:
                 return "Failed to retrieve, check url validity", 400
 
             state_congressmen = []
-            print('3')
             for c in state_congressmen_raw:
                 # if not in db
                 if not StateCongressman.query.get(c["id"]):
@@ -184,7 +199,7 @@ def state_members():
                         c["openstates_url"]                    
                     ))
                     num_new += 1
-            print('4')
+
             db.session.add_all(state_congressmen)
             db.session.commit()
 

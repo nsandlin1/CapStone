@@ -34,10 +34,20 @@ def congressgov_get_image(api_key, bioguide_id):
     try:
         result = requests.get(url)
         imageUrl = result.json()
+        print(imageUrl)
 
-        return imageUrl['member']['depiction']['imageUrl']
-    except:
-        raise Exception("failed to get image url")
+        if "error" in imageUrl.keys():
+            print("error")
+            print(imageUrl)
+            raise Exception(imageUrl["error"]["code"])
+        
+        if "depiction" in imageUrl['member'].keys():
+            return imageUrl['member']['depiction']['imageUrl']
+        else:
+            return "https://static.vecteezy.com/system/resources/thumbnails/010/260/479/small/default-avatar-profile-icon-of-social-media-user-in-clipart-style-vector.jpg"
+
+    except Exception as e:
+        raise e
 
 # used
 def congressgov_get_bills(api_key):
@@ -97,16 +107,68 @@ def congressgov_get_bill_contents(api_key, content_url):
     return content
 
 def summ_model(auth_key, payload):
-    params = {
-        "min_length":130,
-        "repetition_penalty":1.2, 
-        "length_penalty":1.0
+    def check_parenthesis(text):
+        if text[0] == "(" and text.contains(')'):
+            print("top")
+            arr = text.split(')')
+            if arr[1] != '':
+                return arr[1:]
+        elif text[0] == ('('):
+            print("bottom")
+            arr = text.split('.')
+            if arr[1] != '':
+                return arr[1:]
+        else:
+            return text        
+
+    def check_punct(text):
+        if text != None:
+            if text[-1] == '.':
+                return text[:-1] + '...'
+            else:
+                return text
+            
+    def check_rand(text):
+        if "This measure has" in text:
+            i = text.index("This")
+            if text[i-1] == "(":
+                i = i - 1
+            j = text.index("repeated here") + 13
+            if text[j] == ".":
+                j = j + 1
+                if text[j] == ")":
+                    j = j + 1
+            return text[:i] + text[j:]
+        else:
+            return text
+
+    def post_process(text):
+        text = check_parenthesis(text)
+        text = check_punct(text)
+        text = check_rand(text)
+        return text
+    
+    params1 = {
+        "min_length": 20,
+        "max_length": 50
+    }
+    params2 = {
+        "min_length": 75,
+        "max_length": 150
+    }
+    params3 = {
+        "min_length": 175,
+        "max_length": 275,
+        "top_k": 4,
+        "penalty_alpha": 0.6
     }
 
     client = InferenceClient(model="google/pegasus-billsum",token=auth_key, timeout=300)
-    out_data = client.summarization(text=payload, parameters=params)
+    out_data_short = post_process(client.summarization(text=payload, parameters=params1))
+    out_data_med = post_process(client.summarization(text=payload, parameters=params2))
+    out_data_long = post_process(client.summarization(text=payload, parameters=params3))
 
-    return out_data
+    return out_data_short, out_data_med, out_data_long
 
 def openstates_get_state_politicians(apikey, state_abb, branch):
     state_full = {
@@ -178,10 +240,13 @@ def openstates_get_state_politicians(apikey, state_abb, branch):
     try:
         congressmen = []
         while True:
-            print(params)
+            # print(params)
             data = requests.get(url, params=params).json()
             print('data got')
-            print(data)
+            if "exceeded limit" in str(data):
+                print(str(data))
+                raise Exception("Request limit exceeded.")
+
             for c in data["results"]:
                 congressmen.append(c)
             print('loop done')
@@ -191,7 +256,7 @@ def openstates_get_state_politicians(apikey, state_abb, branch):
             print('page done')
         return congressmen
     except Exception as e:
-        print(e)
+        # print(e)
         raise Exception(f"Failed to get state congressmen: {str(e)}")
 
 if __name__ == '__main__':

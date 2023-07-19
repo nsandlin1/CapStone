@@ -22,3 +22,23 @@
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
+
+path {
+    pointer-events: all;
+}
+
+path:hover {
+    opacity: 0.50;
+    cursor: pointer;
+}
+
+.semi {
+    width: 200px;
+    height: 100px; /* as the half of the width */
+    background-color: blue;
+    border-top-left-radius: 110px;  /* 100px of height + 10px of border */
+    border-top-right-radius: 110px; /* 100px of height + 10px of border */
+    border: 70px solid gray;
+    border-bottom: 0;
+}
+
