@@ -31,8 +31,8 @@ function Navbar() {
   }, []);
 
   return (
-    <div className='h-24 bg-zinc-800'>
-    <div className='navt flex justify-between items-center max-w-[80%] mx-auto px-4 pd-2 text-white bg-zinc-800'>
+    <div className='h-20 bgblue'>
+    <div className='navt flex justify-between items-center max-w-[80%] mx-auto px-4 pd-2 text-white bgblue'>
       <h1 className='w-full text-3xl font-bold text-white'>AWARE</h1>
       <ul className='navbar hidden md:flex '>
         <li className='navitem p-4'>
@@ -62,7 +62,7 @@ function Navbar() {
       <div onClick={handleNav} className='block md:hidden'>
           {nav ? <AiOutlineClose size={20} /> : <AiOutlineMenu size={20} />}
         </div>
-      <div className={nav ? 'mnavbar fixed left-0 top-0 w-[60%] h-full border-r border-r-gray-900 bg-zinc-800' : 'fixed hidden'}>
+      <div className={nav ? 'mnavbar fixed left-0 top-0 w-[60%] h-full border-r border-r-gray-900 bgblue' : 'fixed hidden'}>
         
         <div className='flex items-center'>
           <h1 className='w-full text-3xl font-bold text-white m-4 pt-3'>AWARE</h1>

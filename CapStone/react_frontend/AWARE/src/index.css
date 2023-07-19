@@ -6,11 +6,11 @@
 :root {
   --border-radius: 8px;
   --speed: 500ms;
-  --navbar-height: 96px;
+  --navbar-height: 80px;
 }
 
 body {
-  background-color: rgb(148 163 184);
+  background-color: #f9f9f9;
 }
 
 .light-blue {
@@ -18,7 +18,7 @@ body {
 }
 
 .navitem:hover {
-  color: #7A6EF5;
+  color: #d30b0d;
 }
 
 .navt {

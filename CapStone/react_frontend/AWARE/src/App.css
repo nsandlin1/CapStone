@@ -9,7 +9,7 @@
   
 /* Track */
 ::-webkit-scrollbar-track {
-    background: #272727;
+    background: #013364;
 }
   
 /* Handle */
@@ -42,3 +42,30 @@ path:hover {
     border-bottom: 0;
 }
 
+.bgwhite {
+    background-color: #f9f9f9;
+}
+
+.bgred {
+    background-color: #d30b0d;
+}
+
+.bgnavy {
+    background-color: #013364;
+}
+
+.bgblue {
+    background-color: #428bca;
+}
+
+.bggrey {
+    background-color: #cbcaca;
+}
+
+.bglightblue {
+    background-color: #d0efff;
+}
+
+.bgdarkerblue {
+    background-color: #428bdc;
+}
