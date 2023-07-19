@@ -240,10 +240,11 @@ def openstates_get_state_politicians(apikey, state_abb, branch):
     try:
         congressmen = []
         while True:
-            print(params)
+            # print(params)
             data = requests.get(url, params=params).json()
             print('data got')
             if "exceeded limit" in str(data):
+                print(str(data))
                 raise Exception("Request limit exceeded.")
 
             for c in data["results"]:
@@ -255,7 +256,7 @@ def openstates_get_state_politicians(apikey, state_abb, branch):
             print('page done')
         return congressmen
     except Exception as e:
-        print(e)
+        # print(e)
         raise Exception(f"Failed to get state congressmen: {str(e)}")
 
 if __name__ == '__main__':

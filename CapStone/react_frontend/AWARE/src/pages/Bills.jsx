@@ -14,8 +14,14 @@ function Bills() {
     const [error, setError] = useState(null);
     const [billInfo, setBillInfo] = useState(null);
     const [summary, setSummary] = useState(null);
+    const [more, setMore] = useState('medium');
 
-    function getBillsList() {
+    const handleSumLengthChange = (length) => {
+        setMore(length);
+    };
+
+    function getBillsList() {   
+
         /*
         make api call for list of bills
         */
@@ -62,23 +68,32 @@ function Bills() {
 
     return (
         <div className="flex flex-col items-center h-[89vh] py-4 gap-1">
-            <div className="flex items-start w-[90%] h-[10%] flex-grow rounded-xl gap-2 p-2">
-                {/* <div className="flex items-center justify-center bg-zinc-800 rounded-xl w-[7%] h-[55%] mt-auto">
-                    <p className="text-white">Federal</p>
-                </div> */}
-                <FederalButton 
-                    selected={selectedButton === 'federal'}
-                    onClick={() => handleButtonClick('federal')}
-                />
-                <StateButton
-                    selected={selectedButton === 'state'}
-                    onClick={() => handleButtonClick('state')}
-                />
+            <div className="flex flex-row items-center justify-center h-[8%] w-[90%]">
+                <div className="flex flex-row h-[100%] rounded-xl gap-2 p-2 w-[90%]">
+                    <FederalButton 
+                        selected={selectedButton === 'federal'}
+                        onClick={() => handleButtonClick('federal')}
+                    />
+                    <StateButton
+                        selected={selectedButton === 'state'}
+                        onClick={() => handleButtonClick('state')}
+                    />
+                        
+                </div>
+                    <select id="lengths" onChange={(event) => handleSumLengthChange(event.target.value)} style={{ fontSize: '16px', color: '#333333' }}
+                        className="bg-gray-50 border border-gray-300 rounded-lg 
+                                   focus:ring-blue-500 focus:border-blue-500 w-[15%] h-[90%]">
+                        <option defaultValue={"medium"} >Medium Summary</option>
+                        <option value="small" >Short Summary</option>
+                        <option value="big" >Long Summary</option>
+                    </select>
             </div>
-            <div className="flex items-center gap-3 w-[90%] h-[90%] rounded-xl bg-slate-700 p-2">
+
+            <div className="flex items-center gap-3 w-[90%] h-[95%] rounded-xl bg-slate-700 p-2">
+
                 <div className="flex flex-col p-2 gap-2 w-[25%] h-[100%] rounded-xl bg-slate-300">
-                    <div className="search flex items-center justify-center rounded-xl bg-orange-400 h-[8%]">
-                        Search bar
+                    <div className="search flex items-center justify-center rounded-xl bg-sky-50 h-[8%] hover:bg-sky-100 font-bold py-1 px-3 rounded">
+                        Search
                     </div>
                     <div className="flex flex-wrap items-center justify-center rounded-xl h-[92%] bg-zinc-800 overflow-auto p-2 gap-2">
                         {loadingBills && <font color="#ffffff">Loading...</font>}
@@ -95,8 +110,12 @@ function Bills() {
                         )}
                     </div>
                 </div>
-                <div className="flex p-2 w-[75%] h-[100%] rounded-xl bg-slate-300">
-                    <p>{summary}</p>
+                
+                <div className="flex-col p-2 w-[75%] h-[100%] rounded-xl bg-slate-300">
+                    <div className="flex-col overflow-scroll p-2 w-[100%] h-[100%] rounded-xl bg-white">
+                    <p style={{ fontSize: '22px' }}>You have selected the {more} summary: </p>
+                    <p>{summary}</p> </div>
+                    
                 </div>
             </div>
         </div>  
