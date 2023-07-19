@@ -21,7 +21,7 @@ def members():
     if update == "True":
         try:
             congressmen = propublica_get_members(current_app.config["PROPUBLICA_API_KEY"], current_app.config["CURRENT_CONGRESS"], branch_id)["results"][0]["members"]
-            logger.debug(congressmen)
+            # logger.debug(congressmen)
         except Exception as e:
             print("error")
             raise Exception(e)
@@ -171,9 +171,16 @@ def state_members():
 
     num_new = 0
 
+    if branch == "House":
+        api_key = current_app.config["OPENSTATES_API_KEY"]
+    else:
+        api_key = current_app.config["OPENSTATES_API_KEY_"]
+
+    print(api_key)
+
     if update == "True":
         try:
-            state_congressmen_raw = openstates_get_state_politicians(current_app.config["OPENSTATES_API_KEY"], state, branch)
+            state_congressmen_raw = openstates_get_state_politicians(api_key, state, branch)
             if state_congressmen_raw == None:
                 return "Failed to retrieve, check url validity", 400
 
