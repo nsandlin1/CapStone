@@ -94,37 +94,35 @@ function News() {
     return (
       <div className="flex flex-col justify-center items-center h-[89vh] w-[100%] pb-4 bg-slate-400">
 
-          <div className="flex justify-center w-[100%] h-[10%] bg-transparent text-3xl p-1 font-bold text-white">
+          <div className="flex justify-center w-[100%] h-[10%] bg-transparent text-3xl pt-4 text-white">
             <p> WELCOME TO YOUR CUSTOM NEWS FEED </p>
           </div>
 
-          <div className="flex bg-transparent w-[65%] h-[7%] m-1">
-            <div className="search flex items-center justify-center font-bold rounded-xl m-0 bg-sky-50 h-[100%] w-[60%] hover:bg-sky-100">
+          <div className="flex bg-transparent justify-center w-[90%] gap-2 h-[7%] pb-2">
+            <div className="search flex items-center justify-center font-bold rounded-xl bg-sky-50 h-[100%] w-[25%] hover:bg-sky-100">
                         Search News by Title...
               </div>
 
-            <div className="bg-transparent h-[100%] w-[32%]"></div>
-
-            <div className="search flex items-center justify-center rounded-xl bg-transparent h-[100%] w-[22%]">
+            <div className="search flex items-center justify-center rounded-xl bg-transparent h-[100%] w-[15%]">
 
                     <select id="lengths" onChange={(event) => handleCatChange(event.target.value)} 
-                          className="bg-slate-600 w-[100%] h-[100%] text-white font-bold mt-1 m-2 p4-2 text-xl rounded-lg">
-                          <option selected value={"1"}>User Category 1</option>
-                          <option value="2" >User Category 2</option>
-                          <option value="3" >User Category 3</option>
+                          className="bg-slate-600 w-[100%] h-[100%] text-white p4-2 text-lg rounded-lg">
+                          <option selected value={"1"}>Policy Domain</option>
+                          <option value="2" >Policy Domain 2</option>
+                          <option value="3" >Policy Domain 3</option>
                       </select>
                 </div>
            </div>
 
-          <div style={{ fontSize: '22px' }} className="flex flex-col items-center w-[90%] h-[85%]  bg-zinc-700 rounded-xl overflow-scroll p-2">
+          <div style={{ fontSize: '22px' }} className="flex flex-col items-center w-[90%] h-[85%]  bg-zinc-700 rounded-xl overflow-y-auto p-2">
 
-            <div className="flex justify-center m-3 gap-1 w-[75%] h-[50%]">
-              <div className="text-black bg-white overflow-scroll p-2 m-2 h-[100%] w-[100%]"><p style={{ fontSize: '28px' }}>Title 1, Author 1</p><p>{sample_text}</p></div>
-              <div className="text-black bg-white overflow-scroll p-2 m-2 h-[100%] w-[100%]"><p style={{ fontSize: '28px' }}>Title 2, Author 2</p><p>{sample_text}</p></div>
+            <div className="flex justify-center m-3 gap-1 w-[90%] h-[50%]">
+              <div className="text-white bg-navy rounded-xl overflow-y-auto p-2 m-2 h-[100%] w-[100%]"><p style={{ fontSize: '28px' }}>Title 1, Author 1</p><p>{sample_text}</p></div>
+              <div className="text-white bg-navy rounded-xl overflow-y-auto p-2 m-2 h-[100%] w-[100%]"><p style={{ fontSize: '28px' }}>Title 2, Author 2</p><p>{sample_text}</p></div>
             </div>
-            <div className="flex justify-center  m-3 gap-1 w-[75%] h-[50%]">
-              <div className="text-black bg-white overflow-scroll p-2 m-2 h-[100%] w-[100%]"><p style={{ fontSize: '28px' }}>Title 3, Author 3</p><p>{sample_text}</p></div>
-              <div className="text-black bg-white overflow-scroll p-2 m-2 h-[100%] w-[100%]"><p style={{ fontSize: '28px' }}>Title 4, Author 4</p><p>{sample_text}</p></div>
+            <div className="flex justify-center  m-3 gap-1 w-[90%] h-[50%]">
+              <div className="text-white bg-navy rounded-xl overflow-y-auto p-2 m-2 h-[100%] w-[100%]"><p style={{ fontSize: '28px' }}>Title 3, Author 3</p><p>{sample_text}</p></div>
+              <div className="text-white bg-navy rounded-xl overflow-y-auto p-2 m-2 h-[100%] w-[100%]"><p style={{ fontSize: '28px' }}>Title 4, Author 4</p><p>{sample_text}</p></div>
           </div>
         
             </div>

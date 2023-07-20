@@ -31,8 +31,8 @@ function Navbar() {
   }, []);
 
   return (
-    <div className='h-20 bgblue'>
-    <div className='navt flex justify-between items-center max-w-[80%] mx-auto px-4 pd-2 text-white bgblue'>
+    <div className='h-20 bg-lightred'>
+    <div className='navt flex justify-between items-center max-w-[80%] mx-auto px-4 pd-2 text-white bg-lightred'>
       <h1 className='w-full text-3xl font-bold text-white'>AWARE</h1>
       <ul className='navbar hidden md:flex '>
         <li className='navitem p-4'>

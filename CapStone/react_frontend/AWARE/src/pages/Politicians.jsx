@@ -106,7 +106,7 @@ function Politicians() {
       }, []);    
 
     return (
-        <div className="flex flex-col justify-center items-center h-[89vh] w-[100%] pb-4 gap-1 bgwhite">
+        <div className="flex flex-col justify-center items-center h-[89vh] w-[100%] pb-4 gap-1">
             <div className="flex flex-row items-center justify-center h-[10%] w-[90%]">
                 <div className="flex flex-row h-[100%] rounded-xl gap-2 p-2 w-[90%]">
                     <FederalButton 
@@ -128,7 +128,7 @@ function Politicians() {
                     </select>
             </div>
             {selectedButton === "federal" ?
-                <div className="flex flex-col items-center w-[90%] h-[90%]  bgnavy rounded-xl overflow-scroll p-2">
+                <div className="flex flex-col items-center w-[90%] h-[90%]  bgnavy rounded-xl overflow-y-auto p-2">
                     {branch === "senate" ? < SenateReps /> : < HouseReps />} 
                 </div> :
                 <div className="flex flex-col items-center justify-center w-[90%] h-[89%] bgnavy rounded-xl p-2">
