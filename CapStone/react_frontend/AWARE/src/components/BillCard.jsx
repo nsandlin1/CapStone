@@ -9,8 +9,8 @@ export const BillCard = ({ onClass, bill }) => {
     function truncateString(str) {
         const words = str.split(' ');
       
-        if (words.length > 7) {
-          const truncatedWords = words.slice(0, 7);
+        if (words.length > 15) {
+          const truncatedWords = words.slice(0, 15);
           return truncatedWords.join(' ') + '...';
         }
       
@@ -19,7 +19,7 @@ export const BillCard = ({ onClass, bill }) => {
 
     return (
         <div onClick={handleClick} className="flex flex-col cursor-pointer transition hover:scale-95 items-center justify-center text-center rounded-xl h-[30%] w-[98%] bg-slate-300">
-            {truncateString("hello hello hello hello hello hello hello hello hello")}
+            {truncateString(bill.title)}
         </div>
     )
 }
