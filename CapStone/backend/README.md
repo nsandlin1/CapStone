@@ -75,7 +75,7 @@ API doc
                     ...
                 ]
 
-        state_members
+        /state_members
             ?state
                 {2 letter state abbreviation}
             ?branch
