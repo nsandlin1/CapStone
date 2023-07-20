@@ -54,7 +54,7 @@ def members():
         return str(len(congressmen_objs))
 
     else:
-        return Congressman.query.filter_by(branch=branch_id).all()
+        return congressmen_schema.jsonify(Congressman.query.filter_by(branch=branch_id).all())
 
 @congress.route('/member_image')
 def member_image():
