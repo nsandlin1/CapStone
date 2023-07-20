@@ -47,20 +47,6 @@ API doc
                         "twitter": "SenatorBaldwin"
                     },
                     ...
-                    {
-                        "Website": "https://www.barrasso.senate.gov",
-                        "contact_form": "https://www.barrasso.senate.gov/public/index.cfm/contact-form",
-                        "date_of_birth": "1952-07-21",
-                        "facebook": "johnbarrasso",
-                        "first_name": "John",
-                        "id": "B001261",
-                        "last_name": "Barrasso",
-                        "middle_name": null,
-                        "party": "R",
-                        "phone": "202-224-6441",
-                        "state": "WY",
-                        "twitter": "SenJohnBarrasso"
-                    }
                 ]
         /member_image
             ?id
@@ -85,6 +71,29 @@ API doc
                         "summary": "Telehealth Benefit Expansion for Workers Act of 2023 This bill amends the Public Health Service Act, the Employee Retirement Income Security Act of 1974, and the Internal Revenue Code to treat benefits for telehealth services offered under a group health plan or group health insurance coverage as excepted benefits. This bill amends the Public Health Service Act, the Employee Retirement Income Security Act of 1974, and the Internal Revenue Code to allow telehealth services under a group health plan or group health insurance coverage to be treated as excepted benefits if the provision of such services by a group health plan or group health insurance coverage is in addition to other benefits that are excepted from the scope of the plan or coverage.",
                         "title": "Telehealth Benefit Expansion for Workers Act of 2023",
                         "updateDate": "2023-07-01"
+                    },
+                    ...
+                ]
+
+        state_members
+            ?state
+                {2 letter state abbreviation}
+            ?branch
+                capital first letter
+                {House} or {Senate}
+            e.g.
+                http://localhost:5000/api/congress/state_members?state=OR&branch=Senate
+
+                [
+                    {
+                        "branch": "Senate",
+                        "district": 13,
+                        "id": "ocd-person/b6d52f54-a740-4157-b73c-799e46567691",
+                        "image_url": "https://www.oregonlegislature.gov/woods/PublishingImages/member_photo.jpg",
+                        "name": "Aaron Woods",
+                        "openstates_url": "https://openstates.org/person/aaron-woods-5Z01oXPnnFHBVvMfzH5k5R/",
+                        "party": "Democratic",
+                        "state": "OR"
                     },
                     ...
                 ]
