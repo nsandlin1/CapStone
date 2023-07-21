@@ -13,12 +13,12 @@ function Bills() {
     const [loadingBills, setLoadingBills] = useState(true);
     const [error, setError] = useState(null);
     const [billInfo, setBillInfo] = useState(null);
-    const [summary, setSummary] = useState(null);
+    const [summary, setSummary] = useState("No bill selected.");
     const [more, setMore] = useState('medium');
 
-    const handleSumLengthChange = (length) => {
-        setMore(length);
-    };
+     const handleSumLengthChange = (length) => {
+         setMore(length);
+     };
 
     function getBillsList() {   
 
@@ -60,9 +60,18 @@ function Bills() {
         }
     }, [])
 
-    const dataFromBill = (info) => {
+    const dataFromBill = (info, len) => {
         setBillInfo(info);
-        setSummary(info.summary)
+      
+        if (len == 'small') {
+            setSummary(info.summary_short)
+          } else if (len == 'big') {
+            setSummary(info.summary_long)
+          } else {
+            setSummary(info.summary_med)
+          }
+        
+        console.log(len);
         console.log(info);
     };
 
@@ -80,7 +89,7 @@ function Bills() {
                     />
                         
                 </div>
-                    <select id="lengths" onChange={(event) => handleSumLengthChange(event.target.value)} style={{ fontSize: '16px' }}
+                     <select id="lengths" onChange={(event) => handleSumLengthChange(event.target.value)} style={{ fontSize: '16px' }}
                         className="bgblue text-white border border-gray-300 rounded-lg 
                                    focus:ring-blue-500 focus:border-blue-500 dark:text-white w-[15%] h-[60%]">
                         <option defaultValue={"medium"} >Medium Summary</option>
@@ -104,6 +113,7 @@ function Bills() {
                                     onClass={dataFromBill}
                                     key={bill.number}
                                     bill = {bill}
+                                    len = {more}
                                     />
                             })
                             
