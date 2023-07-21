@@ -9,9 +9,8 @@ function StatePolitician( props ) {
             <div className="w-[50%]">
 
             </div>
-            <div className="flex items-center w-[20%]">
+            <div className="flex items-center w-[20%] text-2xl justify-end pr-6">
                 <a href={props.website} target="_blank">Learn More</a>
-                <p>{props.openstates_url}</p>
             </div>
         </div>
     )

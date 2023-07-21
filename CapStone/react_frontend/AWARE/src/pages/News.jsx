@@ -117,12 +117,12 @@ function News() {
 
           <div style={{ fontSize: '22px' }} className="flex flex-col gap-2 items-center w-[90%] h-[100%] bgnavy rounded-xl overflow-y-auto p-2">
                 <div className="flex flex-wrap items-center justify-center w-[100%] gap-4">
-                    < NewsCard text={sample_text}/> 
-                    < NewsCard />
-                    < NewsCard />
-                    < NewsCard />
-                    < NewsCard />
-                    < NewsCard />
+                    < NewsCard text={sample_text} title="News Article Title #1" source="New York Times" link="https://www.nytimes.com"/> 
+                    < NewsCard text={sample_text} title="News Article Title #2" source="Washington Post" link="https://www.washingtonpost.com"/>
+                    < NewsCard text={sample_text} title="News Article Title #3" source="ABC" link="https://abc.com"/>
+                    < NewsCard text={sample_text} title="News Article Title #4" source="NPR" link="https://www.npr.org"/>
+                    < NewsCard text={sample_text} title="News Article Title #5" source="Fox" link="https://www.foxnews.com"/>
+                    < NewsCard text={sample_text} title="News Article Title #6" source="CNN" link="https://www.cnn.com"/>
                 </div>
         
             </div>

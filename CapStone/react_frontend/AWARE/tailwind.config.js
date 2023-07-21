@@ -11,6 +11,7 @@ export default {
         'navy': '#013364',
         'lightred': '#E64141',
         'lightblue': '#428bca',
+        'babyblue': '#25B3DE'
       },
     },
   },
