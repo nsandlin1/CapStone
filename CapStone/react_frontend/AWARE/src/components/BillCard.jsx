@@ -9,8 +9,8 @@ export const BillCard = ({ onClass, bill }) => {
     function truncateString(str) {
         const words = str.split(' ');
       
-        if (words.length > 7) {
-          const truncatedWords = words.slice(0, 7);
+        if (words.length > 15) {
+          const truncatedWords = words.slice(0, 15);
           return truncatedWords.join(' ') + '...';
         }
       

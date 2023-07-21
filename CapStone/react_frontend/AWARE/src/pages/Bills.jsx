@@ -111,11 +111,8 @@ function Bills() {
                     </div>
                 </div>
                 
-                <div className="flex-col p-2 w-[75%] h-[100%] rounded-xl bg-slate-300">
-                    <div className="flex-col overflow-y-auto p-2 w-[100%] h-[100%] rounded-xl bg-white">
-                    <p style={{ fontSize: '22px' }}>You have selected the {more} summary: </p>
-                    <p>{summary}</p> </div>
-                    
+                <div className="flex-col p-2 w-[75%] h-[100%] overflow-scroll rounded-xl bg-slate-200">
+                    <p style={{ fontSize: '22px' }}>{summary}</p>
                 </div>
             </div>
         </div>  
