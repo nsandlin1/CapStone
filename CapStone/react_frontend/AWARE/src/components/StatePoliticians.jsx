@@ -59,7 +59,7 @@ export const StatePoliticians = ({ state, setState, states }) => {
             <div className="flex flex-col items-center p-2 h-[90%] w-[100%] overflow-y-auto bg-white gap-2 rounded-xl">
                 {
                     pols.map((pol) => {
-                        return <StatePolitician name={pol.name} />
+                        return <StatePolitician name={pol.name} website={pol.openstates_url}/>
                     })
                 }
             </div>
