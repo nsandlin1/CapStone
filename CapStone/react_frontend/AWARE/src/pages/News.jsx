@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import NewsCard from "../components/NewsCard";
 
 function News() {
 
@@ -114,16 +115,15 @@ function News() {
                 </div>
            </div>
 
-          <div style={{ fontSize: '22px' }} className="flex flex-col items-center w-[90%] h-[85%]  bg-zinc-700 rounded-xl overflow-y-auto p-2">
-
-            <div className="flex justify-center m-3 gap-1 w-[90%] h-[50%]">
-              <div className="text-white bg-navy rounded-xl overflow-y-auto p-2 m-2 h-[100%] w-[100%]"><p style={{ fontSize: '28px' }}>Title 1, Author 1</p><p>{sample_text}</p></div>
-              <div className="text-white bg-navy rounded-xl overflow-y-auto p-2 m-2 h-[100%] w-[100%]"><p style={{ fontSize: '28px' }}>Title 2, Author 2</p><p>{sample_text}</p></div>
-            </div>
-            <div className="flex justify-center  m-3 gap-1 w-[90%] h-[50%]">
-              <div className="text-white bg-navy rounded-xl overflow-y-auto p-2 m-2 h-[100%] w-[100%]"><p style={{ fontSize: '28px' }}>Title 3, Author 3</p><p>{sample_text}</p></div>
-              <div className="text-white bg-navy rounded-xl overflow-y-auto p-2 m-2 h-[100%] w-[100%]"><p style={{ fontSize: '28px' }}>Title 4, Author 4</p><p>{sample_text}</p></div>
-          </div>
+          <div style={{ fontSize: '22px' }} className="flex flex-col gap-2 items-center w-[90%] h-[100%] bgnavy rounded-xl overflow-y-auto p-2">
+                <div className="flex flex-wrap items-center justify-center w-[100%] gap-4">
+                    < NewsCard text={sample_text}/> 
+                    < NewsCard />
+                    < NewsCard />
+                    < NewsCard />
+                    < NewsCard />
+                    < NewsCard />
+                </div>
         
             </div>
       </div>
