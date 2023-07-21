@@ -67,8 +67,8 @@ function Bills() {
     };
 
     return (
-        <div className="flex flex-col items-center h-[89vh] py-4 gap-1">
-            <div className="flex flex-row items-center justify-center h-[8%] w-[90%]">
+        <div className="flex flex-col items-center h-[89vh] pb-4 gap-1">
+            <div className="flex flex-row items-center justify-center h-[10%] w-[90%]">
                 <div className="flex flex-row h-[100%] rounded-xl gap-2 p-2 w-[90%]">
                     <FederalButton 
                         selected={selectedButton === 'federal'}
@@ -80,22 +80,22 @@ function Bills() {
                     />
                         
                 </div>
-                    <select id="lengths" onChange={(event) => handleSumLengthChange(event.target.value)} style={{ fontSize: '16px', color: '#333333' }}
-                        className="bg-gray-50 border border-gray-300 rounded-lg 
-                                   focus:ring-blue-500 focus:border-blue-500 w-[15%] h-[90%]">
+                    <select id="lengths" onChange={(event) => handleSumLengthChange(event.target.value)} style={{ fontSize: '16px' }}
+                        className="bgblue text-white border border-gray-300 rounded-lg 
+                                   focus:ring-blue-500 focus:border-blue-500 dark:text-white w-[15%] h-[60%]">
                         <option defaultValue={"medium"} >Medium Summary</option>
                         <option value="small" >Short Summary</option>
                         <option value="big" >Long Summary</option>
                     </select>
             </div>
 
-            <div className="flex items-center gap-3 w-[90%] h-[95%] rounded-xl bg-slate-700 p-2">
+            <div className="flex items-center gap-3 w-[90%] h-[95%] rounded-xl bg-navy p-2">
 
                 <div className="flex flex-col p-2 gap-2 w-[25%] h-[100%] rounded-xl bg-slate-300">
                     <div className="search flex items-center justify-center rounded-xl bg-sky-50 h-[8%] hover:bg-sky-100 font-bold py-1 px-3 rounded">
                         Search
                     </div>
-                    <div className="flex flex-wrap items-center justify-center rounded-xl h-[92%] bg-zinc-800 overflow-auto p-2 gap-2">
+                    <div className="flex flex-wrap items-center justify-center rounded-xl h-[92%] bg-navy overflow-y-auto p-2 gap-2">
                         {loadingBills && <font color="#ffffff">Loading...</font>}
                         {error && <font color="#ffffff">There has been a problem loading bills.</font>}
                         {!loadingBills && (

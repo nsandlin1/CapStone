@@ -106,7 +106,7 @@ function Politicians() {
       }, []);    
 
     return (
-        <div className="flex flex-col justify-center items-center h-[89vh] w-[100%] pb-4 gap-1 bg-slate-400">
+        <div className="flex flex-col justify-center items-center h-[89vh] w-[100%] pb-4 gap-1">
             <div className="flex flex-row items-center justify-center h-[10%] w-[90%]">
                 <div className="flex flex-row h-[100%] rounded-xl gap-2 p-2 w-[90%]">
                     <FederalButton 
@@ -120,26 +120,29 @@ function Politicians() {
                         
                 </div>
                     <select id="branches" onChange={(event) => handleBranchChange(event.target.value)} 
-                        className="bg-gray-50 border border-gray-300 text-gray-900 mt-auto m-2 text-xs rounded-lg 
-                                   focus:ring-blue-500 focus:border-blue-500 block w-[30%] h-[70%] p-2.5 dark:bg-gray-700 dark:border-gray-600
-                                   dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 lg:w-[10%] lg:h-[60%]">
+                        className="bgblue border border-gray-300 text-gray-900 mt-auto m-2 text-xs rounded-lg 
+                                   focus:ring-blue-500 focus:border-blue-500 block w-[30%] h-[70%] p-2.5 dark:bgblue dark:bgblue
+                                   dark:bgblue dark:text-white dark:focus:bgblue dark:focus:bgblue lg:w-[10%] lg:h-[60%]">
                         <option selected value={"senate"} >Senate</option>
                         <option value="house" >House</option>
                     </select>
             </div>
             {selectedButton === "federal" ?
-                <div className="flex flex-col items-center w-[90%] h-[90%]  bg-zinc-800 rounded-xl overflow-scroll p-2">
+                <div className="flex flex-col items-center w-[90%] h-[90%]  bgnavy rounded-xl overflow-y-auto p-2">
                     {branch === "senate" ? < SenateReps /> : < HouseReps />} 
                 </div> :
-                <div className="flex flex-col items-center justify-center w-[90%] h-[90%] bg-zinc-800 rounded-xl p-2">
+                <div className="flex flex-col items-center justify-center w-[90%] h-[89%] bgnavy rounded-xl p-2">
                     <div className="hidden items-center justify-center md:flex w-[100%]">
                         {state !== null ?  ( < StatePoliticians state={state} setState={setState} states={states}/> ) :
                             <div>
-                                <div className="hidden lg:flex">
-                                < Map width="900px" height="700px" parentCallback={stateCallback}/> 
+                                <div className="hidden 2xl:flex">
+                                    < Map width="900px" height="700px" parentCallback={stateCallback}/> 
+                                </div>
+                                <div className="hidden lg:flex 2xl:hidden">
+                                    < Map width="800px" height="600px" parentCallback={stateCallback}/> 
                                 </div>
                                 <div className="flex lg:hidden">
-                                < Map width="650px" height="500px"  parentCallback={stateCallback}/> 
+                                    < Map width="650px" height="500px"  parentCallback={stateCallback}/> 
                                 </div>
                             </div>
                         }
