@@ -1,8 +1,8 @@
 
-export const BillCard = ({ onClass, bill }) => {
+export const BillCard = ({ onClass, bill, len }) => {
 
     const handleClick = () => {
-        onClass(bill);
+        onClass(bill, len);
     };
 
     // truncateString function for bill titles (may cause errors bc I can't see bill titles)
