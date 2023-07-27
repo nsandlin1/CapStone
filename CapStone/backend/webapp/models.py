@@ -77,6 +77,19 @@ class StateCongressman(db.Model):
     def __repr__(self):
         return f'<StateCongressman "{self.name}">'
 
+class User(db.Model):
+    __tablename__ = 'users'
+
+    email = Column(String(255), primary_key=True)
+    password = Column(String(255))
+
+    def __init__(self, email, password):
+        self.email = email
+        self.password = password
+    
+    def __repr__(self):
+        return f'<User "{self.email}">'
+        
 class Bill(db.Model):
     __tablename__ = 'bills'
 

@@ -27,6 +27,14 @@ class BillSchema(ma.Schema):
 bill_schema = BillSchema()
 bills_schema = BillSchema(many=True)
 
+class UserSchema(ma.Schema):
+    class Meta:
+        model = User
+        fields = ("email", "password")
+
+user_schema = UserSchema()
+users_schema = UserSchema(many=True)
+
 class StateCongressmanSchema(ma.Schema):
     class Meta:
         model = StateCongressman
