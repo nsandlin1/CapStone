@@ -121,8 +121,14 @@ function Bills() {
                     </div>
                 </div>
                 
-                <div className="flex-col p-2 w-[75%] h-[100%] overflow-scroll rounded-xl bg-slate-200">
-                    <p style={{ fontSize: '22px' }}>{summary}</p>
+                <div className="flex-col p-2 w-[75%] h-[100%] overflow-y-auto rounded-xl bg-slate-200">
+                    <div className="flex h-[15%] rounded-xl items-center p-2 text-2xl">
+                        {billInfo.title}
+                        {console.log(billInfo)}
+                    </div>
+                    <div className="flex bg-lightblue h-[85%] text-white p-2 text-xl rounded-xl">
+                        {more === 'big' ? billInfo.summary_long : more === 'small' ? billInfo.summary_short : billInfo.summary_med}
+                    </div>
                 </div>
             </div>
         </div>  
