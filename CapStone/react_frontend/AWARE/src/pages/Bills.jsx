@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { BsCircle } from 'react-icons/bs';
 import { FederalButton } from "../components/FederalButton";
 import { StateButton } from "../components/StateButton";
 import { BillCard } from "../components/BillCard";
@@ -120,16 +119,26 @@ function Bills() {
                         )}
                     </div>
                 </div>
+                {billInfo === null ? 
+                    <div className="flex-col p-2 w-[75%] h-[100%] overflow-y-auto rounded-xl bg-slate-200">
+                        <div className="flex h-[15%] rounded-xl items-center justify-center p-2 text-4xl">
+                            Select a Bill to view information
+                        </div>
+                        <div className="flex bg-lightblue h-[85%] text-white p-2 text-xl rounded-xl">
+                        </div>
+                    </div> :
+                    <div className="flex-col p-2 w-[75%] h-[100%] overflow-y-auto rounded-xl bg-slate-200">
+                        <div className="flex flex-col h-[15%] rounded-xl justify-center p-2 pb- text-2xl">
+                            <p className="text-3xl">{billInfo.title}</p>
+                            <p className="text-xl py-2">Bill Number: {billInfo.number}</p>
+                        </div>
+                        <div className="flex bg-lightblue h-[85%] text-white p-2 text-xl rounded-xl">
+                            {console.log(billInfo.summary_long)}
+                            {billInfo.summary_long === null ? 'There is currently no summary available for this bill.' : more === 'big' ? billInfo.summary_long : more === 'small' ? billInfo.summary_short : billInfo.summary_med}
+                        </div>
+                    </div>
+                }   
                 
-                <div className="flex-col p-2 w-[75%] h-[100%] overflow-y-auto rounded-xl bg-slate-200">
-                    <div className="flex h-[15%] rounded-xl items-center p-2 text-2xl">
-                        {billInfo.title}
-                        {console.log(billInfo)}
-                    </div>
-                    <div className="flex bg-lightblue h-[85%] text-white p-2 text-xl rounded-xl">
-                        {more === 'big' ? billInfo.summary_long : more === 'small' ? billInfo.summary_short : billInfo.summary_med}
-                    </div>
-                </div>
             </div>
         </div>  
     )
