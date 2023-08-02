@@ -1,8 +1,8 @@
 from flask import current_app, Blueprint, request
 from ..dataCollect.api_for_members import *
 from ..extensions import db
-from ..models import JpegUrl, Congressman, Bill, StateCongressman
-from ..schemas import jpeg_url_schema, congressmen_schema, bills_schema, state_congressmen_schema
+from ..models import JpegUrl, Congressman, Bill, StateCongressman, StateSenateMajority
+from ..schemas import jpeg_url_schema, congressmen_schema, bills_schema, state_congressmen_schema, state_senate_majority_schema
 from loguru import logger
 import re
 from datetime import datetime
@@ -212,4 +212,18 @@ def state_members():
         congressmen = StateCongressman.query.filter_by(state=state, branch=branch).all()
         return state_congressmen_schema.jsonify(congressmen)
 
+@congress.route('/majority')
+def majority():
+
+    update = request.args.get("update")
+
+    # if update == "True":
+    #     try:
+        
+    state = "LA"
+    statePols = StateCongressman.query.filter_by(state=state).group_by(StateCongressman.party).count()
+
+
+
+    return state_congressmen_schema.jsonify(statePols)
 # GET /bill/{congress}/{billType}/{billNumber}/text for bill contents
