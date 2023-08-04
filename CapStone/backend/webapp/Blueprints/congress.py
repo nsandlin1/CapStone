@@ -6,6 +6,7 @@ from ..schemas import jpeg_url_schema, congressmen_schema, bills_schema, state_c
 from loguru import logger
 import re
 from datetime import datetime
+from sqlalchemy import text
 
 
 # TODO: make where if data is pulled as a group, insert if not already in database. Right now it only inserts if database is empty, so on initialization
@@ -219,11 +220,29 @@ def majority():
 
     # if update == "True":
     #     try:
-        
+         
     state = "LA"
-    statePols = StateCongressman.query.filter_by(state=state).group_by(StateCongressman.party).count()
+    # statePols = db.session.execute(text("\
+    #     SELECT state, \
+    #         COUNT(CASE WHEN party = 'Democratic' THEN 1 ELSE 0 END) AS democrat_count, \
+    #         COUNT(CASE WHEN party = 'Republican' THEN 1 ELSE 0 END) AS republican_count, \
+    #         CASE WHEN COUNT(CASE WHEN party = 'Democratic' THEN 1 ELSE 0 END) > \
+    #                 COUNT(CASE WHEN party = 'Republican' THEN 1 ELSE 0 END) \
+    #             THEN 'Democrat' ELSE 'Republican' END AS political_majority \
+    #     FROM state_congressmen \
+    #     GROUP BY state;"))
+
+    statePols = db.session.execute(text("\
+        SELECT state, \
+               COUNT(CASE WHEN party = 'Democratic' OR party='Democratic-Farmer-Labor' THEN 1 END) AS democrat_count, \
+               COUNT(CASE WHEN party = 'Republican' THEN 1 END) AS republican_count \
+        FROM state_congressmen \
+        WHERE branch='Senate' \
+        GROUP BY state\
+    "))
+
+    logger.debug(statePols.all())
 
 
-
-    return state_congressmen_schema.jsonify(statePols)
+    return state_congressmen_schema.jsonify(statePols.all())
 # GET /bill/{congress}/{billType}/{billNumber}/text for bill contents
