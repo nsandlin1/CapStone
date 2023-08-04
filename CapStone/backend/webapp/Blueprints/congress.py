@@ -10,6 +10,7 @@ from datetime import datetime
 
 # TODO: make where if data is pulled as a group, insert if not already in database. Right now it only inserts if database is empty, so on initialization
 
+
 congress = Blueprint('congress', __name__)
 
 @congress.route('/members')
@@ -221,9 +222,10 @@ def majority():
     #     try:
         
     state = "LA"
-    statePols = StateCongressman.query.filter_by(state=state).group_by(StateCongressman.party).count()
+    statePols = StateCongressman.query(StateCongressman).all()
 
 
 
     return state_congressmen_schema.jsonify(statePols)
 # GET /bill/{congress}/{billType}/{billNumber}/text for bill contents
+
