@@ -35,10 +35,10 @@ class StateCongressmanSchema(ma.Schema):
 state_congressman_schema = StateCongressmanSchema()
 state_congressmen_schema = StateCongressmanSchema(many=True)
 
-class StateSenateMajority(ma.Schema):
+class StateMajority(ma.Schema):
     class Meta:
-        model = StateSenateMajority
-        fields = ("state", "majority")
+        model = StateMajority
+        fields = ("state", "majority", "branch")
 
-state_senate_majority_schema = StateSenateMajority()
-state_senate_majority_schema = StateSenateMajority(many=True)
+state_senate_majority_schema = StateMajority()
+state_senate_majority_schema = StateMajority(many=True)

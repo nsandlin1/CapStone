@@ -102,15 +102,17 @@ class Bill(db.Model):
     def __repr__(self):
         return f'<Bill "{self.title}">'
 
-class StateSenateMajority(db.Model):
-    __tablename__ = 'state_senate_majority'
+class StateMajority(db.Model):
+    __tablename__ = 'state_majority'
 
     state = Column(String(2), nullable=False, primary_key=True)
     majority = Column(String(1), nullable=False)
+    branch = Column(String(8), nullable=True)
 
-    def __init__(self, state, majority):
+    def __init__(self, state, majority, branch):
         self.state = state
         self.majority = majority
+        self.branch = branch
 
     def __repr__(self):
-        return f'<StateSenateMajority "{self.state} {self.majority}">'
+        return f'<StateSenateMajority "{self.state} {self.majority} {self.branch}">'
