@@ -1,3 +1,6 @@
+import React, { useEffect, useState } from "react"
+import { FederalButton } from "../components/FederalButton";
+import { StateButton } from "../components/StateButton";
 import Map from "./PoliticianLanding";
 
 function PolyLanding() {
@@ -5,7 +8,7 @@ function PolyLanding() {
     return (
         <div className="flex flex-col h-[88vh] items-center justify-center">
             <div className="flex h-[10%] w-[90%]">
-                Hello
+                
             </div>
             <div className="flex flex-col items-center justify-center w-[90%] h-[89%] bgnavy rounded-xl p-2">
                 <div>
