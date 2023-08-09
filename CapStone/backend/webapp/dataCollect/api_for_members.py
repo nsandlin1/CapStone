@@ -258,6 +258,145 @@ def openstates_get_state_politicians(apikey, state_abb, branch):
     except Exception as e:
         # print(e)
         raise Exception(f"Failed to get state congressmen: {str(e)}")
+    
+# not an API call, used in the next function
+def normalize_new_timestamp(timestamp):
+    try:
+        #2023-08-05T15:56:00Z
+        # Parse the timestamp string into a datetime object
+        timestamp = timestamp.replace("Z", "")
+        timestamp = timestamp.replace("T", " ")
+        month = timestamp[5:7]
+        day = timestamp[8:10]
+        year = timestamp[0:4]
+        time = timestamp[11:19]
+        # Return the components as an array
+        return [month, day, year, time]
+    except ValueError:
+        return timestamp
+
+# basic call to the news API, returns a list of dictionaries
+def fetchNews(news_api_key):
+    out_dicts = []
+    url = 'https://newsapi.org/v2/top-headlines?country=us&category=politics'
+
+    params = {
+        'apiKey': news_api_key,
+    }
+
+    # Make the request
+    try:
+        response = requests.get(url, params=params)
+        for article in response.json()['articles']:
+            if article['description'] is None:
+                abstract = "No abstract available"
+            else:
+                abstract = article['description']
+                out_dicts.append({
+                "title" : (article['title']),
+                "abstract" : (abstract), # "No abstract available" if no abstract
+                "published_date" : (normalize_new_timestamp(article['publishedAt'])),
+                "url" : (article['url']),
+                "company" : (article["source"]["name"])
+            })
+        return out_dicts
+
+    except:
+        raise Exception("failed to get news articles")
+
+# returns articles related to a given term, same format as previous
+def querySearchTerm(news_api_key, term):
+    out_dicts = []
+    api_key = 'c5fbeedabdbd47de99a6c897ca9ce4b7'
+    url = f'https://newsapi.org/v2/everything?q={term}&language=en&sortBy=publishedAt'
+
+    params = {
+        'apiKey': news_api_key,
+        'language': 'en',
+    }
+
+    # Make the request
+    try:
+        response = requests.get(url, params=params)
+        for article in response.json()['articles']:
+            if article['description'] is None:
+                abstract = "No abstract available"
+            else:
+                abstract = article['description']
+            out_dicts.append({
+            "title" : (article['title']),
+            "abstract" : (abstract), # "No abstract available" if no abstract
+            "published_date" : (normalize_new_timestamp(article['publishedAt'])),
+            "url" : (article['url']),
+            "company" : (article["source"]["name"])
+            })
+        return out_dicts
+    except:
+        raise Exception("failed to get bills related to search term")
+
+# returns a list of dictionaries, each dictionary represents an election
+def fetchElections(election_api_key):
+    try:
+        x = requests.get('https://www.googleapis.com/civicinfo/v2/elections?key=' + election_api_key)
+        response = (x.json())
+        for dictionary in response["elections"]:
+            if "ocdDivisionId" in dictionary:
+                dictionary.pop("ocdDivisionId")
+        return response["elections"]
+    except:
+        raise Exception("failed to fetch available elections")
+
+# returns a list containing a metadata dictionary, a userAddress dictionary, an elecs dictionary, and a referendum dictionary
+def fetchElectionInfo(election_api_key, address, electionID):
+    try:
+        metadata = {} # metadata["name"] => name, metadata["date"] => date, metadata["id"] => id
+        userAddress = {} # userAddress["electionInfoUrl"] => url, userAddress["electionRegistrationUrl"] => url, ...
+        elecs = {} # elecs["office"] => [(name, party), (name, party), ...]
+        referendum = {} # dictionary["referendumTitle"] => [referendumSubtitle, referendumUrl]
+
+        params = {'electionId':electionID, 'address':address, 'key': election_api_key}
+        response = requests.get(f'https://www.googleapis.com/civicinfo/v2/voterinfo', params=params)
+        data = response.json()
+
+        if "election" in data.keys():
+            
+            metadata["name"] = data["election"]["name"]
+            metadata["date"] = data["election"]["electionDay"]
+            metadata["id"] = data["election"]["id"]
+
+        if "state" in data.keys():
+            
+            if "electionInfoUrl" in data["state"][0]['electionAdministrationBody'].keys():
+                userAddress["electionInfoUrl"] = data["state"][0]['electionAdministrationBody']["electionInfoUrl"]
+            if "electionRegistrationUrl" in data["state"][0]['electionAdministrationBody'].keys():
+                userAddress["electionRegistrationUrl"] = data["state"][0]['electionAdministrationBody']["electionRegistrationUrl"]
+            if "votingLocationFinderUrl" in data["state"][0]['electionAdministrationBody'].keys():
+                userAddress["votingLocationFinderUrl"] = data["state"][0]['electionAdministrationBody']["votingLocationFinderUrl"]
+            if "ballotInfoUrl" in data["state"][0]['electionAdministrationBody'].keys():
+                userAddress["ballotInfoUrl"] = data["state"][0]['electionAdministrationBody']["ballotInfoUrl"]
+
+        if "contests" in data.keys():
+
+            for contest in (data['contests']):
+                if "office" in contest.keys():
+                    office = (contest["office"])
+                    elecs[office] = []
+        
+                if "candidates" in contest.keys():
+                    for candidate in contest["candidates"]:
+                        elecs[office].append((candidate["name"] , candidate["party"]))
+                
+                if "referendumTitle" in contest.keys():
+                    if "referendumSubtitle" in contest.keys():
+                        if "referendumUrl" in contest.keys():
+                            referendum[contest["referendumTitle"]] = [contest["referendumSubtitle"], contest["referendumUrl"]] 
+                        else:
+                            referendum[contest["referendumTitle"]] = [contest["referendumSubtitle"], "No URL"]
+
+        return [metadata, elecs, referendum, userAddress]
+    except:
+        raise Exception("failed to fetch election-address specific info")
+
 
 if __name__ == '__main__':
     x = requests.get("https://api.congress.gov/v3/bill/118/hr/4333?format=xml", params={"api_key": "BLBBwtEM5wcueO0Y7zjUKBYkGjlmiScLLOZNVXKV"})
