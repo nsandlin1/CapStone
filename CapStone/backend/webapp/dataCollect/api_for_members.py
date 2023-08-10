@@ -1,5 +1,6 @@
 import requests
-from datetime import datetime
+import datetime 
+from datetime import datetime as dt
 import xmltodict
 from huggingface_hub import InferenceClient
 
@@ -295,7 +296,7 @@ def fetchNews(news_api_key):
                 out_dicts.append({
                 "title" : article['title'],
                 "abstract" : abstract, # "No abstract available" if no abstract
-                "published_date" : datetime.strptime(article['publishedAt'], "%Y-%m-%dT%H:%M:%SZ"),
+                "published_date" : dt.strptime(article['publishedAt'], "%Y-%m-%dT%H:%M:%SZ"),
                 "url" : article['url'],
                 "company" : article["source"]["name"]
             })
@@ -325,7 +326,7 @@ def querySearchTerm(news_api_key, term):
             out_dicts.append({
             "title" : (article['title']),
             "abstract" : (abstract), # "No abstract available" if no abstract
-                "published_date" : datetime.strptime(article['publishedAt'], "%Y-%m-%dT%H:%M:%SZ"),
+                "published_date" : dt.strptime(article['publishedAt'], "%Y-%m-%dT%H:%M:%SZ"),
             "url" : (article['url']),
             "company" : (article["source"]["name"])
             })
