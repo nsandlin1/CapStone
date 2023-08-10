@@ -6,3 +6,9 @@ ma = Marshmallow()
 
 from flask_cors import CORS
 crs = CORS()
+
+from flask_jwt_extended import JWTManager
+jwt = JWTManager()
+
+from flask_praetorian import Praetorian
+prae = Praetorian()
