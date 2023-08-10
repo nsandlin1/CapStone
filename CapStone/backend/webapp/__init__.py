@@ -25,6 +25,8 @@ def create_web_app(env, initdb):
 	app.register_blueprint(congress, url_prefix='/api/congress')
 	from .Blueprints.user import user
 	app.register_blueprint(user, url_prefix='/api/user')
+	from .Blueprints.news_and_elections import news_and_elections
+	app.register_blueprint(news_and_elections, url_prefix='/api/news_and_elections')
 
 	# initialize database with relative instance_path
 	db.init_app(app)

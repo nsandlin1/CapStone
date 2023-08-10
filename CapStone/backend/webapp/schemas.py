@@ -42,3 +42,19 @@ class StateCongressmanSchema(ma.Schema):
 
 state_congressman_schema = StateCongressmanSchema()
 state_congressmen_schema = StateCongressmanSchema(many=True)
+
+class NewsSchema(ma.Schema):
+    class Meta:
+        model = News
+        fields = ("title", "abstract", "published_date", "url", "company")
+
+news_schema = NewsSchema()
+many_news_schema = NewsSchema(many=True)
+
+class ElectionSchema(ma.Schema):
+    class Meta:
+        model = Election
+        fields = ("id", "name", "election_day")
+
+election_schema = ElectionSchema()
+elections_schema = ElectionSchema(many=True)
