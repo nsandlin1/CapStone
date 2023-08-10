@@ -7,6 +7,7 @@ class Config:
 	SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URI') or\
 		  'sqlite:///' + os.path.join(basedir, 'instance', 'database.db')
 	SQLALCHEMY_TRACK_MODIFICATIONS = False
+	# JWT_TOKEN_LOCATION = ['headers', 'query_string']
 class ProductionConfig(Config):
 	DEBUG = False
 	TESTING = False

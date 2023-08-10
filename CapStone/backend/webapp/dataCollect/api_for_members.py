@@ -1,5 +1,5 @@
 import requests
-import datetime
+from datetime import datetime
 import xmltodict
 from huggingface_hub import InferenceClient
 
@@ -260,7 +260,7 @@ def openstates_get_state_politicians(apikey, state_abb, branch):
         raise Exception(f"Failed to get state congressmen: {str(e)}")
     
 # not an API call, used in the next function
-def normalize_new_timestamp(timestamp):
+def _normalize_new_timestamp(timestamp):
     try:
         #2023-08-05T15:56:00Z
         # Parse the timestamp string into a datetime object
@@ -293,21 +293,20 @@ def fetchNews(news_api_key):
             else:
                 abstract = article['description']
                 out_dicts.append({
-                "title" : (article['title']),
-                "abstract" : (abstract), # "No abstract available" if no abstract
-                "published_date" : (normalize_new_timestamp(article['publishedAt'])),
-                "url" : (article['url']),
-                "company" : (article["source"]["name"])
+                "title" : article['title'],
+                "abstract" : abstract, # "No abstract available" if no abstract
+                "published_date" : datetime.strptime(article['publishedAt'], "%Y-%m-%dT%H:%M:%SZ"),
+                "url" : article['url'],
+                "company" : article["source"]["name"]
             })
         return out_dicts
 
-    except:
-        raise Exception("failed to get news articles")
+    except Exception as e:
+        raise Exception(e)
 
 # returns articles related to a given term, same format as previous
 def querySearchTerm(news_api_key, term):
     out_dicts = []
-    api_key = 'c5fbeedabdbd47de99a6c897ca9ce4b7'
     url = f'https://newsapi.org/v2/everything?q={term}&language=en&sortBy=publishedAt'
 
     params = {
@@ -326,7 +325,7 @@ def querySearchTerm(news_api_key, term):
             out_dicts.append({
             "title" : (article['title']),
             "abstract" : (abstract), # "No abstract available" if no abstract
-            "published_date" : (normalize_new_timestamp(article['publishedAt'])),
+                "published_date" : datetime.strptime(article['publishedAt'], "%Y-%m-%dT%H:%M:%SZ"),
             "url" : (article['url']),
             "company" : (article["source"]["name"])
             })

@@ -77,6 +77,19 @@ class StateCongressman(db.Model):
     def __repr__(self):
         return f'<StateCongressman "{self.name}">'
 
+class User(db.Model):
+    __tablename__ = 'users'
+
+    email = Column(String(255), primary_key=True)
+    password = Column(String(255))
+
+    def __init__(self, email, password):
+        self.email = email
+        self.password = password
+    
+    def __repr__(self):
+        return f'<User "{self.email}">'
+        
 class Bill(db.Model):
     __tablename__ = 'bills'
 
@@ -101,3 +114,37 @@ class Bill(db.Model):
 
     def __repr__(self):
         return f'<Bill "{self.title}">'
+    
+class News(db.Model):
+    __tablename__ = 'news'
+
+    title = Column(String(255), primary_key=True)
+    abstract = Column(String(1000))
+    published_date = Column(DateTime)
+    url = Column(String(255))
+    company = Column(String(100))
+
+    def __init__(self, title, abstract, published_date, url, company):
+        self.title = title
+        self.abstract = abstract
+        self.published_date = published_date
+        self.url = url
+        self.company = company
+    
+    def __repr__(self):
+        return f'<News "{self.title[:30]}">'
+    
+class Election(db.Model):
+    __tablename__ = 'elections'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String(75))
+    election_day = Column(Date)
+
+    def __init__(self, id, name, election_day):
+        self.id = id
+        self.name = name
+        self.election_day = election_day
+    
+    def __repr__(self):
+        return f'<Election "{self.name}">'
