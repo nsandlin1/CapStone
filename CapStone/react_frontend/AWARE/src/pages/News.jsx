@@ -2,8 +2,43 @@ import React, { useState, useEffect } from "react";
 import NewsCard from "../components/NewsCard";
 
 function News() {
+  const [news, setNews] = useState([]);
+  const [loadingBills, setLoadingBills] = useState(true);
+  const [error, setError] = useState(null);
+  var api_url = 'http://localhost:5000/api/news_and_elections/news_general?';
 
-  var api_url = '';
+  function getNewsList() {   
+    console.log("fetching news")
+    fetch(api_url)
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error(
+                    `HTTP error: ${response.status}`
+                );
+            }
+            return response.json()
+        })
+        .then((data) => {
+            setNews(data);
+            console.log(data)
+            setError(null);
+        })
+        .catch((err) => {
+            console.log(err.message)
+            setError(err);
+        })
+        .finally(() => {
+            console.log("loading is false")
+            setLoadingBills(false);
+        });
+}
+  
+useEffect(() => {
+  if (news.length == 0) {
+      getNewsList();
+  }
+  
+}, [])
 
   const my_text = "sample text..."
   const name = "Author, Author"
@@ -18,73 +53,7 @@ function News() {
   'nobody gets vaccines anymore and all the mandates are '
   'removed.\n'
   '\n'
-  'Because this is a fairly long book that employs all of '
-  'the antivaxxer tactics, I will spread my posts out into '
-  '10 more reasonably digestible pieces to show you how, '
-  'as with all antivaxxer speeches, it is a paper tiger. '
-  'This book has big promises but, to someone who actually '
-  'knows the vaccine science, the book doesn’t really '
-  'deliver much of anything at all, other than money in '
-  'the “Anonymous” author’s bank account. A more '
-  'charitable interpretation of this book is a live '
-  'masterclass of science denial/antivax techniques as '
-  'explained here along with this illustration of the '
-  'major tactics:\n'
-  '\n'
-  'The general way these articles will be constructed is '
-  'quotes with their associated debunks, and answers to '
-  'the questions at the end of each chapter, that on first '
-  'glance, appear to be gotcha questions, but actually are '
-  'easy to answer with just a little extra medical '
-  'knowledge. Statements that are repetitive will be '
-  'addressed only once or twice (which is why not all of '
-  'the debunks answer every single set of end-of-chapter '
-  'questions).\n'
-  '\n'
-  'If you only remember one thing from this series, '
-  'remember that there is nothing one can say to a '
-  'Children’s Health Defense board member, or a dedicated '
-  'antivaxxer, that would convince them that vaccines are '
-  'safe and effective. Science doesn’t work that way – '
-  'even Mary Holland says, in this book, science must be '
-  'willing to challenge old paradigms. That has been done '
-  'several times over by dedicated scientists (for '
-  'example, the removal of an old rotavirus vaccine for '
-  'intussusception). It is actually CHD who is never '
-  'willing to change their mind, because it would affect '
-  'their income if they actually operated honestly.\n'
-  '\n'
-  '1. “This paternalistic tendency is evident in '
-  'long-standing attempts by scientific and medical '
-  'entities to portray the public conversation on vaccines '
-  'as a lopsided dispute.”\n'
-  '\n'
-  'Actually, the reality is more complicated. Medicine '
-  'does actually have a history of being paternalistic '
-  'towards patients, which is something that even '
-  'mainstream physicians cannot dispute. I will easily own '
-  'up to our profession having this as a stain on its '
-  'reputation in the past. This is why the entire '
-  'profession has been coaching its medical students, '
-  'nurses, nurse practitioners, pharmacists, and physician '
-  'assistants, for an extremely long time, about how to '
-  'make medicine more of a shared decision making '
-  'process.\n'
-  '\n'
-  'There still are times where it is medically necessary '
-  'to be strict in giving out medical interventions – a '
-  'classic example of this is a heart attack. A person '
-  'actively having a heart attack is actively putting '
-  'their life in danger if they were to reach for their '
-  'Arizona homeopath instead of an actual interventional '
-  'cardiologist trained and ready to help fix the heart '
-  'artery blockage. Extreme paternalism is required to '
-  'save a life in this case. At other times, it is '
-  'medically necessary to give the patient a full '
-  'explanation of what is going on, plus the risks and '
-  'benefits of each type of treatment. After the '
-  'explanation, a shared decision can be made.\n'
-  '\n'"`
+  "`
 
     const [more, setMore] = useState("1");
 
@@ -117,12 +86,14 @@ function News() {
 
           <div style={{ fontSize: '22px' }} className="flex flex-col gap-2 items-center w-[90%] h-[100%] bgnavy rounded-xl overflow-y-auto p-2">
                 <div className="flex flex-wrap items-center justify-center w-[100%] gap-4">
-                    < NewsCard text={sample_text} title="News Article Title #1" source="New York Times" link="https://www.nytimes.com"/> 
-                    < NewsCard text={sample_text} title="News Article Title #2" source="Washington Post" link="https://www.washingtonpost.com"/>
-                    < NewsCard text={sample_text} title="News Article Title #3" source="ABC" link="https://abc.com"/>
-                    < NewsCard text={sample_text} title="News Article Title #4" source="NPR" link="https://www.npr.org"/>
-                    < NewsCard text={sample_text} title="News Article Title #5" source="Fox" link="https://www.foxnews.com"/>
-                    < NewsCard text={sample_text} title="News Article Title #6" source="CNN" link="https://www.cnn.com"/>
+                    {loadingBills && <font color="#ffffff">Loading News Feed...</font>}
+                        {error && <font color="#ffffff">There has been a problem loading news.</font>}
+                        {!loadingBills && (
+                            news.map((news) => {
+                                return <NewsCard text={news.abstract + "\n  (" + news.published_date + ")"} title={news.title} source={news.company} link={news.url}/>
+                            })
+                            
+                        )}
                 </div>
         
             </div>

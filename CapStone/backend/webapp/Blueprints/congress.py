@@ -1,11 +1,12 @@
 from flask import current_app, Blueprint, request
 from ..dataCollect.api_for_members import *
 from ..extensions import db
-from ..models import JpegUrl, Congressman, Bill, StateCongressman
-from ..schemas import jpeg_url_schema, congressmen_schema, bills_schema, state_congressmen_schema
+from ..models import JpegUrl, Congressman, Bill, StateCongressman, StateMajority
+from ..schemas import jpeg_url_schema, congressmen_schema, bills_schema, state_congressmen_schema, state_senate_majority_schema
 from loguru import logger
 import re
 from datetime import datetime
+from sqlalchemy import text
 
 congress = Blueprint('congress', __name__)
 
@@ -209,4 +210,93 @@ def state_members():
         congressmen = StateCongressman.query.filter_by(state=state, branch=branch).all()
         return state_congressmen_schema.jsonify(congressmen)
 
+@congress.route('/majority_senate')
+def majority_senate():
+
+    update = request.args.get("update")
+
+    statePols = db.session.execute(text("\
+        SELECT state, \
+               COUNT(CASE WHEN party = 'Democratic' OR party='Democratic-Farmer-Labor' THEN 1 END) AS democrat_count, \
+               COUNT(CASE WHEN party = 'Republican' THEN 1 END) AS republican_count \
+        FROM state_congressmen \
+        WHERE branch='Senate' \
+        GROUP BY state\
+    "))
+    logger.debug(statePols.all())
+
+
+    return state_congressmen_schema.jsonify(statePols.all())
 # GET /bill/{congress}/{billType}/{billNumber}/text for bill contents
+
+@congress.route('/majority')
+def majority():
+
+    update = request.args.get("update")
+    branch = request.args.get("branch")
+
+    if (update == "True"):
+
+        db.session.execute(text('''DROP TABLE IF EXISTS state_majority'''))
+
+        db.session.execute(text('''
+    CREATE TABLE IF NOT EXISTS state_majority (
+        state String(2),
+        majority String(1),
+        branch String(8)
+    )
+'''))
+
+        statePolsHouse = db.session.execute(text("\
+            SELECT state, \
+                COUNT(CASE WHEN party = 'Democratic' OR party='Democratic-Farmer-Labor' THEN 1 END) AS democrat_count, \
+                COUNT(CASE WHEN party = 'Republican' THEN 1 END) AS republican_count \
+            FROM state_congressmen \
+            WHERE branch='House' \
+            GROUP BY state\
+        "))
+
+        statePolsSenate = db.session.execute(text("\
+            SELECT state, \
+                COUNT(CASE WHEN party = 'Democratic' OR party='Democratic-Farmer-Labor' THEN 1 END) AS democrat_count, \
+                COUNT(CASE WHEN party = 'Republican' THEN 1 END) AS republican_count \
+            FROM state_congressmen \
+            WHERE branch='Senate' \
+            GROUP BY state\
+        "))
+
+        state_maj = []
+        for row in statePolsHouse:
+            party = ''
+            if (row[1] > row[2]):
+                party = "D"
+            else:
+                party = "R"
+            state_maj.append(StateMajority(
+                row[0],
+                party,
+                "House"
+            ))
+
+        for row in statePolsSenate:
+            party = ''
+            if (row[1] > row[2]):
+                party = "D"
+            else:
+                party = "R"
+            state_maj.append(StateMajority(
+                row[0],
+                party,
+                "Senate"
+            ))
+
+        print(state_maj)
+        db.session.add_all(state_maj)
+        db.session.commit()
+
+        return ("Updated")
+
+    #logger.debug(state_maj)
+
+    congressmen = StateMajority.query.filter_by(branch=branch).all()
+    return state_senate_majority_schema.jsonify(congressmen)
