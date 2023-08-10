@@ -35,3 +35,17 @@ The current components are:
 * Politician - this is the card that houses the politians information
 
 # Testing
+
+
+### Bills.jsx
+The bills page utilizes the BillCard component which can be found under `components/BillCard.jsx` 
+
+When the page is loaded, a call to the backend is made to get a list of the current bills. The bills are placed in an array and then mapped to the BillCard component.
+
+Bills are displayed on the left-hand side of the page.
+The right-hand side of the page houses information on the page, on load this section will be blank.
+
+#### Selecting a Bill
+Upon selection of a bill, the right-hand side of the page will be populated with the title of the bill, the number of the bill, and the bill summary.
+
+There are three lengths of summary a user can select: short, medium, and long.
