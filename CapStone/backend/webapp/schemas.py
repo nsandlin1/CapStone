@@ -27,6 +27,14 @@ class BillSchema(ma.Schema):
 bill_schema = BillSchema()
 bills_schema = BillSchema(many=True)
 
+class UserSchema(ma.Schema):
+    class Meta:
+        model = User
+        fields = ("email", "password")
+
+user_schema = UserSchema()
+users_schema = UserSchema(many=True)
+
 class StateCongressmanSchema(ma.Schema):
     class Meta:
         model = StateCongressman
@@ -42,3 +50,18 @@ class StateMajority(ma.Schema):
 
 state_senate_majority_schema = StateMajority()
 state_senate_majority_schema = StateMajority(many=True)
+class NewsSchema(ma.Schema):
+    class Meta:
+        model = News
+        fields = ("title", "abstract", "published_date", "url", "company")
+
+news_schema = NewsSchema()
+many_news_schema = NewsSchema(many=True)
+
+class ElectionSchema(ma.Schema):
+    class Meta:
+        model = Election
+        fields = ("id", "name", "election_day")
+
+election_schema = ElectionSchema()
+elections_schema = ElectionSchema(many=True)

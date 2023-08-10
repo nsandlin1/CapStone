@@ -8,10 +8,6 @@ import re
 from datetime import datetime
 from sqlalchemy import text
 
-
-# TODO: make where if data is pulled as a group, insert if not already in database. Right now it only inserts if database is empty, so on initialization
-
-
 congress = Blueprint('congress', __name__)
 
 @congress.route('/members')

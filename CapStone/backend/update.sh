@@ -33,18 +33,20 @@ for state in ${states[@]}; do
 
     updated=$(($updated + $new_state_senate))
     updated=$(($updated + $new_state_house))
-    # round=$(($round + 1))
-    # sleep 2
-    # if [[ $(($round % 4)) == 0 ]]
-    # then
-    #     sleep 65
-    # fi
 done
 echo "State Congressmen added:" $updated
 echo -------------------------------
-echo "Updating Fed. Congressmen"
+echo "Updating Fed. Congressmen..."
 updated=0
 updated=$(($updated + $(curl -s http://127.0.0.1:5000/api/congress/members?branch=senate\&update=True)))
 updated=$(($updated + $(curl -s http://localhost:5000/api/congress/members?branch=house\&update=True)))
 echo "Fed. Congressmen added:" $updated
+echo -------------------------------
+echo "Updating News..."
+updated=$(curl -s http://127.0.0.1:5000/api/news_and_elections/news_general?update=True)
+echo "News added:" $updated
+echo -------------------------------
+echo "Updating Elections..."
+updated=$(curl -s http://127.0.0.1:5000/api/news_and_elections/elections?update=True)
+echo "Elections added:" $updated
 echo -------------------------------
