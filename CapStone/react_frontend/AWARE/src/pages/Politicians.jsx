@@ -90,6 +90,153 @@ function Politicians() {
         setState(stateData)
     };
 
+    const customize = {
+        "AL": {
+            fill: "red"
+        },
+        "AK": {
+            fill: "red"
+        },
+        "AZ": {
+            fill: "red"
+        },
+        "AR": {
+            fill: ""
+        },
+        "CA": {
+            fill: ""
+        },
+        "CO": {
+            fill: ""
+        },
+        "CT": {
+            fill: ""
+        },
+        "DE": {
+            fill: ""
+        },
+        "FL": {
+            fill: ""
+        },
+        "GA": {
+            fill: ""
+        },
+        "HI": {
+            fill: ""
+        },
+        "ID": {
+            fill: ""
+        },
+        "IL": {
+            fill: ""
+        },
+        "IN": {
+            fill: ""
+        },
+        "IA": {
+            fill: ""
+        },
+        "KS": {
+            fill: ""
+        },
+        "KY": {
+            fill: ""
+        },
+        "ME": {
+            fill: ""
+        },
+        "MD": {
+            fill: ""
+        },
+        "MA": {
+            fill: ""
+        },
+        "MI": {
+            fill: ""
+        },
+        "MN": {
+            fill: ""
+        },
+        "MS": {
+            fill: ""
+        },
+        "MO": {
+            fill: ""
+        },
+        "MT": {
+            fill: ""
+        },
+        "NE": {
+            fill: ""
+        },
+        "NV": {
+            fill: ""
+        },
+        "NH": {
+            fill: ""
+        },
+        "NM": {
+            fill: ""
+        },
+        "NY": {
+            fill: ""
+        },
+        "NC": {
+            fill: ""
+        },
+        "ND": {
+            fill: ""
+        },
+        "OH": {
+            fill: ""
+        },
+        "OK": {
+            fill: ""
+        },
+        "OR": {
+            fill: ""
+        },
+        "PA": {
+            fill: ""
+        },
+        "RI": {
+            fill: ""
+        },
+        "SC": {
+            fill: ""
+        },
+        "SD": {
+            fill: ""
+        },
+        "TN": {
+            fill: ""
+        },
+        "TX": {
+            fill: ""
+        },
+        "UT": {
+            fill: ""
+        },
+        "VT": {
+            fill: ""
+        },
+        "VA": {
+            fill: ""
+        },
+        "WA": {
+            fill: ""
+        },
+        "WV": {
+            fill: ""
+        },
+        "WI": {
+            fill: ""
+        },
+        "WY": {
+            fill: ""
+        }
+    };    
+
     useEffect(() => {
         const handleResize = () => {
           console.log('Window was resized!');
@@ -119,6 +266,7 @@ function Politicians() {
                     />
                         
                 </div>
+                    {selectedButton === "federal" ?  
                     <select id="branches" onChange={(event) => handleBranchChange(event.target.value)} 
                         className="bgblue border border-gray-300 text-gray-900 mt-auto m-2 text-xs rounded-lg 
                                    focus:ring-blue-500 focus:border-blue-500 block w-[30%] h-[70%] p-2.5 dark:bgblue dark:bgblue
@@ -126,6 +274,15 @@ function Politicians() {
                         <option selected value={"senate"} >Senate</option>
                         <option value="house" >House</option>
                     </select>
+                    :
+                    <select id="branches" onChange={(event) => handleBranchChange(event.target.value)} 
+                        className="bgblue border border-gray-300 text-gray-900 mt-auto m-2 text-xs rounded-lg 
+                                   focus:ring-blue-500 focus:border-blue-500 block w-[30%] h-[70%] p-2.5 dark:bgblue dark:bgblue
+                                   dark:bgblue dark:text-white dark:focus:bgblue dark:focus:bgblue lg:w-[10%] lg:h-[60%]">
+                        <option selected value={"senate"} >Politicians</option>
+                        <option value="house" >Elections</option>
+                    </select>
+                    }   
             </div>
             {selectedButton === "federal" ?
                 <div className="flex flex-col items-center w-[90%] h-[90%]  bgnavy rounded-xl overflow-y-auto p-2">
@@ -136,10 +293,10 @@ function Politicians() {
                         {state !== null ?  ( < StatePoliticians state={state} setState={setState} states={states}/> ) :
                             <div>
                                 <div className="hidden 2xl:flex">
-                                    < Map width="900px" height="700px" parentCallback={stateCallback}/> 
+                                    < Map width="900px" height="700px" customize={customize} parentCallback={stateCallback}/> 
                                 </div>
                                 <div className="hidden lg:flex 2xl:hidden">
-                                    < Map width="800px" height="600px" parentCallback={stateCallback}/> 
+                                    < Map width="800px" height="600px" customize={customize} parentCallback={stateCallback}/> 
                                 </div>
                                 <div className="flex lg:hidden">
                                     < Map width="650px" height="500px"  parentCallback={stateCallback}/> 
