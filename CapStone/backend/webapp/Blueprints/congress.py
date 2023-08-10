@@ -296,7 +296,8 @@ def majority():
 
         return ("Updated")
 
-    #logger.debug(state_maj)
 
     congressmen = StateMajority.query.filter_by(branch=branch).all()
+
+    
     return state_senate_majority_schema.jsonify(congressmen)

@@ -11,12 +11,211 @@ import  StateCard  from "../components/SmallStateCards";
 
 function Politicians() {
 
+    const api = "http://127.0.0.1:5000//api/congress/majority?branch=House";
+    const [majHouse, setMajHouse] = useState([]);
+
     const [selectedButton, setSelectedButton] = useState('federal');
     const [expandedId, setExpandedId] = useState(null);
     const [branch, setBranch] = useState('senate');
     const [state, setState] = useState(null);
     let size = window.innerWidth;
 
+    function getHouseMaj() {
+        /*
+        make api request to get politicians return to pols variable
+        */
+        fetch(api)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(
+                        `HTTP error: ${response.status}`
+                    );
+                }
+                return response.json()
+            })
+            .then((data) => {
+                setMajHouse(data);
+                setError(null);
+                console.log(pols)
+            })
+            .catch((err) => {
+                setError(err);
+                console.log(err)
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+    }
+
+    useEffect(() => {
+        getHouseMaj()
+    }, [])
+
+    // Used to fill map with custom colors
+    const customize = {
+        "AL": {
+            fill: ""
+        },
+        "AK": {
+            fill: ""
+        },
+        "AZ": {
+            fill: ""
+        },
+        "AR": {
+            fill: ""
+        },
+        "CA": {
+            fill: ""
+        },
+        "CO": {
+            fill: ""
+        },
+        "CT": {
+            fill: ""
+        },
+        "DE": {
+            fill: ""
+        },
+        "FL": {
+            fill: ""
+        },
+        "GA": {
+            fill: ""
+        },
+        "HI": {
+            fill: ""
+        },
+        "ID": {
+            fill: ""
+        },
+        "IL": {
+            fill: ""
+        },
+        "IN": {
+            fill: ""
+        },
+        "IA": {
+            fill: ""
+        },
+        "KS": {
+            fill: ""
+        },
+        "KY": {
+            fill: ""
+        },
+        "LA": {
+            fill: ""
+        },
+        "ME": {
+            fill: ""
+        },
+        "MD": {
+            fill: ""
+        },
+        "MA": {
+            fill: ""
+        },
+        "MI": {
+            fill: ""
+        },
+        "MN": {
+            fill: ""
+        },
+        "MS": {
+            fill: ""
+        },
+        "MO": {
+            fill: ""
+        },
+        "MT": {
+            fill: ""
+        },
+        "NE": {
+            fill: "#E64141"
+        },
+        "NV": {
+            fill: ""
+        },
+        "NH": {
+            fill: ""
+        },
+        "NJ": {
+            fill: ""
+        },
+        "NM": {
+            fill: ""
+        },
+        "NY": {
+            fill: ""
+        },
+        "NC": {
+            fill: ""
+        },
+        "ND": {
+            fill: ""
+        },
+        "OH": {
+            fill: ""
+        },
+        "OK": {
+            fill: ""
+        },
+        "OR": {
+            fill: ""
+        },
+        "PA": {
+            fill: ""
+        },
+        "RI": {
+            fill: ""
+        },
+        "SC": {
+            fill: ""
+        },
+        "SD": {
+            fill: ""
+        },
+        "TN": {
+            fill: ""
+        },
+        "TX": {
+            fill: ""
+        },
+        "UT": {
+            fill: ""
+        },
+        "VT": {
+            fill: ""
+        },
+        "VA": {
+            fill: ""
+        },
+        "WA": {
+            fill: ""
+        },
+        "WV": {
+            fill: ""
+        },
+        "WI": {
+            fill: ""
+        },
+        "WY": {
+            fill: ""
+        }
+    };    
+
+    function determineStateColor(maj) {
+        if (maj === "D"){
+            return ("#4149e6");
+        } else { return ("#E64141"); }
+    }
+
+    majHouse.forEach(({ majority, state }) => {
+        if(customize[state]){
+            customize[state].fill = determineStateColor(majority);
+        }
+    });
     // don't even expand this...
     const states = {
         "AL": "Alabama",
@@ -90,153 +289,6 @@ function Politicians() {
         setState(stateData)
     };
 
-    const customize = {
-        "AL": {
-            fill: "red"
-        },
-        "AK": {
-            fill: "red"
-        },
-        "AZ": {
-            fill: "red"
-        },
-        "AR": {
-            fill: ""
-        },
-        "CA": {
-            fill: ""
-        },
-        "CO": {
-            fill: ""
-        },
-        "CT": {
-            fill: ""
-        },
-        "DE": {
-            fill: ""
-        },
-        "FL": {
-            fill: ""
-        },
-        "GA": {
-            fill: ""
-        },
-        "HI": {
-            fill: ""
-        },
-        "ID": {
-            fill: ""
-        },
-        "IL": {
-            fill: ""
-        },
-        "IN": {
-            fill: ""
-        },
-        "IA": {
-            fill: ""
-        },
-        "KS": {
-            fill: ""
-        },
-        "KY": {
-            fill: ""
-        },
-        "ME": {
-            fill: ""
-        },
-        "MD": {
-            fill: ""
-        },
-        "MA": {
-            fill: ""
-        },
-        "MI": {
-            fill: ""
-        },
-        "MN": {
-            fill: ""
-        },
-        "MS": {
-            fill: ""
-        },
-        "MO": {
-            fill: ""
-        },
-        "MT": {
-            fill: ""
-        },
-        "NE": {
-            fill: ""
-        },
-        "NV": {
-            fill: ""
-        },
-        "NH": {
-            fill: ""
-        },
-        "NM": {
-            fill: ""
-        },
-        "NY": {
-            fill: ""
-        },
-        "NC": {
-            fill: ""
-        },
-        "ND": {
-            fill: ""
-        },
-        "OH": {
-            fill: ""
-        },
-        "OK": {
-            fill: ""
-        },
-        "OR": {
-            fill: ""
-        },
-        "PA": {
-            fill: ""
-        },
-        "RI": {
-            fill: ""
-        },
-        "SC": {
-            fill: ""
-        },
-        "SD": {
-            fill: ""
-        },
-        "TN": {
-            fill: ""
-        },
-        "TX": {
-            fill: ""
-        },
-        "UT": {
-            fill: ""
-        },
-        "VT": {
-            fill: ""
-        },
-        "VA": {
-            fill: ""
-        },
-        "WA": {
-            fill: ""
-        },
-        "WV": {
-            fill: ""
-        },
-        "WI": {
-            fill: ""
-        },
-        "WY": {
-            fill: ""
-        }
-    };    
-
     useEffect(() => {
         const handleResize = () => {
           console.log('Window was resized!');
@@ -288,7 +340,7 @@ function Politicians() {
                 <div className="flex flex-col items-center w-[90%] h-[90%]  bgnavy rounded-xl overflow-y-auto p-2">
                     {branch === "senate" ? < SenateReps /> : < HouseReps />} 
                 </div> :
-                <div className="flex flex-col items-center justify-center w-[90%] h-[89%] bgnavy rounded-xl p-2">
+                <div className="flex flex-col items-center justify-center w-[90%] h-[89%] bg-[#ddddeb] rounded-xl p-2">
                     <div className="hidden items-center justify-center md:flex w-[100%]">
                         {state !== null ?  ( < StatePoliticians state={state} setState={setState} states={states}/> ) :
                             <div>
