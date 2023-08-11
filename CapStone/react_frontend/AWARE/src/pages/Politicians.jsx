@@ -216,6 +216,7 @@ function Politicians() {
             customize[state].fill = determineStateColor(majority);
         }
     });
+
     // don't even expand this...
     const states = {
         "AL": "Alabama",
@@ -340,9 +341,27 @@ function Politicians() {
                 <div className="flex flex-col items-center w-[90%] h-[90%]  bgnavy rounded-xl overflow-y-auto p-2">
                     {branch === "senate" ? < SenateReps /> : < HouseReps />} 
                 </div> :
-                <div className="flex flex-col items-center justify-center w-[90%] h-[89%] bg-[#ddddeb] rounded-xl p-2">
+                <div className="relative flex-col items-center justify-center w-[90%] h-[89%] bg-[#ddddeb] rounded-xl p-2">
+                    <div className="flex flex-col absolute top-10 left-10 bg-zinc-50 w-[150px] h-[100px] z-1 rounded-xl border-2 border-black">
+                        <div className="flex items-center justify-center h-[35%] w-[100%] underline">
+                            Legend
+                        </div>
+                        <div className="flex flex-row items-center justify-center h-[45%]">
+                            <div className="flex flex-col p-2 w-[30%]">
+                                <div className="flex p-2 bg-[#4149e6] min-h-[20px] min-w-full h-[100%] w-[100%] rounded-xl">
+                                </div>
+                                <div className="flex mt-1 bg-[#E64141] min-h-[20px] min-w-full h-[100%] w-[100%] rounded-xl">
+                                </div>
+                            </div>
+                            <div className="flex flex-col w-[70%]">
+                                Democratic
+                                Republican
+                            </div>
+                        </div>
+                    </div>
+                    {state !== null ?  ( < StatePoliticians state={state} setState={setState} states={states}/> ) :
                     <div className="hidden items-center justify-center md:flex w-[100%]">
-                        {state !== null ?  ( < StatePoliticians state={state} setState={setState} states={states}/> ) :
+                        
                             <div>
                                 <div className="hidden 2xl:flex">
                                     < Map width="900px" height="700px" customize={customize} parentCallback={stateCallback}/> 
@@ -354,8 +373,9 @@ function Politicians() {
                                     < Map width="650px" height="500px"  parentCallback={stateCallback}/> 
                                 </div>
                             </div>
-                        }
+                        
                     </div>
+                    }
                     <div className="flex flex-col md:hidden w-[100%] h-[100%] rounded-xl overflow-auto">
                         {state !== null ?  ( < StatePoliticians state={state} setState={setState} states={states}/> ) :
                             <div className="gap-2 p-1">
