@@ -9,6 +9,7 @@ import { StatePoliticians } from "../components/StatePoliticians";
 import Map from "./PoliticianLanding";
 import  StateCard  from "../components/SmallStateCards";
 import StateMajMap from "../components/StateMajMap";
+import StateElectionsMap from "../components/StateElectionsMap";
 
 function Politicians() {
     const [selectedButton, setSelectedButton] = useState('federal');
@@ -70,12 +71,12 @@ function Politicians() {
                         <option value="house" >House</option>
                     </select>
                     :
-                    <select id="branches" onChange={(event) => handleBranchChange(event.target.value)} 
+                    <select id="branches" onChange={(event) => handleMapChange(event.target.value)} 
                         className="bgblue shadow-mdborder border-gray-300 text-gray-900 mt-auto m-2 text-xs rounded-xl
                                    focus:ring-blue-500 focus:border-blue-500 block w-[30%] h-[70%] p-2.5 dark:bgblue dark:bgblue
                                    dark:bgblue dark:text-white dark:focus:bgblue dark:focus:bgblue lg:w-[10%] lg:h-[60%]">
-                        <option selected value={"senate"} >Politicians</option>
-                        <option value="house" >Elections</option>
+                        <option selected value={"politicians"} >Politicians</option>
+                        <option value="elections" >Elections</option>
                     </select>
                     }   
             </div>
@@ -84,7 +85,7 @@ function Politicians() {
                     {branch === "senate" ? < SenateReps /> : < HouseReps />} 
                 </div> : 
                 <div className="relative flex-col shadow-lg items-center justify-center w-[90%] h-[90%] bg-[#ddddeb] rounded-xl p-2"> 
-                    <StateMajMap />
+                    {map ==="politicians" ? <StateMajMap /> : <StateElectionsMap /> }
                 </div>
             }
         </div>
