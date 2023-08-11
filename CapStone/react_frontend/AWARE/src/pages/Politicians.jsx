@@ -13,7 +13,6 @@ import StateMajMap from "../components/StateMajMap";
 function Politicians() {
     const [selectedButton, setSelectedButton] = useState('federal');
     const [branch, setBranch] = useState('senate');
-    const [state, setState] = useState(null);
     const [map, setMap] = useState('politicians');
     let size = window.innerWidth;
 
@@ -26,18 +25,13 @@ function Politicians() {
     };
 
     const handleButtonClick = (level) => {
-        setState(null)
         setSelectedButton(level);
     };
 
     const handleToggleCollapse = (id) => {
         setExpandedId((prevId) => (prevId === id ? null : id))
     };
-
-    function stateCallback (stateData) {
-        setState(stateData)
-    };
-
+    
     useEffect(() => {
         const handleResize = () => {
           console.log('Window was resized!');
@@ -92,56 +86,6 @@ function Politicians() {
                 <div className="relative flex-col shadow-lg items-center justify-center w-[90%] h-[90%] bg-[#ddddeb] rounded-xl p-2"> 
                     <StateMajMap />
                 </div>
-                // This tag to the HERE tag needs to be placed inside its own component. Make sure to move associated functions
-                // <div className="relative flex-col shadow-lg items-center justify-center w-[90%] h-[90%] bg-[#ddddeb] rounded-xl p-2">
-                    
-                //     {state !== null ?  ( < StatePoliticians state={state} setState={setState} states={states}/> ) :
-                //         <div>
-                //             <div className="legend flex flex-col absolute top-10 left-10 bg-zinc-50 w-[150px] h-[100px] shadow-lg z-1 rounded-xl border-2 border-black">
-                //                 <div className="flex items-center justify-center h-[35%] w-[100%] underline">
-                //                     Legend
-                //                 </div>
-                //                 <div className="flex flex-row items-center justify-center h-[45%]">
-                //                     <div className="flex flex-col pl-5 justify-right gap-2 w-[30%]">
-                //                         <div className="flex bg-[#4149e6] min-h-[15px] min-w-[15px] h-[100%] w-[50%] rounded-xl">
-                //                         </div>
-                //                         <div className="flex bg-[#E64141] min-h-[15px] min-w-[15px] h-[100%] w-[50%] rounded-xl">
-                //                         </div>
-                //                     </div>
-                //                     <div className="flex flex-col w-[70%]">
-                //                         Democratic
-                //                         Republican
-                //                     </div>
-                //                 </div>
-                //             </div>
-                //             <div className="hidden items-center justify-center md:flex w-[100%]">
-                //                     <div>
-                //                         <div className="hidden 2xl:flex">
-                //                             < Map width="900px" height="700px" customize={customize} parentCallback={stateCallback}/> 
-                //                         </div>
-                //                         <div className="hidden lg:flex 2xl:hidden">
-                //                             < Map width="800px" height="600px" customize={customize} parentCallback={stateCallback}/> 
-                //                         </div>
-                //                         <div className="flex lg:hidden">
-                //                             < Map width="650px" height="500px"  parentCallback={stateCallback}/> 
-                //                         </div>
-                //                     </div>
-                //             </div>
-                //         </div>
-                //     }
-                //     <div className="flex flex-col md:hidden w-[100%] h-[100%] rounded-xl overflow-auto">
-                //         {state !== null ?  ( < StatePoliticians state={state} setState={setState} states={states}/> ) :
-                //             <div className="gap-2 p-1">
-                //                 {Object.entries(states).map(([key, value]) => 
-                //                     <div className="h-[5%] py-1">
-                //                         <StateCard abbreviation={key} state={value} parentCallback={stateCallback} /> 
-                //                     </div>
-                //                 )}
-                //             </div>
-                //         }
-                //     </div>
-                // </div>
-                // HERE
             }
         </div>
     );
