@@ -115,6 +115,7 @@ function PoliticianBlock({ pol, image_url, isExpanded, toggleCollapse}) {
                                     < IoLogoFacebook size={48} />
                                 </Link> :
                                 < IoLogoFacebook size={48} />}
+                                {console.log(twitter)}
                             {twitter !== null ?
                                 <Link to={twitter} target="_blank">
                                     < IoLogoTwitter size={48} />

@@ -11,8 +11,8 @@ import './App.css'
 import { Routes, Route } from 'react-router-dom';
 import Map from './pages/PoliticianLanding.jsx';
 import Elections from './pages/Elections.jsx';
-import PolyLanding from './pages/PolyLanding.jsx'
-
+import InteractiveMap from './pages/InteractiveMap.jsx';
+import PolyLanding from './pages/PolyLanding.jsx';
 
 function App() {
   return (
@@ -27,7 +27,8 @@ function App() {
         <Route path="/Bills" element={<Bills />}></Route>
         <Route path="/Map" element={<Map />}/>
         <Route path="/News" element={<News />} />
-        <Route path="/Overview" element={<PolyLanding />} />
+        <Route path="/Int" element={<InteractiveMap />} />
+        <Route path="/Overview" element={<PolyLanding/>} />
       </Routes>
     </React.Fragment>
   );
