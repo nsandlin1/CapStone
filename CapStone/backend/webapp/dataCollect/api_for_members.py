@@ -230,13 +230,17 @@ def openstates_get_state_politicians(apikey, state_abb, branch):
     }
     url = f"https://v3.openstates.org/people"
 
+
     params = {
         "jurisdiction": state_full[state_abb],
-        "org_classification": branch_sudonym[branch],
         "page": 1,
         "per_page": 50,
         "apikey": apikey
     }
+    if state_abb == "NE":
+        params["org_classification"] = "legislature"
+    else:
+        params["org_classification"] = branch_sudonym[branch]
 
     try:
         congressmen = []
