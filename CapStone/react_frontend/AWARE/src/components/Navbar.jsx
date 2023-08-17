@@ -16,7 +16,7 @@ function Navbar() {
       console.log('Window was resized!');
       
       const windowWidth = window.innerWidth;
-      const breakpoint = 768;
+      const breakpoint = 868;
 
       if (windowWidth > breakpoint) {
         setNav(false);
@@ -34,7 +34,7 @@ function Navbar() {
     <div className='h-20 bg-lightred'>
     <div className='navt flex justify-between items-center max-w-[80%] mx-auto px-4 pd-2 text-white bg-lightred'>
       <h1 className='w-full text-3xl font-bold text-white'>AWARE</h1>
-      <ul className='navbar hidden md:flex '>
+      <ul className='navbar hidden navbar:flex '>
         <li className='navitem p-4'>
           <NavLink to="/">Home</NavLink>
         </li>
@@ -59,7 +59,7 @@ function Navbar() {
           </NavLink>
         </li>
       </ul>
-      <div onClick={handleNav} className='block md:hidden'>
+      <div onClick={handleNav} className='block navbar:hidden'>
           {nav ? <AiOutlineClose size={20} /> : <AiOutlineMenu size={20} />}
         </div>
       <div className={nav ? 'mnavbar fixed left-0 top-0 w-[60%] h-full border-r border-r-gray-900 bg-lightred' : 'fixed hidden'}>
@@ -72,22 +72,22 @@ function Navbar() {
         </div>
         <ul className='pt-12 uppercase'>
           <li className='navitem p-4 border-b border-gray-600'>
-            <NavLink to="/">Home</NavLink>
+            <NavLink to="/" onClick={handleNav}>Home</NavLink>
           </li>
           <li className='navitem p-4 border-b border-gray-600'>
-            <NavLink to="/Calendar">Calendar</NavLink>
+            <NavLink to="/Calendar" onClick={handleNav}>Calendar</NavLink>
           </li>
           <li className='navitem p-4 border-b border-gray-600'>
-            <NavLink to="/Bills">Summarize Bills</NavLink>
+            <NavLink to="/Bills" onClick={handleNav}>Summarize Bills</NavLink>
           </li>
           <li className='navitem p-4 border-b border-gray-600'>
-            <NavLink to="/Elections">Elections</NavLink>
+            <NavLink to="/Elections" onClick={handleNav}>Elections</NavLink>
           </li>
           <li className='navitem p-4 border-b border-gray-600'>
-            <NavLink to="/Politicians">Politicians</NavLink>
+            <NavLink to="/Politicians" onClick={handleNav}>Politicians</NavLink>
           </li>
           <li className='navitem p-4 border-b border-gray-600'>
-            <NavLink to="/News">News</NavLink>
+            <NavLink to="/News" onClick={handleNav}>News</NavLink>
           </li>
         </ul>
       </div>
