@@ -56,22 +56,25 @@ function PoliticianBlock({ pol, image_url, isExpanded, toggleCollapse}) {
         }
     }, [isExpanded]);
 
+    const reDirect = (url) => {
+        window.location.href = url;
+    };
 
     let facebook = null;
     let twitter = null;
     let youtube = null;
     let website = null;
     let image = null;
-    {pol.facebook !== null ? facebook = `https://www.facebook.com/${pol.facebook}` : ""}
-    {pol.twitter !== null ? twitter = `https://www.twitter.com/${pol.twitter}` : ""}
-    {pol.youtube !== null ? youtube = `https://www.youtube.com/${pol.youtube}` : ""}
+    {pol.facebook !== null ? facebook = `https://www.facebook.com/${pol.facebook}` : facebook = " "}
+    {pol.twitter !== null ? twitter = `https://www.twitter.com/${pol.twitter}` : twitter = `empty`}
+    {pol.youtube !== null ? youtube = `https://www.youtube.com/${pol.youtube}` : youtube = `empty`}
     {pol.wesbite !== null ? website = pol.website : ""}
 
     const cardClassCollapsed = `relative flex flex-col justify-center items-center bg-white gap-2 py-2 cursor-pointer 
                                 rounded-xl w-[45%] h-[2%] md:w-[30%] md:h-[3%] lg:w-[15%] lg:h-[7%]`
 
     const cardClassExpanded = `relative flex flex-col justify-center items-center bg-white gap-2 py-2 
-                                rounded-xl w-[92%] h-[2%] md:w-[95%] md:h-[3%] lg:w-[48%] lg:h-[7%] xl:w-[31%] scroll-mt-4`
+                                rounded-xl w-[92%] h-[2%] md:w-[62%] md:h-[3%] lg:w-[48%] lg:h-[7%] xl:w-[31%] scroll-mt-4`
 
     const imageClassCollapsed = `${borderColor(pol.party)} transition hover:scale-110 border-4 rounded-full overflow-hidden w-20 h-20 
                                 md:h-24 md:w-24 lg:h-28 lg:w-28 xl:h-36 xl:w-36`
@@ -81,6 +84,8 @@ function PoliticianBlock({ pol, image_url, isExpanded, toggleCollapse}) {
                                 md:h-32 md:w-32
                                 lg:h-40 lg:w-40 lg: left-[6%]
                                 xl:h-46 xl:w-46`
+
+                                
 
 
     return (
@@ -99,8 +104,8 @@ function PoliticianBlock({ pol, image_url, isExpanded, toggleCollapse}) {
                 </div>
                 {!isExpanded ?
              
-                <div className="flex flex-col justify-center items-center">
-                        <h5 className="card-title">{pol.first_name} {pol.last_name}</h5>
+                <div className="flex flex-col items-center break-words">
+                        <h5 className="card-title text-center">{pol.first_name} {pol.last_name}</h5>
                         <p className="card-text">{pol.state}</p>
                 </div>
                 : 
@@ -108,29 +113,30 @@ function PoliticianBlock({ pol, image_url, isExpanded, toggleCollapse}) {
                     <div className="h-[100%] w-[90%] justify-center items-center">
                         <div className="w-[100%] pl-[40%] pt-6 lg:pt-12 lg:pl-[]">
                             
-                            <h1 className="font-bold text-3xl lg:text-xl">{pol.first_name} {pol.last_name}</h1>
+                            <h1 className="font-bold text-3xl lg:text-xl break-keep">{pol.first_name + " " + pol.last_name}</h1>
                             <div className="flex flex-row gap-3">
-                            {facebook !== null ? 
-                                <Link to={facebook} target="_blank">
+                            {facebook !== " " ? 
+                                <a href={facebook} target="_blank">
                                     < IoLogoFacebook size={48} />
-                                </Link> :
-                                < IoLogoFacebook size={48} />}
-                                {console.log(twitter)}
-                            {twitter !== null ?
-                                <Link to={twitter} target="_blank">
+                                </a>
+                                 :
+                                <a>< IoLogoFacebook size={48} /></a>}
+                            {twitter !== " " ?
+                                <a href={twitter} target="_blank">
                                     < IoLogoTwitter size={48} />
-                                </Link> :
-                                < IoLogoTwitter size={48}/>}      
-                            {youtube !== null ?
-                                <Link to={youtube} target="_blank">
+                                </a> :
+                                <a>< IoLogoTwitter size={48}/></a>}
+                            {console.log("Youtube = " + youtube)}
+                            {youtube !== "empty" ?
+                                <a href={youtube} target="_blank">
                                     < IoLogoYoutube size={48} />
-                                </Link> :
-                                < IoLogoYoutube size={48}/>}
-                            {website !== null ?
-                            <Link to={pol.website} target="_blank">
+                                </a> :
+                                <a className="hover:cursor-default">< IoLogoYoutube size={48}/></a>}
+                            {website !== " " ?
+                            <a href={pol.website} target="_blank">
                                 < IoIosGlobe size={48} />
-                            </Link> :
-                            < IoIosGlobe size={48} />}
+                            </a> :
+                            <a>< IoIosGlobe size={48} /></a>}
                             </div>
                         </div>
                     </div>
