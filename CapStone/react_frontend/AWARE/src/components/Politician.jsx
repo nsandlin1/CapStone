@@ -73,13 +73,13 @@ function PoliticianBlock({ pol, image_url, isExpanded, toggleCollapse}) {
     const cardClassCollapsed = `relative flex flex-col justify-center items-center bg-white gap-2 py-2 cursor-pointer 
                                 rounded-xl w-[45%] h-[2%] md:w-[30%] md:h-[3%] lg:w-[15%] lg:h-[7%]`
 
-    const cardClassExpanded = `relative flex flex-col justify-center items-center bg-white gap-2 py-2 
-                                rounded-xl w-[92%] h-[2%] md:w-[62%] md:h-[3%] lg:w-[48%] lg:h-[7%] xl:w-[31%] scroll-mt-4`
+    const cardClassExpanded = `relative flex flex-row justify-center items-center bg-white gap-2 py-2 
+                                rounded-xl w-[92%] h-[2%] md:w-[62%] md:h-[3%] lg:w-[48%] lg:h-[7%] xl:w-[48%] 2xl:w-[31%] scroll-mt-4`
 
     const imageClassCollapsed = `${borderColor(pol.party)} transition hover:scale-110 border-4 rounded-full overflow-hidden w-20 h-20 
                                 md:h-24 md:w-24 lg:h-28 lg:w-28 xl:h-36 xl:w-36`
 
-    const imageClassExpanded = `${borderColor(pol.party)}  absolute top-[15%] left-[10%] border-4 rounded-full 
+    const imageClassExpanded = `${borderColor(pol.party)} top-[15%] left-[10%] border-4 rounded-full 
                                 overflow-hidden w-28 h-28 
                                 md:h-32 md:w-32
                                 lg:h-40 lg:w-40 lg: left-[6%]
@@ -97,7 +97,7 @@ function PoliticianBlock({ pol, image_url, isExpanded, toggleCollapse}) {
                 onClick={!isExpanded ? toggleCollapse : ""}
             >
                 {isExpanded ? < FcCollapse size={30}  className="absolute top-2 right-2 cursor-pointer" onClick={toggleCollapse} /> : ""}
-                <div className={isExpanded ? "flex flex-shrink-0 w-[40%]" : "flex flex-shrink-0"}>
+                <div className={isExpanded ? "flex flex-row flex-shrink-0 w-[35%] pl-2 justify-center" : "flex flex-shrink-0"}>
                     <div className={isExpanded ? imageClassExpanded : imageClassCollapsed}>
                         <img src={image_url === null ? "../assets/Photo-unavailable.png" : image_url} className="object-cover h-full w-full" alt="Image Unavailable" />
                     </div>
@@ -109,35 +109,33 @@ function PoliticianBlock({ pol, image_url, isExpanded, toggleCollapse}) {
                         <p className="card-text">{pol.state}</p>
                 </div>
                 : 
-                <div className="flex flex-col h-[100%] w-[60%] justify-center items-center ">
-                    <div className="h-[100%] w-[90%] justify-center items-center">
-                        <div className="w-[100%] pl-[40%] pt-6 lg:pt-12 lg:pl-[]">
-                            
-                            <h1 className="font-bold text-3xl lg:text-xl break-keep">{pol.first_name + " " + pol.last_name}</h1>
-                            <div className="flex flex-row gap-3">
-                            {facebook !== " " ? 
-                                <a href={facebook} target="_blank">
-                                    < IoLogoFacebook size={48} />
-                                </a>
-                                 :
-                                <a>< IoLogoFacebook size={48} /></a>}
-                            {twitter !== " " ?
-                                <a href={twitter} target="_blank">
-                                    < IoLogoTwitter size={48} />
-                                </a> :
-                                <a>< IoLogoTwitter size={48}/></a>}
-                            {console.log("Youtube = " + youtube)}
-                            {youtube !== "empty" ?
-                                <a href={youtube} target="_blank">
-                                    < IoLogoYoutube size={48} />
-                                </a> :
-                                <a className="hover:cursor-default">< IoLogoYoutube size={48}/></a>}
-                            {website !== " " ?
-                            <a href={pol.website} target="_blank">
-                                < IoIosGlobe size={48} />
+                <div className="flex flex-col h-[100%] w-[50%] justify-center items-center ">
+                    <div className="w-[100%]">
+                        
+                        <h1 className="font-bold text-xl lg:text-3xl break-keep">{pol.first_name + " " + pol.last_name}</h1>
+                        <div className="flex flex-row gap-3">
+                        {facebook !== " " ? 
+                            <a href={facebook} target="_blank">
+                                < IoLogoFacebook className="SocialIcon"/>
+                            </a>
+                                :
+                            <a>< IoLogoFacebook className="SocialIcon"/></a>}
+                        {twitter !== " " ?
+                            <a href={twitter} target="_blank">
+                                < IoLogoTwitter className="SocialIcon"/>
                             </a> :
-                            <a>< IoIosGlobe size={48} /></a>}
-                            </div>
+                            <a>< IoLogoTwitter className="SocialIcon"/></a>}
+                        {console.log("Youtube = " + youtube)}
+                        {youtube !== "empty" ?
+                            <a href={youtube} target="_blank">
+                                < IoLogoYoutube className="SocialIcon"/>
+                            </a> :
+                            <a className="hover:cursor-default">< IoLogoYoutube className="SocialIcon"/></a>}
+                        {website !== " " ?
+                        <a href={pol.website} target="_blank">
+                            < IoIosGlobe className="SocialIcon"/>
+                        </a> :
+                        <a>< IoIosGlobe className="SocialIcon"/></a>}
                         </div>
                     </div>
                 </div>

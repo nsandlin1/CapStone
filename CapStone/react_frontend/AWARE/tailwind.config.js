@@ -15,6 +15,7 @@ export default {
       },
       screens: {
       'navbar': '868px',
+      'cardCollapse' : '1445px',
       },
     },
   },
