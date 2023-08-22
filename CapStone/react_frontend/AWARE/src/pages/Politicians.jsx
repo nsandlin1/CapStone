@@ -1,5 +1,4 @@
 import { CgHello } from "react-icons/cg";
-import { Politician, PoliticianBlock } from "../components/Politician"
 import React, { useEffect, useState } from "react"
 import { FederalButton } from "../components/FederalButton";
 import { StateButton } from "../components/StateButton";

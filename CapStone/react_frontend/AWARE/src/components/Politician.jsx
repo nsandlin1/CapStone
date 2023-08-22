@@ -4,30 +4,6 @@ import { FcCollapse } from "react-icons/fc";
 import { IoLogoFacebook, IoLogoTwitter, IoLogoYoutube, IoIosGlobe } from "react-icons/io";
 import { Link } from 'react-router-dom';
 
-// I don't think im even using this
-class Politician {
-    constructor(website, contact_form, date_of_birth, facebook, first_name, id, last_name, middle_name, party, phone, state, twitter, image_url) {
-        this.website = website
-        this.contact_form = contact_form
-        this.date_of_birth = date_of_birth
-        this.facebook = facebook
-        this.first_name = first_name
-        this.id = id
-        this.last_name = last_name
-        this.middle_name = middle_name
-        this.party = party
-        this.phone = phone
-        this.state = state
-        this.twitter = twitter
-        this.image_url = image_url
-    }
-
-    setImageURL(image_url){
-        this.image_url = image_url
-    }
-
-}
-
 function borderColor(party) {
     if (party == 'D'){
         return 'border-blue-800'
@@ -39,11 +15,33 @@ function borderColor(party) {
 }
 
 
-
+// Truncates a given string up to a given length
+function truncateName(name, length) {
+    if (name.length > length){
+        console.log(name.substring(0,length));
+        return name.substring(0, length) + '\u2026';
+    }
+    return (name);
+}
 
 function PoliticianBlock({ pol, image_url, isExpanded, toggleCollapse}) {
 
     const blockRef = useRef(null);
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+    useEffect(() => {
+        const handleResize = () => {
+          console.log('Window was resized!');
+          
+          setWindowWidth(window.innerWidth);
+        };
+    
+        window.addEventListener('resize', handleResize);
+    
+        return() => {
+          window.removeEventListener('resize', handleResize);
+        };
+      }, []);
 
     useEffect(() => {
         if (isExpanded && blockRef.current) {
@@ -59,6 +57,8 @@ function PoliticianBlock({ pol, image_url, isExpanded, toggleCollapse}) {
     const reDirect = (url) => {
         window.location.href = url;
     };
+
+    const name = pol.first_name + ' ' + pol.last_name;
 
     let facebook = null;
     let twitter = null;
@@ -87,6 +87,7 @@ function PoliticianBlock({ pol, image_url, isExpanded, toggleCollapse}) {
 
                                 
 
+                                // 17
 
     return (
         // make where you can click on the card and go to a dynamically
@@ -105,7 +106,7 @@ function PoliticianBlock({ pol, image_url, isExpanded, toggleCollapse}) {
                 {!isExpanded ?
              
                 <div className="flex flex-col items-center break-words">
-                        <h5 className="card-title text-center">{pol.first_name} {pol.last_name}</h5>
+                        <h5 className="card-title text-center">{windowWidth > 510 ? truncateName(name, 30) : truncateName(name, 14)}</h5>
                         <p className="card-text">{pol.state}</p>
                 </div>
                 : 
@@ -144,7 +145,7 @@ function PoliticianBlock({ pol, image_url, isExpanded, toggleCollapse}) {
     );
 }
 
-export { Politician, PoliticianBlock }
+export { PoliticianBlock }
 
 // "Website": "https://www.barrasso.senate.gov",
 // "contact_form": "https://www.barrasso.senate.gov/public/index.cfm/contact-form",

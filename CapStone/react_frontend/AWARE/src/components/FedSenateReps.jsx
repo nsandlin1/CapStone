@@ -1,5 +1,5 @@
 import { CgHello } from "react-icons/cg";
-import { Politician, PoliticianBlock } from "../components/Politician"
+import { PoliticianBlock } from "../components/Politician"
 import { Wrapper } from "../components/widgets";
 import React, { useEffect, useState } from "react"
 import { FederalButton } from "../components/FederalButton";
