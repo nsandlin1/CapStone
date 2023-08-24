@@ -77,18 +77,28 @@ path:hover {
   
   @media only screen and (max-width: 400px) {
     .SocialIcon {
-      font-size: 24px;
+        font-size: 24px;
+    }
+    .BackArrow {
+        font-size: 40px;
     }
   }
 
   @media only screen and (min-width: 400px) {
     .SocialIcon {
-      font-size: 30px;
+        font-size: 30px;
+    }
+    .BackArrow {
+        font-size: 72px;
     }
   }
 
   @media only screen and (min-width: 600px) {
     .SocialIcon {
-      font-size: 48px;
+        font-size: 48px;
+    }
+    .BackArrow {
+        font-size: 90px;
     }
   }
+
