@@ -501,7 +501,7 @@ function StateMajMap() {
             
             }
             </div>
-            <div className="flex flex-col md:hidden w-[100%] h-[100%] rounded-xl overflow-auto">
+            <div className="flex flex-col md:hidden w-[100%] h-[100%] bg-navy rounded-xl overflow-auto">
                 {console.log(state)}
                 {state !== null ?  ( < StatePoliticians state={state} setState={setState} states={states}/> ) :
                     <div className="gap-2 p-1">
