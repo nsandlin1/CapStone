@@ -71,9 +71,13 @@ path:hover {
     background-color: #428bdc;
 }
 
-.SocialIcon{
+.SocialIcon { 
     font-size: 48px;
-  }
+}
+
+.legend {
+    position: absolute;
+}
   
   @media only screen and (max-width: 400px) {
     .SocialIcon {
@@ -90,6 +94,36 @@ path:hover {
     }
     .BackArrow {
         font-size: 72px;
+    }
+  }
+
+  @media only screen and (min-width: 1280px){
+  }
+
+  @media only screen and (max-width: 1024px) and (min-width: 768px) {
+    .legend {
+        width: 150px;
+        height: 99px;
+        top: 20px;
+        left: 20px;
+    }
+  }
+
+  @media only screen and (min-width: 1024px) and (max-width: 1280px){
+    .legend {
+        width: 150px;
+        height: 100px;
+        top: 20px;
+        left: 30px;
+    }
+  }
+
+  @media only screen and (min-width: 1280px){
+    .legend {
+        width: 150px;
+        height: 100px;
+        top: 40px;
+        left: 80px;
     }
   }
 
