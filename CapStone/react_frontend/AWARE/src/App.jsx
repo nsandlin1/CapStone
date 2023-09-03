@@ -15,6 +15,13 @@ import InteractiveMap from './pages/InteractiveMap.jsx';
 import PolyLanding from './pages/PolyLanding.jsx';
 
 function App() {
+
+  const [token, setToken] = useState();
+
+  if (token) {
+    return <div>Home</div>
+  }
+
   return (
     <React.Fragment>
       <Navbar/>
