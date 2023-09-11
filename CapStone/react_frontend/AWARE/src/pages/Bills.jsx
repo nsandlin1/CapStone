@@ -15,9 +15,9 @@ function Bills() {
     const [summary, setSummary] = useState("No bill selected.");
     const [more, setMore] = useState('medium');
 
-     const handleSumLengthChange = (length) => {
-         setMore(length);
-     };
+    const handleSumLengthChange = (length) => {
+        setMore(length);
+    };
 
     function getBillsList() {   
 

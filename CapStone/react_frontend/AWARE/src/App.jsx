@@ -13,6 +13,8 @@ import Map from './pages/PoliticianLanding.jsx';
 import Elections from './pages/Elections.jsx';
 import InteractiveMap from './pages/InteractiveMap.jsx';
 import PolyLanding from './pages/PolyLanding.jsx';
+import Login from './pages/Login.jsx'
+import SignUp from './pages/SignUp.jsx'
 
 function App() {
 
@@ -24,7 +26,7 @@ function App() {
 
   return (
     <React.Fragment>
-      <Navbar/>
+      {/* <Navbar/> */}
       <Routes>
         <Route path="/" element={<Homepage />} />
         <Route path="/Calendar" element={<Calendar />} />
@@ -36,6 +38,8 @@ function App() {
         <Route path="/News" element={<News />} />
         <Route path="/Int" element={<InteractiveMap />} />
         <Route path="/Overview" element={<PolyLanding/>} />
+        <Route path="/Login" element={<Login/>} />
+        <Route path="/SignUp" element={<SignUp/>} />
       </Routes>
     </React.Fragment>
   );
