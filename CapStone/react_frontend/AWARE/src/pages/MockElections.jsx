@@ -36,7 +36,7 @@ function MockElections(){
             <div className='flex items-center justify-center h-[90%] w-[100%] bg-slate-400'>
                 <div className='flex h-[95%] w-[80%] justify-center pt-4 bg-navy rounded-xl'>
                     <h1 className='text-2xl text-white'>
-                        { selectedClass == "Null" ? "Please Select a Class to view available Ballots" : "Ballots"}
+                        { selectedClass == "Null" ? "Please Select a Class to view available Ballots" : "Elections"}
                     </h1>
                 </div>
             </div>
