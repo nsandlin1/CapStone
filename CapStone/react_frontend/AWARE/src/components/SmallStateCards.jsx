@@ -8,7 +8,7 @@ function StateCard ({ abbreviation, state, parentCallback }) {
 
     return (
         <div className="flex items-center justify-center w-[100%] h-[100%] light-blue rounded-xl" onClick={clicker}>
-            <p className="text-white">{ state }</p>
+            <p className="text-navy">{ state }</p>
         </div>
     )
 }

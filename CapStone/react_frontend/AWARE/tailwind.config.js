@@ -13,6 +13,10 @@ export default {
         'lightblue': '#428bca',
         'babyblue': '#25B3DE'
       },
+      screens: {
+      'navbar': '868px',
+      'cardCollapse' : '1445px',
+      },
     },
   },
   plugins: [],
