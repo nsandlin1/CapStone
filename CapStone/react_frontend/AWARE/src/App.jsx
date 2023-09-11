@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Home from './pages/index.jsx';
 import Navbar from './components/Navbar.jsx';
 import Homepage from './pages/Homepage.jsx';
@@ -13,15 +13,9 @@ import Map from './pages/PoliticianLanding.jsx';
 import Elections from './pages/Elections.jsx';
 import InteractiveMap from './pages/InteractiveMap.jsx';
 import PolyLanding from './pages/PolyLanding.jsx';
+import MockElections from './pages/MockElections.jsx';
 
 function App() {
-
-  const [token, setToken] = useState();
-
-  if (token) {
-    return <div>Home</div>
-  }
-
   return (
     <React.Fragment>
       <Navbar/>
@@ -36,6 +30,7 @@ function App() {
         <Route path="/News" element={<News />} />
         <Route path="/Int" element={<InteractiveMap />} />
         <Route path="/Overview" element={<PolyLanding/>} />
+        <Route path="/Mock" element={<MockElections/> } />
       </Routes>
     </React.Fragment>
   );

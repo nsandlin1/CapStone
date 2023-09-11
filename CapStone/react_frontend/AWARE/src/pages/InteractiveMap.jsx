@@ -3,7 +3,7 @@ import Map from "./PoliticianLanding";
 
 function InteractiveMap() {
     return (
-        <div className='flex flex-col h-[89vh] items-center justify-center'>
+        <div className='flex flex-col h-[91vh] items-center justify-center'>
             <div className='flex items-center justify-center h-[10%] w-[90%] bg-yellow-500'>
                 
             </div>
