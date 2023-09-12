@@ -22,11 +22,10 @@ export default function Login() {
 
     function submit() {
         if (validate(email, password)) {
-            console.log("1")
             fetch("http://localhost:5000/api/user/login?email=" + email + "&password=" + password)
                 .then(res => res.json())
                 .then(res => setResponse(res))
-            console.log("2")
+                .catch(err => console.log(err))
         } else {
             console.log("login does not meet requirements")
         }

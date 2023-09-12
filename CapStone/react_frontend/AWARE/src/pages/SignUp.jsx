@@ -25,6 +25,7 @@ export default function Login() {
             fetch("http://localhost:5000/api/user/sign-up?email=" + email + "&password=" + password)
                 .then(res => res.json())
                 .then(res => setResponse(res))
+                .catch(err => console.log(err))
         } else {
             console.log("signup does not meet requirements")
         }
