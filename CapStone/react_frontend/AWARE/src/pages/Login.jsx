@@ -22,7 +22,18 @@ export default function Login() {
 
     function submit() {
         if (validate(email, password)) {
-            fetch("http://localhost:5000/api/user/login?email=" + email + "&password=" + password)
+            var api_url = "http://localhost:5000/api/user/login?email=" + email + "&password=" + password
+            console.log("The url:", api_url)
+            fetch(
+                api_url,
+                // {
+                //     mode: 'no-cors',
+                //     method: 'GET',
+                //     headers: {
+                //         "Access-Control-Allow-Origin": "*",
+                //     }
+                // }
+                )
                 .then(res => res.json())
                 .then(res => setResponse(res))
                 .catch(err => console.log(err))

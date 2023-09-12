@@ -22,7 +22,8 @@ export default function Login() {
 
     function submit() {
         if (validate(email, password)) {
-            fetch("http://localhost:5000/api/user/sign-up?email=" + email + "&password=" + password)
+            api_url = "http://localhost:5000/api/user/sign-up?email=" + email + "&password=" + password
+            fetch(api_url)
                 .then(res => res.json())
                 .then(res => setResponse(res))
                 .catch(err => console.log(err))

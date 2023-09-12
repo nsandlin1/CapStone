@@ -8,6 +8,7 @@ from flask_jwt_extended import create_access_token, create_refresh_token, set_ac
 from ..models import User
 from werkzeug.security import generate_password_hash, check_password_hash
 from ..extensions import db
+from flask_cors import cross_origin
 
 user = Blueprint('user', __name__)
 
@@ -44,6 +45,8 @@ def login():
     resp = jsonify({'login': True})
     set_access_cookies(resp, access_token)
     # set_refresh_cookies(resp, refresh_token)
+
+    # resp.headers.add("Access-Control-Allow-Origin", "*")
     
     return resp, 200
 

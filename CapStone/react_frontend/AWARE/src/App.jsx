@@ -26,7 +26,7 @@ function App() {
 
   return (
     <React.Fragment>
-      {/* <Navbar/> */}
+      <Navbar/>
       <Routes>
         <Route path="/" element={<Homepage />} />
         <Route path="/Calendar" element={<Calendar />} />
