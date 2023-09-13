@@ -9,22 +9,21 @@ function MockElections(){
     const [selectedClass, setSelectedClass] = useState("Null");
     const [isVisible, setVisibile] = useState(false);
     
-    const transitionCreateBallot = useTransition(isVisible, {
-        from: { transform: 'translateY(100%)', opacity: 0 },
-        enter: { transform: 'translateY(0)', opacity: 1},
-        leave: { transform: 'translateY(100%)', opacity: 0}
+    const transitionCreateBallot = useTransition(!isVisible, {
+        from: {  opacity: 0},
+        enter: { opacity: 1},
+        leave: {  opacity: 0}
     })
 
     const transitionElection = useTransition(!isVisible, {
-        from: { transform: 'translateY(100%)', opacity: 0 },
-        enter: { transform: 'translateY(0)', opacity: 1},
-        leave: { transform: 'translateY(100%)', opacity: 0}
+        from: {  opacity: 0},
+        enter: {  opacity: 1},
+        leave: {  opacity: 0}
         
         // enter: { x: 0, y: 0, opacity: 1},
         // leave: { x: 0, y: 800, opacity: 0}
     })
 
-    
 
     const classData = [
         { value: 'Class1', name: 'Class 1' },
@@ -56,10 +55,10 @@ function MockElections(){
                 </div>
             </div>
             <div className='flex items-center justify-center h-[85%] w-[100%] bg-slate-400'>
-                <div className='flex flex-col h-[95%] w-[80%] justify-center items-center pt-4 bg-navy rounded-xl'>
-                    { transitionElection((style, item) =>
+                <div className='flex relative flex-col h-[95%] w-[80%] justify-center items-center pt-4 bg-navy rounded-xl'>
+                    { transitionCreateBallot((style, item) =>
                         item &&
-                    <animated.div style={style} className='flex flex-col h-[100%] w-[100%]'>
+                    <animated.div style={style} className='absolute flex flex-col h-[100%] w-[100%]'>
                         <div className='flex relative h-[10%] w-[100%] items-center justify-center'>
                             { selectedClass == 'Null' ? 
                                 '' :
@@ -77,10 +76,10 @@ function MockElections(){
                         }
                     </animated.div>
                     )}
-                    { transitionCreateBallot((style, item) =>
-                        item &&
-                    <animated.div style={style} className='flex relative h-[100%] w-[100%] bg-white rounded-xl'> 
-                        < BiArrowBack size='48' className='absolute fill-black top-1 left-10' onClick= {() => {setVisibile( v => !v);}}/> 
+                    { transitionElection((style, item) =>
+                        !item &&
+                    <animated.div style={style} className='flex relative h-[100%] w-[100%] bg-navy rounded-xl'> 
+                        < BiArrowBack size='48' className='absolute fill-white top-1 left-10' onClick= {() => {setVisibile( v => !v);}}/> 
                     </animated.div> )}
                 </div>
             </div>
