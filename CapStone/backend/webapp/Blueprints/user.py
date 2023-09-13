@@ -36,9 +36,13 @@ def login():
 
     stored_user = User.query.get(email)
     if stored_user == None or not check_password_hash(stored_user.password, password):
+        print("failed to login")
         return jsonify({'login': False, 'Error': 'User Authentication Failed'}), 401
-    
+
+    print("getting token")
+    print("appending cookie access token")
     access_token = create_access_token(identity=email)
+    print(access_token)
     # so client can get new access token when expires
     # refresh_token = create_refresh_token(identity=email)
 
@@ -48,9 +52,15 @@ def login():
 
     # resp.headers.add("Access-Control-Allow-Origin", "*")
     
+    print('resp:', resp.data.decode('utf-8'))
     return resp, 200
 
+# check if jwt is active
+# @user.route('/at_check')
+# def check():
+
 @user.route('/logout')
+@jwt_required
 def logout():
     resp = jsonify({'logout': True})
     unset_jwt_cookies(resp)

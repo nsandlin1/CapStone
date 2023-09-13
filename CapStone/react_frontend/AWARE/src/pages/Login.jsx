@@ -49,6 +49,7 @@ export default function Login() {
         } else {
             if (response.login === false) {
                 // display "incorrect email or password"
+                console.log("response:", response)
                 console.log("incorrect login")
             } else {
                 // redirect to wherever

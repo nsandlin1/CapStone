@@ -15,6 +15,7 @@ import InteractiveMap from './pages/InteractiveMap.jsx';
 import PolyLanding from './pages/PolyLanding.jsx';
 import Login from './pages/Login.jsx'
 import SignUp from './pages/SignUp.jsx'
+import Profile from './pages/Profile.jsx'
 
 function App() {
 
@@ -40,6 +41,7 @@ function App() {
         <Route path="/Overview" element={<PolyLanding/>} />
         <Route path="/Login" element={<Login/>} />
         <Route path="/SignUp" element={<SignUp/>} />
+        <Route path="/Profile" element={<Profile/>} />
       </Routes>
     </React.Fragment>
   );
