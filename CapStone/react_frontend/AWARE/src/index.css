@@ -6,7 +6,7 @@
 :root {
   --border-radius: 8px;
   --speed: 500ms;
-  --navbar-height: 80px;
+  --navbar-height: 9vh;
 }
 
 body {

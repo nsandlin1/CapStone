@@ -75,7 +75,7 @@ function Bills() {
     };
 
     return (
-        <div className="flex flex-col items-center h-[89vh] pb-4 gap-1">
+        <div className="flex flex-col items-center h-[91vh] pb-4 gap-1">
             <div className="flex flex-row items-center justify-center h-[10%] w-[90%]">
                 <div className="flex flex-row h-[100%] rounded-xl gap-2 p-2 w-[90%]">
                     <FederalButton 
