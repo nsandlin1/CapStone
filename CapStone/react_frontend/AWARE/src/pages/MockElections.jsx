@@ -1,5 +1,5 @@
 import { React, useState }from 'react';
-import MockElectionCard from '../components/MockElections/TeacherElectionCard';
+import MockElectionCard from '../components/MockElections/ElectionCard';
 import { IoMdAdd } from 'react-icons/io';
 import { useTransition, animated } from '@react-spring/web';
 import CreateBallot from '../components/MockElections/CreateBallot';
@@ -49,7 +49,7 @@ function MockElections(){
                 </div>
             </div>
             <div className='flex items-center justify-center h-[85%] w-[100%] bg-slate-400'>
-                <div className='flex relative flex-col h-[95%] w-[80%] justify-center items-center pt-4 bg-navy rounded-xl'>
+                <div className='flex relative flex-col h-[95%] w-[80%] shadow-2xl justify-center items-center pt-4 bg-navy rounded-xl'>
                     { transitionElection((style, item) =>
                         item &&
                     <animated.div style={style} className='absolute flex flex-col h-[100%] w-[100%]'>
