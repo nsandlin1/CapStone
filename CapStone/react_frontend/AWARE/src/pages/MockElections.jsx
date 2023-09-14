@@ -8,8 +8,15 @@ function MockElections(){
 
     const [selectedClass, setSelectedClass] = useState("Null");
     const [isVisible, setVisibile] = useState(false);
+    const [isClassSelected, setIsClassSelected] = useState(false);
 
     const transitionElection = useTransition(!isVisible, {
+        from: {  opacity: 0},
+        enter: {  opacity: 1},
+        leave: {  opacity: 0}
+    })
+
+    const transitionClass = useTransition(isClassSelected, {
         from: {  opacity: 0},
         enter: {  opacity: 1},
         leave: {  opacity: 0}
@@ -23,6 +30,8 @@ function MockElections(){
     const handleSelectChange = (event) => {
         const newValue = event.target.value;
         setSelectedClass(newValue);
+        if (newValue == 'Null') { setIsClassSelected(false); }
+        else { setIsClassSelected(true); }
       };
 
     const handleBack = () => {
@@ -53,21 +62,31 @@ function MockElections(){
                     { transitionElection((style, item) =>
                         item &&
                     <animated.div style={style} className='absolute flex flex-col h-[100%] w-[100%]'>
-                        <div className='flex relative h-[10%] w-[100%] items-center justify-center'>
-                            { selectedClass == 'Null' ? 
-                                '' :
-                                < IoMdAdd size='48' className='absolute fill-white top-1 right-10' onClick= {() => {setVisibile( v => !v);}}/> 
-                            }
-                            <h1 className='text-3xl text-white'>
-                                { selectedClass == "Null" ? "Please Select a Class to view available Ballots" : "Elections"}
-                            </h1>
-                        </div>
-                        { selectedClass == 'Null' ? <div className='flex flex-row h-[90%] w-[100%] justify-center'></div> : 
-                        <div className='flex flex-row h-[90%] w-[100%] justify-center'>
-                            <MockElectionCard />
-                            <MockElectionCard />
-                        </div>
-                        }
+                        { transitionClass((style, item) =>
+                            item && 
+                                <animated.div style={style} className='absolute flex flex-col h-[100%] w-[100%]'>
+                                    <div className='flex relative h-[10%] w-[100%] items-center justify-center'>
+                                        < IoMdAdd size='48' className='absolute fill-white top-1 right-10' onClick= {() => {setVisibile( v => !v);}}/>
+                                        <h1 className='text-3xl text-white'>
+                                            Elections
+                                        </h1>
+                                    </div> 
+                                    <div className='flex flex-row h-[90%] w-[100%] justify-center'>
+                                        <MockElectionCard />
+                                        <MockElectionCard />
+                                    </div>
+                                </animated.div>
+                        )} 
+                        { transitionClass((style, item) =>
+                            !item && 
+                                <animated.div style={style} className='flex relative flex-col h-[100%] w-[100%]'>
+                                    <div className='flex relative h-[10%] w-[100%] items-center justify-center'>
+                                        <h1 className='text-3xl text-white'>
+                                            Please Select a Class to view available Ballots
+                                        </h1>
+                                    </div> 
+                                </animated.div>
+                        )} 
                     </animated.div>
                     )}
                     { transitionElection((style, item) =>
