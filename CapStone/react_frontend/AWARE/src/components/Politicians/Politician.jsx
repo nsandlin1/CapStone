@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useState, useRef} from "react";
-import { Wrapper } from "../components/widgets";
+import { Wrapper } from "../widgets";
 import { FcCollapse } from "react-icons/fc";
 import { IoLogoFacebook, IoLogoTwitter, IoLogoYoutube, IoIosGlobe } from "react-icons/io";
 import { FaXTwitter } from "react-icons/fa6";

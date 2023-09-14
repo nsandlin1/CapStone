@@ -1,9 +1,8 @@
 import { CgHello } from "react-icons/cg";
 import React, { useEffect, useState } from "react"
-import { FederalButton } from "../components/FederalButton";
-import { StateButton } from "../components/StateButton";
-import { SenateReps } from "../components/FedSenateReps";
-import { HouseReps } from "../components/FedHouseReps";
+import { StateButton, FederalButton } from "../components/Buttons";
+import { SenateReps } from "../components/Politicians/FedSenateReps";
+import { HouseReps } from "../components/Politicians/FedHouseReps";
 import { StatePoliticians } from "../components/StatePoliticians";
 import Map from "./PoliticianLanding";
 import  StateCard  from "../components/SmallStateCards";

@@ -1,14 +1,11 @@
-import { CgHello } from "react-icons/cg";
-import { PoliticianBlock } from "../components/Politician"
-import { Wrapper } from "../components/widgets";
+import { PoliticianBlock } from "./Politician"
 import React, { useEffect, useState } from "react"
-import { FederalButton } from "../components/FederalButton";
-import { StateButton } from "../components/StateButton";
 
-export const SenateReps = () => {
 
-    var branch = "senate"
-    var api_url = `http://localhost:5000/api/congress/members?branch=senate`
+export const HouseReps = () => {
+
+    var branch = "house"
+    var api_url = `http://localhost:5000/api/congress/members?branch=${branch}`
     
     const [pols, setPols] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -19,7 +16,6 @@ export const SenateReps = () => {
         /*
         make api request to get politicians return to pols variable
         */
-        console.log("fetching politicians")
         fetch(api_url)
             .then((response) => {
                 if (!response.ok) {
@@ -31,7 +27,6 @@ export const SenateReps = () => {
             })
             .then((data) => {
                 setPols(data);
-                console.log(pols)
                 setError(null);
             })
             .catch((err) => {
@@ -43,17 +38,14 @@ export const SenateReps = () => {
     }
 
     function getImageUrls() {
-        console.log("fetching image urls")
         for (let i = 0; i < pols.length; i++) {
             // console.log(pols[i].id)
             if (!(pols[i].id in image_urls)) {
-                console.log("isnull");
                 (async function (index) {
                     fetch(`http://localhost:5000/api/congress/member_image?id=${pols[index].id}`)
                     .then((response) => {
                         if (!response.ok) {
                             throw new Error(
-                                console.log("throwing error")
                                 `HTTP error: ${response.status}`
                             );
                         }
@@ -67,7 +59,6 @@ export const SenateReps = () => {
                     })
                     .catch((err) => {
                         setError(err)
-                        console.log(err.message)
                     });
                 })(i);
             }
@@ -103,7 +94,7 @@ export const SenateReps = () => {
                     <div>{`There has been a problem -- ${error}`}</div>
                 )} */}
                 {!loading && (
-                    <div className="flex flex-wrap items-center justify-center gap-4 h-[90%]">
+                    <div className="flex flex-wrap items-center justify-center gap-4 h-[20%]">
                         { 
                             pols.map((pol) => {
                                 return <PoliticianBlock 

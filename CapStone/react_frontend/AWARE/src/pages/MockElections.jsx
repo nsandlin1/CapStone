@@ -1,29 +1,19 @@
 import { React, useState }from 'react';
-import MockElectionCard from '../components/TeacherElectionCard';
+import MockElectionCard from '../components/MockElections/TeacherElectionCard';
 import { IoMdAdd } from 'react-icons/io';
-import { BiArrowBack } from 'react-icons/bi';
 import { useTransition, animated } from '@react-spring/web';
+import CreateBallot from '../components/MockElections/CreateBallot';
 
 function MockElections(){
 
     const [selectedClass, setSelectedClass] = useState("Null");
     const [isVisible, setVisibile] = useState(false);
-    
-    const transitionCreateBallot = useTransition(!isVisible, {
-        from: {  opacity: 0},
-        enter: { opacity: 1},
-        leave: {  opacity: 0}
-    })
 
     const transitionElection = useTransition(!isVisible, {
         from: {  opacity: 0},
         enter: {  opacity: 1},
         leave: {  opacity: 0}
-        
-        // enter: { x: 0, y: 0, opacity: 1},
-        // leave: { x: 0, y: 800, opacity: 0}
     })
-
 
     const classData = [
         { value: 'Class1', name: 'Class 1' },
@@ -34,6 +24,10 @@ function MockElections(){
         const newValue = event.target.value;
         setSelectedClass(newValue);
       };
+
+    const handleBack = () => {
+        setVisibile(v => !v);
+    }
 
     return (
         <div className="flex flex-col justify-center items-center h-[91vh] w-[100%] pb-4 bg-slate-400">
@@ -56,7 +50,7 @@ function MockElections(){
             </div>
             <div className='flex items-center justify-center h-[85%] w-[100%] bg-slate-400'>
                 <div className='flex relative flex-col h-[95%] w-[80%] justify-center items-center pt-4 bg-navy rounded-xl'>
-                    { transitionCreateBallot((style, item) =>
+                    { transitionElection((style, item) =>
                         item &&
                     <animated.div style={style} className='absolute flex flex-col h-[100%] w-[100%]'>
                         <div className='flex relative h-[10%] w-[100%] items-center justify-center'>
@@ -78,8 +72,8 @@ function MockElections(){
                     )}
                     { transitionElection((style, item) =>
                         !item &&
-                    <animated.div style={style} className='flex relative h-[100%] w-[100%] bg-navy rounded-xl'> 
-                        < BiArrowBack size='48' className='absolute fill-white top-1 left-10' onClick= {() => {setVisibile( v => !v);}}/> 
+                    <animated.div style={style} className='flex relative h-[100%] w-[100%] bg-navy rounded-xl'>
+                        < CreateBallot back={handleBack}/>
                     </animated.div> )}
                 </div>
             </div>
