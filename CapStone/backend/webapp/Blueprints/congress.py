@@ -1,7 +1,7 @@
 from flask import current_app, Blueprint, request
 from ..dataCollect.api_for_members import *
 from ..extensions import db
-from ..models import JpegUrl, Congressman, Bill, StateCongressman, StateMajority
+from ..models import JpegUrl, Congressman, Bill, StateCongressman, StateMajority, User, Teacher
 from ..schemas import jpeg_url_schema, congressmen_schema, bills_schema, state_congressmen_schema, state_senate_majority_schema
 from loguru import logger
 import re
