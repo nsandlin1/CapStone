@@ -45,7 +45,7 @@ function MockElections(){
     return (
         <div className="flex flex-col justify-center items-center h-[91vh] w-[100%] pb-4 bg-slate-400">
             <div className='flex flex-row justify-left items-center h-[10%] w-[80%]'>
-                <div className='flex mt-4 w-[20%] h-[80%] rounded-xl'>
+                <div className='flex mt-4 w-[60%] md:w-[20%] h-[80%] rounded-xl'>
                     <select className='rounded-xl w-[100%] h-[90%] text-xl text-center' 
                             name="classes" 
                             id="classes"
@@ -70,7 +70,7 @@ function MockElections(){
                             item && 
                                 <animated.div style={style} className='absolute flex flex-col h-[100%] w-[100%]'>
                                     <div className='flex relative h-[10%] w-[100%] items-center justify-center'>
-                                        < IoMdAdd size='48' className='absolute fill-white top-1 right-10' onClick= {() => {setVisibile( v => !v);}}/>
+                                        < IoMdAdd className='AddButtonMock absolute fill-white top-3 md:top-1 right-4 md:right-10' onClick= {() => {setVisibile( v => !v);}}/>
                                         <h1 className='text-3xl text-white'>
                                             Elections
                                         </h1>
@@ -84,9 +84,9 @@ function MockElections(){
                         { transitionClass((style, item) =>
                             !item && 
                                 <animated.div style={style} className='flex relative flex-col h-[100%] w-[100%]'>
-                                    <div className='flex relative h-[10%] w-[100%] items-center justify-center'>
-                                        <h1 className='text-3xl text-white'>
-                                            Please Select a Class to view available Ballots
+                                    <div className='flex md:h-[10%] w-[100%] items-center justify-center'>
+                                        <h1 className='md:text-3xl text-white overflow-auto'>
+                                            Select a Class to view available Ballots
                                         </h1>
                                     </div> 
                                 </animated.div>
