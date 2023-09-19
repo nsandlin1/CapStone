@@ -164,22 +164,13 @@ export const TeachNavbar = () => {
         </div>
         <ul className='pt-12 uppercase'>
           <li className='navitem p-4 border-b border-gray-600'>
-            <NavLink to="/" onClick={handleNav}>Home</NavLink>
+            <NavLink to="/" onClick={handleNav}>Classes</NavLink>
           </li>
           <li className='navitem p-4 border-b border-gray-600'>
             <NavLink to="/Mock" onClick={handleNav}>Mock Ballots</NavLink>
           </li>
           <li className='navitem p-4 border-b border-gray-600'>
-            <NavLink to="/Bills" onClick={handleNav}>Summarize Bills</NavLink>
-          </li>
-          <li className='navitem p-4 border-b border-gray-600'>
-            <NavLink to="/Elections" onClick={handleNav}>Elections</NavLink>
-          </li>
-          <li className='navitem p-4 border-b border-gray-600'>
-            <NavLink to="/Politicians" onClick={handleNav}>Politicians</NavLink>
-          </li>
-          <li className='navitem p-4 border-b border-gray-600'>
-            <NavLink to="/News" onClick={handleNav}>News</NavLink>
+            <NavLink to="/Quizzes" onClick={handleNav}>Quizzes</NavLink>
           </li>
         </ul>
       </div>
