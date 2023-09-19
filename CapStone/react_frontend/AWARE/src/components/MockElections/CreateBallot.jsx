@@ -13,7 +13,6 @@ function CreateBallot({back}) {
         // Add the form to the selectedForms array
         setSelectedForms([...selectedForms, newForm]);
       };
-
     
 
     return (
