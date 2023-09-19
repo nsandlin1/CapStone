@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { BiArrowBack } from 'react-icons/bi';
 import { PolicyButton, CandidateButton, CandidateFrom, PolicyForm } from './BallotForm';
+import { MdOutlineCancel } from 'react-icons/md';
 
 function CreateBallot({back}) {
 
@@ -13,7 +14,25 @@ function CreateBallot({back}) {
         // Add the form to the selectedForms array
         setSelectedForms([...selectedForms, newForm]);
       };
+
     
+    const handleRemoveForm = (indexToRemove) => {
+
+        setSelectedForms(selectedForms.filter((o, i) => indexToRemove !== i));
+
+        // if (indexToRemove == 0 || indexToRemove == selectedForms.length) {
+        //     console.log(selectedForms.slice(2,4));
+        //     setSelectedForms(selectedForms.slice(2,4));
+        // }
+
+        // if (selectedForms.length == 1){
+        //     console.log('here');
+        //     const updatedForms = [...selectedForms];
+        //     updatedForms.splice(1, index);
+        //     setSelectedForms(updatedForms);
+        // } else { setSelectedForms([])}
+    };
+
 
     return (
         <div className="flex flex-col w-[100%] h-[100%] bg-navy rounded-xl"> 
@@ -34,11 +53,11 @@ function CreateBallot({back}) {
                 <div className='flex flex-col w-[95%] h-[100%] items-center m-2 overflow-auto'>
                     <div className='flex flex-col w-[100%] md:w-[90%] items-center rounded-xl'>
                         {selectedForms.map((form, index) => (
-                            <div className='flex justify-center w-[100%] md:w-[80%] h-[100%] my-2'>
+                            <div key={index} className='flex relative justify-center md:w-[80%] h-[100%] my-2'>
                                 {form.type === 'candidate' ? (
-                                <CandidateFrom input={form.data} />
+                                <CandidateFrom index={index} onDelete={() => handleRemoveForm(index)}/>
                                 ) : (
-                                <PolicyForm data={form.data} />
+                                <PolicyForm onDelete={handleRemoveForm(index)}/>
                                 )}
                                 {/* <button onClick={() => handleRemoveForm(index)}>Remove Form</button> */}
                             </div>

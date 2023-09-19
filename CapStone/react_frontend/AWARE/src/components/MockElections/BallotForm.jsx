@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { IoMdAdd } from 'react-icons/io';
 import { LuMinus } from 'react-icons/lu';
+import { MdOutlineCancel } from 'react-icons/md';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -27,7 +28,7 @@ const Candidate = () => {
 }
 
 
-export const CandidateFrom = ({input}) => {
+export const CandidateFrom = ({index, onDelete}) => {
 
     const [candidates, setCandidates] = useState([{}, {}]);
 
@@ -59,38 +60,47 @@ export const CandidateFrom = ({input}) => {
         }
       };
 
+    const removeSection = () => {
+
+        
+    }
+
     return (
-        <form className="flex relative justify-center bg-zinc-400 my-4 w-[100%] h-[100%] items-center rounded-xl">
-            <div className="flex relative flex-col w-[100%]">
-                <div className="flex flex-col md:flex-row mb-2 justify-center">
-                    <label className="text-xl text-white">Position: </label>
-                    <input
-                        className="w-[75%] h-[100%] ml-2 pl-2 rounded-lg justify-center text-2xl"
-                        type='text'
-                        name='position'
+        <form className="flex relative justify-center bg-zinc-400 my-2 w-[100%] h-[100%] items-center rounded-xl">
+           < MdOutlineCancel className='MockButtons absolute top-0 right-0' onClick={() => {onDelete()}}/> 
+           <div className='flex flex-col'>
+            <div className="flex relative flex-col w-[100%] h-[90%]"> 
+                    <div className="flex flex-col md:flex-row mb-2 justify-center">
+                        <label className="text-xl text-white">Position: </label>
+                        <input
+                            className="w-[75%] h-[100%] ml-2 pl-2 rounded-lg justify-center text-2xl"
+                            type='text'
+                            name='position'
+                        />
+                    </div>
+                    <div className='flex flex-col w-[100%]'>
+                        {candidates.map((form, index) => (
+                            <div className='flex justify-center w-[100%] h-[100%]'>
+                                { <Candidate/> }
+                            </div> ))}
+                    </div>
+                </div>
+                <div className='flex flex-row relative h-[10%] justify-end'>
+                    < LuMinus className='MockButtons static' onClick={() => removeRecentCandidate()}/>
+                    < IoMdAdd className='MockButtons static' onClick={() => handleAddCandidate()}/>
+                    <ToastContainer  
+                        position="top-center"
                     />
                 </div>
-                <div className='flex flex-col w-[100%]'>
-                    {candidates.map((form, index) => (
-                        <div className='flex justify-center w-[100%] h-[100%]'>
-                            { <Candidate/> }
-                        </div> ))}
-                </div>
-                
             </div>
-                < IoMdAdd className='MockButtons absolute bottom-2 md:bottom-3 right-0 md:right-12' onClick={() => handleAddCandidate()}/>
-                < LuMinus className='MockButtons absolute bottom-2 md:bottom-3 right-6 md:right-20' onClick={() => removeRecentCandidate()}/>
-                <ToastContainer 
-                    position="top-center"
-                />
         </form>
     )
 }
 
-export const PolicyForm = () => {
+export const PolicyForm = ({onDelete}) => {
 
     return (
-        <form className="flex justify-center bg-zinc-400 my-4 w-[100%] h-[100%] items-center rounded-xl">
+        <form className="flex justify-center bg-zinc-400 my-2 w-[100%] h-[100%] items-center rounded-xl">
             <div className="flex flex-col w-[100%]">
                 <div className="flex justify-center">
                     <label className="text-xl text-white">Policy: </label>
