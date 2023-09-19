@@ -1,5 +1,6 @@
 import React from 'react';
 import { FcCollapse } from "react-icons/fc";
+import { ClassCard } from '../components/Classes/ClassCard';
 
 function Classes() {
 
@@ -31,7 +32,7 @@ function Classes() {
                             </h1> 
                         </div>
                     </div>
-                    <div className='flex h-[20%] w-[95%] rounded-xl bg-navy'>
+                    {/* <div className='flex h-[20%] w-[95%] rounded-xl bg-navy'>
                         <div className='flex w-[20%] justify-center items-center'>
                             <h1 className='text-3xl text-white whitespace-nowrap'>
                                 Intro to Civics
@@ -45,7 +46,8 @@ function Classes() {
                         <div className='flex w-[15%] items-center justify-end'>
                             < FcCollapse className='ClassesCollapseIcon' />
                         </div>
-                    </div>
+                    </div> */}
+                    < ClassCard />
                     <div className='flex h-[70%]'>
 
                     </div>
