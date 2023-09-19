@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FederalButton } from "../components/FederalButton";
-import { StateButton } from "../components/StateButton";
+import { StateButton, FederalButton} from "../components/Buttons";
 import { BillCard } from "../components/BillCard";
 
 function Bills() {
