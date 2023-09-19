@@ -108,7 +108,7 @@ export const PolicyForm = () => {
 export const PolicyButton = ({onClick}) => {
 
     return (
-        <button onClick={onClick} className='flex h-[100%] w-[50%] md:w-[30%] text-lg bg-white m-2 shadow-xl rounded-xl items-center justify-center'>
+        <button onClick={onClick} className='flex h-[100%] w-[50%] md:w-[30%] text-lg bg-white m-2 md:m-4 shadow-xl rounded-xl items-center justify-center'>
             Add contests option for a policy
         </button>
     )

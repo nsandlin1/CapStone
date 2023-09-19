@@ -25,7 +25,7 @@ function CreateBallot({back}) {
                         Create Mock Election
                 </div>
                 <div className='flex w-[20%] md:w-[30%] h-[100%] justify-end pr-2 md:pr-10'>
-                    <button className='text-xl bg-white rounded-xl w-[80%] md:w-[30%]'>
+                    <button className='text-xl bg-white rounded-xl w-[90%] md:w-[30%]'>
                         Save
                     </button>
                 </div>
