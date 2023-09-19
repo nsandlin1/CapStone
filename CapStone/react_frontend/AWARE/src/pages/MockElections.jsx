@@ -31,7 +31,11 @@ function MockElections(){
         const newValue = event.target.value;
         setSelectedClass(newValue);
         if (newValue == 'Null') { setIsClassSelected(false); }
-        else { setIsClassSelected(true); }
+        else { 
+            setIsClassSelected(true); 
+            // uncomment to prevent users from swtiching classes while creating mock ballot
+            setVisibile(false);
+        }
       };
 
     const handleBack = () => {
