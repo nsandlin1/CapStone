@@ -152,5 +152,11 @@ path:hover {
     .AddButtonMock {
         font-size: 48px;
     }
+    .ClassesCollapseIcon {
+        font-size: 48px;
+    }
   }
 
+.ClassesCollapseIcon {
+    transform: rotateZ(180deg);
+}
