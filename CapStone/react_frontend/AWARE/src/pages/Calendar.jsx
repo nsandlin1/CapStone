@@ -140,7 +140,7 @@ useEffect(() => {
   };
 
   return (
-    <div className="p-4  bgblue h-[89vh]">
+    <div className="p-4 bgblue h-[91vh]">
       <div className="bg-transparent p-2 m-2 flex justify-center">
         <h1 className="text-4xl  font-bold mb-6 text-white">Upcoming Events</h1>
       </div>

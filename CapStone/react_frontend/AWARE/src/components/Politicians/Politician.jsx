@@ -1,8 +1,8 @@
 import { Fragment, useEffect, useState, useRef} from "react";
-import { Wrapper } from "../components/widgets";
+import { Wrapper } from "../widgets";
 import { FcCollapse } from "react-icons/fc";
 import { IoLogoFacebook, IoLogoTwitter, IoLogoYoutube, IoIosGlobe } from "react-icons/io";
-import { RiTwitterXLine } from "react-icons/ri";
+import { FaXTwitter } from "react-icons/fa6";
 import { Link } from 'react-router-dom';
 
 function borderColor(party) {
@@ -124,9 +124,9 @@ function PoliticianBlock({ pol, image_url, isExpanded, toggleCollapse}) {
                             <a>< IoLogoFacebook className="SocialIcon"/></a>}
                         {twitter !== " " ?
                             <a href={twitter} target="_blank">
-                                < RiTwitterXLine className="SocialIcon"/>
+                                < FaXTwitter className="SocialIcon"/>
                             </a> :
-                            <a>< RiTwitterXLine className="SocialIcon"/></a>}
+                            <a>< FaXTwitter className="SocialIcon"/></a>}
                         {console.log("Youtube = " + youtube)}
                         {youtube !== "empty" ?
                             <a href={youtube} target="_blank">

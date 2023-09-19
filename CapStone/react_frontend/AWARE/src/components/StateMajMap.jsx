@@ -79,7 +79,7 @@ function StateMajMap() {
         getSenateMaj();
     }, [])
 
-    // don't even expand this...
+    // collapse this and never expand it...
     const states = {
         "AL": "Alabama",
         "AK": "Alaska",
@@ -133,6 +133,7 @@ function StateMajMap() {
         "WY": "Wyoming"
     };
 
+    // ...this one too.
     const customizeHouse = {
         "AL": {
             fill: ""
@@ -286,6 +287,7 @@ function StateMajMap() {
         }
     };   
     
+    // .......................and this one. I'm sorry
     const customizeSenate = {
         "AL": {
             fill: ""
