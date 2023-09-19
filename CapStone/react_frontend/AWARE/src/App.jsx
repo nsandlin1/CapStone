@@ -14,6 +14,7 @@ import Elections from './pages/Elections.jsx';
 import InteractiveMap from './pages/InteractiveMap.jsx';
 import PolyLanding from './pages/PolyLanding.jsx';
 import MockElections from './pages/MockElections.jsx';
+import Classes from './pages/Classes.jsx';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
         <Route path="/Int" element={<InteractiveMap />} />
         <Route path="/Overview" element={<PolyLanding/>} />
         <Route path="/Mock" element={<MockElections/> } />
+        <Route path="/Classes" element={<Classes/>} />
       </Routes>
     </React.Fragment>
   );
