@@ -157,6 +157,7 @@ path:hover {
     }
   }
 
-.ClassesCollapseIcon {
-    transform: rotateZ(180deg);
+.ExpandedInfo {
+    transition: height 0.2s ease-in-out;
 }
+
