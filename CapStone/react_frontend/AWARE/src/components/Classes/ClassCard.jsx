@@ -4,7 +4,7 @@ import { useState } from "react";
 export const ClassCard = ({className, classTime, teacher, isExpanded, toggleCollapse}) => {
 
 
-    const cardContainer = `flex ${isExpanded ? 'h-[100%]' : 'h-[100%]'} w-[95%] rounded-xl bg-navy m-1`;
+    const cardContainer = `flex ${isExpanded ? 'h-[50%]' : 'h-[20%]'} w-[95%] rounded-xl bg-navy m-1`;
     const basicInfo = `flex flex-row w-[100%] ${isExpanded ? 'h-[100%]' : 'h-[100%]'} items-center justify-center`;
     const expandedInfo = `ExpandedInfo flex h-[85%] ${isExpanded ? '' : 'hidden'}`;
 

@@ -78,7 +78,7 @@ function Classes() {
                         <button className='rounded-xl w-[100%] h-[60%] bg-white shadow-lg' >Add Class</button>
                     </div>
                 </div>
-                <div className='flex flex-col h-[85%] w-[95%] rounded-xl items-center justify-center py-2 bg-white mb-4 shadow-lg overflow-auto'>
+                <div className='flex flex-col h-[85%] w-[95%] rounded-xl items-center justify-center py-2 bg-white mb-4 shadow-lg'>
                     <div className='flex flex-row h-[10%] w-[95%] items-center'>
                         <div className='flex w-[20%] justify-center'>
                             <h1 className='text-3xl text-navy font-bold whitespace-nowrap '>
@@ -91,18 +91,18 @@ function Classes() {
                             </h1> 
                         </div>
                     </div>
-                    <div className='flex flex-col h-[90%] w-[100%] items-center'>
+                    <div className='flex flex-wrap w-[100%] items-center overflow-auto'>
                         {
                             classes.map((clas) => (
-                                <div className='flex flex-col h-[100%] w-[100%] justify-center items-center'>
-                                    < ClassCard 
-                                        className={clas.className} 
-                                        classTime={clas.classTime}
-                                        teacher={clas.teacher}
-                                        isExpanded={expandedName === clas.className}
-                                        toggleCollapse={() => handleToggleCollapse(clas.className)}
-                                    />
-                                </div> 
+                                // <div className='flex relative justify-center h-[100%] w-[98%] m-1 '>
+                                < ClassCard 
+                                    className={clas.className} 
+                                    classTime={clas.classTime}
+                                    teacher={clas.teacher}
+                                    isExpanded={expandedName === clas.className}
+                                    toggleCollapse={() => handleToggleCollapse(clas.className)}
+                                />
+                                // </div>
                             ))
                         }
                     </div>
