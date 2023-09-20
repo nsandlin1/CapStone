@@ -1,10 +1,12 @@
 import {React, useState } from 'react';
 import { FcCollapse } from "react-icons/fc";
 import { ClassCard } from '../components/Classes/ClassCard';
+import { CreateClass } from '../components/Classes/CreateClass';
 
 function Classes() {
 
     const [expandedId, setExpandedId] = useState(null);
+    const [creating, setCreating] = useState(false);
     const [classes, setClasses] = useState([
         {
             classId: 'lj6okjsg',
@@ -73,6 +75,11 @@ function Classes() {
         console.log(id);
     };
 
+    const handleCreateClass = () => {
+        if (!creating) { setCreating(v => !v) }
+    }
+    
+
 
     return (
         <div className='flex flex-col h-[91vh] w-[100%] bg-slate-400 justify-center items-center'>
@@ -86,40 +93,44 @@ function Classes() {
                     <div className='w-[75%]'>
                     </div>
                     <div className='flex w-[10%] justify-center items-center'>
-                        <button className='rounded-xl w-[100%] h-[60%] bg-white shadow-lg' >Add Class</button>
+                       <button className='rounded-xl w-[100%] h-[60%] bg-white shadow-lg' onClick={() => handleCreateClass()}>Add Class</button>
                     </div>
                 </div>
-                <div className='flex flex-col h-[85%] w-[95%] rounded-xl items-center justify-center py-2 bg-white mb-4 shadow-lg'>
-                    <div className='flex flex-row h-[10%] w-[95%] items-center'>
-                        <div className='flex w-[20%] justify-center'>
-                            <h1 className='text-3xl text-navy font-bold whitespace-nowrap '>
-                                Class Title
-                            </h1> 
+                {creating ? 
+                    < CreateClass back={() => setCreating(v => !v)}/>
+                :   
+                    <div className='flex flex-col h-[85%] w-[95%] rounded-xl items-center justify-center bg-white mb-4 shadow-lg'>
+                        <div className='flex flex-row h-[10%] w-[95%] items-center'>
+                            <div className='flex w-[20%] justify-center'>
+                                <h1 className='text-3xl text-navy font-bold whitespace-nowrap '>
+                                    Class Title
+                                </h1> 
+                            </div>
+                            <div className='flex w-[60%] justify-center items-center'>
+                                <h1 className='text-3xl text-navy font-bold whitespace-nowrap '>
+                                    Class Time
+                                </h1> 
+                            </div>
                         </div>
-                        <div className='flex w-[60%] justify-center items-center'>
-                            <h1 className='text-3xl text-navy font-bold whitespace-nowrap '>
-                                Class Time
-                            </h1> 
+                        <div className='flex flex-wrap w-[100%] h-[90%] justify-center items-center overflow-auto'>
+                            {
+                                classes.map((clas) => (
+                                    // <div className='flex relative justify-center h-[100%] w-[98%] m-1 '>
+                                    < ClassCard 
+                                        key = {clas.classId}
+                                        classId = {clas.classId}
+                                        className={clas.className} 
+                                        classTime={clas.classTime}
+                                        teacher={clas.teacher}
+                                        isExpanded={expandedId === clas.classId}
+                                        toggleCollapse={() => handleToggleCollapse(clas.classId)}
+                                    />
+                                    // </div>
+                                ))
+                            }
                         </div>
                     </div>
-                    <div className='flex flex-wrap w-[100%] h-[90%] justify-center items-center overflow-auto'>
-                        {
-                            classes.map((clas) => (
-                                // <div className='flex relative justify-center h-[100%] w-[98%] m-1 '>
-                                < ClassCard 
-                                    key = {clas.classId}
-                                    classId = {clas.classId}
-                                    className={clas.className} 
-                                    classTime={clas.classTime}
-                                    teacher={clas.teacher}
-                                    isExpanded={expandedId === clas.classId}
-                                    toggleCollapse={() => handleToggleCollapse(clas.classId)}
-                                />
-                                // </div>
-                            ))
-                        }
-                    </div>
-                </div>
+                }
             </div>
         </div>
     )

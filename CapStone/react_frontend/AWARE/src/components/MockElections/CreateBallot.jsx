@@ -11,6 +11,9 @@ function CreateBallot({back}) {
         // Create a new form object based on the selected type
         const newForm = { type: formType, data: {} };
         
+        console.log("Adding " + formType);
+        console.log(newForm);
+
         // Add the form to the selectedForms array
         setSelectedForms([...selectedForms, newForm]);
       };
@@ -57,7 +60,7 @@ function CreateBallot({back}) {
                                 {form.type === 'candidate' ? (
                                 <CandidateFrom index={index} onDelete={() => handleRemoveForm(index)}/>
                                 ) : (
-                                <PolicyForm onDelete={handleRemoveForm(index)}/>
+                                <PolicyForm index={index} onDelete={() => handleRemoveForm(index)}/>
                                 )}
                                 {/* <button onClick={() => handleRemoveForm(index)}>Remove Form</button> */}
                             </div>
