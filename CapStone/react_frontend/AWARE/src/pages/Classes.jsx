@@ -4,62 +4,73 @@ import { ClassCard } from '../components/Classes/ClassCard';
 
 function Classes() {
 
-    const [expandedName, setExpandedName] = useState(null);
+    const [expandedId, setExpandedId] = useState(null);
     const [classes, setClasses] = useState([
         {
+            classId: 'lj6okjsg',
             className: 'Intro to Civics',
             classTime: '9:30 - 10:45',
             teacher: 'Ronald Regan'
         },
         {
+            classId: 'lj6ikjsg',
             className: 'AP Civics',
             classTime: '11:00 - 12:15',
             teacher: 'Ronald Regan'
         },
         {
+            classId: 'lj4okjsg',
             className: 'Help',
             classTime: '9:30 - 10:45',
             teacher: 'Ronald Regan'
         },
         {
+            classId: 'pj6okjsg',
             className: 'AP Civics',
             classTime: '11:00 - 12:15',
             teacher: 'Ronald Regan'
         },
         {
+            classId: 'lj6okjsf',
             className: 'Intro to Civics',
             classTime: '9:30 - 10:45',
             teacher: 'Ronald Regan'
         },
         {
+            classId: 'lj3okjsg',
             className: 'AP Civics',
             classTime: '11:00 - 12:15',
             teacher: 'Ronald Regan'
         },
         {
+            classId: 'lj6ok09sg',
             className: 'Intro to Civics',
             classTime: '9:30 - 10:45',
             teacher: 'Ronald Regan'
         },
         {
+            classId: 'lj6othsg',
             className: 'AP Civics',
             classTime: '11:00 - 12:15',
             teacher: 'Ronald Regan'
         },
         {
+            classId: 'lj6ok045g',
             className: 'Intro to Civics',
             classTime: '9:30 - 10:45',
             teacher: 'Ronald Regan'
         },
         {
+            classId: 'lj6o453isg',
             className: 'AP Civics',
             classTime: '11:00 - 12:15',
             teacher: 'Ronald Regan'
         }
     ])
 
-    const handleToggleCollapse = (name) => {
-        setExpandedName((prevName) => (prevName === name ? null : name))
+    const handleToggleCollapse = (id) => {
+        setExpandedId((prevId) => (prevId === id ? null : id))
+        console.log(id);
     };
 
 
@@ -91,22 +102,23 @@ function Classes() {
                             </h1> 
                         </div>
                     </div>
-                    <div className='flex flex-wrap w-[100%] items-center overflow-auto'>
+                    <div className='flex flex-wrap w-[100%] h-[90%] justify-center items-center overflow-auto'>
                         {
                             classes.map((clas) => (
                                 // <div className='flex relative justify-center h-[100%] w-[98%] m-1 '>
                                 < ClassCard 
+                                    key = {clas.classId}
+                                    classId = {clas.classId}
                                     className={clas.className} 
                                     classTime={clas.classTime}
                                     teacher={clas.teacher}
-                                    isExpanded={expandedName === clas.className}
-                                    toggleCollapse={() => handleToggleCollapse(clas.className)}
+                                    isExpanded={expandedId === clas.classId}
+                                    toggleCollapse={() => handleToggleCollapse(clas.classId)}
                                 />
                                 // </div>
                             ))
                         }
                     </div>
-                    {console.log(expandedName)}
                 </div>
             </div>
         </div>

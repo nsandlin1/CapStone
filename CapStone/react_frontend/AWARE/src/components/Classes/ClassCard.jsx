@@ -1,7 +1,7 @@
 import { FcCollapse } from "react-icons/fc";
 import { useState } from "react";
 
-export const ClassCard = ({className, classTime, teacher, isExpanded, toggleCollapse}) => {
+export const ClassCard = ({classId, className, classTime, teacher, isExpanded, toggleCollapse}) => {
 
 
     const cardContainer = `flex ${isExpanded ? 'h-[50%]' : 'h-[20%]'} w-[95%] rounded-xl bg-navy m-1`;
