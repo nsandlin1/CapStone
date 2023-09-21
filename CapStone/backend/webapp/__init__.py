@@ -44,15 +44,7 @@ def create_web_app(env, initdb):
 	# prae.init_app(app, User)
 
 	# initialize CORS (using this allows api request from react ig)
-	crs.init_app(app)
-# 	@RestController
-# @RequestMapping("/core/1")
-# @CrossOrigin(origins = "*")
-	# @app.after_request
-	# def after_request(response):
-	# 	response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization,true')
-	# 	response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
-	# 	return response
+	crs.init_app(app, origins='*')
 
 	# initialize JSON Web Token
 	jwt.init_app(app)
