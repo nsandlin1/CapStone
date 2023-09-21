@@ -1,11 +1,23 @@
 import { Outlet, Navigate} from 'react-router-dom';
 
-const ProtectedRoutes = () => {
 
-    let auth = {'token':false}
+export const ProtectedRoutes = ({loggedIn}) => {
+
     return (
-        auth.token ? <Outlet />  : <Navigate  to='/login'/>
+        !loggedIn ? <Outlet />  : <Navigate to='/Login'/>
     )
 }
 
-export default ProtectedRoutes;
+export const TeacherRoutes = ({role}) => {
+
+    return (
+        role == 'seacher' ? <Outlet />  : <Navigate to='/Login'/>
+    )
+}
+
+export const StudentRoutes = ({role}) => {
+
+    return (
+        role == 'student' ? <Outlet />  : <Navigate to='/Login'/>
+    )
+}
