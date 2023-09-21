@@ -71,8 +71,10 @@ function Classes() {
     ])
 
     const handleToggleCollapse = (id) => {
+        if (!creating) {
         setExpandedId((prevId) => (prevId === id ? null : id))
         console.log(id);
+        }
     };
 
     const handleCreateClass = () => {
@@ -80,6 +82,7 @@ function Classes() {
     }
     
 
+    const buttonClass = `${creating ? '' : 'hover:scale-105'} rounded-xl transition bg-white w-[100%] h-[60%] shadow-lg`
 
     return (
         <div className='flex flex-col h-[91vh] w-[100%] bg-slate-400 justify-center items-center'>
@@ -93,13 +96,12 @@ function Classes() {
                     <div className='w-[75%]'>
                     </div>
                     <div className='flex w-[10%] justify-center items-center'>
-                       <button className='rounded-xl w-[100%] h-[60%] bg-white shadow-lg' onClick={() => handleCreateClass()}>Add Class</button>
+                       <button className={buttonClass} onClick={() => handleCreateClass()}>
+                            Add Class
+                        </button>
                     </div>
                 </div>
-                {creating ? 
-                    < CreateClass back={() => setCreating(v => !v)}/>
-                :   
-                    <div className='flex flex-col h-[85%] w-[95%] rounded-xl items-center justify-center bg-white mb-4 shadow-lg'>
+                    <div className='flex flex-col relative h-[85%] w-[95%] rounded-xl items-center justify-center bg-white mb-4 shadow-lg'>
                         <div className='flex flex-row h-[10%] w-[95%] items-center'>
                             <div className='flex w-[20%] justify-center'>
                                 <h1 className='text-3xl text-navy font-bold whitespace-nowrap '>
@@ -122,6 +124,7 @@ function Classes() {
                                         className={clas.className} 
                                         classTime={clas.classTime}
                                         teacher={clas.teacher}
+                                        creating={creating}
                                         isExpanded={expandedId === clas.classId}
                                         toggleCollapse={() => handleToggleCollapse(clas.classId)}
                                     />
@@ -129,8 +132,8 @@ function Classes() {
                                 ))
                             }
                         </div>
-                    </div>
-                }
+                    { creating ? < CreateClass back={() => setCreating(v => !v)}/> : '' }
+                </div>
             </div>
         </div>
     )
