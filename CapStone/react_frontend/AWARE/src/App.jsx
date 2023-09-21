@@ -13,6 +13,9 @@ import Map from './pages/PoliticianLanding.jsx';
 import Elections from './pages/Elections.jsx';
 import InteractiveMap from './pages/InteractiveMap.jsx';
 import PolyLanding from './pages/PolyLanding.jsx';
+import Login from './pages/Login.jsx'
+import SignUp from './pages/SignUp.jsx'
+import Profile from './pages/Profile.jsx'
 import MockElections from './pages/MockElections.jsx';
 import Classes from './pages/Classes.jsx';
 
@@ -31,6 +34,9 @@ function App() {
         <Route path="/News" element={<News />} />
         <Route path="/Int" element={<InteractiveMap />} />
         <Route path="/Overview" element={<PolyLanding/>} />
+        <Route path="/Login" element={<Login/>} />
+        <Route path="/SignUp" element={<SignUp/>} />
+        <Route path="/Profile" element={<Profile/>} />
         <Route path="/Mock" element={<MockElections/> } />
         <Route path="/Classes" element={<Classes/>} />
       </Routes>
