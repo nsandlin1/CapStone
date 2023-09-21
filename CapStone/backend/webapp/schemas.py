@@ -30,7 +30,7 @@ bills_schema = BillSchema(many=True)
 class UserSchema(ma.Schema):
     class Meta:
         model = User
-        fields = ("email", "password")
+        fields = ("email", "password", "username", "first_name", "last_name", "role")
 
 user_schema = UserSchema()
 users_schema = UserSchema(many=True)
@@ -65,3 +65,107 @@ class ElectionSchema(ma.Schema):
 
 election_schema = ElectionSchema()
 elections_schema = ElectionSchema(many=True)
+
+class TeacherSchema(ma.Schema):
+    class Meta:
+        model = Teacher
+        fields = ("id", "username")
+    
+teacher_schema = TeacherSchema()
+teachers_schema = TeacherSchema(many=True)
+
+class StudentSchema(ma.Schema):
+    class Meta:
+        model = Student
+        fields = ("id", "username", "enrolled_class")
+
+student_schema = StudentSchema()
+students_schema = StudentSchema(many=True)
+
+class EnrolledClassSchema(ma.Schema):
+    class Meta:
+        model = EnrolledClass
+        fields = ("id", "name", "teacher")
+
+enrolled_class_schema = EnrolledClassSchema()
+enrolled_classes_schema = EnrolledClassSchema(many=True)
+
+class QuizSchema(ma.Schema):
+    class Meta:
+        model = Quiz
+        fields = ("id", "title")
+    
+quiz_schema = QuizSchema()
+quizes_schema = QuizSchema(many=True)
+
+class QuestionSchema(ma.Schema):
+    class Meta:
+        model = Question
+        fields = ("quiz_id", "question", "option1", "option2", "option3", "option4", "correct_option")
+
+question_schema = QuestionSchema()
+questions_schema = QuestionSchema(many=True)
+
+class BallotSchema(ma.Schema):
+    class Meta:
+        model = Ballot
+        fields = ("id", "election_title")
+    
+ballot_schema = BallotSchema()
+bollots_schema = BallotSchema(many=True)
+
+class CandidateBallotSchema(ma.Schema):
+    class Meta:
+        model = CandidateBallot
+        fields = ("id", "position", "pol_aff", "votes_for", "candidate")
+
+candidate_ballot_schema = CandidateBallotSchema()
+candidate_ballot_schemas = CandidateBallotSchema(many=True)
+
+class PolicyBallotSchema(ma.Schema):
+    class Meta:
+        model = PolicyBallot
+        fields = ("pol_num", "policy", "votes_for", "votes_against")
+
+policy_ballot_schema = PolicyBallotSchema()
+policy_ballot_schemas = PolicyBallotSchema(many=True)
+
+class ElectionSchema(ma.Schema):
+    class Meta:
+        model = ClassElection
+        fields = ("classid", "ballotid")
+
+election_schema = ElectionSchema()
+elections_schema = ElectionSchema(many=True)
+
+class ClassQuizSchema(ma.Schema):
+    class Meta:
+        model = ClassQuiz
+        fileds = ("classid", "quizid")
+    
+class_quiz_schema = ClassQuizSchema()
+class_quizzes_schema = ClassQuizSchema(many=True)
+
+class StudentQuizSchema(ma.Schema):
+    class Meta:
+        model = StudentQuiz
+        fields = ("studentid", "quizid", "grade")
+
+student_quiz_schema = StudentQuizSchema()
+student_quizes_schema = StudentQuizSchema(many=True)
+
+class BallotInfoSchema(ma.Schema):
+    class Meta:
+        model = BallotInfo
+        fields = ("ballotid", "candidateid", "policy_number")
+
+ballot_info_schema = BallotInfoSchema()
+ballot_infos_schema = BallotInfoSchema(many=True)
+
+class StudentVoteSchema(ma.Schema):
+    class Meta:
+        model = StudentVote
+        fields = ("ballotid", "studentid", "voted")
+
+student_vote_schema = StudentVoteSchema()
+student_votes_schema = StudentVoteSchema(many=True)

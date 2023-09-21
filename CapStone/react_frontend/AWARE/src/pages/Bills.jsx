@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FederalButton } from "../components/FederalButton";
-import { StateButton } from "../components/StateButton";
+import { StateButton, FederalButton} from "../components/Buttons";
 import { BillCard } from "../components/BillCard";
 
 function Bills() {
@@ -15,9 +14,9 @@ function Bills() {
     const [summary, setSummary] = useState("No bill selected.");
     const [more, setMore] = useState('medium');
 
-     const handleSumLengthChange = (length) => {
-         setMore(length);
-     };
+    const handleSumLengthChange = (length) => {
+        setMore(length);
+    };
 
     function getBillsList() {   
 
@@ -75,7 +74,7 @@ function Bills() {
     };
 
     return (
-        <div className="flex flex-col items-center h-[89vh] pb-4 gap-1">
+        <div className="flex flex-col items-center h-[91vh] pb-4 gap-1">
             <div className="flex flex-row items-center justify-center h-[10%] w-[90%]">
                 <div className="flex flex-row h-[100%] rounded-xl gap-2 p-2 w-[90%]">
                     <FederalButton 

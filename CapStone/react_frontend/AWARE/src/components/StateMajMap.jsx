@@ -79,7 +79,7 @@ function StateMajMap() {
         getSenateMaj();
     }, [])
 
-    // don't even expand this...
+    // collapse this and never expand it...
     const states = {
         "AL": "Alabama",
         "AK": "Alaska",
@@ -133,6 +133,7 @@ function StateMajMap() {
         "WY": "Wyoming"
     };
 
+    // ...this one too.
     const customizeHouse = {
         "AL": {
             fill: ""
@@ -286,6 +287,7 @@ function StateMajMap() {
         }
     };   
     
+    // .......................and this one. I'm sorry
     const customizeSenate = {
         "AL": {
             fill: ""
@@ -461,7 +463,8 @@ function StateMajMap() {
     const branchNotSelected = "text-3xl hover:cursor-pointer hover:text-zinc-700 text-zinc-400"
 
     return (
-        <div>
+        <div className="flex h-[100%]">
+            <div className="hidden w-[100%] items-center justify-center md:flex">
             {state !== null ?  ( < StatePoliticians state={state} setState={setState} states={states}/> ) :
                 <div>
                     <StateMajLegend/>
@@ -497,8 +500,11 @@ function StateMajMap() {
                         }
                     </div>
                 </div>
+            
             }
-            <div className="flex flex-col md:hidden w-[100%] h-[100%] rounded-xl overflow-auto">
+            </div>
+            <div className="flex flex-col md:hidden w-[100%] h-[100%] bg-navy rounded-xl overflow-auto">
+                {console.log(state)}
                 {state !== null ?  ( < StatePoliticians state={state} setState={setState} states={states}/> ) :
                     <div className="gap-2 p-1">
                         {Object.entries(states).map(([key, value]) => 

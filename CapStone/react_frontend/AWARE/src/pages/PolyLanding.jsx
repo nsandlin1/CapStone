@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { FederalButton } from "../components/FederalButton";
-import { StateButton } from "../components/StateButton";
+import { StateButton, FederalButton } from "../components/Buttons";
 import Map from "./PoliticianLanding";
 
 function PolyLanding() {

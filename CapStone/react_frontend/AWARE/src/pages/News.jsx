@@ -71,7 +71,7 @@ useEffect(() => {
     };
 
     return (
-      <div className="flex flex-col justify-center items-center h-[89vh] w-[100%] pb-4 bg-slate-400">
+      <div className="flex flex-col justify-center items-center h-[91vh] w-[100%] pb-4 bg-slate-400">
 
           <div className="flex justify-center w-[100%] h-[8%] bg-transparent text-2xl pt-4 md:text-2xl text-sm font-bold text-white">
             <p> WELCOME TO YOUR CUSTOM NEWS FEED </p>

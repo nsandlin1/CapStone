@@ -1,4 +1,7 @@
-from sqlalchemy import Column, Integer,  String, ForeignKey, DateTime, Boolean, Date, UniqueConstraint
+from sqlalchemy import Column, Integer,  String, ForeignKey, \
+                       DateTime, Boolean, Date, UniqueConstraint, \
+                       ForeignKeyConstraint, PrimaryKeyConstraint
+from sqlalchemy.orm import relationship
 from .extensions import db
 
 
@@ -76,19 +79,6 @@ class StateCongressman(db.Model):
 
     def __repr__(self):
         return f'<StateCongressman "{self.name}">'
-
-class User(db.Model):
-    __tablename__ = 'users'
-
-    email = Column(String(255), primary_key=True)
-    password = Column(String(255))
-
-    def __init__(self, email, password):
-        self.email = email
-        self.password = password
-    
-    def __repr__(self):
-        return f'<User "{self.email}">'
         
 class Bill(db.Model):
     __tablename__ = 'bills'
@@ -165,3 +155,251 @@ class Election(db.Model):
     
     def __repr__(self):
         return f'<Election "{self.name}">'
+
+class EnrolledClass(db.Model):
+    __tablename__ = 'enrolled_classes'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String(50))
+    teacher = Column(String(30), ForeignKey('teachers.username'))
+
+    __table_args__ = (UniqueConstraint("name", name="name_unique"),)
+
+class User(db.Model):
+    __tablename__ = 'users'
+
+    email = Column(String(255), primary_key=True)
+    password = Column(String(255))
+    username = Column(String(30))
+    first_name = Column(String(50))
+    last_name = Column(String(50))
+    role = Column(String(7))
+
+    __table_args__ = (UniqueConstraint("username", name="username_unique"),)
+
+    def __init__(self, email, password, username, first_name, last_name, role):
+        self.email = email
+        self.password = password
+        self.username = username
+        self.first_name = first_name
+        self.last_name = last_name
+        self.role = role
+    
+    def __repr__(self):
+        return f'<User "{self.email}">'
+    
+class Teacher(db.Model):
+    __tablename__ = 'teachers'
+
+    id = Column(Integer, primary_key=True)
+    username = Column(String(30), ForeignKey('users.username'), nullable=False)
+
+    __table_args__ = (
+        UniqueConstraint("username", name="username_unique"),
+    )
+    
+    def __init__(self, id, username):
+        self.id = id
+        self.username = username
+    
+    def __repr__(self):
+        return f'<Teacher "{self.id}, {self.username}>'
+
+class Student(db.Model):
+    __tablename__ = 'students'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    username = Column(String(30), ForeignKey('users.username'))
+    enrolled_class = Column(String(50), ForeignKey('enrolled_classes.id'))
+
+    __table_args__ = (UniqueConstraint("username", name="username_unique"),)
+
+    def __init__(self, id, username, enrolled_class):
+        self.id = id
+        self.username = username
+        self.enrolled_class = enrolled_class
+    
+    def __repr__(self):
+        return f'<Student "{self.id}, {self.username}">'
+
+class Quiz(db.Model):
+    __tablename__ = 'quizes'
+
+    id = Column(Integer, primary_key=True)
+    title = Column(String(50))
+
+    __table_args__ = (UniqueConstraint("title", name="title_unique"),)
+
+    def __init__(self, id, title):
+        self.id = id
+        self.title = title
+
+    def __repr__(self):
+        return f'<Quiz "{self.id}, {self.title}">'
+    
+class Question(db.Model):
+    __tablename__ = 'questions'
+
+    quiz_id = Column(Integer, ForeignKey('quizes.id'), primary_key=True)
+    question = Column(String(200))
+    option1 = Column(String(100))
+    option2 = Column(String(100))
+    option3 = Column(String(100))
+    option4 = Column(String(100))
+    correct_option = Column(String(1))
+    
+    def __init__(self, quiz_id, question, option1, option2, option3, option4, correct_option):
+        self.quiz_id = quiz_id
+        self.question = question
+        self.option1 = option1
+        self.option2 = option2
+        self.option3 = option3
+        self.option4 = option4
+        self.correct_option = correct_option
+
+    def __repr__(self):
+        return f'<Question "{self.question}">'
+
+class Ballot(db.Model):
+    __tablename__ = 'ballots'
+
+    id = Column(Integer, primary_key=True)
+    election_title = Column(String(100))
+
+    __table_args__ = (
+        UniqueConstraint("election_title", name="election_title_unique"),
+    )
+
+    def __init__(self, id, election_title):
+        self.id = id
+        self.election_title = election_title
+    
+    def __repr__(self):
+        return f'<Ballot "{self.election_title}">'
+    
+class CandidateBallot(db.Model):
+    __tablename__ = 'candidate_ballots'
+
+    id = Column(Integer, primary_key=True)
+    position = Column(String(200))
+    pol_aff = Column(String(50))
+    votes_for = Column(String(200))
+    candidate = Column(String(100))
+
+    def __init__(self, id, position, pol_aff, votes_for, candidate):
+        self.id = id
+        self.position = position
+        self.pol_aff = pol_aff
+        self.votes_for = votes_for
+        self.candidate = candidate
+
+    def __repr__(self):
+        ...
+
+class PolicyBallot(db.Model):
+    __tablename__ = 'policy_ballots' 
+
+    policy_num = Column(Integer, primary_key=True)
+    policy = Column(String(200))
+    votes_for = Column(String(200))
+    votes_against = Column(String(200))  
+
+    def __init__(self, pol_num, policy, votes_for, votes_against):
+        self.pol_num = pol_num
+        self.policy = policy
+        self.votes_for = votes_for
+        self.votes_against = votes_against
+
+    def __repr__(self):
+        ...
+
+class ClassElection(db.Model):
+    __tablename__ = 'class_elections'
+
+    classid = Column(Integer, ForeignKey('enrolled_classes.id'))
+    ballotid = Column(Integer, ForeignKey('ballots.id'))
+    
+    __table_args__ = (
+        PrimaryKeyConstraint(classid, ballotid),
+    )
+
+    def __init__(self, classid, ballotid):
+        self.classid = classid
+        self.ballotid = ballotid
+
+    def __repr__(self):
+        return f'<Election "{self.classid}, {self.ballotid}">'
+    
+class ClassQuiz:
+    __tablename__ = 'class_quizzes'
+
+    classid = Column(Integer, ForeignKey('enrolled_classes.id'))
+    quizid = Column(Integer, ForeignKey('quizes.id'))
+
+    __table_args__ = (
+        PrimaryKeyConstraint(classid, quizid),
+    )
+
+    def __init__(self, classid, quizid):
+        self.classid = classid
+        self.quizid = quizid
+    
+    def __repr__(self):
+        return f'<ClassQuiz "{self.classid}, {self.quizid}">'
+
+class StudentQuiz:
+    __tablename__ = 'student_quizzes'
+
+    studentid = Column(Integer)
+    quizid = Column(Integer)
+    grade = Column(String(1))
+
+    __table_args__ = (
+        PrimaryKeyConstraint(studentid, quizid),
+    )
+
+    def __init__(self, studentid, quizid, grade):
+        self.studentid = studentid
+        self.quizid = quizid
+        self.grade = grade
+    
+    def __repr__(self):
+        return f'<StudentQuiz "{self.studentid}, {self.quizid}">'
+    
+class BallotInfo:
+    __tablename__ = 'ballot_info'
+
+    ballotid = Column(Integer, ForeignKey('ballots.id'))
+    candidateid = Column(Integer, ForeignKey('candidate_ballots.id'))
+    policy_number = Column(Integer, ForeignKey('policy_ballots.policy_num'))
+
+    __table_args__ = (
+        PrimaryKeyConstraint(ballotid, candidateid, policy_number),
+    )
+
+    def __init__(self, ballotid, candidateid, policy_number):
+        self.ballotid = ballotid
+        self.candidateid = candidateid
+        self.policy_number = policy_number
+    
+    def __repr__(self):
+        return f'<BallotInfo "{self.ballotid}, {self.candidateid}, {self.policy_number}">'
+
+class StudentVote:
+    __tablename__ = 'student_votes'
+
+    ballotid = Column(Integer, ForeignKey('ballots.id'))
+    studentid = Column(Integer, ForeignKey('students.id'))
+    voted = Column(Boolean) # what type and fk to where
+
+    __table_args__ = (
+        PrimaryKeyConstraint(ballotid, studentid),
+    )
+
+    def __init__(self, ballotid, studentid, voted):
+        self.ballotid = ballotid
+        self.studentid = studentid
+        self.voted = voted
+
+    def __repr__(self):
+        return f'<StudentVote "{self.ballotid}, {self.studentid}">'
