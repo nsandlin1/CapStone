@@ -53,7 +53,7 @@ state_senate_majority_schema = StateMajority(many=True)
 class NewsSchema(ma.Schema):
     class Meta:
         model = News
-        fields = ("title", "abstract", "published_date", "url", "company")
+        fields = ("title", "abstract", "published_date", "url", "company", "imgURL")
 
 news_schema = NewsSchema()
 many_news_schema = NewsSchema(many=True)

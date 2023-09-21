@@ -5,11 +5,12 @@ import { differenceInCalendarDays } from 'date-fns';
 import { EventCard } from "../components/EventCard";
 
 // template dict for holding election events
+// key: month name, value: list of [day, event name] pairs
 var eventsByMonth = {
-  "January": [], "February": [], "March": [],
-  "April": [], "May": [], "June": [],
-  "July": [], "August": [], "September": [],
-  "October": [], "November": [], "December": [],
+  "January": [], "February": [[21, "Wisconsin Primary", 2023]], "March": [],
+  "April": [], "May": [[16, "Kentucky Primary", 2023], [16, "Pennsylvania Primary", 2023]], "June": [[6, "New Jersey Primary", 2023], [20, "Virginia Primary", 2023]],
+  "July": [], "August": [[1, "Washington Primary", 2024], [8, "Mississippi Primary", 2023]], "September": [],
+  "October": [[14, "Louisiana Primary", 2023]], "November": [], "December": [],
 }
 
 // tests if two dates are the same day, used for rendering events onto correct dates
@@ -37,14 +38,21 @@ function tileNames({ date, view }) {
   if (view === 'month') {
     const month = date.toLocaleString('en-US', { month: 'long' });
     const day = date.getDate();
+    const curYear = date.getFullYear();
     const eventsForMonth = eventsByMonth[month];
 
     if (eventsForMonth) {
-      for (const [eventDay, eventName] of eventsForMonth) {
-        if (day === eventDay) {
-          return <div className="text-xs">{eventName}</div>;
+      var str = "";
+      for (const [eventDay, eventName, year] of eventsForMonth) {
+        // console.log(eventName)
+        if (day === eventDay && year == curYear) {
+          if (str !== "") {
+            str += ", ";
+          }
+          str += eventName;
         }
       }
+      return <div className='text-xs'>{str}</div>;
     }
   }
 
@@ -64,24 +72,25 @@ function Calendar() {
   function updateMonths(eventList, eventsByMonth) {
     eventList.forEach((item) => {
 
-      console.log(item.election_day)
+      // console.log(item.election_day)
       // 2025-06-06
       var month = convertToMonthName(item.election_day.substring(5,7));
       var eventName = item.name;
       var day = item.election_day.substring(8,10);
+      var eventYear = item.election_day.substring(0,4);
       
       if (!eventsByMonth[month]) {
         eventsByMonth[month] = [];
       }
 
-      const targetArray = [parseInt(day), eventName];
+      const targetArray = [parseInt(day), eventName, eventYear];
       const targetMonth = month;
 
       const monthEvents = eventsByMonth[targetMonth];
       const found = monthEvents.some(event => JSON.stringify(event) === JSON.stringify(targetArray)); 
 
       if (!found) {
-        eventsByMonth[month].push([parseInt(day), eventName]);
+        eventsByMonth[month].push([parseInt(day), eventName, eventYear]);
       }
     })
 
@@ -102,7 +111,7 @@ function Calendar() {
         })
         .then((data) => {
             setEvents(data);
-            console.log(data);
+            // console.log(data);
             eventsByMonth = updateMonths(data, eventsByMonth);
             setError(null);
         })
@@ -137,28 +146,31 @@ useEffect(() => {
       setDate(value);
     }
     else {setDate(value.activeStartDate)}
+    //useEffect();
   };
 
+  //console.log(eventsByMonth)
   return (
     <div className="p-4  bgblue h-[89vh]">
       <div className="bg-transparent p-2 m-2 flex justify-center">
-        <h1 className="text-4xl  font-bold mb-6 text-white">Upcoming Events</h1>
+        <h1 className="text-4xl  font-bold mb-6 text-white">Upcoming Elections</h1>
       </div>
 
-      <div className="mx-auto flex h-[75%] flex-row p-4 border shadow-lg rounded-lg">
+      <div className="mx-auto flex h-[80%] flex-row p-4 border shadow-lg rounded-lg">
         <Cal
-          className="text-2xl w-[50%] h-[100%] bg-slate-300 rounded-xl hover:shadow"
+          className="md:text-2xl md:w-[50%] w-full h-[100%] bg-blue-200 rounded-xl shadow-md hover:shadow-lg border-8 border-blue-400 hover:border-blue-500"
           onChange={handleDateChange} // Update the selected date
           onActiveStartDateChange={handleDateChange} // Update the month when navigating
-          tileClassName="text-slate-800 text-base p-3 h-[7vh] m-3 font-bold"
+          tileClassName="text-slate-600 text-md p-4 h-[8vh] m-4 font-semibold rounded-lg hover:bgblue hover:text-black"
           tileContent={tileNames}
         ></Cal>
 
-        <div className="w-[50%] h-[100%] flex-col justify-center">
-          <div className="w-[100%] text-4xl m-2 font-bold flex justify-center"> Events this Month: </div>
+        {/* Use Tailwind CSS classes for conditional rendering */}
+        <div className="w-[50%] h-[100%] flex-col justify-center hidden md:block">
+          <div className="w-[100%] text-4xl m-2 font-bold flex justify-center">Elections this Month:</div>
           {eventsForSelectedMonth.map((event, index) => (
             <div key={index} className="w-[100%] text-xl font-bold flex justify-left">
-              <EventCard day={event[0]} month={date.toLocaleString('en-US', { month: 'long' })} event={event[1]} />
+              <EventCard day={event[0]} month={date.toLocaleString('en-US', { month: 'long' })} year={event[2]} event={event[1]} calDate={date} />
             </div>
           ))}
         </div>
