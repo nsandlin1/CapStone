@@ -17,7 +17,7 @@ states=(
     "SD" "TN" "TX" "UT" "VT" "VA" "WA" "WV" "WI" "WY"
 )
 echo "Updating State Congressmen..."
-# round=0
+round=0
 updated=0
 for state in ${states[@]}; do
     new_state_senate=$(curl -s http://127.0.0.1:5000/api/congress/state_members?update=True\&state=$state\&branch=Senate)
@@ -33,7 +33,7 @@ for state in ${states[@]}; do
 
     updated=$(($updated + $new_state_senate))
     updated=$(($updated + $new_state_house))
-done
+#done
 echo "State Congressmen added:" $updated
 echo -------------------------------
 echo "Updating Fed. Congressmen..."

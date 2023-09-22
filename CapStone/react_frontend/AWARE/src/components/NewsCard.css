@@ -1,0 +1,93 @@
+/* Default styles for .news-card */
+.news-card {
+  display: flex;
+  flex-direction: column;
+  width: 100%; /* Default to 100% width */
+  border: 1px solid #000;
+  border-radius: 10px;
+  background-color: #fff;
+  overflow: hidden;
+  transition: transform 0.4s ease; /* Add transition for transform effects */
+  cursor: pointer;
+}
+
+/* Media query for large screens */
+@media (min-width: 768px) {
+  .news-card {
+    width: 45%; /* Set to 50% width on large screens */
+  }
+}
+
+/* Media query for small screens */
+@media (max-width: 767px) {
+  .news-card {
+    font-size: 70%;
+  }
+}
+
+/* Hide news content by default */
+.news-content {
+  display: none;
+}
+
+/* Use flex to evenly distribute space among children */
+.news-card > * {
+  flex: 1;
+  align-self: flex-start; /* Align each child element to the top */
+}
+
+/* Show the abstract content when the news-card is hovered */
+.news-card:hover .news-content {
+  display: block;
+  flex: 1; /* Expand down when hovered */
+}
+
+.news-header {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 6px;
+  background-color: #f0f8ff;
+  border-bottom: 1px solid #000;
+}
+
+.news-title {
+  font-weight: bold;
+}
+
+.news-date {
+  text-align: center;
+}
+
+.news-source {
+  text-align: right;
+}
+
+.news-content {
+  font-size: 115%;
+  padding: 10px;
+  background-color: #f0f0f0;
+  overflow: auto;
+  transition: font-size 0.2s ease;
+}
+
+.news-source {
+  text-align: right;
+  transition: color 0.2s ease; /* Add transition for color change */
+}
+
+.news-source a {
+  color: #000; /* Initial color */
+  text-decoration: none;
+}
+
+.news-source a:hover {
+  color: #007bff; /* Color change on hover */
+  text-decoration: underline;
+}
+
+.news-image {
+  width: 100%;
+  /*height: 200px;*/
+  object-fit: cover;
+}

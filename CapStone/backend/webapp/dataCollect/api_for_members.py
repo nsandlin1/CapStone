@@ -147,6 +147,8 @@ def summ_model(auth_key, payload):
         text = check_parenthesis(text)
         text = check_punct(text)
         text = check_rand(text)
+        text = text.replace("  ", " ") 
+        text = text.replace("&quot", "'")
         return text
     
     params1 = {
@@ -293,17 +295,18 @@ def fetchNews(news_api_key):
     try:
         response = requests.get(url, params=params)
         for article in response.json()['articles']:
-            if article['description'] is None:
-                abstract = "No abstract available"
-            else:
-                abstract = article['description']
-                out_dicts.append({
-                "title" : article['title'],
-                "abstract" : abstract, # "No abstract available" if no abstract
-                "published_date" : dt.strptime(article['publishedAt'], "%Y-%m-%dT%H:%M:%SZ"),
-                "url" : article['url'],
-                "company" : article["source"]["name"]
-            })
+                if article['description'] is None:
+                    abstract = "No abstract available"
+                else:
+                    abstract = article['description']
+                    out_dicts.append({
+                    "title" : article['title'],
+                    "abstract" : abstract, # "No abstract available" if no abstract
+                    "published_date" : dt.strptime(article['publishedAt'], "%Y-%m-%dT%H:%M:%SZ"),
+                    "url" : article['url'],
+                    "company" : article["source"]["name"],
+                    "imgURL": article['urlToImage']
+                })
         return out_dicts
 
     except Exception as e:
@@ -323,20 +326,21 @@ def querySearchTerm(news_api_key, term):
     try:
         response = requests.get(url, params=params)
         for article in response.json()['articles']:
-            if article['description'] is None:
-                abstract = "No abstract available"
-            else:
-                abstract = article['description']
-            out_dicts.append({
-            "title" : (article['title']),
-            "abstract" : (abstract), # "No abstract available" if no abstract
+                if article['description'] is None:
+                    abstract = "No abstract available"
+                else:
+                    abstract = article['description']
+                out_dicts.append({
+                "title" : (article['title']),
+                "abstract" : (abstract), # "No abstract available" if no abstract
                 "published_date" : dt.strptime(article['publishedAt'], "%Y-%m-%dT%H:%M:%SZ"),
-            "url" : (article['url']),
-            "company" : (article["source"]["name"])
+                "url" : (article['url']),
+                "company" : (article["source"]["name"]),
+                "imgURL" : article['urlToImage']
             })
         return out_dicts
     except:
-        raise Exception("failed to get bills related to search term")
+        raise Exception("failed to get news related to search term")
 
 # returns a list of dictionaries, each dictionary represents an election
 def fetchElections(election_api_key):

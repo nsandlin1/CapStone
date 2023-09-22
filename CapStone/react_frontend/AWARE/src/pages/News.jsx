@@ -19,8 +19,17 @@ function News() {
             return response.json()
         })
         .then((data) => {
-            setNews(data);
-            console.log(data)
+            var newData = [];
+            for (const item of data){
+              //console.log(item);
+              if (item["title"] == '[Removed]') {
+                continue;
+              }
+              else {
+                newData.push(item);
+              }
+            }
+            setNews(newData);
             setError(null);
         })
         .catch((err) => {
@@ -64,19 +73,19 @@ useEffect(() => {
     return (
       <div className="flex flex-col justify-center items-center h-[91vh] w-[100%] pb-4 bg-slate-400">
 
-          <div className="flex justify-center w-[100%] h-[10%] bg-transparent text-3xl pt-4 text-white">
+          <div className="flex justify-center w-[100%] h-[8%] bg-transparent text-2xl pt-4 md:text-2xl text-sm font-bold text-white">
             <p> WELCOME TO YOUR CUSTOM NEWS FEED </p>
           </div>
 
-          <div className="flex bg-transparent justify-center w-[90%] gap-2 h-[7%] pb-2">
-            <div className="search flex items-center justify-center font-bold rounded-xl bg-sky-50 h-[100%] w-[25%] hover:bg-sky-100">
+          <div className="flex bg-transparent justify-center w-[80%] gap-2 h-[8%] pb-2">
+            <div className="search flex items-center justify-center font-bold rounded-xl bg-sky-50 h-[100%] md:w-[40%] md:text-lg text-sm w-[60%] hover:bg-sky-100">
                         Search News by Title...
               </div>
 
-            <div className="search flex items-center justify-center rounded-xl bg-transparent h-[100%] w-[15%]">
+            <div className="search flex items-center justify-center rounded-xl bg-transparent h-[100%] md:w-[25%] w-[50%]">
 
                     <select id="lengths" onChange={(event) => handleCatChange(event.target.value)} 
-                          className="bg-slate-600 w-[100%] h-[100%] text-white p4-2 text-lg rounded-lg">
+                          className="bg-slate-600 w-[100%] h-[100%] text-white p4-2 md:text-lg text-sm rounded-lg">
                           <option selected value={"1"}>Policy Domain</option>
                           <option value="2" >Policy Domain 2</option>
                           <option value="3" >Policy Domain 3</option>
@@ -84,13 +93,13 @@ useEffect(() => {
                 </div>
            </div>
 
-          <div style={{ fontSize: '22px' }} className="flex flex-col gap-2 items-center w-[90%] h-[100%] bgnavy rounded-xl overflow-y-auto p-2">
-                <div className="flex flex-wrap items-center justify-center w-[100%] gap-4">
+          <div style={{ fontSize: '22px' }} className="flex flex-col gap-4 items-center w-[90%] h-[100%] bg-slate-300 rounded-xl overflow-y-auto p-2">
+                <div className="flex flex-wrap items-center justify-center w-full gap-4">
                     {loadingBills && <font color="#ffffff">Loading News Feed...</font>}
                         {error && <font color="#ffffff">There has been a problem loading news.</font>}
                         {!loadingBills && (
                             news.map((news) => {
-                                return <NewsCard text={news.abstract + "\n  (" + news.published_date + ")"} title={news.title} source={news.company} link={news.url}/>
+                                return <NewsCard text={news.abstract} date={news.published_date} title={news.title} source={news.company} link={news.url} image={news.imgURL}/>
                             })
                             
                         )}
