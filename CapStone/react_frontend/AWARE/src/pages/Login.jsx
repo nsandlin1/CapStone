@@ -23,9 +23,14 @@ export default function Login() {
     function submitcreds() {
         event.preventDefault()
         if (validate(email, password)) {
-            var api_url = "http://localhost:5000/api/user/login?email=" + email + "&password=" + password
+            var api_url = "/api/user/login"
             console.log("The url:", api_url)
-            fetch(api_url)
+            const requestOptions = {
+                method: 'POST',
+                mode: 'cors',
+                body: JSON.stringify({'email': email, 'password': password})
+            };
+            fetch(api_url, requestOptions)
                 .then(res => {
                     console.log("res:", res)
                     return res.json()
@@ -48,6 +53,7 @@ export default function Login() {
                 console.log("incorrect login")
             } else {
                 // redirect to wherever
+                console.log("response:", response)
                 console.log("logged in")
             }
         }
