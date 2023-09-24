@@ -22,7 +22,7 @@ import MockElections from './pages/MockElections.jsx';
 function App() {
 
   const [loggedIn, isLoggedIn] = useState(true);
-  const [role, setRole] = useState('student');
+  const [role, setRole] = useState('teacher');
 
   return (
     <React.Fragment>
