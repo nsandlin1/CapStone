@@ -17,6 +17,7 @@ import Login from './pages/Login.jsx'
 import SignUp from './pages/SignUp.jsx'
 import Profile from './pages/Profile.jsx'
 import MockElections from './pages/MockElections.jsx';
+import Classes from './pages/Classes.jsx';
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
         <Route path="/SignUp" element={<SignUp/>} />
         <Route path="/Profile" element={<Profile/>} />
         <Route path="/Mock" element={<MockElections/> } />
+        <Route path="/Classes" element={<Classes/>} />
       </Routes>
     </React.Fragment>
   );

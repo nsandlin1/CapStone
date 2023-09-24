@@ -152,5 +152,12 @@ path:hover {
     .AddButtonMock {
         font-size: 48px;
     }
+    .ClassesCollapseIcon {
+        font-size: 48px;
+    }
   }
+
+.ExpandedInfo {
+    transition: height 0.2s ease-in-out;
+}
 
