@@ -128,13 +128,15 @@ class News(db.Model):
     published_date = Column(DateTime)
     url = Column(String(255))
     company = Column(String(100))
+    imgURL = Column(String(255))
 
-    def __init__(self, title, abstract, published_date, url, company):
+    def __init__(self, title, abstract, published_date, url, company, imgURL):
         self.title = title
         self.abstract = abstract
         self.published_date = published_date
         self.url = url
         self.company = company
+        self.imgURL = imgURL
     
     def __repr__(self):
         return f'<News "{self.title[:30]}">'

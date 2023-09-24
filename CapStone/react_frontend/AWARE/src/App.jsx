@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import Home from './pages/index.jsx';
-import Navbar from './components/Navbar.jsx';
+import { StuNavbar, TeachNavbar } from './components/Navbar.jsx';
 import Homepage from './pages/Homepage.jsx';
 import Calendar from './pages/Calendar.jsx';
 import Politicians from './pages/Politicians.jsx';
@@ -22,7 +22,7 @@ import Classes from './pages/Classes.jsx';
 function App() {
   return (
     <React.Fragment>
-      <Navbar/>
+      <StuNavbar/>
       <Routes>
         <Route path="/" element={<Homepage />} />
         <Route path="/Calendar" element={<Calendar />} />

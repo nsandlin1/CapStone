@@ -20,12 +20,16 @@ export default function Login() {
         return false
     }
 
-    function submit() {
+    function submitcreds() {
+        event.preventDefault()
         if (validate(email, password)) {
-            console.log("1", email, password)
-            var api_url = "http://localhost:5000/api/user/sign-up?email=" + email + "&password=" + password
-            console.log("2", api_url)
-            fetch(api_url)
+            var api_url = "/api/user/sign-up"
+            const requestOptions = {
+                method: 'POST',
+                mode: 'cors',
+                body: JSON.stringify({'email': email, 'password': password})
+            };
+            fetch(api_url, requestOptions)
                 .then(res => res.json())
                 .then(res => setResponse(res))
                 .catch(err => console.log(err))
@@ -56,7 +60,7 @@ export default function Login() {
 
     return (
         <div className="Login">
-             <Form onSubmit={submit}>
+             <Form>
                 <Stack gap={3}>
                     <Form.Group controlId="email">
                         <Form.Label>Email</Form.Label>
@@ -77,7 +81,7 @@ export default function Login() {
                             onChange={(p) => setPassword(p.target.value)}
                         />
                     </Form.Group>
-                    <Button size="lg" type="submit">
+                    <Button size="lg" type="submit" onClick={submitcreds}>
                         Sign Up
                     </Button>
                 </Stack>
