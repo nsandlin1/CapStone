@@ -62,7 +62,6 @@ function CreateBallot({back}) {
                                 ) : (
                                 <PolicyForm index={index} onDelete={() => handleRemoveForm(index)}/>
                                 )}
-                                {/* <button onClick={() => handleRemoveForm(index)}>Remove Form</button> */}
                             </div>
                         ))}
                         </div>
