@@ -9,9 +9,9 @@ import News from './pages/News.jsx';
 import Bills from './pages/Bills.jsx';
 import './App.css'
 import { Routes, Route } from 'react-router-dom';
+import { ProtectedRoutes, TeacherRoutes, StudentRoutes } from './utils/ProtectedRoutes.jsx';
 import Map from './pages/PoliticianLanding.jsx';
 import Elections from './pages/Elections.jsx';
-import InteractiveMap from './pages/InteractiveMap.jsx';
 import PolyLanding from './pages/PolyLanding.jsx';
 import Login from './pages/Login.jsx'
 import SignUp from './pages/SignUp.jsx'
@@ -19,26 +19,36 @@ import Profile from './pages/Profile.jsx'
 import MockElections from './pages/MockElections.jsx';
 import Classes from './pages/Classes.jsx';
 
+
 function App() {
+
+  const [loggedIn, isLoggedIn] = useState(true);
+  const [role, setRole] = useState('teacher');
+
   return (
     <React.Fragment>
       <StuNavbar/>
       <Routes>
-        <Route path="/" element={<Homepage />} />
-        <Route path="/Calendar" element={<Calendar />} />
-        <Route path="/Bills" element={<Bills />} />
-        <Route path="/Elections" element={<Elections />} />
-        <Route path="/Politicians" element={<Politicians />} />
-        <Route path="/Bills" element={<Bills />}></Route>
-        <Route path="/Map" element={<Map />}/>
-        <Route path="/News" element={<News />} />
-        <Route path="/Int" element={<InteractiveMap />} />
-        <Route path="/Overview" element={<PolyLanding/>} />
+        <Route element={<ProtectedRoutes login={loggedIn}/>}>  
+          <Route element={<TeacherRoutes role={role} />}>
+            <Route path="/Mock" element={<MockElections/> } exact/>
+            <Route path="/Classes" element={<Classes /> } exact/>
+          </Route>
+          <Route element={<StudentRoutes role={role} />}>
+            <Route path="/" element={<Homepage />} exact/>
+            <Route path="/Calendar" element={<Calendar />} exact/>
+            <Route path="/Bills" element={<Bills />} exact/>
+            <Route path="/Elections" element={<Elections />} exact/>
+            <Route path="/Politicians" element={<Politicians />} exact/>
+            <Route path="/Bills" element={<Bills />} exact/>
+            <Route path="/Map" element={<Map />} exact/>
+            <Route path="/News" element={<News />} exact/>
+            <Route path="/Overview" element={<PolyLanding/>} exact/>
+            <Route path="/Profile" element={<Profile/>} exact/>
+          </Route>
+        </Route>
         <Route path="/Login" element={<Login/>} />
         <Route path="/SignUp" element={<SignUp/>} />
-        <Route path="/Profile" element={<Profile/>} />
-        <Route path="/Mock" element={<MockElections/> } />
-        <Route path="/Classes" element={<Classes/>} />
       </Routes>
     </React.Fragment>
   );
