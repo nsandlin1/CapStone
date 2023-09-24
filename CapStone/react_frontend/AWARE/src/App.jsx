@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import Home from './pages/index.jsx';
-import Navbar from './components/Navbar.jsx';
+import { StuNavbar, TeachNavbar } from './components/Navbar.jsx';
 import Homepage from './pages/Homepage.jsx';
 import Calendar from './pages/Calendar.jsx';
 import Politicians from './pages/Politicians.jsx';
@@ -17,6 +17,7 @@ import Login from './pages/Login.jsx'
 import SignUp from './pages/SignUp.jsx'
 import Profile from './pages/Profile.jsx'
 import MockElections from './pages/MockElections.jsx';
+import Classes from './pages/Classes.jsx';
 
 
 function App() {
@@ -26,12 +27,12 @@ function App() {
 
   return (
     <React.Fragment>
-      <Navbar/>
+      <StuNavbar/>
       <Routes>
         <Route element={<ProtectedRoutes login={loggedIn}/>}>  
-
           <Route element={<TeacherRoutes role={role} />}>
             <Route path="/Mock" element={<MockElections/> } exact/>
+            <Route path="/Classes" element={<Classes /> } exact/>
           </Route>
           <Route element={<StudentRoutes role={role} />}>
             <Route path="/" element={<Homepage />} exact/>

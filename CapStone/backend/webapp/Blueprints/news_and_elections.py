@@ -29,7 +29,8 @@ def news_general():
                     n["abstract"],
                     n["published_date"],
                     n["url"],
-                    n["company"]
+                    n["company"],
+                    n["imgURL"]
                 ))
 
         db.session.add_all(new_news)
