@@ -73,12 +73,18 @@ The file structure is as follows:
 
 ### Pages
 
-All pages for the website are found under this directory.<br/>
-Current pages include:
+All pages for the website are found under the page directory.<br/>
+Pages are broken down by user groupd (Student/Teacher) or shared pages.<br/>
 
-* Bills
-* Homepage
-* Politicians
+Student pages:
+* [Bills]
+* [Homepage]
+* [Politicians]
+
+Teacher pages:
+* [Mock Elections](./Documentation/Teachers/MockElections.md)
+* [Classes](./Documentation/Teachers/Classes.md)
+* [Quizzes](./Documentation/Teachers/Quizzes.md)
 
 ### Components
 
