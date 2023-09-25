@@ -112,7 +112,7 @@ class BallotSchema(ma.Schema):
         fields = ("id", "election_title")
     
 ballot_schema = BallotSchema()
-bollots_schema = BallotSchema(many=True)
+ballots_schema = BallotSchema(many=True)
 
 class CandidateBallotSchema(ma.Schema):
     class Meta:

@@ -163,7 +163,15 @@ class EnrolledClass(db.Model):
     name = Column(String(50))
     teacher = Column(String(30), ForeignKey('teachers.username'))
 
-    __table_args__ = (UniqueConstraint("name", name="name_unique"),)
+    __table_args__ = (UniqueConstraint("name", "teacher", name="name_teacher_unique"),)
+
+    def __init__(self, id, name, teacher):
+        self.id = id
+        self.name = name
+        self.teacher = teacher
+    
+    def __repr__(self):
+        return f'<EnrolledClass "{self.name}">'
 
 class User(db.Model):
     __tablename__ = 'users'
