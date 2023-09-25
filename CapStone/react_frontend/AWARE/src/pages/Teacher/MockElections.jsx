@@ -36,7 +36,7 @@ function MockElections(){
             // uncomment to prevent users from swtiching classes while creating mock ballot
             setVisibile(false);
         }
-      };
+    };
 
     const handleBack = () => {
         setVisibile(v => !v);

@@ -39,7 +39,7 @@ function CreateQuiz({back}) {
                         {questions.map((form, index) => (
                             <div key={index} className='flex relative justify-center w-[80%] md:w-[80%] h-[100%] my-2'>
                                 <form className='w-full h-full items-center'>
-                                    <Question />
+                                    <Question index={index}/>
                                 </form>
                             </div>
                         ))}
