@@ -82,7 +82,8 @@ export const CandidateFrom = ({index, onDelete}) => {
                         {candidates.map((form, index) => (
                             <div className='flex justify-center w-[100%] h-[100%]'>
                                 { <Candidate/> }
-                            </div> ))}
+                            </div> 
+                        ))}
                     </div>
                 </div>
                 <div className='flex flex-row relative h-[10%] justify-end'>

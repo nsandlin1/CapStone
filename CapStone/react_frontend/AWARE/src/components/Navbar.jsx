@@ -127,23 +127,14 @@ export const TeachNavbar = () => {
     <div className='navt flex justify-between items-center max-w-[80%] mx-auto px-4 pd-2 text-white bg-lightred'>
       <h1 className='w-full text-3xl font-bold text-white'>AWARE</h1>
       <ul className='navbar hidden navbar:flex '>
-        <li className='navitem p-4'>
-          <NavLink to="/">Home</NavLink>
-        </li>
         <li className='navitem p-4 whitespace-nowrap'>
           <NavLink to="/Mock">Mock Ballots</NavLink>
         </li>
         <li className='navitem p-4 whitespace-nowrap'>
-          <NavLink to="/Bills">Summarize Bills</NavLink>
+          <NavLink to="/Quizzes">Quizzes</NavLink>
         </li>
         <li className='navitem p-4'>
-          <NavLink to="/Elections">Elections</NavLink>
-        </li>
-        <li className='navitem p-4'>
-          <NavLink to="/Politicians">Politicians</NavLink>
-        </li>
-        <li className='navitem p-4'>
-          <NavLink to="/News">News</NavLink>
+          <NavLink to="/Classes">Classes</NavLink>
         </li>
         <li className='navitem p-4'>
           <NavLink to="/Profile">
@@ -164,7 +155,7 @@ export const TeachNavbar = () => {
         </div>
         <ul className='pt-12 uppercase'>
           <li className='navitem p-4 border-b border-gray-600'>
-            <NavLink to="/" onClick={handleNav}>Classes</NavLink>
+            <NavLink to="/Classes" onClick={handleNav}>Classes</NavLink>
           </li>
           <li className='navitem p-4 border-b border-gray-600'>
             <NavLink to="/Mock" onClick={handleNav}>Mock Ballots</NavLink>

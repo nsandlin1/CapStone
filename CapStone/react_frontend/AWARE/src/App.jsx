@@ -16,8 +16,9 @@ import PolyLanding from './pages/PolyLanding.jsx';
 import Login from './pages/Login.jsx'
 import SignUp from './pages/SignUp.jsx'
 import Profile from './pages/Profile.jsx'
-import MockElections from './pages/MockElections.jsx';
+import MockElections from './pages/Teacher/MockElections.jsx';
 import Classes from './pages/Classes.jsx';
+import Quizzes from './pages/Teacher/Quizzes.jsx';
 
 
 function App() {
@@ -27,12 +28,20 @@ function App() {
 
   return (
     <React.Fragment>
-      <StuNavbar/>
+      {loggedIn ?
+        role == 'student' ?
+          <StuNavbar />
+          :
+          <TeachNavbar />
+        :
+        ''
+      }
       <Routes>
         <Route element={<ProtectedRoutes login={loggedIn}/>}>  
           <Route element={<TeacherRoutes role={role} />}>
             <Route path="/Mock" element={<MockElections/> } exact/>
             <Route path="/Classes" element={<Classes /> } exact/>
+            <Route path="/Quizzes" element={<Quizzes /> } exact/>
           </Route>
           <Route element={<StudentRoutes role={role} />}>
             <Route path="/" element={<Homepage />} exact/>

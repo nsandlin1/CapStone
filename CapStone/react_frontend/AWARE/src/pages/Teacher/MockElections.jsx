@@ -1,8 +1,8 @@
 import { React, useState }from 'react';
-import MockElectionCard from '../components/MockElections/ElectionCard';
+import MockElectionCard from '../../components/MockElections/ElectionCard';
 import { IoMdAdd } from 'react-icons/io';
 import { useTransition, animated } from '@react-spring/web';
-import CreateBallot from '../components/MockElections/CreateBallot';
+import CreateBallot from '../../components/MockElections/CreateBallot';
 
 function MockElections(){
 
@@ -36,7 +36,7 @@ function MockElections(){
             // uncomment to prevent users from swtiching classes while creating mock ballot
             setVisibile(false);
         }
-      };
+    };
 
     const handleBack = () => {
         setVisibile(v => !v);
