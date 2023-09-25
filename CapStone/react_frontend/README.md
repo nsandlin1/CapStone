@@ -68,7 +68,8 @@ The file structure is as follows:
 │       ├── MockElections.jsx
 │       └── Quizzes.jsx
 └── utils
-    └── ProtectedRoutes.jsx```
+    └── ProtectedRoutes.jsx
+```
 
 ### Pages
 
