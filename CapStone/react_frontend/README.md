@@ -77,12 +77,14 @@ All pages for the website are found under the page directory.<br/>
 Pages are broken down by user groupd (Student/Teacher) or shared pages.<br/>
 
 Student pages:
-* [Bills]
-* [Homepage]
-* [Politicians]
+* [Bills](./Documentation/Students/Bills.md)
+* [Politicians](./Documentation/Students/Politicians.md)
+* [Elections](./Documentation/Students/Elections.md)
+* [News](./Documentation/Students/News.md)
+* [Calendar](./Documentation/Students/Calendar.md)
 
 Teacher pages:
-* [Mock Elections](./Documentation/Teachers/MockElections.md)
+* [Mock Elections](./Documentation/Teachers/MockElections/MockElections.md)
 * [Classes](./Documentation/Teachers/Classes.md)
 * [Quizzes](./Documentation/Teachers/Quizzes.md)
 
