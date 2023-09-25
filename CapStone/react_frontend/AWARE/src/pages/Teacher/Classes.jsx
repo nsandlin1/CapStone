@@ -1,7 +1,7 @@
 import {React, useState } from 'react';
 import { FcCollapse } from "react-icons/fc";
-import { ClassCard } from '../components/Classes/ClassCard';
-import { CreateClass } from '../components/Classes/CreateClass';
+import { ClassCard } from '../../components/Classes/ClassCard';
+import { CreateClass } from '../../components/Classes/CreateClass';
 
 function Classes() {
 

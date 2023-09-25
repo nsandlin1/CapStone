@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Calendar as Cal } from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { differenceInCalendarDays } from 'date-fns';
-import { EventCard } from "../components/EventCard";
+import { EventCard } from "../../components/EventCard";
 
 // template dict for holding election events
 // key: month name, value: list of [day, event name] pairs
