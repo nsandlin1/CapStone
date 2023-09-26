@@ -178,7 +178,6 @@ path:hover {
 .DC {
     background: linear-gradient(rgba(0,0,0,.5), rgba(0,0,0,.75)), url('../src/assets/dc.jpeg');
     background-size: cover;
-    border-radius: 10px;
     background-color: rgba(0,0,0,.5);
 }
 

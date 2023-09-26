@@ -86,13 +86,13 @@ function Login() {
             <div className='absolute mx-auto'>
                 { loginTransition((style, item) => 
                     item &&
-                    <animated.div style={style} className='bg-navy border-2 border-white rounded-xl shadow-2xl'>
+                    <animated.div style={style} className='bg-navy rounded-xl shadow-2xl'>
                         <LoginView click={handleLogin}/>
                     </animated.div>
                 )}
                 { registerTransition((style, item) => 
                     item &&
-                    <animated.div style={style} className='bg-navy border-2 border-white rounded-xl shadow-2xl'>
+                    <animated.div style={style} className='bg-navy rounded-xl shadow-2xl'>
                         <RegisterView click={handleRegister}/>
                     </animated.div>
                 )}
