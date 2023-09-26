@@ -20,7 +20,7 @@ import Quizzes from './pages/Teacher/Quizzes.jsx';
 
 function App() {
 
-  const [loggedIn, isLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
   const [role, setRole] = useState('teacher');
 
   return (
@@ -52,7 +52,7 @@ function App() {
             <Route path="/Profile" element={<Profile/>} exact/>
           </Route>
         </Route>
-        <Route path="/Login" element={<Login/>} />
+        <Route path="/Login" element={<Login setLoggedIn={setLoggedIn}/>} />
         <Route path="/SignUp" element={<SignUp/>} />
       </Routes>
     </React.Fragment>
