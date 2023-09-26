@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useSpring, useTransition, animated } from '@react-spring/web';
 import { Button, LoginView, RegisterView } from '../../components/Login/Welcome';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 
 function Login({setLoggedIn}) {
 
@@ -43,10 +44,10 @@ function Login({setLoggedIn}) {
                 })
                 .then(res => {
                     setResponse(res);
-                    loggedIn();
                 })
                 .catch(err => console.log(err))
         } else {
+            toast.error('Please input an Email and Password.')
             console.log("login does not meet requirements")
         }
     }
@@ -63,8 +64,7 @@ function Login({setLoggedIn}) {
             fetch(api_url, requestOptions)
                 .then(res => res.json())
                 .then(res => {
-                    setResponse(res); 
-                    loggedIn();
+                    setResponse(res);
                 })
                 .catch(err => console.log(err))
         } else {
@@ -158,6 +158,7 @@ function Login({setLoggedIn}) {
                             setEmail={setEmail} 
                             setPassword={setPassword} 
                             submit={submitLogin}
+                            setLoggedIn={setLoggedIn}
                         />
                     </animated.div>
                 )}
@@ -170,10 +171,14 @@ function Login({setLoggedIn}) {
                             setEmail={setEmail} 
                             setPassword={setPassword} 
                             submit={submitRegister}
+                            setLoggedIn={setLoggedIn}
                         />
                     </animated.div>
                 )}
             </div>
+            <ToastContainer  
+                position="top-center"
+            />
         </div>
     )
 

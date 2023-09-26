@@ -1,8 +1,21 @@
 import { BiArrowBack } from "react-icons/bi"
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
-export const LoginView = ({click, response, setEmail, setPassword, submit}) => {
+export const LoginView = ({click, response, setEmail, setPassword, submit, setLoggedIn}) => {
+
+    const navigate = useNavigate();
+
+    function login(doit) {
+        setLoggedIn(doit);
+        if (doit) {
+            navigate('/Classes');
+        }
+        toast.error("Loggin not correct. Please check username and password.");
+    }
 
     useEffect(() => {
         console.log(3)
@@ -13,10 +26,12 @@ export const LoginView = ({click, response, setEmail, setPassword, submit}) => {
                 // display "incorrect email or password"
                 console.log("response:", response)
                 console.log("incorrect login")
+                login(false)
             } else {
                 // redirect to wherever
                 console.log("response:", response)
                 console.log("logged in")
+                login(true)
             }
         }
     }, [response])
@@ -52,8 +67,12 @@ export const LoginView = ({click, response, setEmail, setPassword, submit}) => {
                             onClick={submit}>
                         Login
                     </button>
+                    
                 </form>
             </div>
+            <ToastContainer  
+                        position="top-center"
+                    />
         </div>
     )
 

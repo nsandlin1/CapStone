@@ -32,10 +32,6 @@ export const CandidateFrom = ({index, onDelete}) => {
 
     const [candidates, setCandidates] = useState([{}, {}]);
 
-    const showToast = () => {
-        toast.success('This is a success notification');
-      };
-
     const handleAddCandidate = () => {
         // Create a new form object based on the selected type
         const newCandidate = {};
@@ -89,9 +85,6 @@ export const CandidateFrom = ({index, onDelete}) => {
                 <div className='flex flex-row relative h-[10%] justify-end'>
                     < LuMinus className='MockButtons static' onClick={() => removeRecentCandidate()}/>
                     < IoMdAdd className='MockButtons static' onClick={() => handleAddCandidate()}/>
-                    <ToastContainer  
-                        position="top-center"
-                    />
                 </div>
             </div>
         </form>
