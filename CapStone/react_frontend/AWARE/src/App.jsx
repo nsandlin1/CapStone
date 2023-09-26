@@ -51,7 +51,7 @@ function App() {
             <Route path="/Profile" element={<Profile/>} exact/>
           </Route>
         </Route>
-        <Route path="/Login" element={<Login setLoggedIn={setLoggedIn} setRole={setRole}/>} />
+        <Route path="/Login" element={<Login setLoggedIn={setLoggedIn} role={role} setRole={setRole}/>} />
       </Routes>
     </React.Fragment>
   );

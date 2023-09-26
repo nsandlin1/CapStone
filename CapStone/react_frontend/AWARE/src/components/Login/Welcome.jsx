@@ -3,19 +3,10 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { yearsToQuarters } from "date-fns/esm";
 
 
-export const LoginView = ({click, response, setEmail, setPassword, submit, setLoggedIn}) => {
-
-    const navigate = useNavigate();
-
-    function login(doit) {
-        setLoggedIn(doit);
-        if (doit) {
-            navigate('/Classes');
-        }
-        toast.error("Loggin not correct. Please check username and password.");
-    }
+export const LoginView = ({click, response, setEmail, setPassword, submit, setLoggedIn, login}) => {
 
     useEffect(() => {
         console.log(3)
@@ -57,13 +48,13 @@ export const LoginView = ({click, response, setEmail, setPassword, submit, setLo
                         <label className='flex text-4xl w-[20%] justify-end pr-2'>
                             Password:
                         </label>
-                        <input className="rounded-lg pl-4 text-3xl text-navy bg-white border-2 w-[50%] border-navy"
+                        <input className="rounded-lg pl-4 text-3xl text-navy bg-white  w-[50%] "
                                 type='text'
                                 name='password'
                                 onChange={(p) => setPassword(p.target.value)}
                         />
                     </div>
-                    <button className="flex rounded-lg text-lg font-bold bg-white text-navy w-[10%] h-[15%] justify-center items-center "
+                    <button className="flex rounded-lg text-lg font-bold bg-white text-navy transition hover:scale-105  w-[10%] h-[15%] justify-center items-center "
                             onClick={submit}>
                         Login
                     </button>
@@ -78,9 +69,10 @@ export const LoginView = ({click, response, setEmail, setPassword, submit, setLo
 
 }
 
-export const RegisterView = ({click, response, setEmail, setPassword, submit}) => {
+export const RegisterView = ({click, response, email, setEmail, password, setPassword, submit, setLoggedIn, login, setRole, role}) => {
 
-    const [role, setRole] = useState('null');
+    const [selectedRole, setSelectedRole] = useState('null');
+    const [passValid, setPassValid] = useState();
 
     useEffect(() => {
         console.log(3)
@@ -90,20 +82,47 @@ export const RegisterView = ({click, response, setEmail, setPassword, submit}) =
             if (response.login === false) {
                 // display "incorrect email or password"
                 console.log("response:", response)
-                console.log("incorrect login")
+                console.log("failed to register")
+                login(false)
             } else {
                 // redirect to wherever
                 console.log("response:", response)
                 console.log("logged in")
+                login(true)
             }
         }
     }, [response])
 
     const handleRoleChange = (event) => {
         const newRole = event.target.value;
-        setRole(newRole);
-        console.log(role);
+        setSelectedRole(newRole);
+        console.log(selectedRole);
     };
+
+    function validateForm(e) {
+        e.preventDefault();
+        console.log('help me');
+        if (email.length === 0){
+            toast.error('Email is required for registration');
+        }
+        else if (password.length < 6) {
+            toast.error('Password must be at least 6 characters');
+        }
+        else if (password !== passValid) {
+            toast.error('Passwords do not match');
+        }
+        else if (selectedRole === 'student' && selectedRole.length === 0) {
+            toast.error('Class code is invalid.');
+        }
+        else if (selectedRole === 'null'){
+            toast.error('Must select a role.');
+        }
+        else {
+            console.log("I should not be here");
+            setRole(selectedRole);
+            submit();
+        }
+    }
 
     return (
         <div className="CapHill flex flex-col relative w-[60vw] h-[50vh] justify-center items-center text-white" >
@@ -126,7 +145,7 @@ export const RegisterView = ({click, response, setEmail, setPassword, submit}) =
                         <label className='flex text-4xl w-[20%] justify-end pr-2'>
                             Password:
                         </label>
-                        <input className="rounded-lg pl-4 text-3xl text-navy bg-white border-2 w-[50%] border-navy"
+                        <input className="rounded-lg pl-4 text-3xl text-navy bg-white  w-[50%] "
                                 type='text'
                                 name='password'
                                 onChange={(p) => setPassword(p.target.value)}
@@ -134,34 +153,60 @@ export const RegisterView = ({click, response, setEmail, setPassword, submit}) =
                         />
                     </div>
                     <div className='flex flex-row w-full h-[20%] items-center justify-center'>
-                        <label className='flex text-4xl w-[20%] justify-end pr-2'>
-                            Role:
+                        <label className='flex text-3xl w-[20%] whitespace-nowrap justify-end pr-2'>
+                            Re-type Password:
                         </label>
-                        <select onChange={handleRoleChange}
-                                className="rounded-lg pl-4 text-3xl text-navy bg-white border-2 w-[50%] border-navy"
-                                type='option'
-                                name='password'
-                        >
-                            <option valeu='null'>Select one</option>
-                            <option value='teacher'>Teacher</option>
-                            <option value='student'>Student</option>
-                        </select>
-                    </div>
-                    { role == 'student' ?
-                        <div className='flex flex-row w-full h-[20%] items-center justify-center'>
-                        <label className='flex text-4xl whitespace-nowrap w-[20%] justify-end pr-2'>
-                            Class Code:
-                        </label>
-                        <input className="rounded-lg pl-4 text-3xl text-navy bg-white border-2 w-[50%] border-navy"
+                        <input className="rounded-lg pl-4 text-3xl text-navy bg-white  w-[50%] "
                                 type='text'
-                                name='code'
+                                name='password'
+                                onChange={(p) => setPassValid(p.target.value)}
+                                
                         />
                     </div>
+                    { selectedRole == 'student' ?
+                        <div className='flex flex-row w-full h-[20%]'>
+                            <div className='flex flex-row w-full h-[100%] items-center justify-center'>
+                                <label className='flex text-4xl w-[20%] justify-end pr-2'>
+                                    Role:
+                                </label>
+                                <select onChange={handleRoleChange}
+                                        className="rounded-lg pl-4 text-3xl text-navy bg-white  w-[50%] "
+                                        type='option'
+                                        name='password'
+                                >
+                                    <option valeu='null'>Select one</option>
+                                    <option value='teacher'>Teacher</option>
+                                    <option value='student'>Student</option>
+                                </select>
+                            </div>
+                            <div className='flex flex-row w-full h-[100%] items-center justify-center'>
+                                <label className='flex text-4xl whitespace-nowrap w-[20%] justify-end pr-2'>
+                                    Class Code:
+                                </label>
+                                <input className="rounded-lg pl-4 text-3xl text-navy bg-white  w-[50%] "
+                                        type='text'
+                                        name='code'
+                                />
+                            </div>
+                        </div>
                         :
-                        ''
+                        <div className='flex flex-row w-full h-[20%] items-center justify-center'>
+                            <label className='flex text-4xl w-[20%] justify-end pr-2'>
+                                Role:
+                            </label>
+                            <select onChange={handleRoleChange}
+                                    className="rounded-lg pl-4 text-3xl text-navy bg-white  w-[50%] "
+                                    type='option'
+                                    name='password'
+                            >
+                                <option valeu='null'>Select one</option>
+                                <option value='teacher'>Teacher</option>
+                                <option value='student'>Student</option>
+                            </select>
+                        </div>
                     }
-                    <button className="flex rounded-lg text-lg font-bold bg-white text-navy w-[20%] h-[15%] justify-center items-center"
-                            onClick={submit}>
+                    <button className="flex rounded-lg transition hover:scale-105 text-lg font-bold bg-white text-navy w-[20%] h-[15%] justify-center items-center"
+                            onClick={validateForm}>
                         Register
                     </button>
                 </form>
@@ -173,7 +218,7 @@ export const RegisterView = ({click, response, setEmail, setPassword, submit}) =
 export const Button = ({text, click}) => {
 
     return (
-        <div className="flex bg-white border-1 shadow-2xl border-navy hover:cursor-pointer justify-center transition hover:scale-105 
+        <div className="flex bg-white border-1 shadow-2xl  hover:cursor-pointer justify-center transition hover:scale-105 
                         items-center text-2xl font-bold rounded-xl h-[30%] w-[45%] md:w-[25%]" 
              onClick={click}>
             {text}

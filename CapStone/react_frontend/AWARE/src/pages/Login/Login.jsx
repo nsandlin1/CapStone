@@ -4,7 +4,7 @@ import { Button, LoginView, RegisterView } from '../../components/Login/Welcome'
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 
-function Login({setLoggedIn}) {
+function Login({setLoggedIn, role, setRole}) {
 
     const [login, setLogin] = useState(false);
     const [register, setRegister] = useState(false);
@@ -13,6 +13,14 @@ function Login({setLoggedIn}) {
     const [response, setResponse] = useState({});
 
     const navigate = useNavigate();
+
+    function logEmIn(doit) {
+        setLoggedIn(doit);
+        if (doit) {
+            navigate('/Classes');
+        }
+        toast.error("Loggin not correct. Please check username and password.");
+    }
 
     function validate(email, password) {
         if (email.length > 0 && password.length > 0) {
@@ -159,6 +167,7 @@ function Login({setLoggedIn}) {
                             setPassword={setPassword} 
                             submit={submitLogin}
                             setLoggedIn={setLoggedIn}
+                            login={logEmIn}
                         />
                     </animated.div>
                 )}
@@ -168,10 +177,15 @@ function Login({setLoggedIn}) {
                         <RegisterView 
                             click={handleRegister} 
                             response={response} 
+                            email={email}
                             setEmail={setEmail} 
+                            password={password}
                             setPassword={setPassword} 
                             submit={submitRegister}
                             setLoggedIn={setLoggedIn}
+                            login={logEmIn}
+                            setRole={setRole}
+                            role={role}
                         />
                     </animated.div>
                 )}
