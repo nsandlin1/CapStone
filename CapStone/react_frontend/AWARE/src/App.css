@@ -161,3 +161,24 @@ path:hover {
     transition: height 0.2s ease-in-out;
 }
 
+.CapHill {
+    background: linear-gradient(rgba(0,0,0,.25), rgba(0,0,0,.75)), url('../src/assets/captiolhill.jpeg');
+    background-size: cover;
+    border-radius: 10px;
+    background-color: rgba(0,0,0,.5);
+}
+
+.WhiteHouse {
+    background: linear-gradient(rgba(0,0,0,.25), rgba(0,0,0,.75)), url('../src/assets/whitehouse.webp');
+    background-size: cover;
+    border-radius: 10px;
+    background-color: rgba(0,0,0,.5);
+}
+
+.DC {
+    background: linear-gradient(rgba(0,0,0,.5), rgba(0,0,0,.75)), url('../src/assets/dc.jpeg');
+    background-size: cover;
+    border-radius: 10px;
+    background-color: rgba(0,0,0,.5);
+}
+

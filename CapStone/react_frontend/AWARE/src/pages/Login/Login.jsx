@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useSpring, useTransition, animated } from '@react-spring/web';
-import { Button, LoginView } from '../../components/Login/Buttons';
+import { Button, LoginView, RegisterView } from '../../components/Login/Welcome';
 
 function Login() {
 
@@ -44,14 +44,28 @@ function Login() {
         leave: {  opacity: 0}
     })
 
+    const registerTransition = useTransition(register, {
+        config: {
+            duration: 250
+        },
+        from: {  opacity: 0},
+        enter: {  opacity: 1},
+        leave: {  opacity: 0}
+    })
+
     const handleLogin = () => {
         setLogin(!login);
         console.log(login);
     }
 
+    const handleRegister = () => {
+        setRegister(!register);
+        console.log(register);
+    }
+
     return (
-        <div className="flex relative flex-col h-[100vh] w-[100vw] bg-slate-400  font-bold font-serif justify-center items-center">
-            <animated.div style={welcome} className='flex flex-col justify-center items-center w-full h-[40%] md:h-[60%]'>
+        <div className="DC flex relative flex-col h-[100vh] w-[100vw] bg-slate-400 justify-center items-center">
+            <animated.div style={welcome} className='flex flex-col justify-center font-bold items-center font-serif w-full h-[40%] md:h-[60%]'>
                 <div className='flex flex-col justify-center items-center space-y-2'>
                     <div className='flex text-4xl md:text-7xl justify-center text-white drop-shadow-xl'>
                         Welcome
@@ -67,15 +81,21 @@ function Login() {
             </animated.div>
             <animated.div style={buttons} className='flex flex-row justify-center w-full h-[40%] space-x-4 md:space-x-16'>
                     <Button text={'Login'} click={handleLogin}/>
-                    <Button text={'Sign Up'}/>
+                    <Button text={'Sign Up'} click={handleRegister}/>
             </animated.div>
             <div className='absolute mx-auto'>
-            { loginTransition((style, item) => 
-                item &&
-                <animated.div style={style} className='bg-navy border-2 border-white rounded-xl shadow-2xl'>
-                    <LoginView click={handleLogin}/>
-                </animated.div>
-            )}
+                { loginTransition((style, item) => 
+                    item &&
+                    <animated.div style={style} className='bg-navy border-2 border-white rounded-xl shadow-2xl'>
+                        <LoginView click={handleLogin}/>
+                    </animated.div>
+                )}
+                { registerTransition((style, item) => 
+                    item &&
+                    <animated.div style={style} className='bg-navy border-2 border-white rounded-xl shadow-2xl'>
+                        <RegisterView click={handleRegister}/>
+                    </animated.div>
+                )}
             </div>
         </div>
     )
