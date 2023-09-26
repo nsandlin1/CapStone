@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSpring, useTransition, animated } from '@react-spring/web';
 import { Button, LoginView, RegisterView } from '../../components/Login/Welcome';
+import { useNavigate } from 'react-router-dom';
 
 function Login({setLoggedIn}) {
 
@@ -8,7 +9,9 @@ function Login({setLoggedIn}) {
     const [register, setRegister] = useState(false);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [response, setResponse] = useState({})
+    const [response, setResponse] = useState({});
+
+    const navigate = useNavigate();
 
     function validate(email, password) {
         if (email.length > 0 && password.length > 0) {
@@ -17,10 +20,16 @@ function Login({setLoggedIn}) {
         return false
     }
 
-    function submitcreds() {
+    function loggedIn() {
+        setLoggedIn(true);
+        console.log("here");
+        navigate('/Classes');
+    }
+
+    function submitLogin() {
         event.preventDefault()
         if (validate(email, password)) {
-            var api_url = "/api/user/login"
+            var api_url = "http://localhost:5000/api/user/login"
             console.log("The url:", api_url)
             const requestOptions = {
                 method: 'POST',
@@ -32,29 +41,36 @@ function Login({setLoggedIn}) {
                     console.log("res:", res)
                     return res.json()
                 })
-                .then(res => setResponse(res))
+                .then(res => {
+                    setResponse(res);
+                    loggedIn();
+                })
                 .catch(err => console.log(err))
         } else {
             console.log("login does not meet requirements")
         }
     }
 
-    useEffect(() => {
-        console.log(3)
-        if (Object.keys(response).length === 0) {
-            console.log("no response")
+    function submitRegister() {
+        event.preventDefault()
+        if (validate(email, password)) {
+            var api_url = "http://localhost:5000/api/user/sign-up"
+            const requestOptions = {
+                method: 'POST',
+                mode: 'cors',
+                body: JSON.stringify({'email': email, 'password': password})
+            };
+            fetch(api_url, requestOptions)
+                .then(res => res.json())
+                .then(res => {
+                    setResponse(res); 
+                    loggedIn();
+                })
+                .catch(err => console.log(err))
         } else {
-            if (response.login === false) {
-                // display "incorrect email or password"
-                console.log("response:", response)
-                console.log("incorrect login")
-            } else {
-                // redirect to wherever
-                console.log("response:", response)
-                console.log("logged in")
-            }
+            console.log("signup does not meet requirements")
         }
-    }, [response])
+    }
 
     const welcome = useSpring({
         config: {
@@ -136,13 +152,25 @@ function Login({setLoggedIn}) {
                 { loginTransition((style, item) => 
                     item &&
                     <animated.div style={style} className='bg-navy rounded-xl shadow-2xl'>
-                        <LoginView click={handleLogin} setEmail={setEmail} setPassword={setPassword}/>
+                        <LoginView 
+                            click={handleLogin} 
+                            response={response} 
+                            setEmail={setEmail} 
+                            setPassword={setPassword} 
+                            submit={submitLogin}
+                        />
                     </animated.div>
                 )}
                 { registerTransition((style, item) => 
                     item &&
                     <animated.div style={style} className='bg-navy rounded-xl shadow-2xl'>
-                        <RegisterView click={handleRegister} setEmail={setEmail} setPassword={setPassword}/>
+                        <RegisterView 
+                            click={handleRegister} 
+                            response={response} 
+                            setEmail={setEmail} 
+                            setPassword={setPassword} 
+                            submit={submitRegister}
+                        />
                     </animated.div>
                 )}
             </div>

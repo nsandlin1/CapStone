@@ -11,7 +11,6 @@ import { Routes, Route } from 'react-router-dom';
 import { ProtectedRoutes, TeacherRoutes, StudentRoutes } from './utils/ProtectedRoutes.jsx';
 import Elections from './pages/Student/Elections.jsx';
 import Login from './pages/Login/Login.jsx'
-import SignUp from './pages/SignUp.jsx'
 import Profile from './pages/Profile.jsx'
 import MockElections from './pages/Teacher/MockElections.jsx';
 import Classes from './pages/Teacher/Classes.jsx';
@@ -52,8 +51,7 @@ function App() {
             <Route path="/Profile" element={<Profile/>} exact/>
           </Route>
         </Route>
-        <Route path="/Login" element={<Login setLoggedIn={setLoggedIn}/>} />
-        <Route path="/SignUp" element={<SignUp/>} />
+        <Route path="/Login" element={<Login setLoggedIn={setLoggedIn} setRole={setRole}/>} />
       </Routes>
     </React.Fragment>
   );

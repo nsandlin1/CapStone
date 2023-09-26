@@ -1,8 +1,25 @@
 import { BiArrowBack } from "react-icons/bi"
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 
-export const LoginView = ({click}) => {
+export const LoginView = ({click, response, setEmail, setPassword, submit}) => {
+
+    useEffect(() => {
+        console.log(3)
+        if (Object.keys(response).length === 0) {
+            console.log("no response")
+        } else {
+            if (response.login === false) {
+                // display "incorrect email or password"
+                console.log("response:", response)
+                console.log("incorrect login")
+            } else {
+                // redirect to wherever
+                console.log("response:", response)
+                console.log("logged in")
+            }
+        }
+    }, [response])
 
     return (
         <div className="WhiteHouse flex flex-col relative w-[60vw] h-[50vh] justify-center items-center text-white" >
@@ -18,6 +35,7 @@ export const LoginView = ({click}) => {
                         <input className="text-3xl pl-4 text-navy rounded-lg w-[50%]"
                                 type='text'
                                 name='email'
+                                onChange={(e) => setEmail(e.target.value)}
                         />
                     </div>
                     <div className='flex flex-row w-full h-[20%] items-center justify-center'>
@@ -27,9 +45,11 @@ export const LoginView = ({click}) => {
                         <input className="rounded-lg pl-4 text-3xl text-navy bg-white border-2 w-[50%] border-navy"
                                 type='text'
                                 name='password'
+                                onChange={(p) => setPassword(p.target.value)}
                         />
                     </div>
-                    <button className="flex rounded-lg text-lg font-bold bg-white text-navy w-[10%] h-[15%] justify-center items-center ">
+                    <button className="flex rounded-lg text-lg font-bold bg-white text-navy w-[10%] h-[15%] justify-center items-center "
+                            onClick={submit}>
                         Login
                     </button>
                 </form>
@@ -39,9 +59,26 @@ export const LoginView = ({click}) => {
 
 }
 
-export const RegisterView = ({click}) => {
+export const RegisterView = ({click, response, setEmail, setPassword, submit}) => {
 
     const [role, setRole] = useState('null');
+
+    useEffect(() => {
+        console.log(3)
+        if (Object.keys(response).length === 0) {
+            console.log("no response")
+        } else {
+            if (response.login === false) {
+                // display "incorrect email or password"
+                console.log("response:", response)
+                console.log("incorrect login")
+            } else {
+                // redirect to wherever
+                console.log("response:", response)
+                console.log("logged in")
+            }
+        }
+    }, [response])
 
     const handleRoleChange = (event) => {
         const newRole = event.target.value;
@@ -63,6 +100,7 @@ export const RegisterView = ({click}) => {
                         <input className="text-3xl pl-4 text-navy rounded-lg w-[50%]"
                                 type='text'
                                 name='email'
+                                onChange={(e) => setEmail(e.target.value)}
                         />
                     </div>
                     <div className='flex flex-row w-full h-[20%] items-center justify-center'>
@@ -72,6 +110,8 @@ export const RegisterView = ({click}) => {
                         <input className="rounded-lg pl-4 text-3xl text-navy bg-white border-2 w-[50%] border-navy"
                                 type='text'
                                 name='password'
+                                onChange={(p) => setPassword(p.target.value)}
+                                
                         />
                     </div>
                     <div className='flex flex-row w-full h-[20%] items-center justify-center'>
@@ -101,7 +141,8 @@ export const RegisterView = ({click}) => {
                         :
                         ''
                     }
-                    <button className="flex rounded-lg text-lg font-bold bg-white text-navy w-[20%] h-[15%] justify-center items-center ">
+                    <button className="flex rounded-lg text-lg font-bold bg-white text-navy w-[20%] h-[15%] justify-center items-center"
+                            onClick={submit}>
                         Register
                     </button>
                 </form>
