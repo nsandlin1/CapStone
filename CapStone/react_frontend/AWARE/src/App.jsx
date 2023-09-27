@@ -20,7 +20,7 @@ import Quizzes from './pages/Teacher/Quizzes.jsx';
 function App() {
 
   const [loggedIn, setLoggedIn] = useState(false);
-  const [role, setRole] = useState('teacher');
+  const [role, setRole] = useState();
 
   return (
     <React.Fragment>
@@ -51,7 +51,9 @@ function App() {
             <Route path="/Profile" element={<Profile/>} exact/>
           </Route>
         </Route>
-        <Route path="/Login" element={<Login setLoggedIn={setLoggedIn} role={role} setRole={setRole}/>} />
+        <Route element={<ProtectedRoutes login={!loggedIn}/>}>
+          <Route path="/Login" element={<Login setLoggedIn={setLoggedIn} role={role} setRole={setRole}/>} />
+        </Route>
       </Routes>
     </React.Fragment>
   );

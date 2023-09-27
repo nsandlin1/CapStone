@@ -88,6 +88,7 @@ export const RegisterView = ({click, response, email, setEmail, password, setPas
                 // redirect to wherever
                 console.log("response:", response)
                 console.log("logged in")
+                setRole(selectedRole)
                 login(true)
             }
         }

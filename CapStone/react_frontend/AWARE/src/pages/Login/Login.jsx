@@ -14,10 +14,14 @@ function Login({setLoggedIn, role, setRole}) {
 
     const navigate = useNavigate();
 
+    // doit is a boolean, signifying if the user is logged in or not. I know its a bad name
     function logEmIn(doit) {
         setLoggedIn(doit);
-        if (doit) {
+        if (doit && role === 'teacher') {
             navigate('/Classes');
+        }
+        else if (doit) {
+            navigate('/Home');
         }
         toast.error("Loggin not correct. Please check username and password.");
     }
@@ -27,12 +31,6 @@ function Login({setLoggedIn, role, setRole}) {
             return true
         }
         return false
-    }
-
-    function loggedIn() {
-        setLoggedIn(true);
-        console.log("here");
-        navigate('/Classes');
     }
 
     function submitLogin() {

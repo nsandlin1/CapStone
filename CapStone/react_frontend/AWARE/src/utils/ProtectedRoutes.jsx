@@ -20,4 +20,5 @@ export const StudentRoutes = ({role}) => {
     return (
         role == 'student' ? <Outlet />  : <Navigate to='/Login'/>
     )
+    
 }
