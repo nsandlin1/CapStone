@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import { FaRotateLeft } from 'react-icons/fa6';
 
-function Login({setLoggedIn, setRole}) {
+function Login({setLoggedIn, setRole, loginFun}) {
 
     const [login, setLogin] = useState(false);
     const [register, setRegister] = useState(false);
@@ -13,22 +13,6 @@ function Login({setLoggedIn, setRole}) {
     const [password, setPassword] = useState("");
     const [response, setResponse] = useState({});
     const [tempRole, setTempRole] = useState();
-
-    const navigate = useNavigate();
-
-    // doit is a boolean, signifying if the user is logged in or not. I know its a bad name
-    function logEmIn(role) {
-        setLoggedIn(true);
-        setRole(role)
-        if (role === 'Teacher') {
-            navigate('/Classes');
-        }
-        else if (role === 'Student') {
-            navigate('/Home');
-        }
-        console.log("TempRole: " + role);
-        toast.error("Login not correct. Please check username and password.");
-    }
 
     function validate(email, password) {
         if (email.length > 0 && password.length > 0) {
@@ -78,7 +62,7 @@ function Login({setLoggedIn, setRole}) {
                     setResponse(res);
                     console.log("Role is killing me in submit: " + role)
                     setTempRole(role);
-                    logEmIn(role);
+                    loginFun(role);
                 })
                 .catch(err => console.log(err))
         } else {
@@ -173,7 +157,7 @@ function Login({setLoggedIn, setRole}) {
                             setPassword={setPassword} 
                             submit={submitLogin}
                             setLoggedIn={setLoggedIn}
-                            login={logEmIn}
+                            login={loginFun}
                             setRole={setRole}
                         />
                     </animated.div>
@@ -190,7 +174,7 @@ function Login({setLoggedIn, setRole}) {
                             setPassword={setPassword} 
                             submit={submitRegister}
                             setLoggedIn={setLoggedIn}
-                            login={logEmIn}
+                            login={loginFun}
                             setRole={setRole}
                         />
                     </animated.div>

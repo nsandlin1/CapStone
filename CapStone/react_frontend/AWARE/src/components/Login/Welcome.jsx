@@ -6,7 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { yearsToQuarters } from "date-fns/esm";
 
 
-export const LoginView = ({click, response, setEmail, setPassword, submit, setLoggedIn, login}) => {
+export const LoginView = ({click, response, setEmail, setPassword, submit, login}) => {
 
     useEffect(() => {
         console.log(3)
@@ -69,14 +69,13 @@ export const LoginView = ({click, response, setEmail, setPassword, submit, setLo
 
 }
 
-export const RegisterView = ({click, response, email, setEmail, password, setPassword, submit, setLoggedIn, login, setRole}) => {
+export const RegisterView = ({click, response, email, setEmail, password, setPassword, submit, setRole}) => {
 
     const [roles, setRoles] = useState(["Select Option", "Teacher", "Student"]);
     const role = roles.map(role => role)
     const handleRoleChange = (e) => {
         console.log(("Hello" + roles[e.target.value]))
         setSelectedRole(roles[e.target.value])
-        console.log("The selected role is: " + selectedRole)
     };
     const [selectedRole, setSelectedRole] = useState();
 
@@ -109,13 +108,16 @@ export const RegisterView = ({click, response, email, setEmail, password, setPas
     function validateForm(e) {
         e.preventDefault();
         if (email.length === 0){
-            toast.error('Email is required for registration');
+            toast.error('Email is required for registration.');
         }
         else if (password.length < 6) {
-            toast.error('Password must be at least 6 characters');
+            toast.error('Password must be at least 6 characters.');
+        }
+        else if (passValid.length === 0) {
+            toast.error('Please re-type password.')
         }
         else if (password !== passValid) {
-            toast.error('Passwords do not match');
+            toast.error('Passwords do not match.');
         }
         else if (selectedRole === 'student' && selectedRole.length === 0) {
             toast.error('Class code is invalid.');

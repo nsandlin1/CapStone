@@ -7,7 +7,7 @@ import Politicians from './pages/Student/Politicians.jsx';
 import News from './pages/News.jsx';
 import Bills from './pages/Student/Bills.jsx';
 import './App.css'
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import { ProtectedRoutes, TeacherRoutes, StudentRoutes } from './utils/ProtectedRoutes.jsx';
 import Elections from './pages/Student/Elections.jsx';
 import Login from './pages/Login/Login.jsx'
@@ -21,11 +21,28 @@ function App() {
 
   const [loggedIn, setLoggedIn] = useState(false);
   const [role, setRole] = useState();
+  
+  const navigate = useNavigate();
+
+  // doit is a boolean, signifying if the user is logged in or not. I know its a bad name
+  function logEmIn(role) {
+    setLoggedIn(true);
+    setRole(role)
+    console.log("The role in app.jsx is:" + role);
+    if (role === 'Teacher') {
+        navigate('/Classes');
+    }
+    else if (role === 'Student') {
+        navigate('/Home');
+    }
+    console.log("TempRole: " + role);
+    toast.error("Login not correct. Please check username and password.");
+}
 
   return (
     <React.Fragment>
       {loggedIn ?
-        role == 'student' ?
+        role == 'Student' ?
           <StuNavbar />
           :
           <TeachNavbar />
@@ -52,7 +69,7 @@ function App() {
           </Route>
         </Route>
         <Route element={<ProtectedRoutes login={!loggedIn}/>}>
-          <Route path="/Login" element={<Login setLoggedIn={setLoggedIn} setRole={setRole}/>} />
+          <Route path="/Login" element={<Login setLoggedIn={setLoggedIn} setRole={setRole} loginFun={logEmIn}/>} />
         </Route>
       </Routes>
     </React.Fragment>
