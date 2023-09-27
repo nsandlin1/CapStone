@@ -24,7 +24,7 @@ import Quizzes from './pages/Teacher/Quizzes.jsx';
 function App() {
 
   const [loggedIn, isLoggedIn] = useState(true);
-  const [role, setRole] = useState('teacher');
+  const [role, setRole] = useState('student');
 
   return (
     <React.Fragment>

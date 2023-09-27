@@ -56,7 +56,16 @@ def login():
         access_token = create_access_token(identity=email)
         # so client can get new access token when expires
         refresh_token = create_refresh_token(identity=email)
-        resp = jsonify({'login': True})
+        resp = jsonify({
+            'login': True, 
+            'user': {
+                'email': stored_user.email,
+                'username': stored_user.username,
+                'firstname': stored_user.first_name,
+                'lastname': stored_user.last_name,
+                'role': stored_user.role
+            }
+        })
 
         set_access_cookies(resp, access_token)
         set_refresh_cookies(resp, refresh_token)
