@@ -40,7 +40,7 @@ function App() {
             <Route path="/Quizzes" element={<Quizzes /> } exact/>
           </Route>
           <Route element={<StudentRoutes role={role} />}>
-            <Route path="/" element={<Homepage />} exact/>
+            <Route path="/Home" element={<Homepage />} exact/>
             <Route path="/Calendar" element={<Calendar />} exact/>
             <Route path="/Bills" element={<Bills />} exact/>
             <Route path="/Elections" element={<Elections />} exact/>
@@ -52,7 +52,7 @@ function App() {
           </Route>
         </Route>
         <Route element={<ProtectedRoutes login={!loggedIn}/>}>
-          <Route path="/Login" element={<Login setLoggedIn={setLoggedIn} role={role} setRole={setRole}/>} />
+          <Route path="/Login" element={<Login setLoggedIn={setLoggedIn} setRole={setRole}/>} />
         </Route>
       </Routes>
     </React.Fragment>

@@ -69,10 +69,19 @@ export const LoginView = ({click, response, setEmail, setPassword, submit, setLo
 
 }
 
-export const RegisterView = ({click, response, email, setEmail, password, setPassword, submit, setLoggedIn, login, setRole, role}) => {
+export const RegisterView = ({click, response, email, setEmail, password, setPassword, submit, setLoggedIn, login, setRole}) => {
 
-    const [selectedRole, setSelectedRole] = useState('null');
+    const [roles, setRoles] = useState(["Select Option", "Teacher", "Student"]);
+    const role = roles.map(role => role)
+    const handleRoleChange = (e) => {
+        console.log(("Hello" + roles[e.target.value]))
+        setSelectedRole(roles[e.target.value])
+        console.log("The selected role is: " + selectedRole)
+    };
+    const [selectedRole, setSelectedRole] = useState();
+
     const [passValid, setPassValid] = useState();
+
 
     useEffect(() => {
         console.log(3)
@@ -83,26 +92,22 @@ export const RegisterView = ({click, response, email, setEmail, password, setPas
                 // display "incorrect email or password"
                 console.log("response:", response)
                 console.log("failed to register")
-                login(false)
             } else {
                 // redirect to wherever
                 console.log("response:", response)
                 console.log("logged in")
-                setRole(selectedRole)
-                login(true)
             }
         }
     }, [response])
 
-    const handleRoleChange = (event) => {
-        const newRole = event.target.value;
-        setSelectedRole(newRole);
-        console.log(selectedRole);
-    };
+    // const handleRoleChange = (event) => {
+    //     const newRole = event.target.value;
+    //     console.log("New Role is: "  +  newRole)
+    //     setSelectedRole(newRole);
+    // };
 
     function validateForm(e) {
         e.preventDefault();
-        console.log('help me');
         if (email.length === 0){
             toast.error('Email is required for registration');
         }
@@ -119,9 +124,8 @@ export const RegisterView = ({click, response, email, setEmail, password, setPas
             toast.error('Must select a role.');
         }
         else {
-            console.log("I should not be here");
             setRole(selectedRole);
-            submit();
+            submit(selectedRole);
         }
     }
 
@@ -164,24 +168,24 @@ export const RegisterView = ({click, response, email, setEmail, password, setPas
                                 
                         />
                     </div>
-                    { selectedRole == 'student' ?
-                        <div className='flex flex-row w-full h-[20%]'>
-                            <div className='flex flex-row w-full h-[100%] items-center justify-center'>
+                    <div className='flex flex-row w-full h-[20%] items-center justify-center'>
+                            <div className='flex flex-row w-[50%] h-[100%] items-center justify-center'>
                                 <label className='flex text-4xl w-[20%] justify-end pr-2'>
                                     Role:
                                 </label>
                                 <select onChange={handleRoleChange}
-                                        className="rounded-lg pl-4 text-3xl text-navy bg-white  w-[50%] "
+                                        className="rounded-lg pl-4 text-3xl text-navy bg-white w-[80%] "
                                         type='option'
                                         name='password'
                                 >
-                                    <option valeu='null'>Select one</option>
-                                    <option value='teacher'>Teacher</option>
-                                    <option value='student'>Student</option>
+                                    {
+                                        role.map((rol, key) => <option value={key}>{rol}</option>)
+                                    }
                                 </select>
                             </div>
-                            <div className='flex flex-row w-full h-[100%] items-center justify-center'>
-                                <label className='flex text-4xl whitespace-nowrap w-[20%] justify-end pr-2'>
+                        { selectedRole === 'Student' ?
+                            <div className='flex flex-row w-[50%] h-[100%] items-center justify-center'>
+                                <label className='flex text-4xl whitespace-nowrap w-[45%] justify-end pr-2'>
                                     Class Code:
                                 </label>
                                 <input className="rounded-lg pl-4 text-3xl text-navy bg-white  w-[50%] "
@@ -189,23 +193,11 @@ export const RegisterView = ({click, response, email, setEmail, password, setPas
                                         name='code'
                                 />
                             </div>
-                        </div>
-                        :
-                        <div className='flex flex-row w-full h-[20%] items-center justify-center'>
-                            <label className='flex text-4xl w-[20%] justify-end pr-2'>
-                                Role:
-                            </label>
-                            <select onChange={handleRoleChange}
-                                    className="rounded-lg pl-4 text-3xl text-navy bg-white  w-[50%] "
-                                    type='option'
-                                    name='password'
-                            >
-                                <option valeu='null'>Select one</option>
-                                <option value='teacher'>Teacher</option>
-                                <option value='student'>Student</option>
-                            </select>
-                        </div>
-                    }
+                            :
+                            ''
+                        }
+                    </div>
+                    
                     <button className="flex rounded-lg transition hover:scale-105 text-lg font-bold bg-white text-navy w-[20%] h-[15%] justify-center items-center"
                             onClick={validateForm}>
                         Register

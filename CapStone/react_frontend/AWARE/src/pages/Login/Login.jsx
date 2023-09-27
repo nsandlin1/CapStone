@@ -3,27 +3,31 @@ import { useSpring, useTransition, animated } from '@react-spring/web';
 import { Button, LoginView, RegisterView } from '../../components/Login/Welcome';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
+import { FaRotateLeft } from 'react-icons/fa6';
 
-function Login({setLoggedIn, role, setRole}) {
+function Login({setLoggedIn, setRole}) {
 
     const [login, setLogin] = useState(false);
     const [register, setRegister] = useState(false);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [response, setResponse] = useState({});
+    const [tempRole, setTempRole] = useState();
 
     const navigate = useNavigate();
 
     // doit is a boolean, signifying if the user is logged in or not. I know its a bad name
-    function logEmIn(doit) {
-        setLoggedIn(doit);
-        if (doit && role === 'teacher') {
+    function logEmIn(role) {
+        setLoggedIn(true);
+        setRole(role)
+        if (role === 'Teacher') {
             navigate('/Classes');
         }
-        else if (doit) {
+        else if (role === 'Student') {
             navigate('/Home');
         }
-        toast.error("Loggin not correct. Please check username and password.");
+        console.log("TempRole: " + role);
+        toast.error("Login not correct. Please check username and password.");
     }
 
     function validate(email, password) {
@@ -58,19 +62,23 @@ function Login({setLoggedIn, role, setRole}) {
         }
     }
 
-    function submitRegister() {
+    function submitRegister(role) {
         event.preventDefault()
         if (validate(email, password)) {
+            console.log("Role in submit register" + role)
             var api_url = "http://localhost:5000/api/user/sign-up"
             const requestOptions = {
                 method: 'POST',
                 mode: 'cors',
-                body: JSON.stringify({'email': email, 'password': password})
+                body: JSON.stringify({'email': email, 'password': password, 'role': role})
             };
             fetch(api_url, requestOptions)
                 .then(res => res.json())
                 .then(res => {
                     setResponse(res);
+                    console.log("Role is killing me in submit: " + role)
+                    setTempRole(role);
+                    logEmIn(role);
                 })
                 .catch(err => console.log(err))
         } else {
@@ -166,6 +174,7 @@ function Login({setLoggedIn, role, setRole}) {
                             submit={submitLogin}
                             setLoggedIn={setLoggedIn}
                             login={logEmIn}
+                            setRole={setRole}
                         />
                     </animated.div>
                 )}
@@ -183,7 +192,6 @@ function Login({setLoggedIn, role, setRole}) {
                             setLoggedIn={setLoggedIn}
                             login={logEmIn}
                             setRole={setRole}
-                            role={role}
                         />
                     </animated.div>
                 )}
