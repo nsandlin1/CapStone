@@ -23,7 +23,7 @@ def sign_up():
     username = None
     firstname = None
     lastname = None
-    role = None
+    role = data["role"]
 
     if User.query.get(email) != None:
         return jsonify({'signed-up': False, 'Error': 'User Account Already Exists'}), 418

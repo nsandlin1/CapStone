@@ -1,13 +1,12 @@
 import { CgHello } from "react-icons/cg";
 import React, { useEffect, useState } from "react"
-import { StateButton, FederalButton } from "../components/Buttons";
-import { SenateReps } from "../components/Politicians/FedSenateReps";
-import { HouseReps } from "../components/Politicians/FedHouseReps";
-import { StatePoliticians } from "../components/StatePoliticians";
-import Map from "./PoliticianLanding";
-import  StateCard  from "../components/SmallStateCards";
-import StateMajMap from "../components/StateMajMap";
-import StateElectionsMap from "../components/StateElectionsMap";
+import { StateButton, FederalButton } from "../../components/Buttons";
+import { SenateReps } from "../../components/Politicians/FedSenateReps";
+import { HouseReps } from "../../components/Politicians/FedHouseReps";
+import { StatePoliticians } from "../../components/StatePoliticians";
+import  StateCard  from "../../components/SmallStateCards";
+import StateMajMap from "../../components/StateMajMap";
+import StateElectionsMap from "../../components/StateElectionsMap";
 
 function Politicians() {
     const [selectedButton, setSelectedButton] = useState('federal');

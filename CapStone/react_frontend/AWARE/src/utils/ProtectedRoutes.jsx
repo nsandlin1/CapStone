@@ -10,14 +10,17 @@ export const ProtectedRoutes = ({loggedIn}) => {
 
 export const TeacherRoutes = ({role}) => {
 
+    console.log(role)
+
     return (
-        role == 'teacher' ? <Outlet />  : <Navigate to='/Login'/>
+        role == 'Teacher' ? <Outlet />  : <Navigate to='/Login'/>
     )
 }
 
 export const StudentRoutes = ({role}) => {
 
     return (
-        role == 'student' ? <Outlet />  : <Navigate to='/Login'/>
+        role == 'Student' ? <Outlet />  : <Navigate to='/Login'/>
     )
+    
 }

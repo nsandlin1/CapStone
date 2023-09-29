@@ -12,14 +12,81 @@ This is where the navbar and homepage are displayed. The app uses routing to dis
 
 All project files besides App.jsx and main.jsx are found under /pages & /components
 
+The file structure is as follows:
+
+```├── App.css
+├── App.jsx
+├── assets
+│   ├── Photo-unavailable.png
+│   └── react.svg
+├── components
+│   ├── BillCard.jsx
+│   ├── Buttons.jsx
+│   ├── Classes
+│   │   ├── ClassCard.jsx
+│   │   └── CreateClass.jsx
+│   ├── EventCard.jsx
+│   ├── Legends.jsx
+│   ├── MockElections
+│   │   ├── BallotForm.jsx
+│   │   ├── CreateBallot.jsx
+│   │   └── ElectionCard.jsx
+│   ├── Navbar.jsx
+│   ├── NewsCard.css
+│   ├── NewsCard.jsx
+│   ├── Politicians
+│   │   ├── FedHouseReps.jsx
+│   │   ├── FedSenateReps.jsx
+│   │   └── Politician.jsx
+│   ├── Quizzes
+│   │   ├── CreateQuiz.jsx
+│   │   ├── Quiz.jsx
+│   │   └── QuizCard.jsx
+│   ├── SmallStateCards.jsx
+│   ├── StateCard.jsx
+│   ├── StateElectionsMap.jsx
+│   ├── StateMajMap.jsx
+│   ├── StatePoliticians.jsx
+│   └── widgets.jsx
+├── index.css
+├── main.jsx
+├── pages
+│   ├── Homepage.jsx
+│   ├── Login
+│   ├── Login.jsx
+│   ├── News.jsx
+│   ├── PoliticianLanding.jsx
+│   ├── Profile.jsx
+│   ├── SignUp.jsx
+│   ├── Student
+│   │   ├── Bills.jsx
+│   │   ├── Calendar.jsx
+│   │   ├── Elections.jsx
+│   │   └── Politicians.jsx
+│   └── Teacher
+│       ├── Classes.jsx
+│       ├── MockElections.jsx
+│       └── Quizzes.jsx
+└── utils
+    └── ProtectedRoutes.jsx
+```
+
 ### Pages
 
-All pages for the website are found under this directory.<br/>
-Current pages include:
+All pages for the website are found under the page directory.<br/>
+Pages are broken down by user groupd (Student/Teacher) or shared pages.<br/>
 
-* Bills
-* Homepage
-* Politicians
+Student pages:
+* [Bills](./Documentation/Students/Bills.md)
+* [Politicians](./Documentation/Students/Politicians.md)
+* [Elections](./Documentation/Students/Elections.md)
+* [News](./Documentation/Students/News.md)
+* [Calendar](./Documentation/Students/Calendar.md)
+
+Teacher pages:
+* [Mock Elections](./Documentation/Teachers/MockElections/MockElections.md)
+* [Classes](./Documentation/Teachers/Classes.md)
+* [Quizzes](./Documentation/Teachers/Quizzes.md)
 
 ### Components
 
