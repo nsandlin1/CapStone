@@ -161,7 +161,7 @@ class EnrolledClass(db.Model):
 
     id = Column(Integer, primary_key=True)
     name = Column(String(50))
-    teacher = Column(String(30), ForeignKey('teachers.username'))
+    teacher = Column(String(30), ForeignKey('teachers.email'))
 
     __table_args__ = (UniqueConstraint("name", "teacher", name="name_teacher_unique"),)
 
@@ -200,18 +200,18 @@ class Teacher(db.Model):
     __tablename__ = 'teachers'
 
     id = Column(Integer, primary_key=True)
-    username = Column(String(30), ForeignKey('users.username'), nullable=False)
+    email = Column(String(30), ForeignKey('users.email'), nullable=False)
 
     __table_args__ = (
-        UniqueConstraint("username", name="username_unique"),
+        UniqueConstraint("email", name="email_unique"),
     )
     
-    def __init__(self, id, username):
+    def __init__(self, id, email):
         self.id = id
-        self.username = username
+        self.email = email
     
     def __repr__(self):
-        return f'<Teacher "{self.id}, {self.username}>'
+        return f'<Teacher "{self.id}, {self.email}>'
 
 class Student(db.Model):
     __tablename__ = 'students'

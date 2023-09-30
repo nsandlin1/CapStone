@@ -69,7 +69,7 @@ elections_schema = ElectionSchema(many=True)
 class TeacherSchema(ma.Schema):
     class Meta:
         model = Teacher
-        fields = ("id", "username")
+        fields = ("id", "email")
     
 teacher_schema = TeacherSchema()
 teachers_schema = TeacherSchema(many=True)

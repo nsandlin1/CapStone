@@ -24,7 +24,7 @@ function Login({setLoggedIn, setRole, loginFun}) {
     function submitLogin() {
         event.preventDefault()
         if (validate(email, password)) {
-            var api_url = "http://localhost:5000/api/user/login"
+            var api_url = "/api/user/login"
             console.log("The url:", api_url)
             const requestOptions = {
                 method: 'POST',
@@ -33,15 +33,24 @@ function Login({setLoggedIn, setRole, loginFun}) {
             };
             fetch(api_url, requestOptions)
                 .then(res => {
-                    console.log("res:", res)
                     return res.json()
                 })
                 .then(res => {
+                    console.log("second then")
                     setResponse(res);
+                    if ("Error" in res) {
+                        toast.error(res["Error"])
+                    }
+                    else {
+                        // console.log("Role is killing me in submit: " + role)
+                        setTempRole(res.user.role);
+                        console.log("loggin em in")
+                        loginFun(res.user.role);
+                    }
                 })
                 .catch(err => console.log(err))
         } else {
-            toast.error('Please input an Email and Password.')
+            toast.error('Email or Password does not meet Specificaton.')
             console.log("login does not meet requirements")
         }
     }
@@ -50,7 +59,7 @@ function Login({setLoggedIn, setRole, loginFun}) {
         event.preventDefault()
         if (validate(email, password)) {
             console.log("Role in submit register" + role)
-            var api_url = "http://localhost:5000/api/user/sign-up"
+            var api_url = "/api/user/sign-up"
             const requestOptions = {
                 method: 'POST',
                 mode: 'cors',
@@ -60,11 +69,18 @@ function Login({setLoggedIn, setRole, loginFun}) {
                 .then(res => res.json())
                 .then(res => {
                     setResponse(res);
-                    console.log("Role is killing me in submit: " + role)
-                    setTempRole(role);
-                    loginFun(role);
+                    if ("Error" in res) {
+                        toast.error(res["Error"])
+                    }
+                    else {
+                        // console.log("Role is killing me in submit: " + role)
+                        setTempRole(role);
+                        loginFun(role);
+                    }
                 })
-                .catch(err => console.log(err))
+                .catch(err => {
+                    console.log(err)
+                })
         } else {
             console.log("signup does not meet requirements")
         }
