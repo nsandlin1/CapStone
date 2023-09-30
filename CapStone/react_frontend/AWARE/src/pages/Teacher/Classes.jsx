@@ -1,4 +1,4 @@
-import {React, useState } from 'react';
+import {React, useState, useEffect } from 'react';
 import { FcCollapse } from "react-icons/fc";
 import { ClassCard } from '../../components/Classes/ClassCard';
 import { CreateClass } from '../../components/Classes/CreateClass';
@@ -7,68 +7,93 @@ function Classes() {
 
     const [expandedId, setExpandedId] = useState(null);
     const [creating, setCreating] = useState(false);
-    const [classes, setClasses] = useState([
-        {
-            classId: 'lj6okjsg',
-            className: 'Intro to Civics',
-            classTime: '9:30 - 10:45',
-            teacher: 'Ronald Regan'
-        },
-        {
-            classId: 'lj6ikjsg',
-            className: 'AP Civics',
-            classTime: '11:00 - 12:15',
-            teacher: 'Ronald Regan'
-        },
-        {
-            classId: 'lj4okjsg',
-            className: 'Help',
-            classTime: '9:30 - 10:45',
-            teacher: 'Ronald Regan'
-        },
-        {
-            classId: 'pj6okjsg',
-            className: 'AP Civics',
-            classTime: '11:00 - 12:15',
-            teacher: 'Ronald Regan'
-        },
-        {
-            classId: 'lj6okjsf',
-            className: 'Intro to Civics',
-            classTime: '9:30 - 10:45',
-            teacher: 'Ronald Regan'
-        },
-        {
-            classId: 'lj3okjsg',
-            className: 'AP Civics',
-            classTime: '11:00 - 12:15',
-            teacher: 'Ronald Regan'
-        },
-        {
-            classId: 'lj6ok09sg',
-            className: 'Intro to Civics',
-            classTime: '9:30 - 10:45',
-            teacher: 'Ronald Regan'
-        },
-        {
-            classId: 'lj6othsg',
-            className: 'AP Civics',
-            classTime: '11:00 - 12:15',
-            teacher: 'Ronald Regan'
-        },
-        {
-            classId: 'lj6ok045g',
-            className: 'Intro to Civics',
-            classTime: '9:30 - 10:45',
-            teacher: 'Ronald Regan'
-        },
-        {
-            classId: 'lj6o453isg',
-            className: 'AP Civics',
-            classTime: '11:00 - 12:15',
-            teacher: 'Ronald Regan'
+    const [classesList, setClassesList] = useState([])
+    //     {
+    //         classId: 'lj6okjsg',
+    //         className: 'Intro to Civics',
+    //         classTime: '9:30 - 10:45',
+    //         teacher: 'Ronald Regan'
+    //     },
+    //     {
+    //         classId: 'lj6ikjsg',
+    //         className: 'AP Civics',
+    //         classTime: '11:00 - 12:15',
+    //         teacher: 'Ronald Regan'
+    //     },
+    //     {
+    //         classId: 'lj4okjsg',
+    //         className: 'Help',
+    //         classTime: '9:30 - 10:45',
+    //         teacher: 'Ronald Regan'
+    //     },
+    //     {
+    //         classId: 'pj6okjsg',
+    //         className: 'AP Civics',
+    //         classTime: '11:00 - 12:15',
+    //         teacher: 'Ronald Regan'
+    //     },
+    //     {
+    //         classId: 'lj6okjsf',
+    //         className: 'Intro to Civics',
+    //         classTime: '9:30 - 10:45',
+    //         teacher: 'Ronald Regan'
+    //     },
+    //     {
+    //         classId: 'lj3okjsg',
+    //         className: 'AP Civics',
+    //         classTime: '11:00 - 12:15',
+    //         teacher: 'Ronald Regan'
+    //     },
+    //     {
+    //         classId: 'lj6ok09sg',
+    //         className: 'Intro to Civics',
+    //         classTime: '9:30 - 10:45',
+    //         teacher: 'Ronald Regan'
+    //     },
+    //     {
+    //         classId: 'lj6othsg',
+    //         className: 'AP Civics',
+    //         classTime: '11:00 - 12:15',
+    //         teacher: 'Ronald Regan'
+    //     },
+    //     {
+    //         classId: 'lj6ok045g',
+    //         className: 'Intro to Civics',
+    //         classTime: '9:30 - 10:45',
+    //         teacher: 'Ronald Regan'
+    //     },
+    //     {
+    //         classId: 'lj6o453isg',
+    //         className: 'AP Civics',
+    //         classTime: '11:00 - 12:15',
+    //         teacher: 'Ronald Regan'
+    //     }
+    // ])
+
+    function getClassesList() {
+        console.log("fetching class list")
+        fetch('/api/classes/get_class')
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(
+                        `HTTP error: ${response.status}`
+                    );
+                }
+                return response.json()
+            })
+            .then((data) => {
+                console.log(data)
+                setClassesList(data)
+            })
+            .catch((err) => {
+                console.log(err.message)
+            })
+    }
+    useEffect(() => {
+        if (classesList.length == 0) {
+            getClassesList();
         }
-    ])
+    }, [])
 
     const handleToggleCollapse = (id) => {
         if (!creating) {
@@ -116,17 +141,17 @@ function Classes() {
                         </div>
                         <div className='flex flex-wrap w-[100%] h-[90%] justify-center items-center overflow-auto'>
                             {
-                                classes.map((clas) => (
+                                classesList.map((clas) => (
                                     // <div className='flex relative justify-center h-[100%] w-[98%] m-1 '>
                                     < ClassCard 
-                                        key = {clas.classId}
-                                        classId = {clas.classId}
-                                        className={clas.className} 
-                                        classTime={clas.classTime}
+                                        key = {clas.id}
+                                        classId = {clas.id}
+                                        className={clas.name} 
+                                        // classTime={clas.classTime}
                                         teacher={clas.teacher}
                                         creating={creating}
-                                        isExpanded={expandedId === clas.classId}
-                                        toggleCollapse={() => handleToggleCollapse(clas.classId)}
+                                        isExpanded={expandedId === clas.id}
+                                        toggleCollapse={() => handleToggleCollapse(clas.id)}
                                     />
                                     // </div>
                                 ))
