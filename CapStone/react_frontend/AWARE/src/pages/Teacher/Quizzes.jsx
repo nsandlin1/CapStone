@@ -1,4 +1,4 @@
-import { React, useState }from 'react';
+import { React, useState, useEffect }from 'react';
 import QuizCard from '../../components/Quizzes/QuizCard';
 import { IoMdAdd } from 'react-icons/io';
 import { useTransition, animated } from '@react-spring/web';
@@ -7,6 +7,16 @@ import CreateQuiz from '../../components/Quizzes/CreateQuiz';
 function Quizzes() {
 
     const [isVisible, setVisibile] = useState(false);
+    const [quizzes, setQuizzes] = useState([])
+
+    function getQuizzes() {
+        
+    }
+    useEffect(() => {
+        if (quizzes.length == 0) {
+            getQuizzes();
+        }
+    }, [])
 
     const transitionElection = useTransition(!isVisible, {
         from: {  opacity: 0},

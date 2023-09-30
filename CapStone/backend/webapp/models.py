@@ -331,8 +331,9 @@ class ClassElection(db.Model):
         PrimaryKeyConstraint(classid, ballotid),
     )
 
-    def __init__(self, classid, ballotid):
+    def __init__(self, classid, election_name, ballotid):
         self.classid = classid
+        self.election_name = election_name
         self.ballotid = ballotid
 
     def __repr__(self):

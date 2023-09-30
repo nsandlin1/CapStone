@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from ..models import EnrolledClass, Ballot, Quiz, ClassElection
+from ..models import EnrolledClass, Ballot, Quiz, ClassElection, Ballot
 from ..extensions import db
 from ..schemas import enrolled_class_schema, enrolled_classes_schema, \
                       ballot_schema, ballots_schema, class_elections_schema
@@ -101,4 +101,18 @@ def create_election():
 def get_election():
     classid = request.args.get("classid")
 
-    return class_elections_schema.jsonify(ClassElection.query.filter_by(classid=classid).all())
+    elections = ClassElection.query.filter_by(classid=classid).all()
+    print(elections)
+
+    elections2 = []
+    for e in elections:
+        ballot = Ballot.query.get(e.ballotid)
+        elections2.append({
+            "classid": e.classid,
+            "ballotid": e.ballotid,
+            "election_title": ballot.election_title
+        })
+
+    print(elections2)
+
+    return jsonify(elections2)
