@@ -1,4 +1,4 @@
-import { React, useState }from 'react';
+import { React, useState, useEffect }from 'react';
 import MockElectionCard from '../../components/MockElections/ElectionCard';
 import { IoMdAdd } from 'react-icons/io';
 import { useTransition, animated } from '@react-spring/web';
@@ -7,8 +7,64 @@ import CreateBallot from '../../components/MockElections/CreateBallot';
 function MockElections(){
 
     const [selectedClass, setSelectedClass] = useState("Null");
+    const [selectedClassTeacher, setSelectedClassTeacher] = useState("Null")
     const [isVisible, setVisibile] = useState(false);
     const [isClassSelected, setIsClassSelected] = useState(false);
+    const [classData, setClassData] = useState([]);
+    const [elections, setElections] = useState([])
+
+    // TODO: need to make fetch teacher-specific classes
+    //       or query elections using the teacher also
+    function getClassData() {
+        console.log("fetching class data")
+        fetch('/api/classes/get_class')
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(
+                        `HTTP error: ${response.status}`
+                    );
+                }
+                return response.json()
+            })
+            .then((data) => {
+                console.log(data)
+                setClassData(data)
+            })
+            .catch((err) => {
+                console.log(err.message)
+            })
+    }
+    useEffect(() => {
+        if (classData.length == 0) {
+            getClassData()
+        }
+    }, [])
+
+    // selectedClass needs to be the object, not a string
+    // so I can query with the class id
+    // function getElections() {
+    //     console.log("fetching elections")
+    //     api_url = '/api/classes/get_election' + the id
+    //     fetch(api_url)
+    //         .then((response) => {
+    //             if (!response.ok) {
+    //                 throw new Error(
+    //                     `HTTP error: ${response.status}`
+    //                 );
+    //             }
+    //             return response.json()
+    //         })
+    //         .then((data) => {
+    //             console.log(data)
+    //             setElections(data)
+    //         })
+    //         .catch((err) => {
+    //             console.log(err.message)
+    //         })
+    // }
+    // useEffect(() => {
+    //     getElections()
+    // }, [selectedClass])
 
     const transitionElection = useTransition(!isVisible, {
         from: {  opacity: 0},
@@ -22,10 +78,10 @@ function MockElections(){
         leave: {  opacity: 0}
     })
 
-    const classData = [
-        { value: 'Class1', name: 'Class 1' },
-        { value: 'Class2', name: 'Class 2' }            
-    ];
+    // const classData = [
+    //     { value: 'Class1', name: 'Class 1' },
+    //     { value: 'Class2', name: 'Class 2' }            
+    // ];
     
     const handleSelectChange = (event) => {
         const newValue = event.target.value;

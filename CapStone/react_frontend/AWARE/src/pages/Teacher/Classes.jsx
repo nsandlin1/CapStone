@@ -8,67 +8,6 @@ function Classes() {
     const [expandedId, setExpandedId] = useState(null);
     const [creating, setCreating] = useState(false);
     const [classesList, setClassesList] = useState([])
-    //     {
-    //         classId: 'lj6okjsg',
-    //         className: 'Intro to Civics',
-    //         classTime: '9:30 - 10:45',
-    //         teacher: 'Ronald Regan'
-    //     },
-    //     {
-    //         classId: 'lj6ikjsg',
-    //         className: 'AP Civics',
-    //         classTime: '11:00 - 12:15',
-    //         teacher: 'Ronald Regan'
-    //     },
-    //     {
-    //         classId: 'lj4okjsg',
-    //         className: 'Help',
-    //         classTime: '9:30 - 10:45',
-    //         teacher: 'Ronald Regan'
-    //     },
-    //     {
-    //         classId: 'pj6okjsg',
-    //         className: 'AP Civics',
-    //         classTime: '11:00 - 12:15',
-    //         teacher: 'Ronald Regan'
-    //     },
-    //     {
-    //         classId: 'lj6okjsf',
-    //         className: 'Intro to Civics',
-    //         classTime: '9:30 - 10:45',
-    //         teacher: 'Ronald Regan'
-    //     },
-    //     {
-    //         classId: 'lj3okjsg',
-    //         className: 'AP Civics',
-    //         classTime: '11:00 - 12:15',
-    //         teacher: 'Ronald Regan'
-    //     },
-    //     {
-    //         classId: 'lj6ok09sg',
-    //         className: 'Intro to Civics',
-    //         classTime: '9:30 - 10:45',
-    //         teacher: 'Ronald Regan'
-    //     },
-    //     {
-    //         classId: 'lj6othsg',
-    //         className: 'AP Civics',
-    //         classTime: '11:00 - 12:15',
-    //         teacher: 'Ronald Regan'
-    //     },
-    //     {
-    //         classId: 'lj6ok045g',
-    //         className: 'Intro to Civics',
-    //         classTime: '9:30 - 10:45',
-    //         teacher: 'Ronald Regan'
-    //     },
-    //     {
-    //         classId: 'lj6o453isg',
-    //         className: 'AP Civics',
-    //         classTime: '11:00 - 12:15',
-    //         teacher: 'Ronald Regan'
-    //     }
-    // ])
 
     function getClassesList() {
         console.log("fetching class list")

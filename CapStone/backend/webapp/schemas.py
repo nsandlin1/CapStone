@@ -130,13 +130,13 @@ class PolicyBallotSchema(ma.Schema):
 policy_ballot_schema = PolicyBallotSchema()
 policy_ballot_schemas = PolicyBallotSchema(many=True)
 
-class ElectionSchema(ma.Schema):
+class ClassElectionSchema(ma.Schema):
     class Meta:
         model = ClassElection
         fields = ("classid", "ballotid")
 
-election_schema = ElectionSchema()
-elections_schema = ElectionSchema(many=True)
+class_election_schema = ClassElectionSchema()
+class_elections_schema = ClassElectionSchema(many=True)
 
 class ClassQuizSchema(ma.Schema):
     class Meta:
