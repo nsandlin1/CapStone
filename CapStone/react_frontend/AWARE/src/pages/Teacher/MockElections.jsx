@@ -74,11 +74,6 @@ function MockElections(){
         enter: {  opacity: 1},
         leave: {  opacity: 0}
     })
-
-    // const classData = [
-    //     { value: 'Class1', name: 'Class 1' },
-    //     { value: 'Class2', name: 'Class 2' }            
-    // ];
     
     const handleSelectChange = (event) => {
 
@@ -102,9 +97,6 @@ function MockElections(){
             <div className='flex flex-row justify-left items-center h-[10%] w-[80%]'>
                 <div className='flex mt-4 w-[60%] md:w-[20%] h-[80%] rounded-xl'>
                     <select className='rounded-xl w-[100%] h-[90%] text-xl text-center' 
-                            // name="classes" 
-                            // id="classes"
-                            // value={selectedClass}
                             onChange={handleSelectChange}>
                         <option value='{"id": "Null", "name": "Null", "teacher": "Null"}'>Select Class</option>
                         {classData.map((e, key) => {

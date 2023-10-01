@@ -95,6 +95,7 @@ export const PolicyForm = ({onDelete}) => {
 
     return (
         <form className="flex justify-center bg-zinc-400 my-2 w-[100%] h-[100%] items-center rounded-xl">
+            < MdOutlineCancel className='MockButtons absolute top-0 right-0' onClick={() => {onDelete()}}/> 
             <div className="flex flex-col w-[100%]">
                 <div className="flex justify-center">
                     <label className="text-xl text-white">Policy: </label>
