@@ -1,4 +1,4 @@
-import { React, useState }from 'react';
+import { React, useState, useEffect }from 'react';
 import MockElectionCard from '../../components/MockElections/ElectionCard';
 import { IoMdAdd } from 'react-icons/io';
 import { useTransition, animated } from '@react-spring/web';
@@ -9,6 +9,59 @@ function MockElections(){
     const [selectedClass, setSelectedClass] = useState("Null");
     const [isVisible, setVisibile] = useState(false);
     const [isClassSelected, setIsClassSelected] = useState(false);
+    const [classData, setClassData] = useState([]);
+    const [elections, setElections] = useState([])
+
+    // TODO: need to make fetch teacher-specific classes
+    //       or query elections using the teacher also
+    function getClassData() {
+        console.log("fetching class data")
+        fetch('/api/classes/get_class')
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(
+                        `HTTP error: ${response.status}`
+                    );
+                }
+                return response.json()
+            })
+            .then((data) => {
+                console.log(data)
+                setClassData(data)
+            })
+            .catch((err) => {
+                console.log(err.message)
+            })
+    }
+    useEffect(() => {
+        if (classData.length == 0) {
+            getClassData()
+        }
+    }, [])
+
+    function getElections() {
+        console.log("fetching elections")
+        const api_url = '/api/classes/get_election?classid=' + selectedClass.id
+        fetch(api_url)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(
+                        `HTTP error: ${response.status}`
+                    );
+                }
+                return response.json()
+            })
+            .then((data) => {
+                console.log(data)
+                setElections(data)
+            })
+            .catch((err) => {
+                console.log(err.message)
+            })
+    }
+    useEffect(() => {
+        getElections()
+    }, [selectedClass])
 
     const transitionElection = useTransition(!isVisible, {
         from: {  opacity: 0},
@@ -21,15 +74,12 @@ function MockElections(){
         enter: {  opacity: 1},
         leave: {  opacity: 0}
     })
-
-    const classData = [
-        { value: 'Class1', name: 'Class 1' },
-        { value: 'Class2', name: 'Class 2' }            
-    ];
     
     const handleSelectChange = (event) => {
-        const newValue = event.target.value;
+
+        const newValue = JSON.parse(event.target.value);
         setSelectedClass(newValue);
+
         if (newValue == 'Null') { setIsClassSelected(false); }
         else { 
             setIsClassSelected(true); 
@@ -47,13 +97,10 @@ function MockElections(){
             <div className='flex flex-row justify-left items-center h-[10%] w-[80%]'>
                 <div className='flex mt-4 w-[60%] md:w-[20%] h-[80%] rounded-xl'>
                     <select className='rounded-xl w-[100%] h-[90%] text-xl text-center' 
-                            name="classes" 
-                            id="classes"
-                            onChange ={handleSelectChange}
-                            value={selectedClass}> 
-                        <option value="Null">Select Class</option>
+                            onChange={handleSelectChange}>
+                        <option value='{"id": "Null", "name": "Null", "teacher": "Null"}'>Select Class</option>
                         {classData.map((e, key) => {
-                            return <option key={key} value={e.value}>{e.name}</option>;
+                            return <option key={key} value={JSON.stringify(e)}>{e.name}</option>;
                         })}
                     </select>
                 </div>
@@ -76,8 +123,10 @@ function MockElections(){
                                         </h1>
                                     </div> 
                                     <div className='flex flex-row h-[90%] w-[100%] justify-center'>
-                                        <MockElectionCard />
-                                        <MockElectionCard />
+                                        {elections.map((e) => {
+                                            return <MockElectionCard title={e.election_title}/>
+                                        })}
+                                        {console.log(elections)}
                                     </div>
                                 </animated.div>
                         )} 

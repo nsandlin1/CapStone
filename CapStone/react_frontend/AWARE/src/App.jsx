@@ -15,6 +15,8 @@ import Profile from './pages/Profile.jsx'
 import MockElections from './pages/Teacher/MockElections.jsx';
 import Classes from './pages/Teacher/Classes.jsx';
 import Quizzes from './pages/Teacher/Quizzes.jsx';
+import { ToastContainer, toast } from 'react-toastify';
+
 
 
 function App() {
@@ -29,14 +31,15 @@ function App() {
     setLoggedIn(true);
     setRole(role)
     console.log("The role in app.jsx is:" + role);
+    console.log("role:", role)
     if (role === 'Teacher') {
+        console.log("nevigating to clesses")
         navigate('/Classes');
     }
     else if (role === 'Student') {
         navigate('/Home');
     }
     console.log("TempRole: " + role);
-    toast.error("Login not correct. Please check username and password.");
 }
 
   return (
@@ -58,6 +61,7 @@ function App() {
           </Route>
           <Route element={<StudentRoutes role={role} />}>
             <Route path="/Home" element={<Homepage />} exact/>
+            <Route path="/"  element={<Homepage />} exact/>
             <Route path="/Calendar" element={<Calendar />} exact/>
             <Route path="/Bills" element={<Bills />} exact/>
             <Route path="/Elections" element={<Elections />} exact/>

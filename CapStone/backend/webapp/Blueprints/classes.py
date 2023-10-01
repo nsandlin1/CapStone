@@ -1,8 +1,8 @@
 from flask import Blueprint, request, jsonify
-from ..models import EnrolledClass, Ballot, Quiz
+from ..models import EnrolledClass, Ballot, Quiz, ClassElection, Ballot
 from ..extensions import db
 from ..schemas import enrolled_class_schema, enrolled_classes_schema, \
-                      ballot_schema, ballots_schema
+                      ballot_schema, ballots_schema, class_elections_schema
 
 classes = Blueprint('classes', __name__)
 
@@ -77,3 +77,42 @@ def get_ballot():
 def create_quiz():
     ...
 
+@classes.route('/get_quiz')
+def get_quiz():
+    ...
+
+@classes.route('/create_election')
+def create_election():
+    classid = request.args.get("classid")
+    ballotid = request.args.get("ballotid")
+
+    if ClassElection.query.filter_by(classid=classid, ballotid=ballotid).all():
+        return jsonify({'election-added': False, 'Error': 'Election Already Exists'}), 418
+
+    db.session.add(ClassElection(
+        classid,
+        ballotid
+    ))
+    db.session.commit()
+
+    return jsonify({'election-added': True})
+
+@classes.route('get_election')
+def get_election():
+    classid = request.args.get("classid")
+
+    elections = ClassElection.query.filter_by(classid=classid).all()
+    print(elections)
+
+    elections2 = []
+    for e in elections:
+        ballot = Ballot.query.get(e.ballotid)
+        elections2.append({
+            "classid": e.classid,
+            "ballotid": e.ballotid,
+            "election_title": ballot.election_title
+        })
+
+    print(elections2)
+
+    return jsonify(elections2)

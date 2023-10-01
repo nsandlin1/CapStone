@@ -5,7 +5,7 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import create_access_token, create_refresh_token, set_access_cookies, \
                                set_refresh_cookies, unset_jwt_cookies, jwt_required
-from ..models import User
+from ..models import User, Teacher
 from werkzeug.security import generate_password_hash, check_password_hash
 from ..extensions import db
 from flask_cors import cross_origin
@@ -26,7 +26,7 @@ def sign_up():
     role = data["role"]
 
     if User.query.get(email) != None:
-        return jsonify({'signed-up': False, 'Error': 'User Account Already Exists'}), 418
+        return jsonify({'signed-up': False, 'Error': 'Account with that Email Already Exists'}), 418
     
     db.session.add(User(
         email,
@@ -37,6 +37,14 @@ def sign_up():
         role
     ))
     db.session.commit()
+
+    print(role)
+    if role == "Teacher":
+        db.session.add(Teacher(
+            None,
+            email
+        ))
+        db.session.commit()
 
     return jsonify({'signed-up': True})
     
@@ -74,7 +82,7 @@ def login():
     
     print("failed to login")
 
-    return jsonify({'login': False, 'Error': 'User Authentication Failed'})
+    return jsonify({'login': False, 'Error': 'Invalid Credentials'})
 
 # TODO: WHy it no delete??? it just registers a new cookie
 @user.route('/logout')
