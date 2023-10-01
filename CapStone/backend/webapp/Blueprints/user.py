@@ -72,7 +72,8 @@ def login():
                 'firstname': stored_user.first_name,
                 'lastname': stored_user.last_name,
                 'role': stored_user.role
-            }
+            },
+            'access_token': access_token
         })
 
         set_access_cookies(resp, access_token)
