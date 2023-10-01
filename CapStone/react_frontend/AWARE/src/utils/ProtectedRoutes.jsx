@@ -1,26 +1,28 @@
 import { Outlet, Navigate} from 'react-router-dom';
 
 
-export const ProtectedRoutes = ({loggedIn}) => {
+export const ProtectedRoutes = ({userExists}) => {
+
+    console.log(!userExists ? '<Outlet /> ' : '<Navigate to=/Login/>')
 
     return (
-        !loggedIn ? <Outlet />  : <Navigate to='/Login'/>
+        !userExists ? <Outlet />  : <Navigate to='/Login'/>
     )
 }
 
-export const TeacherRoutes = ({role}) => {
+export const TeacherRoutes = ({user}) => {
 
-    console.log(role)
+    console.log('therole:', user)
 
     return (
-        role == 'Teacher' ? <Outlet />  : <Navigate to='/Login'/>
+        !user ? <Navigate to='/Login'/> : (user.role == 'Teacher' ? <Outlet />  : <Navigate to='/Login'/>)
     )
 }
 
-export const StudentRoutes = ({role}) => {
+export const StudentRoutes = ({user}) => {
 
     return (
-        role == 'Student' ? <Outlet />  : <Navigate to='/Login'/>
+        !user ? <Navigate to='/Login'/> : (user.role == 'Student' ? <Outlet />  : <Navigate to='/Login'/>)
     )
     
 }

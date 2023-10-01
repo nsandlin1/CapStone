@@ -21,45 +21,58 @@ import { ToastContainer, toast } from 'react-toastify';
 
 function App() {
 
-  const [loggedIn, setLoggedIn] = useState(false);
   const [role, setRole] = useState();
+
+  const [user, setUser] = useState(() => {
+    var user_in_storage = JSON.parse(localStorage.getItem('user'))
+    console.log('userinstorage', user_in_storage)
+    return user_in_storage
+  });
   
   const navigate = useNavigate();
 
   // doit is a boolean, signifying if the user is logged in or not. I know its a bad name
-  function logEmIn(role) {
-    setLoggedIn(true);
-    setRole(role)
-    console.log("The role in app.jsx is:" + role);
-    console.log("role:", role)
-    if (role === 'Teacher') {
+  function logEmIn(the_user) {
+
+    console.log('user', the_user)
+    console.log('jsonuser', JSON.stringify(the_user))
+
+    localStorage.setItem('user', JSON.stringify(the_user))
+    setUser(the_user)
+
+    console.log('afteruser')
+
+    if (the_user.role === 'Teacher') {
         console.log("nevigating to clesses")
         navigate('/Classes');
     }
-    else if (role === 'Student') {
+    else if (the_user.role === 'Student') {
         navigate('/Home');
     }
-    console.log("TempRole: " + role);
+    console.log("TempRole: " + the_user.role);
 }
 
   return (
     <React.Fragment>
-      {loggedIn ?
-        role == 'Student' ?
+      {console.log('head', user)}
+      {user ?
+        user.role == 'Student' ?
           <StuNavbar />
           :
           <TeachNavbar />
         :
         ''
       }
+      {/* send user to each route */}
       <Routes>
-        <Route element={<ProtectedRoutes login={loggedIn}/>}>  
-          <Route element={<TeacherRoutes role={role} />}>
+        <Route element={<ProtectedRoutes login={user ? false : true}/>}>  
+          {console.log('pre-teacher', user)}
+          <Route element={<TeacherRoutes user={user} />}>
             <Route path="/Mock" element={<MockElections/> } exact/>
             <Route path="/Classes" element={<Classes /> } exact/>
             <Route path="/Quizzes" element={<Quizzes /> } exact/>
           </Route>
-          <Route element={<StudentRoutes role={role} />}>
+          <Route element={<StudentRoutes user={user} />}>
             <Route path="/Home" element={<Homepage />} exact/>
             <Route path="/"  element={<Homepage />} exact/>
             <Route path="/Calendar" element={<Calendar />} exact/>
@@ -72,8 +85,8 @@ function App() {
             <Route path="/Profile" element={<Profile/>} exact/>
           </Route>
         </Route>
-        <Route element={<ProtectedRoutes login={!loggedIn}/>}>
-          <Route path="/Login" element={<Login setLoggedIn={setLoggedIn} setRole={setRole} loginFun={logEmIn}/>} />
+        <Route element={<ProtectedRoutes login={user ? false : true}/>}>
+          <Route path="/Login" element={<Login setRole={setRole} loginFun={logEmIn}/>} />
         </Route>
       </Routes>
     </React.Fragment>

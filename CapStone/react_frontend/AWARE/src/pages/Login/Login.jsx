@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useSpring, useTransition, animated } from '@react-spring/web';
 import { Button, LoginView, RegisterView } from '../../components/Login/Welcome';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import { FaRotateLeft } from 'react-icons/fa6';
 
-function Login({setLoggedIn, setRole, loginFun}) {
+function Login({setRole, loginFun}) {
 
     const [login, setLogin] = useState(false);
     const [register, setRegister] = useState(false);
@@ -13,6 +13,8 @@ function Login({setLoggedIn, setRole, loginFun}) {
     const [password, setPassword] = useState("");
     const [response, setResponse] = useState({});
     const [tempRole, setTempRole] = useState();
+
+    const navigate = useNavigate();
 
     function validate(email, password) {
         if (email.length > 0 && password.length > 0) {
@@ -45,7 +47,8 @@ function Login({setLoggedIn, setRole, loginFun}) {
                         // console.log("Role is killing me in submit: " + role)
                         setTempRole(res.user.role);
                         console.log("loggin em in")
-                        loginFun(res.user.role);
+                        console.log("res", res.user)
+                        loginFun(res.user);
                     }
                 })
                 .catch(err => console.log(err))
@@ -75,7 +78,6 @@ function Login({setLoggedIn, setRole, loginFun}) {
                     else {
                         // console.log("Role is killing me in submit: " + role)
                         setTempRole(role);
-                        loginFun(role);
                     }
                 })
                 .catch(err => {
@@ -172,7 +174,7 @@ function Login({setLoggedIn, setRole, loginFun}) {
                             setEmail={setEmail} 
                             setPassword={setPassword} 
                             submit={submitLogin}
-                            setLoggedIn={setLoggedIn}
+                            // setLoggedIn={setLoggedIn}
                             login={loginFun}
                             setRole={setRole}
                         />
@@ -189,7 +191,7 @@ function Login({setLoggedIn, setRole, loginFun}) {
                             password={password}
                             setPassword={setPassword} 
                             submit={submitRegister}
-                            setLoggedIn={setLoggedIn}
+                            // setLoggedIn={setLoggedIn}
                             login={loginFun}
                             setRole={setRole}
                         />
