@@ -27,8 +27,8 @@ function CreateQuiz({back}) {
                 <div className='flex w-[60%] md:w-[40%] text-lg md:text-3xl text-white items-center justify-center'>
                         Create Quiz
                 </div>
-                <div className='flex w-[20%] md:w-[30%] h-[100%] justify-end pr-2 md:pr-10'>
-                    <button className='text-xl bg-white rounded-xl w-[90%] md:w-[30%]'>
+                <div className='flex w-[20%] md:w-[30%] h-[100%] justify-end pr-2'>
+                    <button className='text-xl bg-white rounded-xl w-[90%] lg:w-[50%]'>
                         Save
                     </button>
                 </div>
