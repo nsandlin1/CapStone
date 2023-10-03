@@ -15,6 +15,7 @@ import Profile from './pages/Profile.jsx'
 import MockElections from './pages/Teacher/MockElections.jsx';
 import Classes from './pages/Teacher/Classes.jsx';
 import Quizzes from './pages/Teacher/Quizzes.jsx';
+import StudentQuiz from './pages/Student/Quiz.jsx';
 import { ToastContainer, toast } from 'react-toastify';
 
 
@@ -83,6 +84,7 @@ function App() {
             <Route path="/Map" element={<Map />} exact/>
             <Route path="/News" element={<News />} exact/>
             <Route path="/Profile" element={<Profile/>} exact/>
+            <Route path="/Quiz" element={<StudentQuiz />} exact/>
           </Route>
         </Route>
         <Route element={<ProtectedRoutes login={user ? false : true}/>}>
