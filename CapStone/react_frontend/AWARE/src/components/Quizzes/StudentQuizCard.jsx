@@ -1,6 +1,18 @@
+import {useState} from 'react';
 
 
-export const QuizCard = ({quizTitle, quizDDate}) => {
+export const TakeQuiz = ({quizTitle}) => {
+
+    return (
+        <div className='flex flex-col h-[100%] w-[90%] rounded-xl items-center '>
+            Hello
+        </div>
+    )
+
+}
+
+
+export const QuizCard = ({quizTitle, quizDDate, onTakeQuiz}) => {
 
     return (
         <div className="flex h-[20%] hover:scale-105 hover:shadow-2xl w-[92%] rounded-xl bg-navy m-1 transition ">
@@ -17,7 +29,8 @@ export const QuizCard = ({quizTitle, quizDDate}) => {
                         </h1>
                     </div>
                     <div className='flex w-[15%] items-center justify-end'>
-                        <h1 className='text-md md:text-xl lg:text-3xl text-white whitespace-nowrap'>
+                        <h1 className='text-md md:text-xl lg:text-3xl text-white whitespace-nowrap hover:cursor-pointer' 
+                            onClick={() => onTakeQuiz(quizTitle)}>
                             Take Quiz
                         </h1>
                     </div>
