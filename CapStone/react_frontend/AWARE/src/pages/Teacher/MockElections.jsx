@@ -28,6 +28,7 @@ function MockElections(){
             .then((data) => {
                 console.log(data)
                 setClassData(data)
+                console.log(data)
             })
             .catch((err) => {
                 console.log(err.message)

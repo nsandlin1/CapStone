@@ -7,14 +7,19 @@ import { ToastContainer, toast } from 'react-toastify';
 function CreateBallot({back}) {
 
     const [selectedForms, setSelectedForms] = useState([]);
-    var count = useRef(0)
+    const [electionName, setElectionName] = useState("")
 
     const handleAddForm = (formType) => {
         // Create a new form object based on the selected type
-        const newForm = { type: formType, data: {} };
+        var newForm = {}
+        if (formType == 'policy') {
+            newForm = { type: 'policy', name: ""};
+        } else {
+            newForm = { type: 'candidate', position: "", contestants: [{name: '', party: 'republican'},{name: '', party: 'republican'}]};
+        }
         
-        console.log("Adding " + formType);
-        console.log(newForm);
+        // console.log("Adding " + formType);
+        // console.log(newForm);
 
         // Add the form to the selectedForms array
         setSelectedForms([...selectedForms, newForm]);
@@ -39,7 +44,9 @@ function CreateBallot({back}) {
     };
 
     function saveButtonClick() {
-        console.log("hello")
+        // save to database
+        console.log(electionName)
+        console.log(selectedForms)
     }
 
     return (
@@ -62,6 +69,9 @@ function CreateBallot({back}) {
                 className="w-[96%] h-[8%] ml-2 pl-2 rounded-lg justify-center text-2xl"
                 type='text'
                 name='position'
+                onChange={(e) =>{
+                    setElectionName(e.target.value)
+                }}
             />
             <div className='flex flex-col w-[100%] h-[90%] justify-center'>
                 <div className='flex flex-col w-[95%] h-[100%] items-center m-2 overflow-auto'>
@@ -69,36 +79,23 @@ function CreateBallot({back}) {
                         {selectedForms.map((form, index) => (
                             <div key={index} className='flex relative justify-center md:w-[80%] h-[100%] my-2'>
                                 {form.type === 'candidate' ? (
-                                <CandidateFrom index={index} onDelete={() => {
-                                    count.current -= 1
+                                <CandidateFrom key={index} index={index} form={form} onDelete={() => {
                                     handleRemoveForm(index)
                                 }}/>
                                 ) : (
-                                <PolicyForm index={index} onDelete={() => {
-                                    count.current -= 1
+                                <PolicyForm key={index} index={index} form={form} onDelete={() => {
                                     handleRemoveForm(index)
-                                }}/>
+                                 }}/>
                                 )}
                             </div>
                         ))}
                         </div>
                     <div className='flex flex-row w-[100%] my-2 justify-center'>
                         <PolicyButton onClick={() => {
-                            if (count.current == 0) {
-                                count.current += 1
-                                handleAddForm('policy')
-                            } else {
-                                toast.error("you may only create one ballot at a time");
-                            }
+                            handleAddForm('policy')
                         }}></PolicyButton>
                         <CandidateButton onClick={() => {
-                            if (count.current == 0) {
-                                console.log(count.current)
-                                count.current += 1
-                                handleAddForm('candidate')
-                            } else {
-                                toast.error("you may only create one ballot at a time");
-                            }
+                            handleAddForm('candidate')
                         }}></CandidateButton>
                     </div>
                 </div>
