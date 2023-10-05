@@ -111,7 +111,7 @@ export const PolicyForm = ({onDelete, form}) => {
                         className="w-[75%] h-[100%] ml-2 pl-2 rounded-lg justify-center text-2xl"
                         type='text'
                         name='position'
-                        onChange={(t) => form.name = t.target.value}
+                        onChange={(t) => form.policy = t.target.value}
                     />
                 </div>
             </div>

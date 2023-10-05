@@ -109,7 +109,7 @@ questions_schema = QuestionSchema(many=True)
 class BallotSchema(ma.Schema):
     class Meta:
         model = Ballot
-        fields = ("id", "election_title")
+        fields = ("id", "election_title", "classid")
     
 ballot_schema = BallotSchema()
 ballots_schema = BallotSchema(many=True)
@@ -117,7 +117,7 @@ ballots_schema = BallotSchema(many=True)
 class CandidateBallotSchema(ma.Schema):
     class Meta:
         model = CandidateBallot
-        fields = ("id", "position", "pol_aff", "votes_for", "candidate")
+        fields = ("id", "ballot_id", "position", "pol_aff", "votes_for", "candidate")
 
 candidate_ballot_schema = CandidateBallotSchema()
 candidate_ballot_schemas = CandidateBallotSchema(many=True)
@@ -125,7 +125,7 @@ candidate_ballot_schemas = CandidateBallotSchema(many=True)
 class PolicyBallotSchema(ma.Schema):
     class Meta:
         model = PolicyBallot
-        fields = ("pol_num", "policy", "votes_for", "votes_against")
+        fields = ("pol_num", "ballot_id", "policy", "votes_for", "votes_against")
 
 policy_ballot_schema = PolicyBallotSchema()
 policy_ballot_schemas = PolicyBallotSchema(many=True)

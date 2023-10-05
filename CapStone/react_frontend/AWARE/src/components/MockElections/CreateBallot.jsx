@@ -1,25 +1,23 @@
-import { useState, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { BiArrowBack } from 'react-icons/bi';
 import { PolicyButton, CandidateButton, CandidateFrom, PolicyForm } from './BallotForm';
 import { MdOutlineCancel } from 'react-icons/md';
 import { ToastContainer, toast } from 'react-toastify';
 
-function CreateBallot({back}) {
+function CreateBallot({back, classid}) {
 
     const [selectedForms, setSelectedForms] = useState([]);
     const [electionName, setElectionName] = useState("")
+    const [res, setRes] = useState("")
 
     const handleAddForm = (formType) => {
         // Create a new form object based on the selected type
         var newForm = {}
         if (formType == 'policy') {
-            newForm = { type: 'policy', name: ""};
+            newForm = { type: 'policy', policy: ""};
         } else {
             newForm = { type: 'candidate', position: "", contestants: [{name: '', party: 'republican'},{name: '', party: 'republican'}]};
         }
-        
-        // console.log("Adding " + formType);
-        // console.log(newForm);
 
         // Add the form to the selectedForms array
         setSelectedForms([...selectedForms, newForm]);
@@ -45,9 +43,28 @@ function CreateBallot({back}) {
 
     function saveButtonClick() {
         // save to database
-        console.log(electionName)
-        console.log(selectedForms)
+        // TODO: Need some error checking so can't send blank shit
+        var api_url = "/api/classes/create_ballot?" + 
+                      "classid=" + classid + 
+                      "&electionName=" + electionName + 
+                      "&selectedForms=" + JSON.stringify(selectedForms)
+        console.log(api_url)
+        fetch(api_url)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(
+                        `HTTP error: ${response.status}`
+                    );
+                }
+                return response.json()
+            })
+            .then((response) => {
+                setRes(response)
+            })
     }
+    useEffect(() => {
+        back()
+    }, [res])
 
     return (
         <div className="flex flex-col w-[100%] h-[100%] bg-navy rounded-xl"> 

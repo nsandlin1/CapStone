@@ -273,14 +273,16 @@ class Ballot(db.Model):
 
     id = Column(Integer, primary_key=True)
     election_title = Column(String(100))
+    classid = Column(Integer, ForeignKey('enrolled_classes.id'))
 
     __table_args__ = (
         UniqueConstraint("election_title", name="election_title_unique"),
     )
 
-    def __init__(self, id, election_title):
+    def __init__(self, id, election_title, classid):
         self.id = id
         self.election_title = election_title
+        self.classid = classid
     
     def __repr__(self):
         return f'<Ballot "{self.election_title}">'
@@ -289,13 +291,15 @@ class CandidateBallot(db.Model):
     __tablename__ = 'candidate_ballots'
 
     id = Column(Integer, primary_key=True)
+    ballot_id = Column(Integer, ForeignKey('ballots.id'))
     position = Column(String(200))
     pol_aff = Column(String(50))
     votes_for = Column(String(200))
     candidate = Column(String(100))
 
-    def __init__(self, id, position, pol_aff, votes_for, candidate):
+    def __init__(self, id, ballot_id, position, pol_aff, votes_for, candidate):
         self.id = id
+        self.ballot_id = ballot_id
         self.position = position
         self.pol_aff = pol_aff
         self.votes_for = votes_for
@@ -308,12 +312,14 @@ class PolicyBallot(db.Model):
     __tablename__ = 'policy_ballots' 
 
     policy_num = Column(Integer, primary_key=True)
+    ballot_id = Column(Integer, ForeignKey('ballots.id'))
     policy = Column(String(200))
     votes_for = Column(String(200))
     votes_against = Column(String(200))  
 
-    def __init__(self, pol_num, policy, votes_for, votes_against):
+    def __init__(self, pol_num, ballot_id, policy, votes_for, votes_against):
         self.pol_num = pol_num
+        self.ballot_id = ballot_id
         self.policy = policy
         self.votes_for = votes_for
         self.votes_against = votes_against

@@ -146,7 +146,7 @@ function MockElections(){
                     { transitionElection((style, item) =>
                         !item &&
                     <animated.div style={style} className='flex relative h-[100%] w-[100%] bg-navy rounded-xl'>
-                        < CreateBallot back={handleBack}/>
+                        < CreateBallot back={handleBack} classid={selectedClass.id}/>
                     </animated.div> )}
                 </div>
             </div>
