@@ -97,17 +97,20 @@ def create_ballot():
 
     return jsonify({'ballot(s)-added': True})
 
-# @classes.route('/get_ballot')
-# def get_ballot():
-#     id = request.args.get('id')
-#     election_title = request.args.get('election_title')
+@classes.route('/get_ballot')
+def get_ballot():
+    id = request.args.get('id')
+    election_title = request.args.get('election_title')
+    classid = request.args.get('classid')
 
-#     if id:
-#         return ballot_schema.jsonify(Ballot.query.get(id))
-#     if election_title:
-#         return ballot_schema.jsonify(Ballot.query.filter_by(election_title=election_title).all()[0])
+    if id:
+        return ballot_schema.jsonify(Ballot.query.get(id))
+    if election_title:
+        return ballot_schema.jsonify(Ballot.query.filter_by(election_title=election_title).all()[0])
+    if classid:
+        return ballots_schema.jsonify(Ballot.query.filter_by(classid=classid).all())
     
-#     return ballots_schema.jsonify(Ballot.query.all())
+    return ballots_schema.jsonify(Ballot.query.all())
 
 @classes.route('/create_quiz')
 def create_quiz():

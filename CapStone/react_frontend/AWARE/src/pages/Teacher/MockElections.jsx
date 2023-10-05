@@ -42,7 +42,7 @@ function MockElections(){
 
     function getElections() {
         console.log("fetching elections")
-        const api_url = '/api/classes/get_election?classid=' + selectedClass.id
+        const api_url = '/api/classes/get_ballot?classid=' + selectedClass.id
         fetch(api_url)
             .then((response) => {
                 if (!response.ok) {
