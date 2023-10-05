@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from ..models import EnrolledClass, Ballot, Quiz, ClassElection, Ballot
+from ..models import EnrolledClass, Ballot, Quiz, ClassElection, Ballot, Student
 from ..extensions import db
 from ..schemas import enrolled_class_schema, enrolled_classes_schema, \
                       ballot_schema, ballots_schema, class_elections_schema
@@ -116,3 +116,19 @@ def get_election():
     print(elections2)
 
     return jsonify(elections2)
+
+
+def get_student_class():
+
+    student = request.args.get("username")
+
+    studentClass = Student.query.filter_by(username=student).all()
+
+    print('hello')
+    print(studentClass)
+
+@classes.route('/get_student_quiz')
+def get_student_quiz():
+    get_student_class()
+
+    return ('hello')

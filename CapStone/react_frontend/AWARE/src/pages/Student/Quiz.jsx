@@ -62,7 +62,9 @@ function StudentQuiz() {
                 </div>
                 {takingQuiz ? 
                     <div className="flex flex-col relative h-[85%] w-[95%] rounded-xl items-center justify-center bg-white mb-4 shadow-lg">
-                        <TakeQuiz /> 
+                        <TakeQuiz 
+                            quizTitle = {currentQuiz}
+                        /> 
                     </div>
                 : 
                     ''
