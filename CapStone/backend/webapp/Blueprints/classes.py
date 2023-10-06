@@ -1,9 +1,10 @@
 from flask import Blueprint, request, jsonify
 from ..models import EnrolledClass, Ballot, Quiz, ClassElection, PolicyBallot, \
-                     CandidateBallot
+                     CandidateBallot, Question
 from ..extensions import db
 from ..schemas import enrolled_class_schema, enrolled_classes_schema, \
-                      ballot_schema, ballots_schema, class_elections_schema
+                      ballot_schema, ballots_schema, class_elections_schema, \
+                      quiz_schema, quizes_schema, questions_schema
 import json
 
 classes = Blueprint('classes', __name__)
@@ -114,11 +115,19 @@ def get_ballot():
 
 @classes.route('/create_quiz')
 def create_quiz():
-    ...
+    title = request.args.get('title')
+    questions = request.args.get('questions')
+
+
 
 @classes.route('/get_quiz')
 def get_quiz():
-    ...
+    classid = request.args.get('classid')
+
+    if classid:
+        return quizes_schema.jsonify(Quiz.query.filter_by(classid=classid).all())
+    
+    return quizes_schema.jsonify(Quiz.query.all())
 
     # if ClassElection.query.filter_by(classid=classid).all():
     #     return jsonify({'election-added': False, 'Error': 'Election Already Exists'}), 418

@@ -4,7 +4,7 @@ import { IoMdAdd } from 'react-icons/io';
 import { useTransition, animated } from '@react-spring/web';
 import CreateBallot from '../../components/MockElections/CreateBallot';
 
-function MockElections(){
+function MockElections() {
 
     const [selectedClass, setSelectedClass] = useState("Null");
     const [isVisible, setVisibile] = useState(false);
