@@ -14,6 +14,8 @@ classes = Blueprint('classes', __name__)
 def create_class():
     name = request.args.get("name")
     teacher = request.args.get("teacher")
+    start_time = request.args.get("start_time")
+    end_time = request.args.get("end_time")
 
     if EnrolledClass.query.filter_by(name=name, teacher=teacher).all():
         return jsonify({'class-added': False, 'Error': 'Class Already Exists'}), 418
@@ -21,7 +23,9 @@ def create_class():
     db.session.add(EnrolledClass(
         None,
         name,
-        teacher
+        teacher,
+        start_time,
+        end_time
     ))
     db.session.commit()
 

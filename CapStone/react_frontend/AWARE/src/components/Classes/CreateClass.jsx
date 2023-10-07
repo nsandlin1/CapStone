@@ -1,6 +1,34 @@
 import { BiArrowBack } from 'react-icons/bi';
 
-export const CreateClass = ({back}) => {
+export const CreateClass = ({back, tEmail}) => {
+
+    var name = "";
+    var startTime = "";
+    var endTime = ""
+
+    function submit() {
+        var api_url = '/api/classes/create_class' +
+                      '?name=' + name +
+                      '&teacher=' + tEmail +
+                      '&start_time=' + startTime +
+                      '&end_time=' + endTime
+        fetch(api_url)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(
+                        `HTTP error: ${response.status}`
+                    );
+                }
+                return response.json()
+            })
+            .then((data) => {
+                console.log(data)
+            })
+            .catch((err) => {
+                console.log(err.message)
+            })
+        back()
+    }
 
     return (
 
@@ -13,7 +41,8 @@ export const CreateClass = ({back}) => {
                     Create New Class
                 </div>
                 <div className='flex w-[20%] md:w-[30%] h-[100%] justify-end items-center pr-2 md:pr-6'>
-                    <button className='text-xl bg-navy text-white rounded-xl w-[100%] h-[60%] md:w-[60%] transition hover:scale-105'>
+                    <button className='text-xl bg-navy text-white rounded-xl w-[100%] h-[60%] md:w-[60%] transition hover:scale-105'
+                    onClick={submit}>
                         Create
                     </button>
                 </div>
@@ -26,6 +55,9 @@ export const CreateClass = ({back}) => {
                             className="rounded-lg justify-center bg-navy text-white text-2xl h-[90%] w-[60%] ml-4 pl-4 transition hover:scale-105"
                             type='text'
                             name='className'
+                            onChange={(t) => {
+                                name = t.target.value;
+                            }}
                         />
                     </div>
                     <div className='flex flex-row h-[30%] w-full mt-16 items-center justify-between'>
@@ -38,10 +70,13 @@ export const CreateClass = ({back}) => {
                                 name='startTime'
                                 min='7:00'
                                 max='21:00'
+                                onChange={(t) => {
+                                    startTime = t.target.value;
+                                }}
                             />
                         </div>
                         <div className='flex flex-col w-[50%] h-full items-center justify-center'>
-                            <label className='text-4xl text-navy'>Start Time</label>
+                            <label className='text-4xl text-navy'>End Time</label>
                             <input 
                                 className='rounded-xl h-[50%] w-[45%] border-black text-navy border-2 pl-2 border-navy transition hover:scale-105'
                                 type='time'
@@ -49,6 +84,9 @@ export const CreateClass = ({back}) => {
                                 name='endTime'
                                 min='7:00'
                                 max='21:00'
+                                onChange={(t) => {
+                                    endTime = t.target.value;
+                                }}
                             />
                         </div>
                     </div>

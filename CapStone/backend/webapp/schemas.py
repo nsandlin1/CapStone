@@ -85,7 +85,7 @@ students_schema = StudentSchema(many=True)
 class EnrolledClassSchema(ma.Schema):
     class Meta:
         model = EnrolledClass
-        fields = ("id", "name", "teacher")
+        fields = ("id", "name", "teacher", "start_time", "end_time")
 
 enrolled_class_schema = EnrolledClassSchema()
 enrolled_classes_schema = EnrolledClassSchema(many=True)

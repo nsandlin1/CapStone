@@ -162,13 +162,17 @@ class EnrolledClass(db.Model):
     id = Column(Integer, primary_key=True)
     name = Column(String(50))
     teacher = Column(String(30), ForeignKey('teachers.email'))
+    start_time = Column(String(5))
+    end_time = Column(String(5))
 
     __table_args__ = (UniqueConstraint("name", "teacher", name="name_teacher_unique"),)
 
-    def __init__(self, id, name, teacher):
+    def __init__(self, id, name, teacher, start_time, end_time):
         self.id = id
         self.name = name
         self.teacher = teacher
+        self.start_time = start_time
+        self.end_time = end_time
     
     def __repr__(self):
         return f'<EnrolledClass "{self.name}">'
