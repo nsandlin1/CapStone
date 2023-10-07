@@ -101,10 +101,18 @@ quizes_schema = QuizSchema(many=True)
 class QuestionSchema(ma.Schema):
     class Meta:
         model = Question
-        fields = ("quiz_id", "question", "option1", "option2", "option3", "option4", "correct_option")
+        fields = ("question_id", "quiz_id", "quiz_type", "question", "correct_option")
 
 question_schema = QuestionSchema()
 questions_schema = QuestionSchema(many=True)
+
+class ChoiceSchema(ma.Schema):
+    class Meta:
+        model = Choice
+        fields = ("question_id", "which", "the_choice")
+
+choice_schema = ChoiceSchema()
+choices_schema = ChoiceSchema(many=True)
 
 class BallotSchema(ma.Schema):
     class Meta:

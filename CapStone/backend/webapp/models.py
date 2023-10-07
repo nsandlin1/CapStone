@@ -248,25 +248,44 @@ class Quiz(db.Model):
 class Question(db.Model):
     __tablename__ = 'questions'
 
-    quiz_id = Column(Integer, ForeignKey('quizes.id'), primary_key=True)
+    question_id = Column(Integer, primary_key=True)
+    quiz_id = Column(Integer, ForeignKey('quizes.id'))
+    quiz_type = Column(String(2))
     question = Column(String(200))
-    option1 = Column(String(100))
-    option2 = Column(String(100))
-    option3 = Column(String(100))
-    option4 = Column(String(100))
-    correct_option = Column(String(1))
+    correct_option = Column(String(5))
+
+    __table_args__ = (
+        UniqueConstraint("quiz_id", "question", name="quizid_question_unique"),
+    )
     
-    def __init__(self, quiz_id, question, option1, option2, option3, option4, correct_option):
+    def __init__(self, question_id, quiz_id, quiz_type, question, correct_option):
+        self.question_id = question_id
         self.quiz_id = quiz_id
+        self.quiz_type = quiz_type
         self.question = question
-        self.option1 = option1
-        self.option2 = option2
-        self.option3 = option3
-        self.option4 = option4
         self.correct_option = correct_option
 
     def __repr__(self):
         return f'<Question "{self.question}">'
+
+class Choice(db.Model):
+    __tablename__ = 'choices'
+
+    question_id = Column(Integer)
+    which = Column(String(1)) # A, B, C, etc.
+    the_choice = Column(String(200))
+
+    __table_args__ = (
+        PrimaryKeyConstraint(question_id, the_choice),
+    )
+
+    def __init__(self, question_id, which, the_choice):
+        self.question_id = question_id
+        self.which = which
+        self.the_choice = the_choice
+
+    def __repr__(self):
+        ...
 
 class Ballot(db.Model):
     __tablename__ = 'ballots'

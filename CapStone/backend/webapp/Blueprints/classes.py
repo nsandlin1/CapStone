@@ -1,10 +1,11 @@
 from flask import Blueprint, request, jsonify
 from ..models import EnrolledClass, Ballot, Quiz, ClassElection, PolicyBallot, \
-                     CandidateBallot, Question
+                     CandidateBallot, Question, Choice
 from ..extensions import db
 from ..schemas import enrolled_class_schema, enrolled_classes_schema, \
                       ballot_schema, ballots_schema, class_elections_schema, \
-                      quiz_schema, quizes_schema, questions_schema
+                      quiz_schema, quizes_schema, questions_schema, question_schema, \
+                      choice_schema, choices_schema
 import json
 
 classes = Blueprint('classes', __name__)
@@ -113,12 +114,59 @@ def get_ballot():
     
     return ballots_schema.jsonify(Ballot.query.all())
 
+abcs = {i: chr(64 + i) for i in range(1, 27)}
+
 @classes.route('/create_quiz')
 def create_quiz():
     title = request.args.get('title')
-    questions = request.args.get('questions')
+    questions = json.loads(request.args.get('questions'))
 
+    print(title)
+    print(questions)
 
+    if not title or not questions:
+        return jsonify({'quiz_created': False, 'Error': 'insufficient variables'})
+    print('post-if')
+    
+    db.session.add(Quiz(
+        None,
+        title
+    ))
+    db.session.commit()
+
+    quiz_id = Quiz.query.filter_by(title=title).all()[0].id
+    print(quiz_id)
+
+    for q in questions:
+
+        if q["type"] == "MC":
+            db.session.add(Question(
+                None,
+                quiz_id,
+                q["type"],
+                q["question"],
+                abcs[int(q["correct"])]
+            ))
+            db.session.commit()
+            questionid = Question.query.filter_by(quiz_id=quiz_id, question=q["question"]).all()[0].question_id
+            for which,the_choice in q["answers"].items():
+                db.session.add(Choice(
+                    questionid,
+                    abcs[int(which)],
+                    the_choice
+                ))
+            db.session.commit()
+        else:
+            db.session.add(Question(
+                None,
+                quiz_id,
+                q["type"],
+                q["question"],
+                q["correct"]
+            ))
+            db.session.commit()
+
+    return jsonify({'quiz_created': True})
 
 @classes.route('/get_quiz')
 def get_quiz():
