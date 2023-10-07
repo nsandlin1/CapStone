@@ -1,7 +1,7 @@
 import { FcCollapse } from "react-icons/fc";
 import { useState } from "react";
 
-export const ClassCard = ({classId, className, classTime, teacher, isExpanded, toggleCollapse, creating}) => {
+export const ClassCard = ({classId, className, startTime, endTime, teacher, isExpanded, toggleCollapse, creating}) => {
 
 
     const cardContainer = `flex ${isExpanded ? 'h-[50%] ' : 'h-[20%]'} ${creating || isExpanded ? '' : 'hover:scale-105' } w-[92%] rounded-xl bg-navy m-1 transition `;
@@ -28,7 +28,7 @@ export const ClassCard = ({classId, className, classTime, teacher, isExpanded, t
                     </div>
                     <div className='flex w-[60%] justify-center items-center'>
                         <h1 className='text-3xl text-white whitespace-nowrap'>
-                            {classTime}
+                            {startTime} - {endTime}
                         </h1>
                     </div>
                     <div className='flex w-[15%] items-center justify-end'>

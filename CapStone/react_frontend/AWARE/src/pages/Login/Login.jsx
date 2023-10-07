@@ -72,6 +72,7 @@ function Login({setRole, loginFun}) {
                 .then(res => res.json())
                 .then(res => {
                     setResponse(res);
+                    console.log("res", res)
                     if ("Error" in res) {
                         toast.error(res["Error"])
                     }
