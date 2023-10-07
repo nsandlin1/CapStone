@@ -1,0 +1,183 @@
+import { useState } from 'react';
+
+const Choice = ({index, form}) => {
+
+    return (
+        <div className='flex w-full h-full'>
+            <div className='flex w-[25%]'>
+               <label className='text-xl text-navy '>
+                    Option {index +1}:
+                </label> 
+            </div>
+            <div className='flex w-[65%]'> 
+                <input className='border-2 border-navy rounded-md w-full pl-2 text-xl text-navy'
+                onChange={(c) => {
+                    form.answers[index+1] = c.target.value
+                }}
+                >
+                </input>
+            </div>
+        </div>
+    )
+
+}
+
+
+const MultipleChoice = ({form}) => {
+
+    const [answers, setAnswers] = useState([{}, {}]);
+
+    const handleAddAnswer = () => {
+
+        const newAnswer = {}
+
+        setAnswers([...answers, newAnswer])
+    }
+
+
+    return (
+        <div className='flex flex-col space-y-3'>
+            <div className='flex flex-col space-y-2'>
+                {answers.map((answer, index) => (
+                    <div className='flex flex-row'>
+                        < Choice index={index} form={form}/>
+                    </div>
+                ))}
+            </div>
+            <div className='flex flex-row'>
+                <div className='flex w-[25%]'>
+                    <label className='text-xl font-bold text-navy'>
+                        Correct Option:
+                    </label>
+                </div>
+                <div className='flex w-[75%]'>
+                    <select
+                        className='rounded-md bg-white w-[30%] border-2 border-navy text-center'
+                        type='option'
+                        onChange={(o) => form.correct = o.target.value.toString()}
+                    >
+                        {answers.map((answer, index) => (
+                            <option>
+                                {index + 1}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+            </div>
+            <div className='flex w-full  justify-end'>
+                <div className='flex justify-center text-lg bg-white hover:cursor-pointer text-navy border-2 border-navy rounded-xl w-[30%]' onClick={() => handleAddAnswer()}>
+                    Add Additional Answer
+                </div>
+            </div>
+            
+        </div>
+    )
+
+}
+
+const TF = ({form}) => {
+
+    console.log("f", form)
+
+    return (
+        <div className="flex flex-row w-full justify-center">
+            
+            <div className='flex flex-col w-[20%] items-center justify-center'>
+                <label className='text-navy font-bold text-2xl'>
+                    True
+                </label>
+                <input
+                    type='radio'
+                    name='radAnswer'
+                    onClick={() => {
+                        form.correct = "true"
+                    }}
+                >
+                </input>
+            </div>
+            <div className='flex flex-col w-[20%] items-center justify-center'>
+                <label className='text-navy font-bold text-2xl'>
+                    False
+                </label>
+                <input
+                    type='radio'
+                    name='radAnswer'
+                    onClick={() => {
+                        form.correct = "false"
+                    }}
+                >
+                </input>
+            </div>
+        </div>
+    )
+
+}
+
+export const Question = ({index, form}) => {
+
+    const [qType, setQType] = useState('null');
+
+    const handleSelectChange = (event) => {
+        const newValue = event.target.value;
+        form.type = newValue;
+        setQType(newValue);
+    };
+
+    return (
+        <div className='flex flex-col bg-white w-full h-[100%] p-4 space-y-4 rounded-xl'>
+            <div className='flex flex-row w-full text-navy '>
+                <div className="flex w-[25%] font-bold">
+                    <label className="text-2xl w-full"> Question {index + 1}: </label>
+                </div>
+                <div className='flex w-[65%] justify-start'>
+                    <input className="text-2xl rounded-md pl-2 bg-white w-full border-2 border-navy"
+                        onChange={(q) => {
+                            form.question = q.target.value;
+                        }}>
+                    </input>
+                </div>
+            </div>
+            <div className="flex flex-row">
+                <div className="flex whitespace-nowrap w-[25%]">
+                    <label className="text-xl font-bold text-navy pr-2 w-full]">
+                        Question Type:
+                    </label>
+                </div>
+                <div className='flex w-[75%] justify-start'>
+                    <select
+                        className='rounded-md bg-white w-[30%] border-2 text-center border-navy'
+                        type='option'
+                        onChange={handleSelectChange}
+                    >
+                        <option value='null'>Select an Option</option>
+                        <option value='MC'>Multiple Choice</option>
+                        <option value='TF'>True/False</option>
+                    </select>
+                </div>
+                
+            </div>
+            <div>
+                {qType == 'null' ?
+                    <></>
+                    :
+                    qType == 'MC' ?
+                        <MultipleChoice form={form}/>
+                        :
+                        < TF form={form}/>
+                }
+            </div>
+        </div>
+    )
+
+}
+
+export const AddQButton = ({onClick}) => {
+
+    return (
+        <button onClick={onClick} className='flex h-[100%] w-[50%] md:w-[30%] text-lg bg-white md:m-4 shadow-xl rounded-xl items-center justify-center'>
+            Add Question
+        </button>
+    )
+
+}
+

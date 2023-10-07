@@ -1,3 +1,184 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+  
+/* Track */
+::-webkit-scrollbar-track {
+    background: #013364;
+    border-radius: 6px;
+}
+  
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 5px;
+}
+  
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+path {
+    pointer-events: all;
+}
+
+path:hover {
+    opacity: .5;
+    cursor: pointer;
+}
+
+.semi {
+    width: 200px;
+    height: 100px; /* as the half of the width */
+    background-color: blue;
+    border-top-left-radius: 110px;  /* 100px of height + 10px of border */
+    border-top-right-radius: 110px; /* 100px of height + 10px of border */
+    border: 70px solid gray;
+    border-bottom: 0;
+}
+
+.bgwhite {
+    background-color: #f9f9f9;
+}
+
+.bgred {
+    background-color: #d30b0d;
+}
+
+.bgnavy {
+    background-color: #013364;
+}
+
+.bgblue {
+    background-color: #428bca;
+}
+
+.bggrey {
+    background-color: #cbcaca;
+}
+
+.bglightblue {
+    background-color: #d0efff;
+}
+
+.bgdarkerblue {
+    background-color: #428bdc;
+}
+
+.SocialIcon { 
+    font-size: 48px;
+}
+
+.legend {
+    position: absolute;
+}
+  
+  @media only screen and (max-width: 400px) {
+    .SocialIcon {
+        font-size: 24px;
+    }
+    .BackArrow {
+        font-size: 40px;
+    }
+    .MockButtons {
+        font-size: 28px;
+    }
+    .AddButtonMock {
+        font-size: 28px;
+    }
+  }
+
+  @media only screen and (min-width: 400px) {
+    .SocialIcon {
+        font-size: 30px;
+    }
+    .BackArrow {
+        font-size: 72px;
+    }
+    .MockButtons {
+        font-size: 28px;
+    }
+    .AddButtonMock {
+        font-size: 28px;
+    }
+  }
+
+  @media only screen and (min-width: 1280px){
+  }
+
+  @media only screen and (max-width: 1024px) and (min-width: 768px) {
+    .legend {
+        width: 150px;
+        height: 99px;
+        top: 20px;
+        left: 20px;
+    }
+  }
+
+  @media only screen and (min-width: 1024px) and (max-width: 1280px){
+    .legend {
+        width: 150px;
+        height: 100px;
+        top: 20px;
+        left: 30px;
+    }
+  }
+
+  @media only screen and (min-width: 1280px){
+    .legend {
+        width: 150px;
+        height: 100px;
+        top: 40px;
+        left: 80px;
+    }
+  }
+
+  @media only screen and (min-width: 600px) {
+    .SocialIcon {
+        font-size: 48px;
+    }
+    .BackArrow {
+        font-size: 90px;
+    }
+    .MockButtons {
+        font-size: 36px;
+    }
+    .AddButtonMock {
+        font-size: 48px;
+    }
+    .ClassesCollapseIcon {
+        font-size: 48px;
+    }
+  }
+
+.ExpandedInfo {
+    transition: height 0.2s ease-in-out;
+}
+
+.CapHill {
+    background: linear-gradient(rgba(0,0,0,.25), rgba(0,0,0,.75)), url('../src/assets/captiolhill.jpeg');
+    background-size: cover;
+    border-radius: 10px;
+    background-color: rgba(0,0,0,.5);
+}
+
+.WhiteHouse {
+    background: linear-gradient(rgba(0,0,0,.25), rgba(0,0,0,.75)), url('../src/assets/whitehouse.webp');
+    background-size: cover;
+    border-radius: 10px;
+    background-color: rgba(0,0,0,.5);
+}
+
+.DC {
+    background: linear-gradient(rgba(0,0,0,.5), rgba(0,0,0,.75)), url('../src/assets/dc.jpeg');
+    background-size: cover;
+    background-color: rgba(0,0,0,.5);
+}
+
+

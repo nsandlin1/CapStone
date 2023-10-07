@@ -90,16 +90,3 @@ function PoliticianBlock({ pol, image_url, isExpanded, toggleCollapse}) {
 }
 
 export { Politician, PoliticianBlock }
-
-// "Website": "https://www.barrasso.senate.gov",
-// "contact_form": "https://www.barrasso.senate.gov/public/index.cfm/contact-form",
-// "date_of_birth": "1952-07-21",
-// "facebook": "johnbarrasso",
-// "first_name": "John",
-// "id": "B001261",
-// "last_name": "Barrasso",
-// "middle_name": null,
-// "party": "R",
-// "phone": "202-224-6441",
-// "state": "WY",
-// "twitter": "SenJohnBarrasso"
