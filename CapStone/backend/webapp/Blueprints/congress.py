@@ -1,48 +1,74 @@
 from flask import current_app, Blueprint, request
 from ..dataCollect.api_for_members import *
 from ..extensions import db
-from ..models import JpegUrl
-from ..schemas import jpeg_url_schema
+from ..models import JpegUrl, Congressman, Bill, StateCongressman, StateMajority, User, Teacher
+from ..schemas import jpeg_url_schema, congressmen_schema, bills_schema, state_congressmen_schema, state_senate_majority_schema
 from loguru import logger
 import re
-
+from datetime import datetime
+from sqlalchemy import text
 
 congress = Blueprint('congress', __name__)
 
 @congress.route('/members')
 def members():
     # house or senate
-    branch = request.args.get("branch")
-    members = propublica_get_members(current_app.config["PROPUBLICA_API_KEY"], current_app.config["CURRENT_CONGRESS"], branch)
-    members_chopped = []
+    branch_id = request.args.get("branch")
+    update = request.args.get("update")
 
-    for member in members["results"][0]["members"]:
-        members_chopped.append({
-              "id": member["id"],
-              "first_name": member["first_name"],
-              "middle_name": member["middle_name"],
-              "last_name": member["last_name"],
-              "party": member["party"],
-              "state": member["state"],
-              "date_of_birth": member["date_of_birth"],
-              "contact_form": member["contact_form"],
-              "phone": member["phone"],
-              "facebook": member["facebook_account"],
-              "twitter": member["twitter_account"],
-              "website": member["url"]
-        })
+    if update == "True":
+        try:
+            congressmen = propublica_get_members(current_app.config["PROPUBLICA_API_KEY"], current_app.config["CURRENT_CONGRESS"], branch_id)["results"][0]["members"]
+            # logger.debug(congressmen)
+        except Exception as e:
+            print("error")
+            raise Exception(e)
 
-    return members_chopped
+        congressmen_objs = []
+        for c in congressmen:
+            if Congressman.query.get(c["id"]) == None:
+                congressmen_objs.append(
+                    Congressman(
+                        c["id"],
+                        branch_id,
+                        c["first_name"],
+                        c["last_name"],
+                        c["state"],
+                        datetime.strptime(c["date_of_birth"], '%Y-%m-%d').date(),
+                        c["party"],
+                        c["middle_name"],
+                        c["contact_form"],
+                        c["phone"],
+                        c["facebook_account"],
+                        c["twitter_account"],
+                        c["youtube_account"],
+                        c["url"]
+                    )
+                )
+        
+        db.session.add_all(congressmen_objs)
+        db.session.commit()
+
+        return str(len(congressmen_objs))
+
+    else:
+        return congressmen_schema.jsonify(Congressman.query.filter_by(branch=branch_id).all())
 
 @congress.route('/member_image')
 def member_image():
     id = request.args.get("id")
     logger.debug(f"id: {id}")
-    jpgUrl = db.session.get(JpegUrl, id)
+
+    jpgUrl = JpegUrl.query.get(id)
+    print(jpgUrl)
+    logger.debug(jpgUrl)
 
     if jpgUrl == None:
+        print("it is none, pulling")
         try:
+            # print(id, jpgUrl)
             image_url = congressgov_get_image(current_app.config["CONGRESS_GOV_API_KEY"], id)
+            # print(image_url)
         except Exception as e:
             return str(e), 404
 
@@ -55,51 +81,223 @@ def member_image():
 
 @congress.route('/get_bills')
 def get_bills():
-    bills = congressgov_get_bills(current_app.config["CONGRESS_GOV_API_KEY"])
+    # true or false
+    update = request.args.get("update")
 
-    # probably need to thread this it's slow af
-    refactored = []
-    for bill in bills[0:7]:
-        print(bill["title"])
+    if update == "True":
+        num_new = 0
+        
         try:
-            content_url = congressgov_get_bill_contents_url(current_app.config["CONGRESS_GOV_API_KEY"], bill["congress"], bill["type"].lower(), bill["number"])
+            new_bills = congressgov_get_bills(current_app.config["CONGRESS_GOV_API_KEY"])
+        except Exception as e:
+            logger.debug(str(e))
 
-            if content_url == None:
-                print("is none")
-                continue
-            
-            content_json = congressgov_get_bill_contents(current_app.config["CONGRESS_GOV_API_KEY"], content_url)
-            content = content_json["html"]["body"]["pre"]
+        # probably need to thread this it's slow af
+        bills = []
+        for bill in new_bills:
+            bill_in_db = Bill.query.get(bill["title"]) is not None
+            if not bill_in_db:
+                print(bill["title"])
+                print("not in db")
+                try:
+                    content_url = congressgov_get_bill_contents_url(current_app.config["CONGRESS_GOV_API_KEY"], bill["congress"], bill["type"].lower(), bill["number"])
+                    print("content_url" + content_url)
+                except:
+                    content_url = None
+                    print("is none")
+                    continue
+                
+                try:
+                    content_json = congressgov_get_bill_contents(current_app.config["CONGRESS_GOV_API_KEY"], content_url)
+                    content = content_json["html"]["body"]["pre"]
 
-            # preprocess
-            content_filtered = content.strip()
-            content_filtered = content_filtered.replace('\n', ' ')
-            content_filtered = re.sub(' +', ' ', content_filtered)
+                    # preprocess
+                    content_filtered = content.strip()
+                    # content_filtered = content_filtered.replace('\n', ' ')
+                    content_filtered = re.sub(' +', ' ', content_filtered)
+                    print("content_filtered")
+
+                    # TODO make this reliable, returns errors for most and null for many others
+                    summary_short, summary_med, summary_long = summ_model(current_app.config["MOD_AUTH"], content_filtered)
+
+                    # delete everythin after last period
+                    # if summary[(len(summary)-1)] != ".":
+                        # separator = '.'
+                        # summary_filtered = summary.rsplit(separator, 1)[0] + separator
+
+                except Exception as e:
+                    print(e)
+                    content = None
+                    summary_short = None
+                    summary_med = None
+                    summary_long = None
+
+                if not Bill.query.get(bill["title"]):
+                    bills.append(Bill(
+                        bill["title"],
+                        bill["number"],
+                        content_url,
+                        summary_short,
+                        summary_med,
+                        summary_long,
+                        bill["originChamber"],
+                        datetime.strptime(bill["updateDate"], '%Y-%m-%d').date()
+                    ))
+                    num_new += 1
+
+        db.session.add_all(bills)
+        db.session.commit()
+        
+        return str(num_new)
+
+    else:
+        bills = Bill.query.all()
+
+    logger.debug(bills)
+    return bills_schema.jsonify(bills)
+
+@congress.route('/state_members')
+def state_members():
+    """
+    state: 2 letter state abbreviation
+    branch: House or Senate
+    update: to update the db
+    """
+    state = request.args.get("state")
+    branch = request.args.get("branch")
+    update = request.args.get("update")
+
+    num_new = 0
+
+    if branch == "House":
+        api_key = current_app.config["OPENSTATES_API_KEY"]
+    else:
+        api_key = current_app.config["OPENSTATES_API_KEY_"]
+
+    print(api_key)
+
+    if update == "True":
+        try:
+            state_congressmen_raw = openstates_get_state_politicians(api_key, state, branch)
+            if state_congressmen_raw == None:
+                return "Failed to retrieve, check url validity", 400
+
+            state_congressmen = []
+            for c in state_congressmen_raw:
+                # if not in db
+                if not StateCongressman.query.get(c["id"]):
+                    state_congressmen.append(StateCongressman(
+                        c["id"],
+                        c["name"],
+                        c["party"],
+                        branch,
+                        c["current_role"]["district"],
+                        state,
+                        c["image"],
+                        c["openstates_url"]                    
+                    ))
+                    num_new += 1
+
+            db.session.add_all(state_congressmen)
+            db.session.commit()
+
+            return str(num_new)
+
+        except Exception as e:
+            return str(e), 500
+    else:
+        print("not updating")
+        congressmen = StateCongressman.query.filter_by(state=state, branch=branch).all()
+        return state_congressmen_schema.jsonify(congressmen)
+
+@congress.route('/majority_senate')
+def majority_senate():
+
+    update = request.args.get("update")
+
+    statePols = db.session.execute(text("\
+        SELECT state, \
+               COUNT(CASE WHEN party = 'Democratic' OR party='Democratic-Farmer-Labor' THEN 1 END) AS democrat_count, \
+               COUNT(CASE WHEN party = 'Republican' THEN 1 END) AS republican_count \
+        FROM state_congressmen \
+        WHERE branch='Senate' \
+        GROUP BY state\
+    "))
+    logger.debug(statePols.all())
 
 
-            # TODO make this reliable, returns errors for most and null for many others
-            summary = summ_model(current_app.config["MOD_AUTH"], content_filtered)
-
-            if summary[(len(summary)-1)] != ".":
-                separator = '.'
-                summary_filtered = summary.rsplit(separator, 1)[0] + separator
-
-        except:
-            content_url = None
-            content = None
-            summary = None
-
-
-        refactored.append({
-                "title": bill["title"],
-                "originChamber": bill["originChamber"],
-                "number": bill["number"],
-                "updateDate": bill["updateDate"],
-                "content_url": content_url,
-                "summary": summary,
-        }) 
-
-    return refactored
-
-
+    return state_congressmen_schema.jsonify(statePols.all())
 # GET /bill/{congress}/{billType}/{billNumber}/text for bill contents
+
+@congress.route('/majority')
+def majority():
+
+    update = request.args.get("update")
+    branch = request.args.get("branch")
+
+    if (update == "True"):
+
+        db.session.execute(text('''DROP TABLE IF EXISTS state_majority'''))
+
+        db.session.execute(text('''
+    CREATE TABLE IF NOT EXISTS state_majority (
+        state String(2),
+        majority String(1),
+        branch String(8)
+    )
+'''))
+
+        statePolsHouse = db.session.execute(text("\
+            SELECT state, \
+                COUNT(CASE WHEN party = 'Democratic' OR party='Democratic-Farmer-Labor' THEN 1 END) AS democrat_count, \
+                COUNT(CASE WHEN party = 'Republican' THEN 1 END) AS republican_count \
+            FROM state_congressmen \
+            WHERE branch='House' \
+            GROUP BY state\
+        "))
+
+        statePolsSenate = db.session.execute(text("\
+            SELECT state, \
+                COUNT(CASE WHEN party = 'Democratic' OR party='Democratic-Farmer-Labor' THEN 1 END) AS democrat_count, \
+                COUNT(CASE WHEN party = 'Republican' THEN 1 END) AS republican_count \
+            FROM state_congressmen \
+            WHERE branch='Senate' \
+            GROUP BY state\
+        "))
+
+        state_maj = []
+        for row in statePolsHouse:
+            party = ''
+            if (row[1] > row[2]):
+                party = "D"
+            else:
+                party = "R"
+            state_maj.append(StateMajority(
+                row[0],
+                party,
+                "House"
+            ))
+
+        for row in statePolsSenate:
+            party = ''
+            if (row[1] > row[2]):
+                party = "D"
+            else:
+                party = "R"
+            state_maj.append(StateMajority(
+                row[0],
+                party,
+                "Senate"
+            ))
+
+        print(state_maj)
+        db.session.add_all(state_maj)
+        db.session.commit()
+
+        return ("Updated")
+
+
+    congressmen = StateMajority.query.filter_by(branch=branch).all()
+
+    
+    return state_senate_majority_schema.jsonify(congressmen)
