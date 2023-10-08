@@ -158,8 +158,8 @@ export const TakeQuiz = ({quizTitle}) => {
 
 
     return (
-        <div className='flex flex-col h-[96%] w-full rounded-xl items-center '>
-            <div className='flex flex-col h-[92%] w-full items-center overflow-auto '>
+        <div className='flex flex-col h-[100%] w-full rounded-xl items-center '>
+            <div className='flex flex-col h-[92%] pt-2 w-full items-center overflow-auto '>
                 {questions.map((question, idx) => (
                     <div className='flex w-[95%] h-full m-1 justify-center'>
                         {question.type == 'MC' ?
@@ -174,8 +174,8 @@ export const TakeQuiz = ({quizTitle}) => {
                     </div>
                 ))}
             </div>
-            <div className='flex justify-center'>
-                <button className='bg-navy text-white rounded-xl'>
+            <div className='flex justify-center items-center h-[8%] w-full'>
+                <button className='bg-navy text-white rounded-xl h-[75%] w-[15%] hover:bg-slate-500'>
                     Submit Quiz
                 </button>
             </div>
