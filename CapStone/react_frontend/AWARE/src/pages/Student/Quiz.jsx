@@ -30,9 +30,9 @@ function StudentQuiz() {
         <div className='flex flex-col h-[91vh] w-[100%] bg-slate-400 justify-center items-center'>
             <div className='flex flex-col h-[100%] w-[90%] rounded-xl items-center'>
                 <div className='flex flex-row h-[15%] w-[95%] items-center justify-center'>
-                    <h1 className='text-3xl md:text-4xl lg:text-5xl text-white drop-shadow-lg'>
+                    <div className='text-3xl md:text-4xl lg:text-5xl text-white drop-shadow-lg'>
                         {takingQuiz ? <h1>{currentQuiz}</h1> : 'Quizzes'}
-                    </h1>
+                    </div>
                 </div>
                 <div className={availableQuizzesView}>
                     <div className='flex flex-row h-[10%] w-[95%] items-center'>
