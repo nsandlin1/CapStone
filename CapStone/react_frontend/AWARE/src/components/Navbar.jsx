@@ -39,6 +39,9 @@ export const StuNavbar = () => {
           <NavLink to="/">Home</NavLink>
         </li>
         <li className='navitem p-4'>
+            <NavLink to="/Quiz" onClick={handleNav}>Quizzes</NavLink>
+          </li>
+        <li className='navitem p-4'>
           <NavLink to="/Calendar">Calendar</NavLink>
         </li>
         <li className='navitem p-4 whitespace-nowrap'>
@@ -73,6 +76,9 @@ export const StuNavbar = () => {
         <ul className='pt-12 uppercase'>
           <li className='navitem p-4 border-b border-gray-600'>
             <NavLink to="/" onClick={handleNav}>Home</NavLink>
+          </li>
+          <li className='navitem p-4 border-b border-gray-600'>
+            <NavLink to="/Quiz" onClick={handleNav}>Quizzes</NavLink>
           </li>
           <li className='navitem p-4 border-b border-gray-600'>
             <NavLink to="/Calendar" onClick={handleNav}>Calendar</NavLink>
