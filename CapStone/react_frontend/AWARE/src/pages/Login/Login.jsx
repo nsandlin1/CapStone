@@ -138,12 +138,16 @@ function Login({setRole, loginFun}) {
     })
 
     const handleLogin = () => {
-        setLogin(!login);
+        if (!register){
+            setLogin(!login);
+        }
         console.log(login);
     }
 
     const handleRegister = () => {
-        setRegister(!register);
+        if (!login){
+            setRegister(!register);
+        }
         console.log(register);
     }
 
@@ -157,7 +161,7 @@ function Login({setRole, loginFun}) {
                     <div className='flex text-xl md:text-3xl justify-center text-navy drop-shadow-xl'>
                         to
                     </div>
-                    <animated.div style={aware} className='text-8xl md:text-9xl text-red2 justify-center drop-shadow-xl'>
+                    <animated.div style={aware} className='text-7xl md:text-9xl text-red2 justify-center drop-shadow-xl'>
                             AWARE
                     </animated.div>
                 </div>

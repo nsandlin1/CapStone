@@ -28,33 +28,34 @@ export const LoginView = ({click, response, setEmail, setPassword, submit, login
     }, [response])
 
     return (
-        <div className="WhiteHouse flex flex-col relative w-[60vw] h-[50vh] justify-center items-center text-white" >
+        <div className="WhiteHouse flex flex-col relative w-[90vw] md:w-[60vw] h-[50vh] justify-center items-center text-white" >
             <div className="flex flex-row relative w-[100%] h-[10%] items-center">
                 < BiArrowBack className='MockButtons absolute fill-white top-2 md:top-8 left-4 md:left-10' onClick={click} />
             </div>
             <div className="flex w-full h-[85%] items-center justify-center">
                 <form className="flex flex-col w-full h-full items-center justify-center space-y-6">
-                    <div className='flex flex-row w-full h-[20%] items-center justify-center'>
-                        <label className="flex text-4xl w-[20%] justify-end pr-2">
+                    <div className='flex flex-col md:flex-row w-full h-[20%] items-center justify-center'>
+                        <label className="flex text-4xl md:w-[20%] justify-end pr-2">
                             Email:
                         </label>
-                        <input className="text-3xl pl-4 text-navy rounded-lg w-[50%]"
+                        <input className="text-xl md:text-3xl pl-4 text-navy justify-center rounded-lg w-[75%] md:w-[50%]"
                                 type='text'
                                 name='email'
                                 onChange={(e) => setEmail(e.target.value)}
                         />
                     </div>
-                    <div className='flex flex-row w-full h-[20%] items-center justify-center'>
-                        <label className='flex text-4xl w-[20%] justify-end pr-2'>
+                    <div className='flex flex-col md:flex-row w-full h-[20%] items-center justify-center'>
+                        <label className='flex text-4xl md:w-[20%] justify-end pr-2'>
                             Password:
                         </label>
-                        <input className="rounded-lg pl-4 text-3xl text-navy bg-white  w-[50%] "
-                                type='text'
+                        <input className="rounded-lg pl-4 text-xl md:text-3xl text-navy bg-white w-[75%] md:w-[50%] "
+                                type='password'
                                 name='password'
                                 onChange={(p) => setPassword(p.target.value)}
                         />
                     </div>
-                    <button className="flex rounded-lg text-lg font-bold bg-white text-navy transition hover:scale-105  w-[10%] h-[15%] justify-center items-center "
+                    <button className="flex rounded-lg text-lg font-bold bg-white text-navy transition 
+                                       hover:scale-105 w-[30%] md:w-[10%] h-[15%] justify-center items-center "
                             onClick={submit}>
                         Login
                     </button>
@@ -132,47 +133,47 @@ export const RegisterView = ({click, response, email, setEmail, password, setPas
     }
 
     return (
-        <div className="CapHill flex flex-col relative w-[60vw] h-[50vh] justify-center items-center text-white" >
+        <div className="CapHill flex flex-col relative w-[90vw] lg:w-[75vw] h-[85vh] md:h-[50vh] justify-center items-center text-white" >
             <div className="flex flex-row relative w-[100%] h-[10%] items-center">
                 < BiArrowBack className='MockButtons absolute fill-white top-2 md:top-8 left-4 md:left-10' onClick={click} />
             </div>
             <div className="flex w-full h-full text-white items-center justify-center">
                 <form className="flex flex-col w-full h-full items-center justify-center">
-                    <div className='flex flex-row w-full h-[20%] items-center justify-center'>
-                        <label className="flex text-4xl w-[20%] justify-end pr-2">
+                    <div className='flex flex-col md:flex-row w-full h-[20%] items-center justify-center'>
+                        <label className="flex text-4xl md:w-[20%] justify-end pr-2">
                             Email:
                         </label>
-                        <input className="text-3xl pl-4 text-navy rounded-lg w-[50%]"
+                        <input className="text-3xl pl-4 text-navy rounded-lg w-[90%] md:w-[50%]"
                                 type='text'
                                 name='email'
                                 onChange={(e) => setEmail(e.target.value)}
                         />
                     </div>
-                    <div className='flex flex-row w-full h-[20%] items-center justify-center'>
-                        <label className='flex text-4xl w-[20%] justify-end pr-2'>
+                    <div className='flex flex-col md:flex-row w-full h-[20%] items-center justify-center'>
+                        <label className='flex text-4xl md:w-[20%] justify-end pr-2'>
                             Password:
                         </label>
-                        <input className="rounded-lg pl-4 text-3xl text-navy bg-white  w-[50%] "
-                                type='text'
+                        <input className="rounded-lg pl-4 text-3xl text-navy bg-white w-[90%] md:w-[50%]"
+                                type='password'
                                 name='password'
                                 onChange={(p) => setPassword(p.target.value)}
                                 
                         />
                     </div>
-                    <div className='flex flex-row w-full h-[20%] items-center justify-center'>
-                        <label className='flex text-3xl w-[20%] whitespace-nowrap justify-end pr-2'>
+                    <div className='flex flex-col md:flex-row w-full h-[20%] items-center justify-center'>
+                        <label className='flex text-3xl md:w-[20%] whitespace-nowrap justify-end pr-2'>
                             Re-type Password:
                         </label>
-                        <input className="rounded-lg pl-4 text-3xl text-navy bg-white  w-[50%] "
-                                type='text'
-                                name='password'
+                        <input className="rounded-lg pl-4 text-3xl text-navy bg-white w-[90%] md:w-[50%] "
+                                type='password'
+                                name='password2'
                                 onChange={(p) => setPassValid(p.target.value)}
                                 
                         />
                     </div>
-                    <div className='flex flex-row w-full h-[20%] items-center justify-center'>
+                    <div className='flex flex-col md:flex-row w-full h-[20%] items-center justify-center'>
                             <div className='flex flex-row w-[50%] h-[100%] items-center justify-center'>
-                                <label className='flex text-4xl w-[20%] justify-end pr-2'>
+                                <label className='flex text-xl md:text-4xl w-[20%] justify-end pr-2'>
                                     Role:
                                 </label>
                                 <select onChange={handleRoleChange}
@@ -187,10 +188,10 @@ export const RegisterView = ({click, response, email, setEmail, password, setPas
                             </div>
                         { selectedRole === 'Student' ?
                             <div className='flex flex-row w-[50%] h-[100%] items-center justify-center'>
-                                <label className='flex text-4xl whitespace-nowrap w-[45%] justify-end pr-2'>
+                                <label className='flex text-xl md:text-4xl whitespace-nowrap w-[30%] md:w-[45%] justify-end pr-2'>
                                     Class Code:
                                 </label>
-                                <input className="rounded-lg pl-4 text-3xl text-navy bg-white  w-[50%] "
+                                <input className="rounded-lg pl-4 text-3xl text-navy bg-white w-[70%] md:w-[50%] "
                                         type='text'
                                         name='code'
                                 />
@@ -200,7 +201,8 @@ export const RegisterView = ({click, response, email, setEmail, password, setPas
                         }
                     </div>
                     
-                    <button className="flex rounded-lg transition hover:scale-105 text-lg font-bold bg-white text-navy w-[20%] h-[15%] justify-center items-center"
+                    <button className="flex rounded-lg transition hover:scale-105 text-lg font-bold bg-white 
+                                        text-navy w-[35%] md:w-[20%] h-[10%] md:h-[15%] justify-center items-center"
                             onClick={validateForm}>
                         Register
                     </button>

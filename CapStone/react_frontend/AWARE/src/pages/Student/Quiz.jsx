@@ -9,20 +9,29 @@ function StudentQuiz() {
     const [quizzes, setQuizzes] = useState([
         {
             quizTitle: "Quiz 1",
-            quizDDate: "Oct 25th, 2023"
+            quizDDate: "Oct 25th, 2023",
+            grade: null
         },
         {
             quizTitle: "Quiz 2",
-            quizDDate: "Oct 27th, 2023"
+            quizDDate: "Oct 27th, 2023",
+            grade: null
         }
     ])
 
+    // Shows the select quiz for the student to take
     function handleTakeQuiz(title) {
         console.log('Attempting to take ' + title);
         setTakingQuiz(true);
         setCurrentQuiz(title);
         console.log(quizTitle);
     }
+
+    // Shows the grades the student got on the selected quiz
+    function handleViewGrade() {
+        return;
+    }
+
 
     const availableQuizzesView = `${takingQuiz ? 'hidden' : 'flex flex-col relative h-[85%] w-[95%] rounded-xl items-center justify-center bg-white mb-4 shadow-lg'}`
 
@@ -54,7 +63,7 @@ function StudentQuiz() {
                                     key = {idx}
                                     quizTitle = {quiz.quizTitle}
                                     quizDDate = {quiz.quizDDate}
-                                    onTakeQuiz = {handleTakeQuiz}
+                                    onTakeQuiz = {quiz.grade == null ? handleTakeQuiz : handleViewGrade}
                                 />
                             ))
                         }
