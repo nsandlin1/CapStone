@@ -1,17 +1,91 @@
 import {useState} from 'react';
 
+export const Option = ({index, text, choose, selected}) => {
+
+    const selectedOption = `${selected == index ? 'bg-lightblue' : 'bg-slate-400 hover:bg-slate-800 '} flex w-[5%] text-white justify-center 
+                            items-center rounded-xl hover:cursor-pointer`
+
+    return (
+        <div className='flex flex-row w-full text-white text-2xl justify-center p-2 gap-2'>
+            <div className={selectedOption}
+                 onClick={() => choose(index)}>
+                {index}
+            </div>
+            <div className='w-[95%]'>
+                {text}
+            </div>
+        </div>
+    )
+}
+
 
 // True/False option on a quiz
-export const TF = () => {
+export const MC = ({CustomKey, question, options, onSelect, selection}) => {
+
+
+    const [selected, setSelected] = useState(selection)
+
+    const handleSelection = (choice) => {
+        onSelect(CustomKey, choice);
+        setSelected(choice);
+
+    }
+
+    return (
+        <div className='flex flex-col h-full w-[90%] bg-navy rounded-xl p-2'>
+            <div className='flex w-full text-white font-bold justify-center text-2xl'>
+                {question}
+            </div>
+            <div className="flex flex-col w-full justify-center pb-2">
+                { Object.keys(options).map((key) =>
+                    <div key={key} className='flex justify-center w-full'>
+                        <Option index={key} text={options[key]} choose={handleSelection} selected={selected}/>
+                    </div>
+                )
+
+                }
+            </div>
+        </div>
+    )
 
 }
 
 // Multiple choice option on a quiz
-export const MC = () => {
+export const TF = ({CustomKey, question, onSelect}) => {
 
     return (
-        <div className='flex flex-col h-full w-[90%] bg-navy rounded-xl'>
-            
+        <div className='flex flex-col h-full w-[90%] bg-navy rounded-xl p-2 gap-2'>
+            <div className='flex w-full text-white font-bold justify-center text-2xl'>
+                {question}
+            </div>
+            <div className="flex flex-row w-full justify-center pb-2">
+                <div className='flex flex-col w-[30%] md:w-[10%] items-center justify-center'>
+                    <label className='text-white text-base sm:text-xl'>
+                        True
+                    </label>
+                    <input
+                        type='radio'
+                        name='radAnswer'
+                        onClick={() => {
+                            onSelect(CustomKey, 'T')
+                        }}
+                    >
+                    </input>
+                </div>
+                <div className='flex flex-col w-[30%] md:w-[10%] items-center justify-center'>
+                    <label className='text-white text-base sm:text-xl'>
+                        False
+                    </label>
+                    <input
+                        type='radio'
+                        name='radAnswer'
+                        onClick={() => {
+                            onSelect(CustomKey, 'F')
+                        }}
+                    >
+                    </input>
+                </div>
+            </div>
         </div>
     )
 
@@ -21,27 +95,89 @@ export const MC = () => {
 export const TakeQuiz = ({quizTitle}) => {
 
     const [questions, setQuestion] = useState([
-        {},
-        {},
-        {},
-        {},
-        {},
-        {}
+        {
+            questionId: 0,
+            type: 'MC',
+            question: 'Which of the folling is true',
+            options: {
+                A: 'Bush did 9/11',
+                B: 'Obama is not American',
+                C: 'Ted Cruz is the Zodiac Killer'
+            },
+            selected: null
+        },
+        {
+            questionId: 1,
+            type: 'TF',
+            question: 'This is a true/false question',
+            selected: null
+        },
+        {
+            questionId: 2,
+            type: 'MC',
+            question: 'Which of the folling is true',
+            options: {
+                A: 'Bush did 9/11',
+                B: 'Obama is not American',
+                C: 'Ted Cruz is the Zodiac Killer'
+            },
+            selected: null
+        },
+        {
+            questionId: 3,
+            type: 'TF',
+            question: 'This is a true/false question',
+            selected: null
+        },
+        {
+            questionId: 4,
+            type: 'MC',
+            question: 'Which of the folling is true',
+            options: {
+                A: 'Bush did 9/11',
+                B: 'Obama is not American',
+                C: 'Ted Cruz is the Zodiac Killer'
+            },
+            selected: null
+        },
+        {
+            questionId: 5,
+            type: 'TF',
+            question: 'This is a true/false question',
+            selected: null
+        }
     ]);
+
+    const handleQuestionAnswer = (idx, selection) => {
+
+        questions[idx].selected = selection;
+        console.log(questions[idx])
+    }
 
     // Call backend using {quizTitle} to get all questions for the quiz
 
 
     return (
         <div className='flex flex-col h-[96%] w-full rounded-xl items-center '>
-            {quizTitle}
-            <div className='flex flex-col h-[95%] w-full items-center overflow-auto '>
+            <div className='flex flex-col h-[92%] w-full items-center overflow-auto '>
                 {questions.map((question, idx) => (
                     <div className='flex w-[95%] h-full m-1 justify-center'>
-                    < MC />
+                        {question.type == 'MC' ?
+                            < MC CustomKey={idx} 
+                                question={question.question} 
+                                options={question.options} 
+                                onSelect={handleQuestionAnswer}
+                                selection={question.selected}/>
+                            :
+                            < TF CustomKey={idx} question={question.question} onSelect={handleQuestionAnswer}/>
+                        }
                     </div>
-                )
-                )}
+                ))}
+            </div>
+            <div className='flex justify-center'>
+                <button className='bg-navy text-white rounded-xl'>
+                    Submit Quiz
+                </button>
             </div>
         </div>
     )
