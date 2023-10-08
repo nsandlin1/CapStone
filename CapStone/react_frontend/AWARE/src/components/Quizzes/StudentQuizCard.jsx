@@ -1,4 +1,5 @@
 import {useState} from 'react';
+import { ToastContainer, toast } from 'react-toastify';
 
 export const Option = ({index, text, choose, selected}) => {
 
@@ -148,10 +149,33 @@ export const TakeQuiz = ({quizTitle}) => {
         }
     ]);
 
+    // When user selects an answer for each question
     const handleQuestionAnswer = (idx, selection) => {
 
         questions[idx].selected = selection;
         console.log(questions[idx])
+    }
+
+    // Called when student clicks submit
+    // Displays error message if student has not answered all questions
+    // Submits selections if all questions have been answered
+    const handleSubmit = () => {
+
+        let unansweredQuestionFound = false;
+
+        questions.forEach((question) => {
+            if (question.selected == null) {
+                unansweredQuestionFound = true;
+            }
+        });
+
+        if (unansweredQuestionFound) {
+            toast.error("You have left at least one question unanswered.");
+            return;
+        }
+        else {
+            toast.success('All questions have been answered.');
+        }
     }
 
     // Call backend using {quizTitle} to get all questions for the quiz
@@ -167,18 +191,27 @@ export const TakeQuiz = ({quizTitle}) => {
                                 question={question.question} 
                                 options={question.options} 
                                 onSelect={handleQuestionAnswer}
-                                selection={question.selected}/>
+                                selection={question.selected}
+                            />
                             :
-                            < TF CustomKey={idx} question={question.question} onSelect={handleQuestionAnswer}/>
+                            < TF CustomKey={idx}
+                                 question={question.question} 
+                                 onSelect={handleQuestionAnswer}
+                            />
                         }
                     </div>
                 ))}
             </div>
             <div className='flex justify-center items-center h-[8%] w-full'>
-                <button className='bg-navy text-white rounded-xl h-[75%] w-[15%] hover:bg-slate-500'>
+                <button className='bg-navy text-white rounded-xl h-[75%] w-[15%] hover:bg-slate-500'
+                        onClick={() => handleSubmit()}
+                >
                     Submit Quiz
                 </button>
             </div>
+            <ToastContainer  
+                position="top-center"
+            />
         </div>
     )
 
