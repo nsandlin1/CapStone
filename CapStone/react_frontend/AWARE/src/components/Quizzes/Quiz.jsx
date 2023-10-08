@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const Choice = ({index}) => {
+const Choice = ({index, form}) => {
 
     return (
         <div className='flex w-full h-full'>
@@ -10,8 +10,11 @@ const Choice = ({index}) => {
                 </label> 
             </div>
             <div className='flex w-[60%] md:w-[70%] lg:w-[75%]'> 
-                <input className='border-2 border-navy rounded-md w-full pl-2 text-base lg:text-xl text-navy'>
-                
+                <input className='border-2 border-navy rounded-md w-full pl-2 text-base lg:text-xl text-navy'
+                onChange={(c) => {
+                    form.answers[index+1] = c.target.value
+                }}
+                >
                 </input>
             </div>
         </div>
@@ -20,7 +23,7 @@ const Choice = ({index}) => {
 }
 
 
-const MultipleChoice = () => {
+const MultipleChoice = ({form}) => {
 
     const [answers, setAnswers] = useState([{}, {}]);
 
@@ -37,7 +40,7 @@ const MultipleChoice = () => {
             <div className='flex flex-col space-y-2'>
                 {answers.map((answer, index) => (
                     <div className='flex flex-row'>
-                        < Choice index={index}/>
+                        < Choice index={index} form={form}/>
                     </div>
                 ))}
             </div>
@@ -51,6 +54,7 @@ const MultipleChoice = () => {
                     <select
                         className='rounded-md bg-white sm:w-full lg:w-[30%] border-2 border-navy text-center'
                         type='option'
+                        onChange={(o) => form.correct = o.target.value.toString()}
                     >
                         {answers.map((answer, index) => (
                             <option>
@@ -71,7 +75,9 @@ const MultipleChoice = () => {
 
 }
 
-const TF = () => {
+const TF = ({form}) => {
+
+    console.log("f", form)
 
     return (
         <div className="flex flex-row w-full justify-center">
@@ -83,6 +89,9 @@ const TF = () => {
                 <input
                     type='radio'
                     name='radAnswer'
+                    onClick={() => {
+                        form.correct = "true"
+                    }}
                 >
                 </input>
             </div>
@@ -93,6 +102,9 @@ const TF = () => {
                 <input
                     type='radio'
                     name='radAnswer'
+                    onClick={() => {
+                        form.correct = "false"
+                    }}
                 >
                 </input>
             </div>
@@ -101,12 +113,13 @@ const TF = () => {
 
 }
 
-export const Question = ({index}) => {
+export const Question = ({index, form}) => {
 
     const [qType, setQType] = useState('null');
 
     const handleSelectChange = (event) => {
         const newValue = event.target.value;
+        form.type = newValue;
         setQType(newValue);
     };
 
@@ -117,7 +130,10 @@ export const Question = ({index}) => {
                     <label className="text-sm sm:text-base lg:text-2xl w-full"> Question {index + 1}: </label>
                 </div>
                 <div className='flex w-[55%] md:w-[70%] lg:w-[75%] justify-start'>
-                    <input className="text-sm sm:text-base lg:text-2xl rounded-md pl-2 bg-white w-full border-2 border-navy">
+                    <input className="text-sm sm:text-base lg:text-2xl rounded-md pl-2 bg-white w-full border-2 border-navy"
+                        onChange={(q) => {
+                            form.question = q.target.value;
+                        }}>
                     </input>
                 </div>
             </div>
@@ -145,9 +161,9 @@ export const Question = ({index}) => {
                     <></>
                     :
                     qType == 'MC' ?
-                        <MultipleChoice />
+                        <MultipleChoice form={form}/>
                         :
-                        < TF />
+                        < TF form={form}/>
                 }
             </div>
         </div>

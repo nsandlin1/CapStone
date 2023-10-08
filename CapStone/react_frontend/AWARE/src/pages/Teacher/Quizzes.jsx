@@ -7,11 +7,28 @@ import CreateQuiz from '../../components/Quizzes/CreateQuiz';
 function Quizzes() {
 
     const [isVisible, setVisibile] = useState(false);
-    const [quizzes, setQuizzes] = useState([])
+    const [quizzes, setQuizzes] = useState([]);
 
     function getQuizzes() {
-        
+        console.log("fetching quizzes")
+        var api_url = "api/classes/get_quiz"
+        fetch(api_url)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(
+                        `HTTP error: ${response.status}`
+                    );
+                }
+                return response.json()
+            })
+            .then((data) => {
+                setQuizzes(data)
+            })
+            .catch((err) => {
+                console.log(err.message)
+            })
     }
+
     useEffect(() => {
         if (quizzes.length == 0) {
             getQuizzes();
@@ -42,8 +59,9 @@ function Quizzes() {
                                     </h1>
                                 </div> 
                                 <div className='flex flex-row h-[90%] w-[100%] justify-center'>
-                                    <QuizCard text='Quiz 1' />
-                                    <QuizCard text='Quiz 2' />
+                                        {quizzes.map((q) => {
+                                            return <QuizCard text={q.title} />
+                                        })}
                                 </div>
                             </animated.div>
                     )}

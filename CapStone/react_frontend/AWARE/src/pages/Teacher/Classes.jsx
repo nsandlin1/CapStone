@@ -8,10 +8,13 @@ function Classes() {
     const [expandedId, setExpandedId] = useState(null);
     const [creating, setCreating] = useState(false);
     const [classesList, setClassesList] = useState([])
+    const teacherEmail = JSON.parse(localStorage.getItem('user')).email
+    console.log(teacherEmail)
 
     function getClassesList() {
         console.log("fetching class list")
-        fetch('/api/classes/get_class')
+        var api_url = '/api/classes/get_class?teacher=' + teacherEmail
+        fetch(api_url)
             .then((response) => {
                 if (!response.ok) {
                     throw new Error(
@@ -88,7 +91,8 @@ function Classes() {
                                         key = {clas.id}
                                         classId = {clas.id}
                                         className={clas.name} 
-                                        // classTime={clas.classTime}
+                                        startTime={clas.start_time}
+                                        endTime={clas.end_time}
                                         teacher={clas.teacher}
                                         creating={creating}
                                         isExpanded={expandedId === clas.id}
@@ -98,7 +102,7 @@ function Classes() {
                                 ))
                             }
                         </div>
-                    { creating ? < CreateClass back={() => setCreating(v => !v)}/> : '' }
+                    { creating ? < CreateClass back={() => setCreating(v => !v)} tEmail={teacherEmail}/> : ''}
                 </div>
             </div>
         </div>

@@ -5,11 +5,13 @@ import { Question, AddQButton } from './Quiz';
 
 function CreateQuiz({back}) {
 
+    const [quizName, setQuizName] = useState("");
     const [questions, setQuestions] = useState([]);
+    const [res, setRes] = useState("");
 
     const handleAddQuestion = () => {
         // Create a new form object based on the selected type
-        const newQ = { data: {} };
+        const newQ = { type: 'null', question: "", answers: {}, correct: "1" };
         
         console.log("Adding Question");
 
@@ -17,6 +19,27 @@ function CreateQuiz({back}) {
         setQuestions([...questions, newQ]);
     };
 
+    function saveButton() {
+        console.log("saved")
+        console.log(quizName)
+        console.log(questions)
+
+        var api_url = '/api/classes/create_quiz?title=' + quizName + '&questions=' + JSON.stringify(questions)
+        console.log(api_url)
+        fetch(api_url)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(
+                        `HTTP error: ${response.status}`
+                    );
+                }
+                return response.json()
+            })
+            .then((response) => {
+                setRes(response)
+            })
+        back()
+    }
 
     return (
         <div className="flex flex-col w-[100%] h-[100%] bg-navy rounded-xl"> 
@@ -27,19 +50,27 @@ function CreateQuiz({back}) {
                 <div className='flex w-[60%] md:w-[40%] text-lg md:text-3xl text-white items-center justify-center'>
                         Create Quiz
                 </div>
-                <div className='flex w-[20%] md:w-[30%] h-[100%] justify-end pr-2'>
-                    <button className='text-xl bg-white rounded-xl w-[90%] lg:w-[50%]'>
+                <div className='flex w-[20%] md:w-[30%] h-[100%] justify-end pr-2 md:pr-10'>
+                    <button className='text-xl bg-white rounded-xl w-[90%] md:w-[30%]' onClick={saveButton}>
                         Save
                     </button>
                 </div>
             </div>
+            <input
+                className="w-[96%] h-[8%] ml-2 pl-2 rounded-lg justify-center text-2xl"
+                type='text'
+                name='position'
+                onChange={(q) =>{
+                    setQuizName(q.target.value)
+                }}
+            />
             <div className='flex flex-col w-[100%] h-[90%] items-center justify-center'>
                 <div className='flex flex-col w-[95%] h-[100%] items-center m-2 overflow-auto'>
                     <div className='flex flex-col w-[100%] md:w-[90%] items-center rounded-xl'>
                         {questions.map((form, index) => (
                             <div key={index} className='flex relative justify-center w-[80%] md:w-[80%] h-[100%] my-2'>
                                 <form className='w-full h-full items-center'>
-                                    <Question index={index}/>
+                                    <Question index={index} form={form}/>
                                 </form>
                             </div>
                         ))}

@@ -85,7 +85,7 @@ students_schema = StudentSchema(many=True)
 class EnrolledClassSchema(ma.Schema):
     class Meta:
         model = EnrolledClass
-        fields = ("id", "name", "teacher")
+        fields = ("id", "name", "teacher", "start_time", "end_time")
 
 enrolled_class_schema = EnrolledClassSchema()
 enrolled_classes_schema = EnrolledClassSchema(many=True)
@@ -101,15 +101,23 @@ quizes_schema = QuizSchema(many=True)
 class QuestionSchema(ma.Schema):
     class Meta:
         model = Question
-        fields = ("quiz_id", "question", "option1", "option2", "option3", "option4", "correct_option")
+        fields = ("question_id", "quiz_id", "quiz_type", "question", "correct_option")
 
 question_schema = QuestionSchema()
 questions_schema = QuestionSchema(many=True)
 
+class ChoiceSchema(ma.Schema):
+    class Meta:
+        model = Choice
+        fields = ("question_id", "which", "the_choice")
+
+choice_schema = ChoiceSchema()
+choices_schema = ChoiceSchema(many=True)
+
 class BallotSchema(ma.Schema):
     class Meta:
         model = Ballot
-        fields = ("id", "election_title")
+        fields = ("id", "election_title", "classid")
     
 ballot_schema = BallotSchema()
 ballots_schema = BallotSchema(many=True)
@@ -117,7 +125,7 @@ ballots_schema = BallotSchema(many=True)
 class CandidateBallotSchema(ma.Schema):
     class Meta:
         model = CandidateBallot
-        fields = ("id", "position", "pol_aff", "votes_for", "candidate")
+        fields = ("id", "ballot_id", "position", "pol_aff", "votes_for", "candidate")
 
 candidate_ballot_schema = CandidateBallotSchema()
 candidate_ballot_schemas = CandidateBallotSchema(many=True)
@@ -125,7 +133,7 @@ candidate_ballot_schemas = CandidateBallotSchema(many=True)
 class PolicyBallotSchema(ma.Schema):
     class Meta:
         model = PolicyBallot
-        fields = ("pol_num", "policy", "votes_for", "votes_against")
+        fields = ("pol_num", "ballot_id", "policy", "votes_for", "votes_against")
 
 policy_ballot_schema = PolicyBallotSchema()
 policy_ballot_schemas = PolicyBallotSchema(many=True)

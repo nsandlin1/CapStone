@@ -162,13 +162,17 @@ class EnrolledClass(db.Model):
     id = Column(Integer, primary_key=True)
     name = Column(String(50))
     teacher = Column(String(30), ForeignKey('teachers.email'))
+    start_time = Column(String(5))
+    end_time = Column(String(5))
 
     __table_args__ = (UniqueConstraint("name", "teacher", name="name_teacher_unique"),)
 
-    def __init__(self, id, name, teacher):
+    def __init__(self, id, name, teacher, start_time, end_time):
         self.id = id
         self.name = name
         self.teacher = teacher
+        self.start_time = start_time
+        self.end_time = end_time
     
     def __repr__(self):
         return f'<EnrolledClass "{self.name}">'
@@ -248,39 +252,60 @@ class Quiz(db.Model):
 class Question(db.Model):
     __tablename__ = 'questions'
 
-    quiz_id = Column(Integer, ForeignKey('quizes.id'), primary_key=True)
+    question_id = Column(Integer, primary_key=True)
+    quiz_id = Column(Integer, ForeignKey('quizes.id'))
+    quiz_type = Column(String(2))
     question = Column(String(200))
-    option1 = Column(String(100))
-    option2 = Column(String(100))
-    option3 = Column(String(100))
-    option4 = Column(String(100))
-    correct_option = Column(String(1))
+    correct_option = Column(String(5))
+
+    __table_args__ = (
+        UniqueConstraint("quiz_id", "question", name="quizid_question_unique"),
+    )
     
-    def __init__(self, quiz_id, question, option1, option2, option3, option4, correct_option):
+    def __init__(self, question_id, quiz_id, quiz_type, question, correct_option):
+        self.question_id = question_id
         self.quiz_id = quiz_id
+        self.quiz_type = quiz_type
         self.question = question
-        self.option1 = option1
-        self.option2 = option2
-        self.option3 = option3
-        self.option4 = option4
         self.correct_option = correct_option
 
     def __repr__(self):
         return f'<Question "{self.question}">'
+
+class Choice(db.Model):
+    __tablename__ = 'choices'
+
+    question_id = Column(Integer)
+    which = Column(String(1)) # A, B, C, etc.
+    the_choice = Column(String(200))
+
+    __table_args__ = (
+        PrimaryKeyConstraint(question_id, the_choice),
+    )
+
+    def __init__(self, question_id, which, the_choice):
+        self.question_id = question_id
+        self.which = which
+        self.the_choice = the_choice
+
+    def __repr__(self):
+        ...
 
 class Ballot(db.Model):
     __tablename__ = 'ballots'
 
     id = Column(Integer, primary_key=True)
     election_title = Column(String(100))
+    classid = Column(Integer, ForeignKey('enrolled_classes.id'))
 
     __table_args__ = (
         UniqueConstraint("election_title", name="election_title_unique"),
     )
 
-    def __init__(self, id, election_title):
+    def __init__(self, id, election_title, classid):
         self.id = id
         self.election_title = election_title
+        self.classid = classid
     
     def __repr__(self):
         return f'<Ballot "{self.election_title}">'
@@ -289,13 +314,15 @@ class CandidateBallot(db.Model):
     __tablename__ = 'candidate_ballots'
 
     id = Column(Integer, primary_key=True)
+    ballot_id = Column(Integer, ForeignKey('ballots.id'))
     position = Column(String(200))
     pol_aff = Column(String(50))
     votes_for = Column(String(200))
     candidate = Column(String(100))
 
-    def __init__(self, id, position, pol_aff, votes_for, candidate):
+    def __init__(self, id, ballot_id, position, pol_aff, votes_for, candidate):
         self.id = id
+        self.ballot_id = ballot_id
         self.position = position
         self.pol_aff = pol_aff
         self.votes_for = votes_for
@@ -308,12 +335,14 @@ class PolicyBallot(db.Model):
     __tablename__ = 'policy_ballots' 
 
     policy_num = Column(Integer, primary_key=True)
+    ballot_id = Column(Integer, ForeignKey('ballots.id'))
     policy = Column(String(200))
     votes_for = Column(String(200))
     votes_against = Column(String(200))  
 
-    def __init__(self, pol_num, policy, votes_for, votes_against):
+    def __init__(self, pol_num, ballot_id, policy, votes_for, votes_against):
         self.pol_num = pol_num
+        self.ballot_id = ballot_id
         self.policy = policy
         self.votes_for = votes_for
         self.votes_against = votes_against

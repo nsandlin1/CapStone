@@ -4,7 +4,7 @@ import { IoMdAdd } from 'react-icons/io';
 import { useTransition, animated } from '@react-spring/web';
 import CreateBallot from '../../components/MockElections/CreateBallot';
 
-function MockElections(){
+function MockElections() {
 
     const [selectedClass, setSelectedClass] = useState("Null");
     const [isVisible, setVisibile] = useState(false);
@@ -28,6 +28,7 @@ function MockElections(){
             .then((data) => {
                 console.log(data)
                 setClassData(data)
+                console.log(data)
             })
             .catch((err) => {
                 console.log(err.message)
@@ -41,7 +42,7 @@ function MockElections(){
 
     function getElections() {
         console.log("fetching elections")
-        const api_url = '/api/classes/get_election?classid=' + selectedClass.id
+        const api_url = '/api/classes/get_ballot?classid=' + selectedClass.id
         fetch(api_url)
             .then((response) => {
                 if (!response.ok) {
@@ -145,7 +146,7 @@ function MockElections(){
                     { transitionElection((style, item) =>
                         !item &&
                     <animated.div style={style} className='flex relative h-[100%] w-[100%] bg-navy rounded-xl'>
-                        < CreateBallot back={handleBack}/>
+                        < CreateBallot back={handleBack} classid={selectedClass.id}/>
                     </animated.div> )}
                 </div>
             </div>
