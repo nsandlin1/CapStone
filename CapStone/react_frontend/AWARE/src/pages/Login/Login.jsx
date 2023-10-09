@@ -26,7 +26,7 @@ function Login({setRole, loginFun}) {
     function submitLogin() {
         event.preventDefault()
         if (validate(email, password)) {
-            var api_url = "http://localhost:5000/api/user/login"
+            var api_url = "/api/user/login"
             console.log("The url:", api_url)
             const requestOptions = {
                 method: 'POST',
@@ -62,7 +62,7 @@ function Login({setRole, loginFun}) {
         event.preventDefault()
         if (validate(email, password)) {
             console.log("Role in submit register" + role)
-            var api_url = "http://localhost:5000/api/user/sign-up"
+            var api_url = "/api/user/sign-up"
             const requestOptions = {
                 method: 'POST',
                 mode: 'cors',

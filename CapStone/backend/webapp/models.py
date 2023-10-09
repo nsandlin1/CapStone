@@ -389,8 +389,8 @@ class StudentQuiz(db.Model):
     __tablename__ = 'student_quizzes'
 
     studentid = Column(Integer)
-    quizid = Column(Integer)
-    grade = Column(String(1))
+    quizid = Column(Integer, ForeignKey('quizes.id'))
+    grade = Column(Integer)
 
     __table_args__ = (
         PrimaryKeyConstraint(studentid, quizid),

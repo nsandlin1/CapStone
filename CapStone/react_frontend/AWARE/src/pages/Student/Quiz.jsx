@@ -1,23 +1,27 @@
 import { QuizCard, TakeQuiz } from "../../components/Quizzes/StudentQuizCard";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function StudentQuiz() {
 
     const [takingQuiz, setTakingQuiz] = useState(false);
     const [currentQuiz, setCurrentQuiz] = useState();
 
-    const [quizzes, setQuizzes] = useState([
-        {
-            quizTitle: "Quiz 1",
-            quizDDate: "Oct 25th, 2023",
-            grade: null
-        },
-        {
-            quizTitle: "Quiz 2",
-            quizDDate: "Oct 27th, 2023",
-            grade: null
-        }
-    ])
+    const [quizzes, setQuizzes] = useState([])
+
+    useEffect(() => {
+        // Define the API endpoint URL
+        const apiUrl = '/api/classes/get_student_quizzes?email=test';
+        // Fetch data from the API
+        fetch(apiUrl)
+          .then((response) => response.json())
+          .then((data) => {
+            // Update the state with the fetched data
+            setQuizzes(data);
+          })
+          .catch((error) => {
+            console.error('Error fetching data:', error);
+          });
+    }, []);
 
     // Shows the select quiz for the student to take
     function handleTakeQuiz(title) {
@@ -32,6 +36,7 @@ function StudentQuiz() {
         return;
     }
 
+    console.log(quizzes)
 
     const availableQuizzesView = `${takingQuiz ? 'hidden' : 'flex flex-col relative h-[85%] w-[95%] rounded-xl items-center justify-center bg-white mb-4 shadow-lg'}`
 
@@ -61,7 +66,7 @@ function StudentQuiz() {
                             quizzes.map((quiz, idx) => (
                                 <QuizCard 
                                     key = {idx}
-                                    quizTitle = {quiz.quizTitle}
+                                    quizTitle = {quiz.title}
                                     quizDDate = {quiz.quizDDate}
                                     onTakeQuiz = {quiz.grade == null ? handleTakeQuiz : handleViewGrade}
                                 />
