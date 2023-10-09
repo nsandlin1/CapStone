@@ -33,7 +33,7 @@ for state in ${states[@]}; do
 
     updated=$(($updated + $new_state_senate))
     updated=$(($updated + $new_state_house))
-#done
+done
 echo "State Congressmen added:" $updated
 echo -------------------------------
 echo "Updating Fed. Congressmen..."
