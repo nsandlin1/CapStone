@@ -5,7 +5,7 @@ from ..extensions import db
 from ..schemas import enrolled_class_schema, enrolled_classes_schema, \
                       ballot_schema, ballots_schema, class_elections_schema, \
                       quiz_schema, quizes_schema, questions_schema, question_schema, \
-                      choice_schema, choices_schema
+                      choice_schema, choices_schema, students_schema
 import json
 
 classes = Blueprint('classes', __name__)
@@ -210,18 +210,19 @@ def get_quiz():
 #     print(elections2)
 
 
-def get_student_class():
+def get_student_class(studentUsername):
 
-    student = request.args.get("username")
+    studentClass = Student.query.filter_by(username=studentUsername).all()
 
-    studentClass = Student.query.filter_by(username=student).all()
-
-    print('hello')
-    print(studentClass)
+    return studentClass
 
 @classes.route('/get_student_quiz')
 def get_student_quiz():
-    get_student_class()
 
-    return ('hello')
+    student = request.args.get("username")
+
+    enrolled_class = get_student_class(student)
+
+    return (students_schema.jsonify(enrolled_class))
+ #   return (students_schema.jsonify(Student.query.filter_by(username=student).all()))
 #     return jsonify(elections2)
