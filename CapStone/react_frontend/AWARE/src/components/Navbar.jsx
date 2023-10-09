@@ -39,7 +39,7 @@ export const StuNavbar = () => {
           <NavLink to="/">Home</NavLink>
         </li>
         <li className='navitem p-4'>
-            <NavLink to="/Quiz" onClick={handleNav}>Quizzes</NavLink>
+            <NavLink to="/Quiz">Quizzes</NavLink>
           </li>
         <li className='navitem p-4'>
           <NavLink to="/Calendar">Calendar</NavLink>

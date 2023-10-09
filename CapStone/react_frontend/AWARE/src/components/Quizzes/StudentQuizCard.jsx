@@ -23,19 +23,17 @@ export const Option = ({index, text, choose, selected}) => {
 // True/False option on a quiz
 export const MC = ({CustomKey, question, options, onSelect, selection}) => {
 
-
     const [selected, setSelected] = useState(selection)
 
     const handleSelection = (choice) => {
         onSelect(CustomKey, choice);
         setSelected(choice);
-
     }
 
     return (
         <div className='flex flex-col h-full w-[90%] bg-navy rounded-xl p-2'>
             <div className='flex w-full text-white font-bold justify-center text-2xl'>
-                {question}
+                {CustomKey+1 + '. ' + question}
             </div>
             <div className="flex flex-col w-full justify-center pb-2">
                 { Object.keys(options).map((key) =>
@@ -48,7 +46,6 @@ export const MC = ({CustomKey, question, options, onSelect, selection}) => {
             </div>
         </div>
     )
-
 }
 
 // Multiple choice option on a quiz
@@ -57,7 +54,7 @@ export const TF = ({CustomKey, question, onSelect}) => {
     return (
         <div className='flex flex-col h-full w-[90%] bg-navy rounded-xl p-2 gap-2'>
             <div className='flex w-full text-white font-bold justify-center text-2xl'>
-                {question}
+                {CustomKey+1 + '. ' + question}
             </div>
             <div className="flex flex-row w-full justify-center pb-2">
                 <div className='flex flex-col w-[30%] md:w-[10%] items-center justify-center'>
@@ -66,7 +63,7 @@ export const TF = ({CustomKey, question, onSelect}) => {
                     </label>
                     <input
                         type='radio'
-                        name='radAnswer'
+                        name={'radAnswer' + CustomKey}
                         onClick={() => {
                             onSelect(CustomKey, 'T')
                         }}
@@ -79,7 +76,7 @@ export const TF = ({CustomKey, question, onSelect}) => {
                     </label>
                     <input
                         type='radio'
-                        name='radAnswer'
+                        name={'radAnswer' + CustomKey}
                         onClick={() => {
                             onSelect(CustomKey, 'F')
                         }}
