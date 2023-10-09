@@ -210,27 +210,49 @@ def get_quiz():
 #     print(elections2)
 
 
-def get_student_class(studentUsername):
+# Given studentsEmail, returns class the student is enrolled in 
+def get_student_class(studentEmail):
 
-    studentClass = Student.query.filter_by(email=studentUsername).all()
+    studentClass = Student.query.filter_by(email=studentEmail).all()
 
-    return studentClass[0].enrolled_class
+    if (len(studentClass) > 0):
+        return studentClass[0].enrolled_class
 
+    return (-1)
+    
+
+# Given classId returns quizzes assigned to that class
 def get_quiz_for_class(classId):
 
-    quizzes = ClassQuiz.query.filter_by(classid=classId).all()
+    quizzesLinkedToClass = ClassQuiz.query.filter_by(classid=classId).all()
 
+    quizzes = []
+
+    # Iterate through each quiz found in the class
+    for quiz in quizzesLinkedToClass:
+        # Get information, like the title
+        quizInfo = Quiz.query.filter_by(id=quiz.quizid).all()
+        quizzes.append(
+            {
+                'quizId': quizInfo[0].id,
+                'title': quizInfo[0].title
+            }
+        )
+
+    #Return all found quizzes as an array of dicts, in the format of 
+    # {quizId: 1, title: 'Test Title'}
     return  quizzes
 
+
+# Given quizId returns questions for that quiz
 def get_questions_for_quiz(quizId):
 
-    print(quizId)
     questions = Question.query.filter_by(quiz_id=quizId).all()
-    print(questions)
-
     return questions
 
-@classes.route('/get_student_quiz')
+
+# Gets the available quizzes for students to take
+@classes.route('/get_student_quizzes')
 def get_student_quiz():
 
     student = request.args.get("email")
@@ -238,12 +260,21 @@ def get_student_quiz():
     # Get the class the student is enrolled in
     enrolled_class = get_student_class(student)
 
+    # If no enrolled classes are found, return error
+    if (enrolled_class == -1):
+        return jsonify({'error':'No classes exist for given student'}), 404
+
+
     # Get the quiz for the enrolled class
-    quiz_for_class = get_quiz_for_class(enrolled_class)
+    quizzes_for_class = get_quiz_for_class(enrolled_class)
+
+    # If no quizzes are present, return error
+    if (quizzes_for_class == -1):
+        return jsonify({'error':'No quizzes exist for class given'}), 404
+
 
     # Get the questions for the quiz
-    questions = get_questions_for_quiz(quiz_for_class[0].quizid)
+    #questions = get_questions_for_quiz(quiz_for_class[0].quizid)
 
-    return (questions_schema.jsonify(questions))
- #   return (students_schema.jsonify(Student.query.filter_by(username=student).all()))
-#     return jsonify(elections2)
+    return (jsonify(quizzes_for_class))
+    
