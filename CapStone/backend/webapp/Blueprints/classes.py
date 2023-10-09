@@ -1,11 +1,11 @@
 from flask import Blueprint, request, jsonify
 from ..models import EnrolledClass, Ballot, Quiz, ClassElection, PolicyBallot, \
-                     CandidateBallot, Question, Choice, Student
+                     CandidateBallot, Question, Choice, Student, ClassQuiz, Question
 from ..extensions import db
 from ..schemas import enrolled_class_schema, enrolled_classes_schema, \
                       ballot_schema, ballots_schema, class_elections_schema, \
                       quiz_schema, quizes_schema, questions_schema, question_schema, \
-                      choice_schema, choices_schema, students_schema
+                      choice_schema, choices_schema, students_schema, class_quizzes_schema, questions_schema
 import json
 
 classes = Blueprint('classes', __name__)
@@ -214,15 +214,36 @@ def get_student_class(studentUsername):
 
     studentClass = Student.query.filter_by(email=studentUsername).all()
 
-    return studentClass
+    return studentClass[0].enrolled_class
+
+def get_quiz_for_class(classId):
+
+    quizzes = ClassQuiz.query.filter_by(classid=classId).all()
+
+    return  quizzes
+
+def get_questions_for_quiz(quizId):
+
+    print(quizId)
+    questions = Question.query.filter_by(quiz_id=quizId).all()
+    print(questions)
+
+    return questions
 
 @classes.route('/get_student_quiz')
 def get_student_quiz():
 
     student = request.args.get("email")
 
+    # Get the class the student is enrolled in
     enrolled_class = get_student_class(student)
 
-    return (students_schema.jsonify(enrolled_class))
+    # Get the quiz for the enrolled class
+    quiz_for_class = get_quiz_for_class(enrolled_class)
+
+    # Get the questions for the quiz
+    questions = get_questions_for_quiz(quiz_for_class[0].quizid)
+
+    return (questions_schema.jsonify(questions))
  #   return (students_schema.jsonify(Student.query.filter_by(username=student).all()))
 #     return jsonify(elections2)

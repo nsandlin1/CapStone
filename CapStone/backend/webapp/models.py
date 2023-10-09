@@ -368,7 +368,7 @@ class ClassElection(db.Model):
     def __repr__(self):
         return f'<Election "{self.classid}, {self.ballotid}">'
     
-class ClassQuiz:
+class ClassQuiz(db.Model):
     __tablename__ = 'class_quizzes'
 
     classid = Column(Integer, ForeignKey('enrolled_classes.id'))
@@ -385,7 +385,7 @@ class ClassQuiz:
     def __repr__(self):
         return f'<ClassQuiz "{self.classid}, {self.quizid}">'
 
-class StudentQuiz:
+class StudentQuiz(db.Model):
     __tablename__ = 'student_quizzes'
 
     studentid = Column(Integer)
@@ -404,7 +404,7 @@ class StudentQuiz:
     def __repr__(self):
         return f'<StudentQuiz "{self.studentid}, {self.quizid}">'
     
-class BallotInfo:
+class BallotInfo(db.Model):
     __tablename__ = 'ballot_info'
 
     ballotid = Column(Integer, ForeignKey('ballots.id'))
@@ -423,7 +423,7 @@ class BallotInfo:
     def __repr__(self):
         return f'<BallotInfo "{self.ballotid}, {self.candidateid}, {self.policy_number}">'
 
-class StudentVote:
+class StudentVote(db.Model):
     __tablename__ = 'student_votes'
 
     ballotid = Column(Integer, ForeignKey('ballots.id'))
