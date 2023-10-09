@@ -6,6 +6,7 @@ class Config:
 	CURRENT_CONGRESS = 118
 	SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URI') or\
 		  'sqlite:///' + os.path.join(basedir, 'instance', 'database.db')
+	print(SQLALCHEMY_DATABASE_URI)
 	SQLALCHEMY_TRACK_MODIFICATIONS = False
 	# JWT_TOKEN_LOCATION = ['headers', 'query_string']
 class ProductionConfig(Config):
