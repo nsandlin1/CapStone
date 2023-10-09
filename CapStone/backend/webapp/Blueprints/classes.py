@@ -212,14 +212,14 @@ def get_quiz():
 
 def get_student_class(studentUsername):
 
-    studentClass = Student.query.filter_by(username=studentUsername).all()
+    studentClass = Student.query.filter_by(email=studentUsername).all()
 
     return studentClass
 
 @classes.route('/get_student_quiz')
 def get_student_quiz():
 
-    student = request.args.get("username")
+    student = request.args.get("email")
 
     enrolled_class = get_student_class(student)
 

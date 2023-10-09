@@ -221,18 +221,18 @@ class Student(db.Model):
     __tablename__ = 'students'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    username = Column(String(30), ForeignKey('users.username'))
+    email = Column(String(30), ForeignKey('users.email'))
     enrolled_class = Column(String(50), ForeignKey('enrolled_classes.id'))
 
-    __table_args__ = (UniqueConstraint("username", name="username_unique"),)
+    __table_args__ = (UniqueConstraint("email", name="email_unique"),)
 
-    def __init__(self, id, username, enrolled_class):
+    def __init__(self, id, email, enrolled_class):
         self.id = id
-        self.username = username
+        self.email = email
         self.enrolled_class = enrolled_class
     
     def __repr__(self):
-        return f'<Student "{self.id}, {self.username}">'
+        return f'<Student "{self.id}, {self.email}">'
 
 class Quiz(db.Model):
     __tablename__ = 'quizes'
