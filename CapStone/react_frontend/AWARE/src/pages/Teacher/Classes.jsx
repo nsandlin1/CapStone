@@ -13,7 +13,7 @@ function Classes() {
 
     function getClassesList() {
         console.log("fetching class list")
-        var api_url = '/api/classes/get_class?teacher=' + teacherEmail
+        var api_url = 'http://localhost:5000/api/classes/get_class?teacher=' + teacherEmail
         fetch(api_url)
             .then((response) => {
                 if (!response.ok) {
@@ -83,7 +83,7 @@ function Classes() {
 
                             </div>
                         </div>
-                        <div className='flex flex-wrap w-[100%] h-[90%] justify-center items-center overflow-auto'>
+                        <div className='flex flex-wrap w-[100%] h-[90%] justify-center  overflow-auto'>
                             {
                                 classesList.map((clas) => (
                                     // <div className='flex relative justify-center h-[100%] w-[98%] m-1 '>
