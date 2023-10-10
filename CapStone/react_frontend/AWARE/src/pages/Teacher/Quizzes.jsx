@@ -8,6 +8,8 @@ function Quizzes() {
 
     const [isVisible, setVisibile] = useState(false);
     const [quizzes, setQuizzes] = useState([]);
+    const [expandedQuiz, setExpandedQuiz] = useState();
+    const [expanded, setExpanded] = useState(false);
 
     function getQuizzes() {
         console.log("fetching quizzes")
@@ -23,6 +25,7 @@ function Quizzes() {
             })
             .then((data) => {
                 setQuizzes(data)
+                
             })
             .catch((err) => {
                 console.log(err.message)
@@ -34,7 +37,9 @@ function Quizzes() {
             getQuizzes();
         }
     }, [])
-
+    
+    console.log(quizzes);
+    
     const transitionElection = useTransition(!isVisible, {
         from: {  opacity: 0},
         enter: {  opacity: 1},
@@ -44,6 +49,13 @@ function Quizzes() {
     const handleBack = () => {
         setVisibile(v => !v);
     }
+
+    const handleToggleCollapse = (id) => {
+        setExpandedQuiz((prevId) => (prevId === id ? null : id))
+        console.log(id);
+    };
+
+    console.log(expanded)
 
     return (
         <div className="flex flex-col justify-center items-center h-[91vh] w-[100%] pb-4 bg-slate-400">
@@ -59,8 +71,12 @@ function Quizzes() {
                                     </h1>
                                 </div> 
                                 <div className='flex flex-row h-[90%] w-[100%] justify-center'>
-                                        {quizzes.map((q) => {
-                                            return <QuizCard text={q.title} />
+                                        {quizzes.map((quiz, inded) => {
+                                            return <QuizCard 
+                                                        id={quiz.id} 
+                                                        text={quiz.title} 
+                                                        isExpanded={expandedQuiz} 
+                                                        handleClick={handleToggleCollapse}/>
                                         })}
                                 </div>
                             </animated.div>

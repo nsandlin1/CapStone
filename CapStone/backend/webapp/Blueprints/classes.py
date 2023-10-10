@@ -410,6 +410,4 @@ def submit_quiz():
         ))
         db.session.commit()
 
-    return "Hello"
-    
-    ...
+    return (jsonify({'success': 'quiz has been submitted'}))
