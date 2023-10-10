@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from ..models import EnrolledClass, Ballot, Quiz, ClassElection, PolicyBallot, \
-                     CandidateBallot, Question, Choice, Student, ClassQuiz, Question
+                     CandidateBallot, Question, Choice, Student, Teacher, ClassQuiz, Question
 from ..extensions import db
 from ..schemas import enrolled_class_schema, enrolled_classes_schema, \
                       ballot_schema, ballots_schema, class_elections_schema, \
@@ -155,8 +155,12 @@ def create_quiz():
     quiz_id = Quiz.query.filter_by(title=title).all()[0].id
     print(quiz_id)
 
+    teacher_id = Teacher.query.filter_by(email=email).all()
+    
+    # Assigning a quiz to a class needs to be done in its own api call
     # db.session.add(ClassQuiz(
-        
+    #     teacher_id,
+
     # ))
 
     for q in questions:

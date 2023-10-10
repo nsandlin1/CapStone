@@ -24,7 +24,7 @@ function CreateQuiz({back}) {
         console.log(quizName)
         console.log(questions)
         const user = JSON.parse(localStorage.getItem('user'));
-        var api_url = '/api/classes/create_quiz?title=' + quizName + '&questions=' + JSON.stringify(questions) + '&email=' + user;
+        var api_url = '/api/classes/create_quiz?title=' + quizName + '&questions=' + JSON.stringify(questions) + '&email=' + user["email"];
         console.log(api_url)
         fetch(api_url)
             .then((response) => {
