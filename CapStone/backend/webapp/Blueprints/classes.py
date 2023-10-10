@@ -291,6 +291,7 @@ def get_questions_for_quiz(quizId):
                 )
             questions.append(
                 {
+                    'question_id': question.question_id,
                     'text': question.question,
                     'question_type': question.quiz_type,
                     'choices': choices
@@ -300,6 +301,7 @@ def get_questions_for_quiz(quizId):
         else:
             questions.append(
                 {
+                    'question_id': question.question_id,
                     'text': question.question,
                     'question_type': question.quiz_type
                 }

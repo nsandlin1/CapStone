@@ -64,7 +64,7 @@ export const TF = ({CustomKey, question, onSelect}) => {
                         type='radio'
                         name={'radAnswer' + CustomKey}
                         onClick={() => {
-                            onSelect(CustomKey, 'T')
+                            onSelect(CustomKey, 'True')
                         }}
                     >
                     </input>
@@ -77,7 +77,7 @@ export const TF = ({CustomKey, question, onSelect}) => {
                         type='radio'
                         name={'radAnswer' + CustomKey}
                         onClick={() => {
-                            onSelect(CustomKey, 'F')
+                            onSelect(CustomKey, 'False')
                         }}
                     >
                     </input>
@@ -110,12 +110,17 @@ export const TakeQuiz = ({quizId, quizTitle, takingQuiz}) => {
             });
         }
     }, [takingQuiz, quizId]);
-   
+
+    for (const question of questions){
+        question.answered = '';
+        console.log(question);
+    }
+
     // When user selects an answer for each question
     const handleQuestionAnswer = (idx, selection) => {
 
         questions[idx].selected = selection;
-        console.log(questions[idx])
+        console.log(questions);
     }
 
     // Called when student clicks submit
@@ -124,10 +129,18 @@ export const TakeQuiz = ({quizId, quizTitle, takingQuiz}) => {
     const handleSubmit = () => {
 
         let unansweredQuestionFound = false;
+        let answers = []
 
         questions.forEach((question) => {
             if (question.selected == null) {
                 unansweredQuestionFound = true;
+            }
+            else {
+                const newDict = {
+                    'selected': question.selected,
+                    'question_id': question.question_id
+                }
+                answers.push(newDict);
             }
         });
 
@@ -137,6 +150,7 @@ export const TakeQuiz = ({quizId, quizTitle, takingQuiz}) => {
         }
         else {
             toast.success('All questions have been answered.');
+            console.log(answers);
         }
     }
 
@@ -149,16 +163,18 @@ export const TakeQuiz = ({quizId, quizTitle, takingQuiz}) => {
                 {questions.map((question, idx) => (
                     <div key={idx} className='flex w-[95%] h-full m-1 justify-center'>
                         {question.question_type == 'MC' ?
-                            < MC CustomKey={idx} 
+                            < MC 
+                                CustomKey={idx} 
                                 question={question.text} 
                                 options={question.choices} 
                                 onSelect={handleQuestionAnswer}
                                 selection={question.selected}
                             />
                             :
-                            < TF CustomKey={idx}
-                                 question={question.text} 
-                                 onSelect={handleQuestionAnswer}
+                            < TF 
+                                CustomKey={idx}
+                                question={question.text} 
+                                onSelect={handleQuestionAnswer}
                             />
                         }
                     </div>
