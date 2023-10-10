@@ -91,12 +91,14 @@ function Quizzes() {
                                     </h1>
                                 </div> 
                                 <div className='flex  flex-wrap flex-start content-start h-[85%] w-[100%] justify-center items-start overflow-auto'>
-                                        {quizzes.map((quiz, index) => {
+                                        {classes.map((quiz, index) => {
                                             return <QuizCard 
-                                                        id={quiz.id} 
+                                                        id={quiz.quizId} 
                                                         text={quiz.title} 
                                                         isExpanded={expandedQuiz} 
-                                                        handleClick={handleToggleCollapse}/>
+                                                        handleClick={handleToggleCollapse}
+                                                        classes={quiz.listOfClasses}
+                                            />
                                         })}
                                 </div>
                             </animated.div>

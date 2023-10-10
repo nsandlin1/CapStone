@@ -454,6 +454,7 @@ def get_assigned_quizzes():
         class_and_quizzes.append(
             {
                 'quizId': quiz.id,
+                'title': quiz.title,
                 'listOfClasses': quiz_and_class
             }
         )   
