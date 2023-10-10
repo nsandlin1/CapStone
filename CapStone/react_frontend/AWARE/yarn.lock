@@ -222,10 +222,10 @@
     "@babel/helper-validator-identifier" "^7.22.5"
     to-fast-properties "^2.0.0"
 
-"@esbuild/darwin-arm64@0.18.17":
+"@esbuild/win32-x64@0.18.17":
   version "0.18.17"
-  resolved "https://registry.npmjs.org/@esbuild/darwin-arm64/-/darwin-arm64-0.18.17.tgz"
-  integrity sha512-M9uJ9VSB1oli2BE/dJs3zVr9kcCBBsE883prage1NWz6pBS++1oNn/7soPNS3+1DGj0FrkSvnED4Bmlu1VAE9g==
+  resolved "https://registry.npmjs.org/@esbuild/win32-x64/-/win32-x64-0.18.17.tgz"
+  integrity sha512-fGEb8f2BSA3CW7riJVurug65ACLuQAzKq0SSqkY2b2yHHH0MzDfbLyKIGzHwOI/gkHcxM/leuSW6D5w/LMNitA==
 
 "@eslint-community/eslint-utils@^4.2.0":
   version "4.4.0"
