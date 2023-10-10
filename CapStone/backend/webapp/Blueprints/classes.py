@@ -1,11 +1,11 @@
 from flask import Blueprint, request, jsonify
 from ..models import EnrolledClass, Ballot, Quiz, ClassElection, PolicyBallot, \
-                     CandidateBallot, Question, Choice, Student, Teacher, ClassQuiz, Question
+                     CandidateBallot, Question, Choice, Student, Teacher, ClassQuiz, Question, StudentQuiz
 from ..extensions import db
 from ..schemas import enrolled_class_schema, enrolled_classes_schema, \
                       ballot_schema, ballots_schema, class_elections_schema, \
                       quiz_schema, quizes_schema, questions_schema, question_schema, \
-                      choice_schema, choices_schema, students_schema, class_quizzes_schema, questions_schema
+                      choice_schema, choices_schema, students_schema, class_quizzes_schema, questions_schema, student_quizes_schema
 import json
 import random
 
@@ -244,22 +244,44 @@ def get_student_class(studentEmail):
     
 
 # Given classId returns quizzes assigned to that class
-def get_quiz_for_class(classId):
+def get_quiz_for_class(classId, studentEmail):
 
     quizzesLinkedToClass = ClassQuiz.query.filter_by(classid=classId).all()
+    student = Student.query.filter_by(email=studentEmail).all()
 
     quizzes = []
 
     # Iterate through each quiz found in the class
     for quiz in quizzesLinkedToClass:
+
         # Get information, like the title
         quizInfo = Quiz.query.filter_by(id=quiz.quizid).all()
-        quizzes.append(
-            {
-                'quizId': quizInfo[0].id,
-                'title': quizInfo[0].title
-            }
-        )
+
+        student_quiz_exists = StudentQuiz.query.filter_by(studentid=student[0].id, quizid=quizInfo[0].id).first()
+        
+        if (student_quiz_exists):
+            quizzes.append(
+                {
+                    'quizId': quizInfo[0].id,
+                    'title': quizInfo[0].title,
+                    'grade': student_quiz_exists.grade
+                }
+            )
+        else:
+            db.session.add(StudentQuiz(
+                student[0].id,
+                quizInfo[0].id,
+                None
+            ))
+            db.session.commit()
+
+            quizzes.append(
+                {
+                    'quizId': quizInfo[0].id,
+                    'title': quizInfo[0].title,
+                    'grade': None
+                }
+            )
 
     #Return all found quizzes as an array of dicts, in the format of 
     # {quizId: 1, title: 'Test Title'}
@@ -325,7 +347,7 @@ def get_student_quiz():
 
 
     # Get the quiz for the enrolled class
-    quizzes_for_class = get_quiz_for_class(enrolled_class)
+    quizzes_for_class = get_quiz_for_class(enrolled_class, student)
 
     # If no quizzes are present, return error
     if (quizzes_for_class == -1):
@@ -346,6 +368,7 @@ def get_quiz_questions():
 
     return (jsonify(questions))
 
+
 @classes.route('/submit_quiz')
 def submit_quiz():
     email = request.args.get('email')
@@ -356,9 +379,36 @@ def submit_quiz():
 
     # All needed values are recieved
     # TODO check the submited answers against the answers in the db with the quiz id, and set the score in the StudenQuiz table
-    print(email)
-    print(answers)
-    print(quizId)
+
+    correct = 0
+
+    for question in answers:
+        question_id = question['question_id']
+        answer = question['selected']
+
+        # Query the current question to get the correct answer
+        question = Question.query.filter_by(question_id=question_id).all()
+        correctAnswer = question[0].correct_option
+
+        if (correctAnswer == answer):
+            correct += 1
+
+    grade = int((correct / len(answers)) * 100)
+
+    stud_quiz = StudentQuiz.query.filter_by(studentid=student[0].id, quizid=quizId).first()
+
+
+    if (stud_quiz):
+        # Update the students grade for that quiz
+        stud_quiz.grade = grade
+        db.session.commit()
+    else:
+        db.session.add(StudentQuiz(
+                student[0].id,
+                quizId,
+                grade
+        ))
+        db.session.commit()
 
     return "Hello"
     

@@ -97,7 +97,7 @@ export const TakeQuiz = ({quizId, quizTitle, takingQuiz}) => {
     useEffect(() => {
         if (takingQuiz) {
             // Define the API endpoint URL
-            const apiUrl = '/api/classes/get_quiz_questions?quizId=1';
+            const apiUrl = `/api/classes/get_quiz_questions?quizId=${quizId}`;
             // Fetch data from the API
             fetch(apiUrl)
             .then((response) => response.json())
@@ -211,7 +211,10 @@ export const TakeQuiz = ({quizId, quizTitle, takingQuiz}) => {
 }
 
 // Card that gives the student a quick glance at what quizzes they have coming up
-export const QuizCard = ({quizNum, quizTitle, quizDDate, onTakeQuiz}) => {
+export const QuizCard = ({quizNum, quizTitle, quizDDate, quizGrade, onTakeQuiz}) => {
+
+    const takenQuiz = `${quizGrade === null ? 'text-red-600' : 'text-white'} text-md 
+                        md:text-xl lg:text-3xl  whitespace-nowrap hover:cursor-pointer`
 
     return (
         <div className="flex h-[20%] hover:scale-105 hover:shadow-2xl w-[92%] rounded-xl bg-navy m-1 transition ">
@@ -228,9 +231,9 @@ export const QuizCard = ({quizNum, quizTitle, quizDDate, onTakeQuiz}) => {
                         </h1>
                     </div>
                     <div className='flex w-[15%] items-center justify-end'>
-                        <h1 className='text-md md:text-xl lg:text-3xl text-white whitespace-nowrap hover:cursor-pointer' 
+                        <h1 className={takenQuiz} 
                             onClick={() => onTakeQuiz(quizNum, quizTitle)}>
-                            Take Quiz
+                            {quizGrade === null ? 'Take Quiz' : quizGrade + '%'}
                         </h1>
                     </div>
                 </div>

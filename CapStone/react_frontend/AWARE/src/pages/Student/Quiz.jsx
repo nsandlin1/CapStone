@@ -65,6 +65,11 @@ function StudentQuiz() {
                                 Due Date
                             </h1> 
                         </div>
+                        <div className='flex w-[20%] justify-center items-center'>
+                            <h1 className='text-xl md:text-2xl lg:text-3xl text-navy font-bold whitespace-nowrap '>
+                                Grade
+                            </h1> 
+                        </div>
                     </div>
                     <div className='flex flex-col w-[100%] h-[90%] justify-start items-center overflow-auto'>
                         {quizzes['error'] ? 
@@ -76,6 +81,7 @@ function StudentQuiz() {
                                     quizNum = {quiz.quizId}
                                     quizTitle = {quiz.title}
                                     quizDDate = {quiz.quizDDate}
+                                    quizGrade = {quiz.grade}
                                     onTakeQuiz = {quiz.grade == null ? handleTakeQuiz : handleViewGrade}
                                 />
                             ))}
