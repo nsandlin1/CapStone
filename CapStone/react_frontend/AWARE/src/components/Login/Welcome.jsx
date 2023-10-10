@@ -79,8 +79,8 @@ export const RegisterView = ({click, response, email, setEmail, password, setPas
         setSelectedRole(roles[e.target.value])
     };
     const [selectedRole, setSelectedRole] = useState();
-
-    const [passValid, setPassValid] = useState();
+    const [passValid, setPassValid] = useState('');
+    const [classCode, setClassCode] = useState('');
 
 
     useEffect(() => {
@@ -126,9 +126,12 @@ export const RegisterView = ({click, response, email, setEmail, password, setPas
         else if (selectedRole === 'Select Option' || selectedRole === undefined){
             toast.error('Must select a role.');
         }
+        else if (classCode.length !== 6) {
+            toast.error('Class Code must be exactly 6 digits.');
+        }
         else {
             setRole(selectedRole);
-            submit(selectedRole);
+            submit(selectedRole, classCode);
         }
     }
 
@@ -194,6 +197,7 @@ export const RegisterView = ({click, response, email, setEmail, password, setPas
                                 <input className="rounded-lg pl-4 text-3xl text-navy bg-white w-[70%] md:w-[50%] "
                                         type='text'
                                         name='code'
+                                        onChange={(p) => setClassCode(p.target.value)}
                                 />
                             </div>
                             :

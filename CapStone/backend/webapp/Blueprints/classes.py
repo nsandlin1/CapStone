@@ -257,9 +257,6 @@ def get_quiz_for_class(classId):
     return  quizzes
 
 
-def get_mc_options(questionId):
-    ...
-
 # Given quizId returns questions for that quiz
 def get_questions_for_quiz(quizId):
 

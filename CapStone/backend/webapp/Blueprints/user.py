@@ -5,7 +5,7 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import create_access_token, create_refresh_token, set_access_cookies, \
                                set_refresh_cookies, unset_jwt_cookies, jwt_required
-from ..models import User, Teacher
+from ..models import User, Teacher, Student, EnrolledClass
 from werkzeug.security import generate_password_hash, check_password_hash
 from ..extensions import db
 from flask_cors import cross_origin
@@ -24,27 +24,55 @@ def sign_up():
     firstname = None
     lastname = None
     role = data["role"]
+    if (role == 'Student'):
+        class_code = data["code"]
 
     if User.query.get(email) != None:
         return jsonify({'signed-up': False, 'Error': 'Account with that Email Already Exists'}), 418
     
-    db.session.add(User(
-        email,
-        generate_password_hash(password),
-        username,
-        firstname,
-        lastname,
-        role
-    ))
-    db.session.commit()
 
-    print(role)
     if role == "Teacher":
+        db.session.add(User(
+            email,
+            generate_password_hash(password),
+            username,
+            firstname,
+            lastname,
+            role
+        ))
+        db.session.commit()
+
         db.session.add(Teacher(
             None,
             email
         ))
         db.session.commit()
+
+    elif role == "Student":
+        classToRegisterIn = EnrolledClass.query.filter_by(class_code=class_code).all()
+
+        if (classToRegisterIn == []):
+            return (jsonify({'error': 'Class Code is not recognized'}))
+        
+        db.session.add(User(
+            email,
+            generate_password_hash(password),
+            username,
+            firstname,
+            lastname,
+            role
+        ))
+        db.session.commit()
+
+        db.session.add(Student(
+            None,
+            email,
+            classToRegisterIn[0].id
+        ))
+        db.session.commit()
+
+
+        #db.session.add()
 
     return jsonify({'signed-up': True})
     
@@ -98,3 +126,4 @@ def logout():
 @jwt_required()
 def profile():
     return "user profile shit"
+
