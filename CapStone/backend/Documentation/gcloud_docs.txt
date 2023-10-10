@@ -3,10 +3,10 @@ Google Cloud Web Hosting Documentation -- AWARE
 --- CONFIGURATION ---
 
 Servers are run on a Google Cloud Virtual Machine
-	-> set up and managed via Google Compute Engine within the Google 		Cloud Console (UI). 
+	-> set up and managed via Google Compute Engine within the Google Cloud Console (UI). 
 
-All cloud infrastructure and networking was built using Google's Virtual 	Private Cloud (VPC) Services. 
-Our VPC includes firewall rules to allow web traffic, as well as traffic 	forwarding to direct web users to our VM's external IP address.
+All cloud infrastructure and networking was built using Google's Virtual Private Cloud (VPC) Services. 
+Our VPC includes firewall rules to allow web traffic, as well as traffic forwarding to direct web users to our VM's external IP address.
 
 Web domains and domain name services were configured using Google Cloud Domains and Cloud DNS. 
 	-> notunaware.com
@@ -22,7 +22,7 @@ To host our servers on our Virtual Machine with the CLI:
 Open Google Cloud Console and log in to "Capstone AWARE" project, Connect and Authorize your account
 
 1) Connect to our VM via SSH:
-$> gcloud compute ssh --zone "us-south1-a" "aware" --project 	"upheld-dragon-400416"
+$> gcloud compute ssh --zone "us-south1-a" "aware" --project "upheld-dragon-400416"
 
 2) Navigate to the frontend server code:
 cd into lhm013@aware:~/CapStone/CapStone/react_frontend/AWARE
@@ -33,3 +33,9 @@ $> sudo npm run dev -- --host --port 80
 (This command exposes our frontend server to the network and runs frontend (HTTP) server on port 80)
 
 4) Visit notunaware.org, notunaware.com to see the live page.
+
+5) Cd into backend folder (CapStone/CapStone/backend)
+
+6) run update.sh
+
+7) python3 wsgi.py -i (-i instantiates database)
