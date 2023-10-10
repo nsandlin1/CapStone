@@ -92,6 +92,7 @@ export const TF = ({CustomKey, question, onSelect}) => {
 export const TakeQuiz = ({quizId, quizTitle, takingQuiz}) => {
 
     const [questions, setQuestions] = useState([]);
+    const [submitStatus, setSubmitStatus] = useState();
 
     useEffect(() => {
         if (takingQuiz) {
@@ -150,7 +151,21 @@ export const TakeQuiz = ({quizId, quizTitle, takingQuiz}) => {
         }
         else {
             toast.success('All questions have been answered.');
+            // Post, QuizId, Email, and Answers to backend
             console.log(answers);
+            console.log(quizId);
+            const user = JSON.parse(localStorage.getItem('user'));
+            // Define the API endpoint URL
+            const apiUrl = `/api/classes/submit_quiz?email=${user['email']}&answers=${JSON.stringify(answers)}&quizId=${quizId}`;
+            fetch(apiUrl)
+                .then((response) => response.json())
+                .then((data) => {
+                    // Update the state with the fetched data
+                    setSubmitStatus(data);
+                })
+                .catch((error) => {
+                    console.error('Error fetching data:', error);
+            });
         }
     }
 

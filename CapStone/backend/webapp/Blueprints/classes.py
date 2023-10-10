@@ -345,3 +345,21 @@ def get_quiz_questions():
     questions = get_questions_for_quiz(quizId)
 
     return (jsonify(questions))
+
+@classes.route('/submit_quiz')
+def submit_quiz():
+    email = request.args.get('email')
+    answers = json.loads(request.args.get('answers'))
+    quizId = request.args.get('quizId')
+
+    student = Student.query.filter_by(email=email).all()
+
+    # All needed values are recieved
+    # TODO check the submited answers against the answers in the db with the quiz id, and set the score in the StudenQuiz table
+    print(email)
+    print(answers)
+    print(quizId)
+
+    return "Hello"
+    
+    ...
