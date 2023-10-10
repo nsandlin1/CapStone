@@ -9,7 +9,6 @@ function Classes() {
     const [creating, setCreating] = useState(false);
     const [classesList, setClassesList] = useState([])
     const teacherEmail = JSON.parse(localStorage.getItem('user')).email
-    console.log(teacherEmail)
 
     function getClassesList() {
         console.log("fetching class list")
@@ -94,6 +93,7 @@ function Classes() {
                                         startTime={clas.start_time}
                                         endTime={clas.end_time}
                                         teacher={clas.teacher}
+                                        classCode = {clas.class_code}
                                         creating={creating}
                                         isExpanded={expandedId === clas.id}
                                         toggleCollapse={() => handleToggleCollapse(clas.id)}

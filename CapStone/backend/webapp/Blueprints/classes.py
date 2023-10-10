@@ -20,14 +20,14 @@ def create_class():
     class_code = ''
     
     for i in range(6):
+        # Determines if next character will be an int ar letter
         cointFlip = random.randrange(0,2)
         if cointFlip:
+            # Int (ASCII)
             class_code += chr(random.randrange(48, 57))
         else:
+            # Uppercase Letter (ASCII)
             class_code += chr(random.randrange(65, 90))
-
-    
-            
 
     if EnrolledClass.query.filter_by(name=name, teacher=teacher).all():
         return jsonify({'class-added': False, 'Error': 'Class Already Exists'}), 418

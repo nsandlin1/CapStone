@@ -27,6 +27,7 @@ export const CreateClass = ({back, tEmail}) => {
             .catch((err) => {
                 console.log(err.message)
             })
+        window.location.reload();
         back()
     }
 
