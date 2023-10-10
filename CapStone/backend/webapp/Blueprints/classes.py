@@ -432,8 +432,7 @@ def get_assigned_quizzes():
 
 
         for clas in classes:
-
-        ...
+            continue
 
     return ('hello')
 
