@@ -26,6 +26,7 @@ function StudentQuiz() {
           });
     }, []);
 
+
     // Shows the select quiz for the student to take
     function handleTakeQuiz(id, title) {
         console.log('Attempting to take ' + title);
@@ -66,8 +67,10 @@ function StudentQuiz() {
                         </div>
                     </div>
                     <div className='flex flex-col w-[100%] h-[90%] justify-start items-center overflow-auto'>
-                        {
-                            quizzes.map((quiz, idx) => (
+                        {quizzes['error'] ? 
+                            <h1 className="text-navy text-2xl md:text-6xl pt-24 font-bold text-wrap whitespace-normal">You have not registered for any class</h1>
+                        :
+                        quizzes.map((quiz, idx) => (
                                 <QuizCard 
                                     key = {idx}
                                     quizNum = {quiz.quizId}
@@ -75,8 +78,7 @@ function StudentQuiz() {
                                     quizDDate = {quiz.quizDDate}
                                     onTakeQuiz = {quiz.grade == null ? handleTakeQuiz : handleViewGrade}
                                 />
-                            ))
-                        }
+                            ))}
                     </div>
                 </div>
                 {takingQuiz ? 

@@ -7,6 +7,7 @@ from ..schemas import enrolled_class_schema, enrolled_classes_schema, \
                       quiz_schema, quizes_schema, questions_schema, question_schema, \
                       choice_schema, choices_schema, students_schema, class_quizzes_schema, questions_schema
 import json
+import random
 
 classes = Blueprint('classes', __name__)
 
@@ -16,6 +17,17 @@ def create_class():
     teacher = request.args.get("teacher")
     start_time = request.args.get("start_time")
     end_time = request.args.get("end_time")
+    class_code = ''
+    
+    for i in range(6):
+        cointFlip = random.randrange(0,2)
+        if cointFlip:
+            class_code += chr(random.randrange(48, 57))
+        else:
+            class_code += chr(random.randrange(65, 90))
+
+    
+            
 
     if EnrolledClass.query.filter_by(name=name, teacher=teacher).all():
         return jsonify({'class-added': False, 'Error': 'Class Already Exists'}), 418
@@ -25,7 +37,8 @@ def create_class():
         name,
         teacher,
         start_time,
-        end_time
+        end_time,
+        class_code
     ))
     db.session.commit()
 

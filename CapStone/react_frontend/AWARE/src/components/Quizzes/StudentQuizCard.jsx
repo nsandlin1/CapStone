@@ -3,7 +3,7 @@ import { ToastContainer, toast } from 'react-toastify';
 
 export const Option = ({index, text, choose, selected}) => {
 
-    const selectedOption = `${selected == index ? 'bg-lightblue' : 'bg-slate-400 hover:bg-slate-800 '} flex w-[5%] text-white justify-center 
+    const selectedOption = `${selected == index ? 'bg-lightblue' : 'bg-slate-400 hover:bg-slate-800 '} flex w-[10%] md:w-[5%] text-white justify-center 
                             items-center rounded-xl hover:cursor-pointer`
 
     return (
@@ -12,7 +12,7 @@ export const Option = ({index, text, choose, selected}) => {
                  onClick={() => choose(index)}>
                 {index}
             </div>
-            <div className='w-[95%]'>
+            <div className='w-[90%] md:w-[95%]'>
                 {text}
             </div>
         </div>
