@@ -43,28 +43,35 @@ function CreateQuiz({back}) {
 
     return (
         <div className="flex flex-col w-[100%] h-[100%] bg-navy rounded-xl"> 
-            <div className='flex flex-row justify-center items-center w-[100%] h-[10%]'>
-                <div className='flex w-[20%] md:w-[30%]'>
-                    < BiArrowBack className='MockButtons absolute fill-white top-2 md:top-3 left-4 md:left-10' onClick={back}/>
+            <div className='flex flex-col justify-center items-center w-[100%] h-[20%]'>
+                <div className='flex flex-row justify-center items-center w-[100%] h-[40%] md:h-[50%]'>
+                    <div className='flex w-[20%] md:w-[30%]'>
+                        < BiArrowBack className='MockButtons absolute fill-white top-2 md:top-3 left-4 md:left-10' onClick={back}/>
+                    </div>
+                    <div className='flex w-[60%] md:w-[40%] text-lg md:text-3xl text-white items-center justify-center'>
+                            Create Quiz
+                    </div>
+                    <div className='flex w-[20%] md:w-[30%] h-[100%] justify-end pr-2 md:pr-10'>
+                        <button className='text-xl bg-white rounded-xl w-[90%] md:w-[30%]' onClick={saveButton}>
+                            Save
+                        </button>
+                    </div>
                 </div>
-                <div className='flex w-[60%] md:w-[40%] text-lg md:text-3xl text-white items-center justify-center'>
-                        Create Quiz
-                </div>
-                <div className='flex w-[20%] md:w-[30%] h-[100%] justify-end pr-2 md:pr-10'>
-                    <button className='text-xl bg-white rounded-xl w-[90%] md:w-[30%]' onClick={saveButton}>
-                        Save
-                    </button>
+                <div className='flex flex-row justify-center items-center h-[50%] pt-2 w-full'>
+                    <label className='text-lg md:text-4xl w-[30%] md:w-[15%] text-white md:font-bold'>
+                        Quiz Title: 
+                    </label>
+                    <input
+                        className="w-[60%] md:w-[75%] ml-2 pl-2 h-[70%] md:h-full rounded-lg justify-center text-lg md:text-2xl text-navy"
+                        type='text'
+                        name='position'
+                        onChange={(q) =>{
+                            setQuizName(q.target.value)
+                        }}
+                    />
                 </div>
             </div>
-            <input
-                className="w-[96%] h-[8%] ml-2 pl-2 rounded-lg justify-center text-2xl"
-                type='text'
-                name='position'
-                onChange={(q) =>{
-                    setQuizName(q.target.value)
-                }}
-            />
-            <div className='flex flex-col w-[100%] h-[90%] items-center justify-center'>
+            <div className='flex flex-col w-[100%] h-[80%] items-center justify-center'>
                 <div className='flex flex-col w-[95%] h-[100%] items-center m-2 overflow-auto'>
                     <div className='flex flex-col w-[100%] md:w-[90%] items-center rounded-xl'>
                         {questions.map((form, index) => (
