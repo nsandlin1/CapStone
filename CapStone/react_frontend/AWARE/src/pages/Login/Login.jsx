@@ -83,7 +83,6 @@ function Login({setRole, loginFun}) {
                         toast.error(res["Error"])
                     }
                     else {
-                        setTempRole(role);
                         console.log("loggin em in")
                         loginFun(email);
                     }

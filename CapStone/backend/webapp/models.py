@@ -373,19 +373,21 @@ class ClassElection(db.Model):
 class ClassQuiz(db.Model):
     __tablename__ = 'class_quizzes'
 
+    teacher = Column(Integer, ForeignKey('teachers.id'))
     classid = Column(Integer, ForeignKey('enrolled_classes.id'))
     quizid = Column(Integer, ForeignKey('quizes.id'))
 
     __table_args__ = (
-        PrimaryKeyConstraint(classid, quizid),
+        PrimaryKeyConstraint(teacher, classid, quizid),
     )
 
-    def __init__(self, classid, quizid):
+    def __init__(self, teacher, classid, quizid):
+        self.teacher = teacher
         self.classid = classid
         self.quizid = quizid
     
     def __repr__(self):
-        return f'<ClassQuiz "{self.classid}, {self.quizid}">'
+        return f'<ClassQuiz "{self.teacher}, {self.classid}, {self.quizid}">'
 
 class StudentQuiz(db.Model):
     __tablename__ = 'student_quizzes'

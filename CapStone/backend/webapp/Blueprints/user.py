@@ -72,8 +72,6 @@ def sign_up():
         db.session.commit()
 
 
-        #db.session.add()
-
     return jsonify({'signed-up': True})
     
 

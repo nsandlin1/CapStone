@@ -126,11 +126,10 @@ export const RegisterView = ({click, response, email, setEmail, password, setPas
         else if (selectedRole === 'Select Option' || selectedRole === undefined){
             toast.error('Must select a role.');
         }
-        else if (classCode.length !== 6) {
+        else if (role === 'Student' && classCode.length !== 6) {
             toast.error('Class Code must be exactly 6 digits.');
         }
         else {
-            setRole(selectedRole);
             submit(selectedRole, classCode);
         }
     }

@@ -137,6 +137,7 @@ abcs = {i: chr(64 + i) for i in range(1, 27)}
 def create_quiz():
     title = request.args.get('title')
     questions = json.loads(request.args.get('questions'))
+    email = request.args.get('email')
 
     print(title)
     print(questions)
@@ -153,6 +154,10 @@ def create_quiz():
 
     quiz_id = Quiz.query.filter_by(title=title).all()[0].id
     print(quiz_id)
+
+    # db.session.add(ClassQuiz(
+        
+    # ))
 
     for q in questions:
 
