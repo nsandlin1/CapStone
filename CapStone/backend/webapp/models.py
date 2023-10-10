@@ -392,7 +392,7 @@ class ClassQuiz(db.Model):
 class StudentQuiz(db.Model):
     __tablename__ = 'student_quizzes'
 
-    studentid = Column(Integer)
+    studentid = Column(Integer, ForeignKey('students.id'))
     quizid = Column(Integer, ForeignKey('quizes.id'))
     grade = Column(Integer)
 
