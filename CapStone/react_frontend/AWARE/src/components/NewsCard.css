@@ -1,4 +1,5 @@
 /* Default styles for .news-card */
+/* added a margin, resized boxes, and adjusted transition smooting */
 .news-card {
   display: flex;
   flex-direction: column;
@@ -7,21 +8,22 @@
   border-radius: 10px;
   background-color: #fff;
   overflow: hidden;
-  transition: transform 0.4s ease; /* Add transition for transform effects */
+  margin: 5px;
+  transition: transform 0.55s ease; /* Add transition for transform effects */
   cursor: pointer;
 }
 
 /* Media query for large screens */
 @media (min-width: 768px) {
   .news-card {
-    width: 45%; /* Set to 50% width on large screens */
+    width: 42%; /* Set to 50% width on large screens */
   }
 }
 
 /* Media query for small screens */
 @media (max-width: 767px) {
   .news-card {
-    font-size: 70%;
+    font-size: 68%;
   }
 }
 
@@ -68,12 +70,13 @@
   padding: 10px;
   background-color: #f0f0f0;
   overflow: auto;
-  transition: font-size 0.2s ease;
+  transition: font-size 0.35s ease;
 }
 
+/* slowed down transitions for moving text */ 
 .news-source {
   text-align: right;
-  transition: color 0.2s ease; /* Add transition for color change */
+  transition: color 0.35s ease; /* Add transition for color change */
 }
 
 .news-source a {

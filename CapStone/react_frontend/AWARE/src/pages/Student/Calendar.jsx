@@ -7,15 +7,104 @@ import { EventCard } from "../../components/EventCard";
 // template dict for holding election events
 // key: month name, value: list of [day, event name] pairs
 var eventsByMonth = {
-  "January": [], "February": [[21, "Wisconsin Primary", 2023]], "March": [],
-  "April": [], "May": [[16, "Kentucky Primary", 2023], [16, "Pennsylvania Primary", 2023]], "June": [[6, "New Jersey Primary", 2023], [20, "Virginia Primary", 2023]],
-  "July": [], "August": [[1, "Washington Primary", 2024], [8, "Mississippi Primary", 2023]], "September": [],
-  "October": [[14, "Louisiana Primary", 2023]], "November": [], "December": [],
+  "January": [], 
+  "February": [[21, "Wisconsin Primary", 2023]], 
+  "March": [],
+  "April": [],
+  "May": [[16, "Kentucky Primary", 2023], [16, "Pennsylvania Primary", 2023]],
+  "June": [[6, "New Jersey Primary", 2023], [20, "Virginia Primary", 2023]],
+  "July": [], 
+  "August": [[1, "Washington Primary", 2024], [8, "Mississippi Primary", 2023]], 
+  "September": [],
+  "October": [[14, "Louisiana Primary", 2023]], 
+  "November": [], 
+  "December": [],
 }
 
 // tests if two dates are the same day, used for rendering events onto correct dates
 function isSameDay(a, b) {
   return differenceInCalendarDays(a, b) === 0;
+}
+
+// convert all instances of <State Name> to <State Code> (e.g. "New York" -> "NY")
+function convertStatetoCode(input) {
+  const usStates = {
+    "Alabama": 'AL',
+    "Alaska": 'AK',
+    "Arizona": 'AZ',
+    "Arkansas": 'AR',
+    "California": 'CA',
+    "Colorado": 'CO',
+    "Connecticut": 'CT',
+    "Delaware": 'DE',
+    "Florida": 'FL',
+    "Georgia": 'GA',
+    "Hawaii": 'HI',
+    "Idaho": 'ID',
+    "Illinois": 'IL',
+    "Indiana": 'IN',
+    "Iowa": 'IA',
+    "Kansas": 'KS',
+    "Kentucky": 'KY',
+    "Louisiana": 'LA',
+    "Maine": 'ME',
+    "Maryland": 'MD',
+    "Massachusetts": 'MA',
+    "Michigan": 'MI',
+    "Minnesota": 'MN',
+    "Mississippi": 'MS',
+    "Missouri": 'MO',
+    "Montana": 'MT',
+    "Nebraska": 'NE',
+    "Nevada": 'NV',
+    "New Hampshire": 'NH',
+    "New Jersey": 'NJ',
+    "New Mexico": 'NM',
+    "New York": 'NY',
+    "North Carolina": 'NC',
+    "North Dakota": 'ND',
+    "Ohio": 'OH',
+    "Oklahoma": 'OK',
+    "Oregon": 'OR',
+    "Pennsylvania": 'PA',
+    "Rhode Island": 'RI',
+    "South Carolina": 'SC',
+    "South Dakota": 'SD',
+    "Tennessee": 'TN',
+    "Texas": 'TX',
+    "Utah": 'UT',
+    "Vermont": 'VT',
+    "Virginia": 'VA',
+    "Washington": 'WA',
+    "West Virginia": 'WV',
+    "Wisconsin": 'WI',
+    "Wyoming": 'WY'
+  };
+
+  var arr = input.split(" ");
+
+    for (var i = 0; i < arr.length; i++) {
+      if (arr[i] in usStates) {
+        arr[i] = usStates[arr[i]];
+       }
+      else if (arr[i] != "" && arr[i].replace(',', '') in usStates) {
+        arr[i] = usStates[arr[i]];
+      }
+      else if (arr[i] != "" && arr[i] != null && arr[i] + " " + arr[i+1] in usStates) {
+        arr[i] = usStates[arr[i] + " " + arr[i+1]];
+        arr[i+1] = "";
+      }
+      else {
+        arr[i] = arr[i];
+      }
+    }
+
+    var str = arr.join(" ");
+    str = str.replace("Primary", "Prim.")
+    str = str.replace("General", "Gen.")
+    str = str.replace("Special", "Spec.")
+    str = str.replace("Election", "Elec.")
+    return str;
 }
 
 // converts "01" -> "January"
@@ -52,7 +141,11 @@ function tileNames({ date, view }) {
           str += eventName;
         }
       }
-      return <div className='text-xs'>{str}</div>;
+      return <div className='text-xs md:text-lg' > 
+      <div className="h-16 md:h-auto">
+        { convertStatetoCode(str) }
+      </div>
+    </div>
     }
   }
 
@@ -153,21 +246,21 @@ useEffect(() => {
   return (
     <div className="p-4 bgblue h-[91vh]">
       <div className="bg-transparent p-2 m-2 flex justify-center">
-        <h1 className="text-4xl  font-bold mb-6 text-white">Upcoming Elections</h1>
+        <h1 className="text-2xl md:text-4xl mx-auto font-bold mb-6 text-white">Upcoming Elections</h1>
       </div>
 
-      <div className="mx-auto flex h-[80%] flex-row p-4 border shadow-lg rounded-lg">
+      <div className="mx-auto flex h-[auto] flex-row p-4 border-8 border-black bgnavy shadow-lg rounded-lg">
         <Cal
-          className="md:text-2xl md:w-[50%] w-full h-[100%] bg-blue-200 rounded-xl shadow-md hover:shadow-lg border-8 border-blue-400 hover:border-blue-500"
+          className="md:text-xl text-sm md:w-[50%] w-[full] h-[auto] bg-blue-200 rounded-xl shadow-md hover:shadow-lg border-8 border-blue-400 hover:border-blue-500"
           onChange={handleDateChange} // Update the selected date
           onActiveStartDateChange={handleDateChange} // Update the month when navigating
-          tileClassName="text-slate-600 text-md p-4 h-[8vh] m-4 font-semibold rounded-lg hover:bgblue hover:text-black"
+          tileClassName="text-slate-600 text-md h-[8vh] mx-auto font-semibold rounded-lg hover:text-black"
           tileContent={tileNames}
         ></Cal>
 
         {/* Use Tailwind CSS classes for conditional rendering */}
         <div className="w-[50%] h-[100%] flex-col justify-center hidden md:block">
-          <div className="w-[100%] text-4xl m-2 font-bold flex justify-center">Elections this Month:</div>
+          <div className="w-[100%] text-4xl m-2 text-white font-bold flex justify-center">Elections this Month:</div>
           {eventsForSelectedMonth.map((event, index) => (
             <div key={index} className="w-[100%] text-xl font-bold flex justify-left">
               <EventCard day={event[0]} month={date.toLocaleString('en-US', { month: 'long' })} year={event[2]} event={event[1]} calDate={date} />
