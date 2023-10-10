@@ -146,8 +146,11 @@ def create_quiz():
         return jsonify({'quiz_created': False, 'Error': 'insufficient variables'})
     print('post-if')
     
+    teacher_id = Teacher.query.filter_by(email=email).all()
+    
     db.session.add(Quiz(
         None,
+        teacher_id[0].id,
         title
     ))
     db.session.commit()
@@ -155,7 +158,7 @@ def create_quiz():
     quiz_id = Quiz.query.filter_by(title=title).all()[0].id
     print(quiz_id)
 
-    teacher_id = Teacher.query.filter_by(email=email).all()
+    
     
     # Assigning a quiz to a class needs to be done in its own api call
     # db.session.add(ClassQuiz(
@@ -197,6 +200,9 @@ def create_quiz():
 @classes.route('/get_quiz')
 def get_quiz():
     classid = request.args.get('classid')
+    email = request.args.get('email')
+
+
 
     if classid:
         return quizes_schema.jsonify(Quiz.query.filter_by(classid=classid).all())
@@ -411,3 +417,24 @@ def submit_quiz():
         db.session.commit()
 
     return (jsonify({'success': 'quiz has been submitted'}))
+
+
+@classes.route('/get_assigned_quizzes')
+def get_assigned_quizzes():
+    email = request.args.get('email')
+
+    teacherId = Teacher.query.filter_by(email=email).first().id
+    classes = EnrolledClass.query.filter_by(teacher=email).all()
+    quizzes = Quiz.query.filter_by(teacher=teacherId).all()
+
+    for quiz in quizzes:
+        
+        
+
+        for clas in classes:
+
+
+
+    return ('hello')
+
+    ...

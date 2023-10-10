@@ -10,6 +10,7 @@ function Quizzes() {
     const [quizzes, setQuizzes] = useState([]);
     const [expandedQuiz, setExpandedQuiz] = useState();
     const [expanded, setExpanded] = useState(false);
+    const [classes, setClasses] = useState([]);
 
     function getQuizzes() {
         console.log("fetching quizzes")
@@ -32,12 +33,31 @@ function Quizzes() {
             })
     }
 
+    function getClasses() {
+        const user = JSON.parse(localStorage.getItem('user'));
+        // Define the API endpoint URL
+        const apiUrl = `/api/classes/get_assigned_quizzes?email=${user['email']}`;
+        // Fetch data from the API
+        fetch(apiUrl)
+            .then((response) => response.json())
+            .then((data) => {
+            // Update the state with the fetched data
+            setClasses(data);
+            })
+            .catch((error) => {
+            console.error('Error fetching data:', error);
+            });
+    }
+
     useEffect(() => {
         if (quizzes.length == 0) {
             getQuizzes();
+            getClasses();
         }
     }, [])
     
+    console.log('classes');
+    console.log(classes);
     console.log(quizzes);
     
     const transitionElection = useTransition(!isVisible, {

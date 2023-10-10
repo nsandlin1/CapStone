@@ -240,16 +240,18 @@ class Quiz(db.Model):
     __tablename__ = 'quizes'
 
     id = Column(Integer, primary_key=True)
+    teacher = Column(String(30), ForeignKey('teachers.id'))
     title = Column(String(50))
 
     __table_args__ = (UniqueConstraint("title", name="title_unique"),)
 
-    def __init__(self, id, title):
+    def __init__(self, id, teacher, title):
         self.id = id
+        self.teacher = teacher
         self.title = title
 
     def __repr__(self):
-        return f'<Quiz "{self.id}, {self.title}">'
+        return f'<Quiz "{self.id}, {self.teacher}, {self.title}">'
     
 class Question(db.Model):
     __tablename__ = 'questions'
@@ -373,21 +375,19 @@ class ClassElection(db.Model):
 class ClassQuiz(db.Model):
     __tablename__ = 'class_quizzes'
 
-    teacher = Column(Integer, ForeignKey('teachers.id'))
     classid = Column(Integer, ForeignKey('enrolled_classes.id'))
     quizid = Column(Integer, ForeignKey('quizes.id'))
 
     __table_args__ = (
-        PrimaryKeyConstraint(teacher, classid, quizid),
+        PrimaryKeyConstraint(classid, quizid),
     )
 
-    def __init__(self, teacher, classid, quizid):
-        self.teacher = teacher
+    def __init__(self, classid, quizid):
         self.classid = classid
         self.quizid = quizid
     
     def __repr__(self):
-        return f'<ClassQuiz "{self.teacher}, {self.classid}, {self.quizid}">'
+        return f'<ClassQuiz "{self.classid}, {self.quizid}">'
 
 class StudentQuiz(db.Model):
     __tablename__ = 'student_quizzes'

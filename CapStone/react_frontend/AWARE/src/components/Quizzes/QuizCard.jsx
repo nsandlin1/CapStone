@@ -47,6 +47,7 @@ function QuizCard({id, text, isExpanded, handleClick}) {
     ]);
 
     useEffect(() => {
+        
         if (isExpanded === id){
             for (const clas of classes){
                 console.log('class'+clas.classId)
@@ -55,6 +56,8 @@ function QuizCard({id, text, isExpanded, handleClick}) {
             }
         }
     }, [isExpanded === id]);
+
+
 
     const cardStyle = `${isExpanded === id ? 'w-[90%] h-[50%]' : 'h-[20%] w-[50%] md:w-[45%]'} 
                                 flex text-md bg-white m-2 md:m-4 shadow-xl rounded-xl items-center justify-center`;
@@ -65,7 +68,7 @@ function QuizCard({id, text, isExpanded, handleClick}) {
                 <div className='flex flex-col h-full w-full rounded-xl justify-center'>
                     <div className='flex flex-row relative w-full h-[15%] pt-2 justify-center items-center font-bold text-2xl'>
                         < BiArrowBack className='MockButtons absolute left-6 ' onClick={() => handleClick(id)}/>
-                        {text}  
+                        {'Choose Classes to assign ' + text + ' quiz.'}  
                     </div>
                     <div className='grid grid-cols-3 w-full h-[65%] justify-center items-center text-2xl overflow-auto'>
                         {
