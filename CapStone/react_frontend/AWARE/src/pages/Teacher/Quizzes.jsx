@@ -63,15 +63,15 @@ function Quizzes() {
                 <div className='flex relative flex-col h-[95%] w-[80%] shadow-2xl justify-center items-center pt-4 bg-navy rounded-xl'>
                     { transitionElection((style, item) =>
                         item &&
-                            <animated.div style={style} className='absolute flex flex-col h-[100%] w-[100%]'>
+                            <animated.div style={style} className='absolute flex flex-col justify-start h-[100%] w-[100%]'>
                                 <div className='flex relative h-[10%] w-[100%] items-center justify-center'>
                                     < IoMdAdd className='AddButtonMock absolute fill-white top-3 md:top-1 right-4 md:right-10' onClick= {() => {setVisibile( v => !v);}}/>
                                     <h1 className='text-3xl text-white'>
                                         Quizzes
                                     </h1>
                                 </div> 
-                                <div className='flex flex-row h-[90%] w-[100%] justify-center'>
-                                        {quizzes.map((quiz, inded) => {
+                                <div className='flex  flex-wrap flex-start content-start h-[85%] w-[100%] justify-center items-start overflow-auto'>
+                                        {quizzes.map((quiz, index) => {
                                             return <QuizCard 
                                                         id={quiz.id} 
                                                         text={quiz.title} 
