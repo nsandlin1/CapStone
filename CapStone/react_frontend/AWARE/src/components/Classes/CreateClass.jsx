@@ -77,7 +77,7 @@ export const CreateClass = ({back, tEmail}) => {
                             />
                         </div>
                         <div className='flex flex-col w-[50%] h-full items-center justify-center'>
-                            <label className='text-4xl text-navy'>Start Time</label>
+                            <label className='text-4xl text-navy'>End Time</label>
                             <input 
                                 className='rounded-xl h-[50%] w-[45%] border-black text-navy border-2 pl-2 border-navy transition hover:scale-105'
                                 type='time'

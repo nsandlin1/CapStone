@@ -166,6 +166,8 @@ class EnrolledClass(db.Model):
     end_time = Column(String(5))
     class_code = Column(String(6))
 
+    __table_args__ = (UniqueConstraint("name", "teacher", "start_time", name="class_teacher_time_unique"),)
+
     def __init__(self, id, name, teacher, start_time, end_time, class_code):
         self.id = id
         self.name = name
