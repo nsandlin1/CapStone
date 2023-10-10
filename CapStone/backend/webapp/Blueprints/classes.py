@@ -429,11 +429,11 @@ def get_assigned_quizzes():
 
     for quiz in quizzes:
         
-        
+
 
         for clas in classes:
 
-
+        ...
 
     return ('hello')
 
