@@ -82,7 +82,7 @@ function Classes() {
 
                             </div>
                         </div>
-                        <div className='flex flex-wrap w-[100%] h-[90%] justify-center  overflow-auto'>
+                        <div className='flex flex-col flex-start w-[100%] h-[90%] items-center overflow-auto'>
                             {
                                 classesList.map((clas) => (
                                     // <div className='flex relative justify-center h-[100%] w-[98%] m-1 '>
