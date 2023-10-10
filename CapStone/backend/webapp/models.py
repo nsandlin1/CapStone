@@ -275,7 +275,7 @@ class Question(db.Model):
 class Choice(db.Model):
     __tablename__ = 'choices'
 
-    question_id = Column(Integer)
+    question_id = Column(Integer, ForeignKey('questions.question_id'))
     which = Column(String(1)) # A, B, C, etc.
     the_choice = Column(String(200))
 
@@ -289,7 +289,7 @@ class Choice(db.Model):
         self.the_choice = the_choice
 
     def __repr__(self):
-        ...
+        return f'<Choice "{self.question_id, self.which, self.the_choice}"'
 
 class Ballot(db.Model):
     __tablename__ = 'ballots'

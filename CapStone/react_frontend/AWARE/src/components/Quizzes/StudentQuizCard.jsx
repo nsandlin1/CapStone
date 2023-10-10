@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import { useState, useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 
 export const Option = ({index, text, choose, selected}) => {
@@ -36,13 +36,12 @@ export const MC = ({CustomKey, question, options, onSelect, selection}) => {
                 {CustomKey+1 + '. ' + question}
             </div>
             <div className="flex flex-col w-full justify-center pb-2">
-                { Object.keys(options).map((key) =>
-                    <div key={key} className='flex justify-center w-full'>
-                        <Option index={key} text={options[key]} choose={handleSelection} selected={selected}/>
+                { options.map((option, idx) => (
+                    <div key={idx} className='flex justify-center w-full'>
+                        {console.log(option)}
+                        <Option index={option.letter} text={option.text} choose={handleSelection} selected={selected}/>
                     </div>
-                )
-
-                }
+                ))}
             </div>
         </div>
     )
@@ -90,62 +89,28 @@ export const TF = ({CustomKey, question, onSelect}) => {
 }
 
 // What the studnet see when they are taking a quiz
-export const TakeQuiz = ({quizTitle}) => {
+export const TakeQuiz = ({quizId, quizTitle, takingQuiz}) => {
 
-    const [questions, setQuestion] = useState([
-        {
-            questionId: 0,
-            type: 'MC',
-            question: 'Which of the folling is true',
-            options: {
-                A: 'Bush did 9/11',
-                B: 'Obama is not American',
-                C: 'Ted Cruz is the Zodiac Killer'
-            },
-            selected: null
-        },
-        {
-            questionId: 1,
-            type: 'TF',
-            question: 'This is a true/false question',
-            selected: null
-        },
-        {
-            questionId: 2,
-            type: 'MC',
-            question: 'Which of the folling is true',
-            options: {
-                A: 'Bush did 9/11',
-                B: 'Obama is not American',
-                C: 'Ted Cruz is the Zodiac Killer'
-            },
-            selected: null
-        },
-        {
-            questionId: 3,
-            type: 'TF',
-            question: 'This is a true/false question',
-            selected: null
-        },
-        {
-            questionId: 4,
-            type: 'MC',
-            question: 'Which of the folling is true',
-            options: {
-                A: 'Bush did 9/11',
-                B: 'Obama is not American',
-                C: 'Ted Cruz is the Zodiac Killer'
-            },
-            selected: null
-        },
-        {
-            questionId: 5,
-            type: 'TF',
-            question: 'This is a true/false question',
-            selected: null
+    const [questions, setQuestions] = useState([]);
+
+    useEffect(() => {
+        if (takingQuiz) {
+            // Define the API endpoint URL
+            const apiUrl = '/api/classes/get_quiz_questions?quizId=1';
+            // Fetch data from the API
+            fetch(apiUrl)
+            .then((response) => response.json())
+            .then((data) => {
+                // Update the state with the fetched data
+                setQuestions(data);
+                
+            })
+            .catch((error) => {
+                console.error('Error fetching data:', error);
+            });
         }
-    ]);
-
+    }, [takingQuiz, quizId]);
+   
     // When user selects an answer for each question
     const handleQuestionAnswer = (idx, selection) => {
 
@@ -175,24 +140,24 @@ export const TakeQuiz = ({quizTitle}) => {
         }
     }
 
-    // Call backend using {quizTitle} to get all questions for the quiz
+    // Call backend using {quizId} to get all questions for the quiz
 
 
     return (
         <div className='flex flex-col h-[100%] w-full rounded-xl items-center '>
             <div className='flex flex-col h-[92%] pt-2 w-full items-center overflow-auto '>
                 {questions.map((question, idx) => (
-                    <div className='flex w-[95%] h-full m-1 justify-center'>
-                        {question.type == 'MC' ?
+                    <div key={idx} className='flex w-[95%] h-full m-1 justify-center'>
+                        {question.question_type == 'MC' ?
                             < MC CustomKey={idx} 
-                                question={question.question} 
-                                options={question.options} 
+                                question={question.text} 
+                                options={question.choices} 
                                 onSelect={handleQuestionAnswer}
                                 selection={question.selected}
                             />
                             :
                             < TF CustomKey={idx}
-                                 question={question.question} 
+                                 question={question.text} 
                                  onSelect={handleQuestionAnswer}
                             />
                         }
@@ -200,7 +165,7 @@ export const TakeQuiz = ({quizTitle}) => {
                 ))}
             </div>
             <div className='flex justify-center items-center h-[8%] w-full'>
-                <button className='bg-navy text-white rounded-xl h-[75%] w-[15%] hover:bg-slate-500'
+                <button className='bg-navy text-white rounded-xl h-[75%] w-[30%] md:w-[15%] hover:bg-slate-500'
                         onClick={() => handleSubmit()}
                 >
                     Submit Quiz
@@ -215,7 +180,7 @@ export const TakeQuiz = ({quizTitle}) => {
 }
 
 // Card that gives the student a quick glance at what quizzes they have coming up
-export const QuizCard = ({quizTitle, quizDDate, onTakeQuiz}) => {
+export const QuizCard = ({quizNum, quizTitle, quizDDate, onTakeQuiz}) => {
 
     return (
         <div className="flex h-[20%] hover:scale-105 hover:shadow-2xl w-[92%] rounded-xl bg-navy m-1 transition ">
@@ -233,7 +198,7 @@ export const QuizCard = ({quizTitle, quizDDate, onTakeQuiz}) => {
                     </div>
                     <div className='flex w-[15%] items-center justify-end'>
                         <h1 className='text-md md:text-xl lg:text-3xl text-white whitespace-nowrap hover:cursor-pointer' 
-                            onClick={() => onTakeQuiz(quizTitle)}>
+                            onClick={() => onTakeQuiz(quizNum, quizTitle)}>
                             Take Quiz
                         </h1>
                     </div>

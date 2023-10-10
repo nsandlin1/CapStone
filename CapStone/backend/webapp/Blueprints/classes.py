@@ -244,10 +244,48 @@ def get_quiz_for_class(classId):
     return  quizzes
 
 
+def get_mc_options(questionId):
+    ...
+
 # Given quizId returns questions for that quiz
 def get_questions_for_quiz(quizId):
 
-    questions = Question.query.filter_by(quiz_id=quizId).all()
+    # Find available questions for a quiz
+    questionsFound = Question.query.filter_by(quiz_id=quizId).order_by(Question.question_id.asc()).all()
+
+    questions = []
+
+    # Iterate through each question
+    for question in questionsFound:
+        # The question is Multiple Chioce
+        if (question.quiz_type == 'MC'):
+            choices = []
+            # Find the available choices for the question (sorted by descending order)
+            choicesFound = Choice.query.filter_by(question_id=question.question_id).order_by(Choice.which.asc()).all()
+            # Add each choice to an array
+            for choice in choicesFound:
+                choices.append(
+                    {
+                        'letter': choice.which,
+                        'text': choice.the_choice
+                    }
+                )
+            questions.append(
+                {
+                    'text': question.question,
+                    'question_type': question.quiz_type,
+                    'choices': choices
+                }
+            )
+        # The question is T/F
+        else:
+            questions.append(
+                {
+                    'text': question.question,
+                    'question_type': question.quiz_type
+                }
+            )
+
     return questions
 
 
@@ -274,7 +312,15 @@ def get_student_quiz():
 
 
     # Get the questions for the quiz
-    #questions = get_questions_for_quiz(quiz_for_class[0].quizid)
 
     return (jsonify(quizzes_for_class))
-    
+
+
+@classes.route('/get_quiz_questions')
+def get_quiz_questions():
+
+    quizId = request.args.get('quizId')
+
+    questions = get_questions_for_quiz(quizId)
+
+    return (jsonify(questions))

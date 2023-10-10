@@ -4,13 +4,16 @@ import { useState, useEffect } from "react";
 function StudentQuiz() {
 
     const [takingQuiz, setTakingQuiz] = useState(false);
+    const [currentQuizTitle, setCurrentQuizTitle] = useState();
     const [currentQuiz, setCurrentQuiz] = useState();
 
-    const [quizzes, setQuizzes] = useState([])
+    const [quizzes, setQuizzes] = useState([]);
+    
 
     useEffect(() => {
+        const user = JSON.parse(localStorage.getItem('user'));
         // Define the API endpoint URL
-        const apiUrl = '/api/classes/get_student_quizzes?email=test';
+        const apiUrl = `/api/classes/get_student_quizzes?email=${user['email']}`;
         // Fetch data from the API
         fetch(apiUrl)
           .then((response) => response.json())
@@ -24,11 +27,12 @@ function StudentQuiz() {
     }, []);
 
     // Shows the select quiz for the student to take
-    function handleTakeQuiz(title) {
+    function handleTakeQuiz(id, title) {
         console.log('Attempting to take ' + title);
         setTakingQuiz(true);
-        setCurrentQuiz(title);
-        console.log(quizTitle);
+        setCurrentQuiz(id);
+        setCurrentQuizTitle(title);
+        console.log("Hello: " + title);
     }
 
     // Shows the grades the student got on the selected quiz
@@ -45,7 +49,7 @@ function StudentQuiz() {
             <div className='flex flex-col h-[100%] w-[90%] rounded-xl items-center'>
                 <div className='flex flex-row h-[15%] w-[95%] items-center justify-center'>
                     <div className='text-3xl md:text-4xl lg:text-5xl text-white drop-shadow-lg'>
-                        {takingQuiz ? <h1>{currentQuiz}</h1> : 'Quizzes'}
+                        {takingQuiz ? <h1>{currentQuizTitle}</h1> : 'Quizzes'}
                     </div>
                 </div>
                 <div className={availableQuizzesView}>
@@ -66,6 +70,7 @@ function StudentQuiz() {
                             quizzes.map((quiz, idx) => (
                                 <QuizCard 
                                     key = {idx}
+                                    quizNum = {quiz.quizId}
                                     quizTitle = {quiz.title}
                                     quizDDate = {quiz.quizDDate}
                                     onTakeQuiz = {quiz.grade == null ? handleTakeQuiz : handleViewGrade}
@@ -77,7 +82,9 @@ function StudentQuiz() {
                 {takingQuiz ? 
                     <div className="flex flex-col relative h-[85%] w-[95%] rounded-xl items-center justify-center bg-white mb-4 shadow-lg">
                         <TakeQuiz 
-                            quizTitle = {currentQuiz}
+                            quizId = {currentQuiz}
+                            quizTitle = {currentQuizTitle}
+                            takingQuiz = {takingQuiz}
                         /> 
                     </div>
                 : 
