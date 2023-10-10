@@ -375,6 +375,8 @@ def get_quiz_questions():
     return (jsonify(questions))
 
 
+# Called when the student submits their quiz
+# Checks submitted answers, assigns a score to the database under StudentQuiz table
 @classes.route('/submit_quiz')
 def submit_quiz():
     email = request.args.get('email')
@@ -382,9 +384,6 @@ def submit_quiz():
     quizId = request.args.get('quizId')
 
     student = Student.query.filter_by(email=email).all()
-
-    # All needed values are recieved
-    # TODO check the submited answers against the answers in the db with the quiz id, and set the score in the StudenQuiz table
 
     correct = 0
 
@@ -396,13 +395,14 @@ def submit_quiz():
         question = Question.query.filter_by(question_id=question_id).all()
         correctAnswer = question[0].correct_option
 
+        # Check if answer is correct
         if (correctAnswer == answer):
             correct += 1
 
+    # Get grade as a precentage
     grade = int((correct / len(answers)) * 100)
 
     stud_quiz = StudentQuiz.query.filter_by(studentid=student[0].id, quizid=quizId).first()
-
 
     if (stud_quiz):
         # Update the students grade for that quiz
@@ -419,6 +419,8 @@ def submit_quiz():
     return (jsonify({'success': 'quiz has been submitted'}))
 
 
+# Returns a list of all quizzes created by teacher
+# Determines if quiz is assigned to class
 @classes.route('/get_assigned_quizzes')
 def get_assigned_quizzes():
     email = request.args.get('email')
@@ -427,13 +429,33 @@ def get_assigned_quizzes():
     classes = EnrolledClass.query.filter_by(teacher=email).all()
     quizzes = Quiz.query.filter_by(teacher=teacherId).all()
 
+    # Used to store the return information (array of quiz dicts)
+    class_and_quizzes = []
+
+    # For each quiz go through each taught class
     for quiz in quizzes:
-        
+        quiz_and_class = []
 
-
+        # For each class determine if the quiz is assigned to the current class
         for clas in classes:
-            continue
+            selected = False
+            assigned = ClassQuiz.query.filter_by(classid=clas.id, quizid=quiz.id).all()
 
-    return ('hello')
+            # If it is assigned, set selected to true
+            if (assigned):
+                selected = True
+            
+            quiz_and_class.append({
+                'classId': clas.id,
+                'classTitle': clas.name,
+                'selected': selected
+            })
 
-    ...
+        class_and_quizzes.append(
+            {
+                'quizId': quiz.id,
+                'listOfClasses': quiz_and_class
+            }
+        )   
+
+    return (jsonify(class_and_quizzes))
