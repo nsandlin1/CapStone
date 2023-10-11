@@ -156,7 +156,7 @@ function Calendar() {
   const [date, setDate] = useState(new Date());
   const [eventsForSelectedMonth, setEventsForSelectedMonth] = useState([]);
 
-  var api_url = 'http://localhost:5000/api/news_and_elections/elections?';
+  var api_url = '/api/news_and_elections/elections?';
   const [events, setEvents] = useState([]);
   const [loadingEvents, setLoadingEvents] = useState(true);
   const [error, setError] = useState(null);
