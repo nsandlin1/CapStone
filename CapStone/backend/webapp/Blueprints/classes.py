@@ -485,4 +485,3 @@ def update_quiz_assignments():
             db.session.commit()
 
     return (jsonify({'success': 'Changes successfully saved.'}))
-    ...

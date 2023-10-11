@@ -12,7 +12,7 @@ function Classes() {
 
     function getClassesList() {
         console.log("fetching class list")
-        var api_url = 'http://localhost:5000/api/classes/get_class?teacher=' + teacherEmail
+        var api_url = '/api/classes/get_class?teacher=' + teacherEmail
         fetch(api_url)
             .then((response) => {
                 if (!response.ok) {
