@@ -77,7 +77,7 @@ teachers_schema = TeacherSchema(many=True)
 class StudentSchema(ma.Schema):
     class Meta:
         model = Student
-        fields = ("id", "username", "enrolled_class")
+        fields = ("id", "email", "enrolled_class")
 
 student_schema = StudentSchema()
 students_schema = StudentSchema(many=True)
@@ -85,7 +85,7 @@ students_schema = StudentSchema(many=True)
 class EnrolledClassSchema(ma.Schema):
     class Meta:
         model = EnrolledClass
-        fields = ("id", "name", "teacher", "start_time", "end_time")
+        fields = ("id", "name", "teacher", "start_time", "end_time", "class_code")
 
 enrolled_class_schema = EnrolledClassSchema()
 enrolled_classes_schema = EnrolledClassSchema(many=True)
@@ -149,7 +149,7 @@ class_elections_schema = ClassElectionSchema(many=True)
 class ClassQuizSchema(ma.Schema):
     class Meta:
         model = ClassQuiz
-        fileds = ("classid", "quizid")
+        fields = ("classid", "quizid")
     
 class_quiz_schema = ClassQuizSchema()
 class_quizzes_schema = ClassQuizSchema(many=True)

@@ -1,12 +1,13 @@
 from flask import Blueprint, request, jsonify
 from ..models import EnrolledClass, Ballot, Quiz, ClassElection, PolicyBallot, \
-                     CandidateBallot, Question, Choice
+                     CandidateBallot, Question, Choice, Student, Teacher, ClassQuiz, Question, StudentQuiz
 from ..extensions import db
 from ..schemas import enrolled_class_schema, enrolled_classes_schema, \
                       ballot_schema, ballots_schema, class_elections_schema, \
                       quiz_schema, quizes_schema, questions_schema, question_schema, \
-                      choice_schema, choices_schema
+                      choice_schema, choices_schema, students_schema, class_quizzes_schema, questions_schema, student_quizes_schema
 import json
+import random
 
 classes = Blueprint('classes', __name__)
 
@@ -16,6 +17,17 @@ def create_class():
     teacher = request.args.get("teacher")
     start_time = request.args.get("start_time")
     end_time = request.args.get("end_time")
+    class_code = ''
+    
+    for i in range(6):
+        # Determines if next character will be an int ar letter
+        cointFlip = random.randrange(0,2)
+        if cointFlip:
+            # Int (ASCII)
+            class_code += chr(random.randrange(48, 57))
+        else:
+            # Uppercase Letter (ASCII)
+            class_code += chr(random.randrange(65, 90))
 
     if EnrolledClass.query.filter_by(name=name, teacher=teacher).all():
         return jsonify({'class-added': False, 'Error': 'Class Already Exists'}), 418
@@ -25,7 +37,8 @@ def create_class():
         name,
         teacher,
         start_time,
-        end_time
+        end_time,
+        class_code
     ))
     db.session.commit()
 
@@ -124,6 +137,7 @@ abcs = {i: chr(64 + i) for i in range(1, 27)}
 def create_quiz():
     title = request.args.get('title')
     questions = json.loads(request.args.get('questions'))
+    email = request.args.get('email')
 
     print(title)
     print(questions)
@@ -132,14 +146,25 @@ def create_quiz():
         return jsonify({'quiz_created': False, 'Error': 'insufficient variables'})
     print('post-if')
     
+    teacher_id = Teacher.query.filter_by(email=email).all()
+    
     db.session.add(Quiz(
         None,
+        teacher_id[0].id,
         title
     ))
     db.session.commit()
 
     quiz_id = Quiz.query.filter_by(title=title).all()[0].id
     print(quiz_id)
+
+    
+    
+    # Assigning a quiz to a class needs to be done in its own api call
+    # db.session.add(ClassQuiz(
+    #     teacher_id,
+
+    # ))
 
     for q in questions:
 
@@ -175,6 +200,9 @@ def create_quiz():
 @classes.route('/get_quiz')
 def get_quiz():
     classid = request.args.get('classid')
+    email = request.args.get('email')
+
+
 
     if classid:
         return quizes_schema.jsonify(Quiz.query.filter_by(classid=classid).all())
@@ -209,4 +237,252 @@ def get_quiz():
 
 #     print(elections2)
 
-#     return jsonify(elections2)
+
+# Given studentsEmail, returns class the student is enrolled in 
+def get_student_class(studentEmail):
+
+    studentClass = Student.query.filter_by(email=studentEmail).all()
+
+    if (len(studentClass) > 0):
+        return studentClass[0].enrolled_class
+
+    return (-1)
+    
+
+# Given classId returns quizzes assigned to that class
+def get_quiz_for_class(classId, studentEmail):
+
+    quizzesLinkedToClass = ClassQuiz.query.filter_by(classid=classId).all()
+    student = Student.query.filter_by(email=studentEmail).all()
+
+    quizzes = []
+
+    # Iterate through each quiz found in the class
+    for quiz in quizzesLinkedToClass:
+
+        # Get information, like the title
+        quizInfo = Quiz.query.filter_by(id=quiz.quizid).all()
+
+        student_quiz_exists = StudentQuiz.query.filter_by(studentid=student[0].id, quizid=quizInfo[0].id).first()
+        
+        if (student_quiz_exists):
+            quizzes.append(
+                {
+                    'quizId': quizInfo[0].id,
+                    'title': quizInfo[0].title,
+                    'grade': student_quiz_exists.grade
+                }
+            )
+        else:
+            db.session.add(StudentQuiz(
+                student[0].id,
+                quizInfo[0].id,
+                None
+            ))
+            db.session.commit()
+
+            quizzes.append(
+                {
+                    'quizId': quizInfo[0].id,
+                    'title': quizInfo[0].title,
+                    'grade': None
+                }
+            )
+
+    #Return all found quizzes as an array of dicts, in the format of 
+    # {quizId: 1, title: 'Test Title'}
+    return  quizzes
+
+
+# Given quizId returns questions for that quiz
+def get_questions_for_quiz(quizId):
+
+    # Find available questions for a quiz
+    questionsFound = Question.query.filter_by(quiz_id=quizId).order_by(Question.question_id.asc()).all()
+
+    questions = []
+
+    # Iterate through each question
+    for question in questionsFound:
+        # The question is Multiple Chioce
+        if (question.quiz_type == 'MC'):
+            choices = []
+            # Find the available choices for the question (sorted by descending order)
+            choicesFound = Choice.query.filter_by(question_id=question.question_id).order_by(Choice.which.asc()).all()
+            # Add each choice to an array
+            for choice in choicesFound:
+                choices.append(
+                    {
+                        'letter': choice.which,
+                        'text': choice.the_choice
+                    }
+                )
+            questions.append(
+                {
+                    'question_id': question.question_id,
+                    'text': question.question,
+                    'question_type': question.quiz_type,
+                    'choices': choices
+                }
+            )
+        # The question is T/F
+        else:
+            questions.append(
+                {
+                    'question_id': question.question_id,
+                    'text': question.question,
+                    'question_type': question.quiz_type
+                }
+            )
+
+    return questions
+
+
+# Gets the available quizzes for students to take
+@classes.route('/get_student_quizzes')
+def get_student_quiz():
+
+    student = request.args.get("email")
+
+    # Get the class the student is enrolled in
+    enrolled_class = get_student_class(student)
+
+    # If no enrolled classes are found, return error
+    if (enrolled_class == -1):
+        return jsonify({'error':'No classes exist for given student'}), 404
+
+
+    # Get the quiz for the enrolled class
+    quizzes_for_class = get_quiz_for_class(enrolled_class, student)
+
+    # If no quizzes are present, return error
+    if (quizzes_for_class == -1):
+        return jsonify({'error':'No quizzes exist for class given'}), 404
+
+
+    # Get the questions for the quiz
+
+    return (jsonify(quizzes_for_class))
+
+
+@classes.route('/get_quiz_questions')
+def get_quiz_questions():
+
+    quizId = request.args.get('quizId')
+
+    questions = get_questions_for_quiz(quizId)
+
+    return (jsonify(questions))
+
+
+# Called when the student submits their quiz
+# Checks submitted answers, assigns a score to the database under StudentQuiz table
+@classes.route('/submit_quiz')
+def submit_quiz():
+    email = request.args.get('email')
+    answers = json.loads(request.args.get('answers'))
+    quizId = request.args.get('quizId')
+
+    student = Student.query.filter_by(email=email).all()
+
+    correct = 0
+
+    for question in answers:
+        question_id = question['question_id']
+        answer = question['selected']
+
+        # Query the current question to get the correct answer
+        question = Question.query.filter_by(question_id=question_id).all()
+        correctAnswer = question[0].correct_option
+
+        # Check if answer is correct
+        if (correctAnswer == answer):
+            correct += 1
+
+    # Get grade as a precentage
+    grade = int((correct / len(answers)) * 100)
+
+    stud_quiz = StudentQuiz.query.filter_by(studentid=student[0].id, quizid=quizId).first()
+
+    if (stud_quiz):
+        # Update the students grade for that quiz
+        stud_quiz.grade = grade
+        db.session.commit()
+    else:
+        db.session.add(StudentQuiz(
+                student[0].id,
+                quizId,
+                grade
+        ))
+        db.session.commit()
+
+    return (jsonify({'success': 'quiz has been submitted'}))
+
+
+# Returns a list of all quizzes created by teacher
+# Determines if quiz is assigned to class
+@classes.route('/get_assigned_quizzes')
+def get_assigned_quizzes():
+    email = request.args.get('email')
+
+    teacherId = Teacher.query.filter_by(email=email).first().id
+    classes = EnrolledClass.query.filter_by(teacher=email).all()
+    quizzes = Quiz.query.filter_by(teacher=teacherId).all()
+
+    # Used to store the return information (array of quiz dicts)
+    class_and_quizzes = []
+
+    # For each quiz go through each taught class
+    for quiz in quizzes:
+        quiz_and_class = []
+
+        # For each class determine if the quiz is assigned to the current class
+        for clas in classes:
+            selected = False
+            assigned = ClassQuiz.query.filter_by(classid=clas.id, quizid=quiz.id).all()
+
+            # If it is assigned, set selected to true
+            if (assigned):
+                selected = True
+            
+            quiz_and_class.append({
+                'classId': clas.id,
+                'classTitle': clas.name,
+                'selected': selected
+            })
+
+        class_and_quizzes.append(
+            {
+                'quizId': quiz.id,
+                'title': quiz.title,
+                'listOfClasses': quiz_and_class
+            }
+        )   
+
+    return (jsonify(class_and_quizzes))
+
+
+@classes.route('/update_quiz_assignments')
+def update_quiz_assignments():
+    data = json.loads(request.args.get('data'))
+
+    for clas in data['classes']:
+        selected = clas['selected']
+
+        print(selected)
+
+        classQuiz = ClassQuiz.query.filter_by(classid=clas['classId'], quizid=data['quizId']).all()
+
+        if (selected and not classQuiz):
+            db.session.add(ClassQuiz(
+                clas['classId'],
+                data['quizId']
+            ))
+            db.session.commit()
+        elif (classQuiz and not selected):
+            print(classQuiz[0])
+            db.session.delete(classQuiz[0])
+            db.session.commit()
+
+    return (jsonify({'success': 'Changes successfully saved.'}))
+    ...
