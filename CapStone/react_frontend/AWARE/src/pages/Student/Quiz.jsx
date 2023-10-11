@@ -1,5 +1,6 @@
 import { QuizCard, TakeQuiz } from "../../components/Quizzes/StudentQuizCard";
 import { useState, useEffect } from "react";
+import { ToastContainer, toast } from 'react-toastify';
 
 function StudentQuiz() {
 
@@ -99,7 +100,9 @@ function StudentQuiz() {
                     ''
                 }
             </div>
-            
+            <ToastContainer  
+                position="top-center"
+            />
         </div>
     )
 

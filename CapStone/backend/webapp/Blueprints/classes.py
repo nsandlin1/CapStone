@@ -466,7 +466,23 @@ def get_assigned_quizzes():
 def update_quiz_assignments():
     data = json.loads(request.args.get('data'))
 
-    print(data)
+    for clas in data['classes']:
+        selected = clas['selected']
 
-    return ("hello")
+        print(selected)
+
+        classQuiz = ClassQuiz.query.filter_by(classid=clas['classId'], quizid=data['quizId']).all()
+
+        if (selected and not classQuiz):
+            db.session.add(ClassQuiz(
+                clas['classId'],
+                data['quizId']
+            ))
+            db.session.commit()
+        elif (classQuiz and not selected):
+            print(classQuiz[0])
+            db.session.delete(classQuiz[0])
+            db.session.commit()
+
+    return (jsonify({'success': 'Changes successfully saved.'}))
     ...

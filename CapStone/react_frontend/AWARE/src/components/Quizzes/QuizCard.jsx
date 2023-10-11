@@ -1,9 +1,14 @@
 import { React, useState, useEffect }from 'react';
 import { BiArrowBack } from 'react-icons/bi';
+import { ToastContainer, toast } from 'react-toastify';
 
 function QuizCard({id, text, isExpanded, handleClick, classes}) {
 
-    const [resp, setResp] = useState([]);
+    const [resp, setResp] = useState();
+
+    function wait(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+      }
 
     useEffect(() => {
         if (isExpanded === id){
@@ -30,7 +35,6 @@ function QuizCard({id, text, isExpanded, handleClick, classes}) {
         // Send this array to the backend
         console.log(returnDict)
 
-        const user = JSON.parse(localStorage.getItem('user'));
         // Define the API endpoint URL
         const apiUrl = `/api/classes/update_quiz_assignments?data=${JSON.stringify(returnDict)}`;
         // Fetch data from the API
@@ -38,13 +42,26 @@ function QuizCard({id, text, isExpanded, handleClick, classes}) {
             .then((response) => response.json())
             .then((data) => {
             // Update the state with the fetched data
-            setClasses(data);
+            setResp(data);
             })
             .catch((error) => {
             console.error('Error fetching data:', error);
             });
-        return (0)
     }
+
+    async function huh(){
+        toast.success(resp['success'] + '..Reloading page');
+        await wait(2000, {
+            autoClose: 2000,
+        });  
+        window.location.reload();
+    }
+
+    useEffect(() => {
+        if (resp){
+            huh();
+        }
+    }, [resp])
 
     console.log()
 
@@ -87,6 +104,10 @@ function QuizCard({id, text, isExpanded, handleClick, classes}) {
                     {text}
                 </div>
             }
+            <ToastContainer  
+                position="top-center"
+                autoClose={1000}
+            />
         </div>
     )
 
