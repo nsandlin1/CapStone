@@ -50,14 +50,13 @@ function Quizzes() {
     }
 
     useEffect(() => {
-        if (quizzes.length == 0) {
+        if (classes.length == 0) {
             getClasses();
         }
     }, [])
     
     console.log('classes');
     console.log(classes);
-    console.log(quizzes);
     
     const transitionElection = useTransition(!isVisible, {
         from: {  opacity: 0},
