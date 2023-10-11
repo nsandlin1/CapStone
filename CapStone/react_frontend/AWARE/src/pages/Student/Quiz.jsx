@@ -102,6 +102,7 @@ function StudentQuiz() {
             </div>
             <ToastContainer  
                 position="top-center"
+                autoClose={1500}
             />
         </div>
     )

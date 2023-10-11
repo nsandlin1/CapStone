@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
+import { wait } from '../../utils/wait';
 
 export const Option = ({index, text, choose, selected}) => {
 
@@ -93,6 +94,7 @@ export const TakeQuiz = ({quizId, quizTitle, takingQuiz}) => {
 
     const [questions, setQuestions] = useState([]);
     const [submitStatus, setSubmitStatus] = useState();
+    const [resp, setResp] = useState();
 
     useEffect(() => {
         if (takingQuiz) {
@@ -117,12 +119,22 @@ export const TakeQuiz = ({quizId, quizTitle, takingQuiz}) => {
         console.log(question);
     }
 
+    async function successfullySubmittedQuiz() {
+        toast.success("Successfully Submitted Quiz... Reloading Page");
+        await wait(2000, {
+            autoClose: 2000,
+        });  
+        window.location.reload();
+    }
+    
+
     // When user selects an answer for each question
     const handleQuestionAnswer = (idx, selection) => {
 
         questions[idx].selected = selection;
         console.log(questions);
     }
+
 
     // Called when student clicks submit
     // Displays error message if student has not answered all questions
@@ -150,7 +162,6 @@ export const TakeQuiz = ({quizId, quizTitle, takingQuiz}) => {
             return;
         }
         else {
-            toast.success('All questions have been answered.');
             // Post, QuizId, Email, and Answers to backend
             console.log(answers);
             console.log(quizId);
@@ -162,6 +173,7 @@ export const TakeQuiz = ({quizId, quizTitle, takingQuiz}) => {
                 .then((data) => {
                     // Update the state with the fetched data
                     setSubmitStatus(data);
+                    setResp(data);
                 })
                 .catch((error) => {
                     console.error('Error fetching data:', error);
@@ -169,6 +181,11 @@ export const TakeQuiz = ({quizId, quizTitle, takingQuiz}) => {
         }
     }
 
+    useEffect(() => {
+        if (resp){
+            successfullySubmittedQuiz();
+        }
+    }, [resp])
     // Call backend using {quizId} to get all questions for the quiz
 
 
@@ -217,7 +234,7 @@ export const QuizCard = ({quizNum, quizTitle, quizDDate, quizGrade, onTakeQuiz})
                         md:text-xl lg:text-3xl  whitespace-nowrap hover:cursor-pointer`
 
     return (
-        <div className="flex h-[20%] hover:scale-105 hover:shadow-2xl w-[92%] rounded-xl bg-navy m-1 transition ">
+        <div className="flex h-[20%] hover:scale-105 hover:shadow-2xl w-[92%] rounded-xl pl-6 bg-navy m-1 transition ">
             <div className='flex flex-col w-[100%] h-[100%] items-center justify-center'>
                 <div className="flex flex-row w-[100%] h-full items-center justify-center">
                     <div className='flex w-[20%] h-[100%] justify-center items-center'>

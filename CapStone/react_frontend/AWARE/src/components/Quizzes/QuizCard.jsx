@@ -1,14 +1,11 @@
 import { React, useState, useEffect }from 'react';
 import { BiArrowBack } from 'react-icons/bi';
 import { ToastContainer, toast } from 'react-toastify';
+import { wait } from '../../utils/wait';
 
 function QuizCard({id, text, isExpanded, handleClick, classes}) {
 
     const [resp, setResp] = useState();
-
-    function wait(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-      }
 
     useEffect(() => {
         if (isExpanded === id){
