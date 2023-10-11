@@ -45,7 +45,7 @@ export const SenateReps = () => {
             if (!(pols[i].id in image_urls)) {
                 console.log("isnull");
                 (async function (index) {
-                    fetch(`http://localhost:5000/api/congress/member_image?id=${pols[index].id}`)
+                    fetch(`/api/congress/member_image?id=${pols[index].id}`)
                     .then((response) => {
                         if (!response.ok) {
                             throw new Error(
