@@ -51,7 +51,6 @@ function Quizzes() {
 
     useEffect(() => {
         if (quizzes.length == 0) {
-            getQuizzes();
             getClasses();
         }
     }, [])

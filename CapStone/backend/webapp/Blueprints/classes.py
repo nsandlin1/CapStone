@@ -460,3 +460,13 @@ def get_assigned_quizzes():
         )   
 
     return (jsonify(class_and_quizzes))
+
+
+@classes.route('/update_quiz_assignments')
+def update_quiz_assignments():
+    data = json.loads(request.args.get('data'))
+
+    print(data)
+
+    return ("hello")
+    ...

@@ -39,6 +39,7 @@ function CreateQuiz({back}) {
                 setRes(response)
             })
         back()
+        window.location.reload();
     }
 
     return (
