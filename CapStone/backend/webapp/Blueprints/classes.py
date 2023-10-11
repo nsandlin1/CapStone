@@ -387,13 +387,19 @@ def submit_quiz():
 
     correct = 0
 
+    print(answers)
+
     for question in answers:
         question_id = question['question_id']
         answer = question['selected']
 
+        print(answer)
+
         # Query the current question to get the correct answer
         question = Question.query.filter_by(question_id=question_id).all()
         correctAnswer = question[0].correct_option
+
+        print(correctAnswer)
 
         # Check if answer is correct
         if (correctAnswer == answer):

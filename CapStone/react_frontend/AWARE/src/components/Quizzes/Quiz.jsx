@@ -90,7 +90,7 @@ const TF = ({form}) => {
                     type='radio'
                     name='radAnswer'
                     onClick={() => {
-                        form.correct = "true"
+                        form.correct = "True"
                     }}
                 >
                 </input>
@@ -103,7 +103,7 @@ const TF = ({form}) => {
                     type='radio'
                     name='radAnswer'
                     onClick={() => {
-                        form.correct = "false"
+                        form.correct = "False"
                     }}
                 >
                 </input>
