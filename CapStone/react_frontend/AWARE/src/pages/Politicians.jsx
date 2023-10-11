@@ -8,7 +8,7 @@ import { StateButton } from "../components/StateButton";
 function Politicians() {
 
     var branch = "senate"
-    var api_url = `http://localhost:5000/api/congress/members?branch=${branch}`
+    var api_url = `/api/congress/members?branch=${branch}`
     
     const [pols, setPols] = useState([]);
     const [loading, setLoading] = useState(true);
