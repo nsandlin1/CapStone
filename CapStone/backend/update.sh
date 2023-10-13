@@ -50,3 +50,6 @@ echo "Updating Elections..."
 updated=$(curl -s http://127.0.0.1:5000/api/news_and_elections/elections?update=True)
 echo "Elections added:" $updated
 echo -------------------------------
+echo "Updating Majorities..."
+curl -s http://127.0.0.1:5000/api/congress/majority?update=True
+echo -------------------------------
