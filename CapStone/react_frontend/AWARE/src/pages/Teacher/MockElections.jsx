@@ -15,8 +15,9 @@ function MockElections() {
     // TODO: need to make fetch teacher-specific classes
     //       or query elections using the teacher also
     function getClassData() {
+        const user = JSON.parse(localStorage.getItem('user'));
         console.log("fetching class data")
-        fetch('/api/classes/get_class')
+        fetch(`/api/classes/get_class?email=${user['email']}`)
             .then((response) => {
                 if (!response.ok) {
                     throw new Error(
