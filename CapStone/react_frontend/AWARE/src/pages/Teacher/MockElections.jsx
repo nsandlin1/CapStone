@@ -16,8 +16,10 @@ function MockElections() {
     //       or query elections using the teacher also
     function getClassData() {
         const user = JSON.parse(localStorage.getItem('user'));
+        var api_url = `/api/classes/get_class?teacher=${user['email']}`
+        console.log(api_url)
         console.log("fetching class data")
-        fetch(`/api/classes/get_class?email=${user['email']}`)
+        fetch(api_url)
             .then((response) => {
                 if (!response.ok) {
                     throw new Error(

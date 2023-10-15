@@ -3,6 +3,9 @@ import { BiArrowBack } from 'react-icons/bi';
 import { MdOutlineCancel } from 'react-icons/md';
 import { Question, AddQButton } from './Quiz';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 function CreateQuiz({back}) {
 
     const [quizName, setQuizName] = useState("");
@@ -11,7 +14,7 @@ function CreateQuiz({back}) {
 
     const handleAddQuestion = () => {
         // Create a new form object based on the selected type
-        const newQ = { type: 'null', question: "", answers: {}, correct: "1" };
+        const newQ = { type: 'null', question: "", answers: {"1": "", "2": ""}, correct: "1" };
         
         console.log("Adding Question");
 
@@ -19,27 +22,56 @@ function CreateQuiz({back}) {
         setQuestions([...questions, newQ]);
     };
 
-    function saveButton() {
-        console.log("saved")
-        console.log(quizName)
-        console.log(questions)
-        const user = JSON.parse(localStorage.getItem('user'));
-        var api_url = '/api/classes/create_quiz?title=' + quizName + '&questions=' + JSON.stringify(questions) + '&email=' + user["email"];
-        console.log(api_url)
-        fetch(api_url)
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error(
-                        `HTTP error: ${response.status}`
-                    );
+    function emptyQuestion(l) {
+        for (let i = 0; i < l.length; i++) {
+            console.log(l[i].answers)
+            if (l[i].type == 'null' || l[i].question == "") {
+                return true;
+            }
+            if (l[i].type == 'MC') {
+                for (const [key, value] of Object.entries(l[i].answers)) {
+                    if (value == "") {
+                        return true
+                    }
                 }
-                return response.json()
-            })
-            .then((response) => {
-                setRes(response)
-            })
-        back()
-        window.location.reload();
+            }
+            if (l[i].type == 'TF') {
+                if (l[i].correct == "1") {
+                    return true
+                }
+            }
+            
+        }
+        return false
+    }
+
+    function saveButton() {
+        if (quizName == "") {
+            toast.error("Quiz must be given a name.")
+        } else if (questions.length == 0) {
+            toast.error("Cannot create empty quiz.")
+        } else if (emptyQuestion(questions)) {
+            toast.error("You must fill in all parameters.")
+        } else {
+            console.log("here")
+            const user = JSON.parse(localStorage.getItem('user'));
+            var api_url = '/api/classes/create_quiz?title=' + quizName + '&questions=' + JSON.stringify(questions) + '&email=' + user["email"];
+            console.log(api_url)
+            fetch(api_url)
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error(
+                            `HTTP error: ${response.status}`
+                        );
+                    }
+                    return response.json()
+                })
+                .then((response) => {
+                    setRes(response)
+                })
+            back()
+            window.location.reload();
+        }
     }
 
     return (
@@ -88,6 +120,9 @@ function CreateQuiz({back}) {
                     </div>
                 </div>
             </div>
+            <ToastContainer  
+                position="top-center"
+            />
         </div>
     )
 

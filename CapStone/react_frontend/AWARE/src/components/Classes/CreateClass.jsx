@@ -1,4 +1,6 @@
 import { BiArrowBack } from 'react-icons/bi';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const CreateClass = ({back, tEmail}) => {
 
@@ -7,28 +9,35 @@ export const CreateClass = ({back, tEmail}) => {
     var endTime = ""
 
     function submit() {
-        var api_url = '/api/classes/create_class' +
-                      '?name=' + name +
-                      '&teacher=' + tEmail +
-                      '&start_time=' + startTime +
-                      '&end_time=' + endTime
-        fetch(api_url)
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error(
-                        `HTTP error: ${response.status}`
-                    );
-                }
-                return response.json()
-            })
-            .then((data) => {
-                console.log(data)
-            })
-            .catch((err) => {
-                console.log(err.message)
-            })
-        window.location.reload();
-        back()
+        console.log(name)
+        console.log(startTime)
+        console.log(endTime)
+        if (name == "" || startTime == "" || endTime == "") {
+            toast.error("You must fill in all class attributes.")
+        } else {
+            var api_url = '/api/classes/create_class' +
+                        '?name=' + name +
+                        '&teacher=' + tEmail +
+                        '&start_time=' + startTime +
+                        '&end_time=' + endTime
+            fetch(api_url)
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error(
+                            `HTTP error: ${response.status}`
+                        );
+                    }
+                    return response.json()
+                })
+                .then((data) => {
+                    console.log(data)
+                })
+                .catch((err) => {
+                    console.log(err.message)
+                })
+            window.location.reload();
+            back()
+        }
     }
 
     return (
@@ -93,6 +102,9 @@ export const CreateClass = ({back, tEmail}) => {
                     </div>
                 </form>
             </div>
+            <ToastContainer  
+                position="top-center"
+            />
         </div>
 
     )

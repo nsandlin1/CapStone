@@ -3,6 +3,7 @@ import { BiArrowBack } from 'react-icons/bi';
 import { PolicyButton, CandidateButton, CandidateFrom, PolicyForm } from './BallotForm';
 import { MdOutlineCancel } from 'react-icons/md';
 import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function CreateBallot({back, classid}) {
 
@@ -41,26 +42,58 @@ function CreateBallot({back, classid}) {
         // } else { setSelectedForms([])}
     };
 
+    function emptyItem(l) {
+        for (let i = 0; i < l.length; i++) {
+            if (l[i].type == 'candidate') {
+                if (l[i].position == "") {
+                    return true
+                }
+                for (let j = 0; j < l[i].contestants; j++) {
+                    if (l[i][j].name == '' || l[i][j].party == '') {
+                        return true
+                    }
+                }
+            } else {
+                if (l[i].policy == "") {
+                    return true
+                }
+            }
+        }
+
+        return false
+    }
+
     function saveButtonClick() {
         // save to database
         // TODO: Need some error checking so can't send blank shit
-        var api_url = "/api/classes/create_ballot?" + 
-                      "classid=" + classid + 
-                      "&electionName=" + electionName + 
-                      "&selectedForms=" + JSON.stringify(selectedForms)
-        console.log(api_url)
-        fetch(api_url)
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error(
-                        `HTTP error: ${response.status}`
-                    );
-                }
-                return response.json()
-            })
-            .then((response) => {
-                setRes(response)
-            })
+        console.log("checking")
+        console.log(selectedForms)
+        if (electionName == "") {
+            console.log("name is null");
+            toast.error("You must provide an election name.");
+        } else if (selectedForms.length == 0) {
+            toast.error("Cannot create empty ballot. You've provided no forms.");
+        } else if (emptyItem(selectedForms)) {
+            toast.error("All items must be filled in.")
+        } else {
+            var api_url = "/api/classes/create_ballot?" + 
+                        "classid=" + classid + 
+                        "&electionName=" + electionName + 
+                        "&selectedForms=" + JSON.stringify(selectedForms)
+            console.log(api_url)
+            fetch(api_url)
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error(
+                            `HTTP error: ${response.status}`
+                        );
+                    }
+                    return response.json()
+                })
+                .then((response) => {
+                    setRes(response)
+                })
+        }
     }
     useEffect(() => {
         back()
@@ -117,6 +150,9 @@ function CreateBallot({back, classid}) {
                     </div>
                 </div>
             </div>
+            <ToastContainer  
+                position="top-center"
+            />
         </div>
     )
 }

@@ -32,6 +32,7 @@ const MultipleChoice = ({form}) => {
         const newAnswer = {}
 
         setAnswers([...answers, newAnswer])
+        
     }
 
 
@@ -180,4 +181,3 @@ export const AddQButton = ({onClick}) => {
     )
 
 }
-
