@@ -59,8 +59,8 @@ function CreateQuiz({back}) {
             var api_url = '/api/classes/create_quiz' + 
                           '?title=' + quizName + 
                           '&questions=' + JSON.stringify(questions) + 
-                          '&email=' + user["email"] //+ 
-                        //   '&due_date=' + dueDate;
+                          '&email=' + user["email"] + 
+                          '&due_date=' + dueDate;
             console.log(api_url)
             fetch(api_url)
                 .then((response) => {

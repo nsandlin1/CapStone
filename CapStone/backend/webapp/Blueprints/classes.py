@@ -8,6 +8,7 @@ from ..schemas import enrolled_class_schema, enrolled_classes_schema, \
                       choice_schema, choices_schema, students_schema, class_quizzes_schema, questions_schema, student_quizes_schema
 import json
 import random
+from datetime import datetime
 
 classes = Blueprint('classes', __name__)
 
@@ -138,6 +139,7 @@ def create_quiz():
     title = request.args.get('title')
     questions = json.loads(request.args.get('questions'))
     email = request.args.get('email')
+    due_date = datetime.strptime(request.args.get('due_date'), '%m-%d-%Y %H:%M:%S')
 
     print(title)
     print(questions)
@@ -148,13 +150,17 @@ def create_quiz():
     
     teacher_id = Teacher.query.filter_by(email=email).all()
     
+    print("1")
+    print("title " + title)
+    print("due_date", due_date)
     db.session.add(Quiz(
         None,
         teacher_id[0].id,
-        title
+        title,
+        due_date
     ))
     db.session.commit()
-
+    print("2")
     quiz_id = Quiz.query.filter_by(title=title).all()[0].id
     print(quiz_id)
 
@@ -166,6 +172,7 @@ def create_quiz():
 
     # ))
 
+    print("3")
     for q in questions:
 
         if q["type"] == "MC":
@@ -194,7 +201,7 @@ def create_quiz():
                 q["correct"]
             ))
             db.session.commit()
-
+    print("4")
     return jsonify({'quiz_created': True})
 
 @classes.route('/get_quiz')

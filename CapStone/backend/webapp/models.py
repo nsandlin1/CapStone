@@ -242,13 +242,15 @@ class Quiz(db.Model):
     id = Column(Integer, primary_key=True)
     teacher = Column(String(30), ForeignKey('teachers.id'))
     title = Column(String(50))
+    due_date = Column(DateTime)
 
     __table_args__ = (UniqueConstraint("title", name="title_unique"),)
 
-    def __init__(self, id, teacher, title):
+    def __init__(self, id, teacher, title, due_date):
         self.id = id
         self.teacher = teacher
         self.title = title
+        self.due_date = due_date
 
     def __repr__(self):
         return f'<Quiz "{self.id}, {self.teacher}, {self.title}">'
