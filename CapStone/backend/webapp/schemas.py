@@ -93,7 +93,7 @@ enrolled_classes_schema = EnrolledClassSchema(many=True)
 class QuizSchema(ma.Schema):
     class Meta:
         model = Quiz
-        fields = ("id", "title")
+        fields = ("id", "title", "due_date")
     
 quiz_schema = QuizSchema()
 quizes_schema = QuizSchema(many=True)
