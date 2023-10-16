@@ -11,6 +11,7 @@ function CreateQuiz({back}) {
     const [quizName, setQuizName] = useState("");
     const [questions, setQuestions] = useState([]);
     const [res, setRes] = useState("");
+    const [dueDate, setDueDate] = useState(""); // <------- sending this to api 
 
     const handleAddQuestion = () => {
         // Create a new form object based on the selected type
@@ -55,7 +56,11 @@ function CreateQuiz({back}) {
         } else {
             console.log("here")
             const user = JSON.parse(localStorage.getItem('user'));
-            var api_url = '/api/classes/create_quiz?title=' + quizName + '&questions=' + JSON.stringify(questions) + '&email=' + user["email"];
+            var api_url = '/api/classes/create_quiz' + 
+                          '?title=' + quizName + 
+                          '&questions=' + JSON.stringify(questions) + 
+                          '&email=' + user["email"] + 
+                          '&due_date=' + dueDate;
             console.log(api_url)
             fetch(api_url)
                 .then((response) => {
