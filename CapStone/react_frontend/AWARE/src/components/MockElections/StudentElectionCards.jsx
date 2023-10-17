@@ -1,5 +1,6 @@
 import { AiOutlineConsoleSql } from "react-icons/ai";
 import { useState, useEffect } from "react";
+import { toast, ToastContainer } from "react-toastify";
 
 
 export const Policy = ({ custKey, policyNum, policyName, handleChange}) => {
@@ -30,16 +31,13 @@ export const Policy = ({ custKey, policyNum, policyName, handleChange}) => {
                         onChange={() => handleChange(custKey, 'nay')}    
                     />
                 </div>
-            </div>
-            
+            </div> 
         </div>
     )
-
 }
 
 
 export const CandidateBallot = ({ custKey, ballotNum, position, candidates, handleChange }) => {
-
 
     return (
         <div className="flex flex-col h-full w-[90%] rounded-xl bg-navy m-2">
@@ -63,7 +61,6 @@ export const CandidateBallot = ({ custKey, ballotNum, position, candidates, hand
             </div>
         </div>
     )
-
 }
 
 export const VoteOnBallot = ({ballotNum}) => {
@@ -85,6 +82,10 @@ export const VoteOnBallot = ({ballotNum}) => {
           });
     }, []);
 
+    const submitBallot = () => {
+        
+    }
+
     const handleSelection = (contestNum, vote) => {
         const updatedContests = [...contests];
         updatedContests[contestNum] = { ...updatedContests[contestNum], vote: vote};
@@ -93,7 +94,23 @@ export const VoteOnBallot = ({ballotNum}) => {
     }
 
     const handleSubmit = () => {
-        
+
+        let unasnweredPoll = false;
+
+        contests.forEach((contest) => {
+            if (contest.vote == null){
+                unasnweredPoll = true;
+            }
+        })
+
+        if (!unasnweredPoll){
+            submitBallot();
+        }
+        else {
+            toast.error('You have not cast a vote on all contest.');
+            return;
+        }
+
     }
 
 
@@ -124,7 +141,9 @@ export const VoteOnBallot = ({ballotNum}) => {
                 ))}
             </div>
             <div className="flex w-full h-[8%] justify-center">
-                <button className="flex h-[100%] w-[20%]  bg-navy rounded-xl text-white justify-center items-center">
+                <button 
+                    className="flex h-[100%] w-[20%]  bg-navy rounded-xl text-white justify-center items-center"
+                    onClick={() => handleSubmit()}>
                     Submit
                 </button>
             </div>
