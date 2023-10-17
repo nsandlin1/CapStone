@@ -335,7 +335,7 @@ class CandidateBallot(db.Model):
         self.candidate = candidate
 
     def __repr__(self):
-        return f'<CandidateBallot "{self.ballot_id, self.id, self.position, self.candidate}">'
+        return f'<CandidateBallot "{self.ballot_id, self.id, self.position, self.candidate, self.pol_aff}">'
 
 class PolicyBallot(db.Model):
     __tablename__ = 'policy_ballots' 

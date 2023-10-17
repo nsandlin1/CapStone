@@ -110,8 +110,8 @@ def create_ballot():
                     None,                 # id
                     ballot_id,            # ballot id
                     form["position"],     # position
-                    None,                 # votes for
                     candidate["party"],   # pol aff
+                    None,                 # votes for
                     candidate["name"]     # candidate
                 ))
     db.session.commit()
@@ -556,6 +556,7 @@ def get_ballot_contests():
     # Iterate through all policies and add them to the return array
     for policy in policy_contests:
         returnContests.append({
+            'vote': None,
             'contestType': 'policy',
             'policy_num': policy.policy_num,
             'policy': policy.policy
@@ -564,6 +565,9 @@ def get_ballot_contests():
 
     # Dictionary to find where the contest for certain position is
     positions = {}
+
+
+    print(candidate_contests)
 
     # Iterate through all candidates
     for candidate in candidate_contests:
@@ -574,11 +578,14 @@ def get_ballot_contests():
             positions[candidate.position] = index
             index += 1
             returnContests.append({
+                'vote': None,
+                'contestNum': candidate.id,
                 'contestType': 'candidate',
                 'position': candidate.position,
                 'candidates': [{
                     'name': candidate.candidate,
-                    'candidate_id': candidate.id
+                    'candidate_id': candidate.id,
+                    'party': candidate.pol_aff
                 }]
             })
 
@@ -588,7 +595,8 @@ def get_ballot_contests():
             idx = positions[candidate.position]
             returnContests[idx]['candidates'].append({
                     'name': candidate.candidate,
-                    'candidate_id': candidate.id
+                    'candidate_id': candidate.id,
+                    'party': candidate.pol_aff
                 })
 
 
