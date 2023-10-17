@@ -728,4 +728,3 @@ def get_election_results():
         print(returnArr[positions[position][0]])
 
     return(jsonify(returnArr))
-    ...
