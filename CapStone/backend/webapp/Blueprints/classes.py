@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from ..models import EnrolledClass, Ballot, Quiz, ClassElection, PolicyBallot, \
                      CandidateBallot, Question, Choice, Student, Teacher, ClassQuiz, Question, StudentQuiz, \
-                     StudentVote
+                     StudentVote, BallotInfo
 from ..extensions import db
 from ..schemas import enrolled_class_schema, enrolled_classes_schema, \
                       ballot_schema, ballots_schema, class_elections_schema, \
@@ -115,6 +115,8 @@ def create_ballot():
                     candidate["name"]     # candidate
                 ))
     db.session.commit()
+
+
 
     return jsonify({'ballot(s)-added': True})
 
@@ -532,3 +534,62 @@ def get_class_ballots():
         })
 
     return (jsonify(returnBallots))
+
+
+# Gets all contests for a given election
+@classes.route('/get_ballot_contests')
+def get_ballot_contests():
+
+    # Get the requested ballot id
+    ballotid = request.args.get('ballotNum')
+
+    # Get all policy and candidate contests for an election
+    policy_contests = PolicyBallot.query.filter_by(ballot_id=ballotid).all()
+    candidate_contests = CandidateBallot.query.filter_by(ballot_id=ballotid).all()
+
+
+    # Array of contests to be returned
+    returnContests = []
+
+    # Keep track of where the curent contest is in the return array 
+    index = 0
+    
+    # Iterate through all policies and add them to the return array
+    for policy in policy_contests:
+        returnContests.append({
+            'contestType': 'policy',
+            'policy_num': policy.policy_num,
+            'policy': policy.policy
+        })
+        index += 1
+
+    # Dictionary to find where the contest for certain position is
+    positions = {}
+    # Iterate through all candidates
+    for candidate in candidate_contests:
+
+        # If the current candidates position does no appear in the dictionary already
+        # Add the contest to the return array and increment the index
+        if (candidate.position not in positions):
+            positions[candidate.position] = index
+            index += 1
+            returnContests.append({
+                'contestType': 'candidate',
+                'position': candidate.position,
+                'candidates': [{
+                    'name': candidate.candidate,
+                    'candidate_id': candidate.id
+                }]
+            })
+
+        # If the contest for that position already exists
+        # Find its position in the return array and append the current candidates name 
+        else:
+            idx = positions[candidate.position]
+            returnContests[idx]['candidates'].append({
+                    'name': candidate.candidate,
+                    'candidate_id': candidate.id
+                })
+
+
+    return (jsonify(returnContests))
