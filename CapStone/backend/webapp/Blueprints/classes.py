@@ -610,18 +610,26 @@ def submit_ballot_votes():
     votes = json.loads(request.args.get('votes'))
     ballotNum = request.args.get('ballotNum')
 
+    # Iterate through the contests on the ballot
     for vote in votes:
+        # Check the contest type
         if (vote['contestType'] == 'policy'):
+
+            # Get policy ballot so we can update the votes for or against
             policy = PolicyBallot.query.filter_by(policy_num=vote['policyNum']).first()
             if (vote['vote'] == 'yay'):
                 policy.votes_for = policy.votes_for + 1 
             elif (vote['vote'] == 'nay'):
                 policy.votes_against += 1
-            db.session.commit()
-            policy = PolicyBallot.query.filter_by(policy_num=vote['policyNum']).first()
-            print(policy)
+
         else:
-            ...
+
+            # Get candidate ballot so we can add votes to the respective candidate
+            candidateBallot = CandidateBallot.query.filter_by(ballot_id=ballotNum, id=vote['vote']).first()
+
+            candidateBallot.votes_for += 1
+            
+    db.session.commit()
 
     return(jsonify({'success': 'Successfully submitted votes for the election'}))
     ...
