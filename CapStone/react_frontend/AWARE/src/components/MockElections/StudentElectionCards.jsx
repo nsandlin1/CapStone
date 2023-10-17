@@ -1,7 +1,40 @@
-import { AiOutlineConsoleSql } from "react-icons/ai"
+import { AiOutlineConsoleSql } from "react-icons/ai";
+import { useState, useEffect } from "react";
 
 
-export const StudentElectionCard = ({ballotNum, electionTitle='Test', voted, onVote}) => {
+
+
+export const VoteOnBallot = ({ballotNum}) => {
+
+    const [contests, setContests] = useState([]);
+
+    useEffect(() => {
+        // Define the API endpoint URL
+        const apiUrl = `/api/classes/get_ballot_contests?ballotNum=${ballotNum}`;
+        // Fetch data from the API
+        fetch(apiUrl)
+          .then((response) => response.json())
+          .then((data) => {
+            // Update the state with the fetched data
+            setContests(data);
+          })
+          .catch((error) => {
+            console.error('Error fetching data:', error);
+          });
+    }, []);
+
+    console.log(contests)
+
+    return (
+        <div>
+            {ballotNum}
+        </div>
+    )
+
+}
+
+
+export const StudentElectionCard = ({custKey, ballotNum, electionTitle='Test', voted, onVote}) => {
 
     const votedOnElection = `${voted === null ? 'text-red-600' : 'text-white'} text-md 
                         md:text-xl lg:text-3xl  whitespace-nowrap hover:cursor-pointer`
@@ -21,7 +54,7 @@ export const StudentElectionCard = ({ballotNum, electionTitle='Test', voted, onV
                     </div>
                     <div className='flex w-[15%] items-center justify-end'>
                         <h1 className={votedOnElection} 
-                            onClick={() => console.log("Clicked")}>
+                            onClick={() => onVote(ballotNum, custKey)}>
                             {voted === false ? 'Take Quiz' : 'View Results'}
                         </h1>
                     </div>
