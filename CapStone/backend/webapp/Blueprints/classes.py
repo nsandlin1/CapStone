@@ -547,7 +547,6 @@ def get_ballot_contests():
     policy_contests = PolicyBallot.query.filter_by(ballot_id=ballotid).all()
     candidate_contests = CandidateBallot.query.filter_by(ballot_id=ballotid).all()
 
-
     # Array of contests to be returned
     returnContests = []
 
@@ -565,6 +564,7 @@ def get_ballot_contests():
 
     # Dictionary to find where the contest for certain position is
     positions = {}
+
     # Iterate through all candidates
     for candidate in candidate_contests:
 

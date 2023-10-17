@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { ToastContainer, toast } from 'react-toastify';
-import { StudentElectionCard } from "../../components/MockElections/StudentElectionCards";
+import { StudentElectionCard, VoteOnBallot } from "../../components/MockElections/StudentElectionCards";
 
 
 function Elections() {
 
     const [elections, setElections] = useState([]);
+    const [voting, setVoting] = useState(false);
+    const [votingOn, setVotingOn] = useState();
 
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem('user'));
@@ -23,14 +25,19 @@ function Elections() {
           });
     }, []);
 
-    const availableQuizzesView = `${false ? 'hidden' : 'flex flex-col relative h-[85%] w-[95%] rounded-xl items-center justify-center bg-white mb-4 shadow-lg'}`
+    function onVote(key) {
+        setVotingOn(key-1);
+        setVoting(true);
+    }
+
+    const availableQuizzesView = `${voting ? 'hidden' : 'flex flex-col relative h-[85%] w-[95%] rounded-xl items-center justify-center bg-white mb-4 shadow-lg'}`
 
     return (
         <div className='flex flex-col h-[91vh] w-[100%] bg-slate-400 justify-center items-center'>
             <div className='flex flex-col h-[100%] w-[90%] rounded-xl items-center'>
                 <div className='flex flex-row h-[15%] w-[95%] items-center justify-center'>
                     <div className='text-3xl md:text-4xl lg:text-5xl text-white drop-shadow-lg'>
-                        {true ? <h1>Ballots</h1> : 'Ballots'}
+                        {voting ? <h1>{elections[votingOn]['electionTitle']}</h1> : 'Ballots'}
                     </div>
                 </div>
                 <div className={availableQuizzesView}>
@@ -57,24 +64,24 @@ function Elections() {
                         elections.map((election, idx) => (
                                 <StudentElectionCard 
                                     key = {idx}
+                                    custKey = {idx}
                                     ballotNum = {election.ballotNum}
                                     electionTitle = {election.electionTitle}
                                     voted = {election.voted}
+                                    onVote = {onVote}
                                 />
                             ))}
                     </div>
                 </div>
-                {/* {takingQuiz ? 
+                {voting ? 
                     <div className="flex flex-col relative h-[85%] w-[95%] rounded-xl items-center justify-center bg-white mb-4 shadow-lg">
-                        <TakeQuiz 
-                            quizId = {currentQuiz}
-                            quizTitle = {currentQuizTitle}
-                            takingQuiz = {takingQuiz}
+                        <VoteOnBallot 
+                            ballotNum = {elections[votingOn]['ballotNum']}
                         /> 
                     </div>
                 : 
                     ''
-                } */}
+                }
             </div>
             <ToastContainer  
                 position="top-center"
