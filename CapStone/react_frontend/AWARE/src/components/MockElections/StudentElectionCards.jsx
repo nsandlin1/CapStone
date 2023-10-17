@@ -2,11 +2,11 @@ import { AiOutlineConsoleSql } from "react-icons/ai";
 import { useState, useEffect } from "react";
 
 
-export const Policy = ({policyNum, policyName}) => {
+export const Policy = ({ custKey, policyNum, policyName, handleChange}) => {
 
     return (
         <div className="flex flex-col h-full w-[90%] rounded-xl bg-navy">
-            <div className="flex flex-row h-[20%] md:h-[30%] w-full justify-center text-white font-bold md:text-4xl pt-2">
+            <div className="flex flex-row h-[20%] md:h-[30%] w-full justify-center items-center text-white font-bold md:text-4xl pt-2">
                 {policyName}
             </div>
             <div className="flex flex-row h-[70%] w-full items-center justify-center md:gap-2 pt-4">
@@ -17,16 +17,18 @@ export const Policy = ({policyNum, policyName}) => {
                     <input 
                         name={'policy'+policyNum}
                         type='radio'
+                        onChange={() => handleChange(custKey, 'yay')} 
                     />
                 </div>
                 <div className="flex flex-col h-full w-[30%] gap-1 md:gap-2">
                     <label className="flex justify-center text-white md:text-3xl">
-                            Nay
-                        </label>
-                        <input 
-                            name={'policy'+policyNum}
-                            type='radio'    
-                        />
+                        Nay
+                    </label>
+                    <input 
+                        name={'policy'+policyNum}
+                        type='radio'
+                        onChange={() => handleChange(custKey, 'nay')}    
+                    />
                 </div>
             </div>
             
@@ -36,34 +38,26 @@ export const Policy = ({policyNum, policyName}) => {
 }
 
 
-export const Candidate = ({candidate, canddiateNum}) => {
-
-    return (
-        <div>
-            {candidate}
-        </div>
-    )
-
-}
-
-export const CandidateBallot = ({ ballotNum, position, candidates }) => {
+export const CandidateBallot = ({ custKey, ballotNum, position, candidates, handleChange }) => {
 
 
     return (
         <div className="flex flex-col h-full w-[90%] rounded-xl bg-navy m-2">
-            <div className="flex flex-row h-[20%] md:h-[30%] w-full justify-center text-white font-bold md:text-4xl pt-2">
+            <div className="flex flex-row h-[20%] md:h-[25%] w-full justify-center items-center text-white font-bold md:text-4xl pt-2">
                 {position}
             </div>
-            <div className="flex flex-col h-[70%] w-full items-center justify-center md:gap-2 pt-4">
+            <div className="flex flex-col h-[75%] w-full items-center justify-center md:gap-2 pt-4 overflow-auto my-4">
                 {candidates.map((candidate, idx) =>
-                    <div key={idx} className="flex flex-row w-[70%] bg-yellow-400 items-center justify-center gap-2">
-                        <div className="flex w-[80%]">
-                            {candidate.name}
-                        </div>
+                    <div key={idx} className="flex flex-row w-[50%] items-center justify-center md:text-3xl gap-4">
                         <input
+                            className="hover:scale-110 hover:shadow-xl"
                             name={'candidateBallot'+ballotNum}
                             type='radio'
+                            onChange={() => handleChange(custKey, candidate.candidate_id)} 
                         />
+                        <div className="flex w-[70%] text-white ">
+                            {candidate.name + '   (' + candidate.party + ')'}
+                        </div>
                     </div>
                 )}
             </div>
@@ -91,20 +85,49 @@ export const VoteOnBallot = ({ballotNum}) => {
           });
     }, []);
 
-    return (
-        <div className="flex flex-col w-full h-full rounded-xl gap-2 p-2 overflow-auto my-2">
-            {
-                contests.map((contest, index) => (
+    const handleSelection = (contestNum, vote) => {
+        const updatedContests = [...contests];
+        updatedContests[contestNum] = { ...updatedContests[contestNum], vote: vote};
+        console.log(updatedContests)
+        setContests(updatedContests)
+    }
 
-                    <div key={index} className="flex h-full w-full items-center justify-center">
-                        {console.log(contest)}
-                        {contest['contestType'] === 'policy' ?
-                                <Policy policyNum={contest.policyNum} policyName={contest.policy} />
-                        :
-                                < CandidateBallot ballotNum={contest.contestNum} position={contest.position} candidates={contest.candidates}/>
-                        }
-                    </div>
-            ))}
+    const handleSubmit = () => {
+        
+    }
+
+
+    return (
+        <div className="flex flex-col w-full h-full rounded-xl gap-2 p-2 justify-center items-center overflow-auto my-2">
+            <div className="flex flex-col w-full h-[92%] items-center gap-2 overflow-auto">
+                {
+                    contests.map((contest, index) => (
+
+                        <div key={index} className="flex h-full w-full items-center justify-center">
+                            {contest['contestType'] === 'policy' ?
+                                    <Policy
+                                        custKey={index} 
+                                        policyNum={contest.policyNum} 
+                                        policyName={contest.policy}
+                                        handleChange={handleSelection}
+                                    />
+                            :
+                                    < CandidateBallot 
+                                        custKey={index}
+                                        ballotNum={contest.contestNum} 
+                                        position={contest.position} 
+                                        candidates={contest.candidates}
+                                        handleChange={handleSelection}
+                                    />
+                            }
+                        </div>
+                ))}
+            </div>
+            <div className="flex w-full h-[8%] justify-center">
+                <button className="flex h-[100%] w-[20%]  bg-navy rounded-xl text-white justify-center items-center">
+                    Submit
+                </button>
+            </div>
         </div>
     )
 }
@@ -116,7 +139,7 @@ export const StudentElectionCard = ({custKey, ballotNum, electionTitle='Test', v
                         md:text-xl lg:text-3xl  whitespace-nowrap hover:cursor-pointer`
 
     return (
-        <div className="flex h-[20%] hover:scale-105 hover:shadow-2xl w-[92%] rounded-xl pl-6 bg-navy m-1 transition ">
+        <div className="flex h-full hover:scale-105 hover:shadow-2xl w-[92%] rounded-xl pl-6 bg-navy m-1 transition ">
             <div className='flex flex-col w-[100%] h-[100%] items-center justify-center'>
                 <div className="flex flex-row w-[100%] h-full items-center justify-center">
                     <div className='flex w-[20%] h-[100%] justify-center items-center'>
