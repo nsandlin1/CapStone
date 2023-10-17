@@ -99,8 +99,8 @@ def create_ballot():
                 None,           # id
                 ballot_id,      # ballot id
                 form["policy"], # policy
-                None,           # votes for
-                None            # votes againse
+                0,           # votes for
+                0           # votes againse
             ))
             print('1 added')
         else:
@@ -111,7 +111,7 @@ def create_ballot():
                     ballot_id,            # ballot id
                     form["position"],     # position
                     candidate["party"],   # pol aff
-                    None,                 # votes for
+                    0,                 # votes for
                     candidate["name"]     # candidate
                 ))
     db.session.commit()
@@ -558,7 +558,7 @@ def get_ballot_contests():
         returnContests.append({
             'vote': None,
             'contestType': 'policy',
-            'policy_num': policy.policy_num,
+            'policyNum': policy.policy_num,
             'policy': policy.policy
         })
         index += 1

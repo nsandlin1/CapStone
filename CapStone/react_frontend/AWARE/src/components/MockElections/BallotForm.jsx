@@ -22,9 +22,9 @@ const Candidate = ({index, form}) => {
                     type='option'
                     name='position'
                     onChange={(t) => form.party = t.target.value}>
-                    <option value="republican">Republican</option>
-                    <option value="democrat">Democrat</option>
-                    <option value="independent">Independent</option>
+                    <option value="R">Republican</option>
+                    <option value="D">Democrat</option>
+                    <option value="D">Independent</option>
                 </select>
         </div>
     )
@@ -38,7 +38,7 @@ export const CandidateFrom = ({index, form, onDelete}) => {
 
     const handleAddCandidate = () => {
         // Create a new form object based on the selected type
-        const newCandidate = {name: '', party: 'republican'};
+        const newCandidate = {name: '', party: 'R'};
         
         // Add the form to the selectedForms array
         form.contestants = [...candidates, newCandidate];

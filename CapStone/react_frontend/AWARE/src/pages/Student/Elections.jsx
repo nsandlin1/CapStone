@@ -57,19 +57,21 @@ function Elections() {
                             </h1> 
                         </div>
                     </div>
-                    <div className='flex flex-col w-[100%] h-[90%] justify-start items-center overflow-auto'>
+                    <div className='flex flex-col w-[100%] h-[90%] justify-start items-center overflow-auto gap-2 my-2'>
                         {elections['error'] ? 
                             <h1 className="text-navy text-2xl md:text-6xl pt-24 font-bold text-wrap whitespace-normal">You have not registered for any class</h1>
                         :
                         elections.map((election, idx) => (
-                                <StudentElectionCard 
-                                    key = {idx}
-                                    custKey = {idx}
-                                    ballotNum = {election.ballotNum}
-                                    electionTitle = {election.electionTitle}
-                                    voted = {election.voted}
-                                    onVote = {onVote}
-                                />
+                            <div key={idx} className="flex w-full h-[50%] min-h-[20%] items-center justify-center">
+                                    <StudentElectionCard 
+                                        key = {idx}
+                                        custKey = {idx}
+                                        ballotNum = {election.ballotNum}
+                                        electionTitle = {election.electionTitle}
+                                        voted = {election.voted}
+                                        onVote = {onVote}
+                                    />
+                                </div>
                             ))}
                     </div>
                 </div>

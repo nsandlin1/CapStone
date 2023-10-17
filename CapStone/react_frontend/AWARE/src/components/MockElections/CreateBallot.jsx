@@ -17,7 +17,7 @@ function CreateBallot({back, classid}) {
         if (formType == 'policy') {
             newForm = { type: 'policy', policy: ""};
         } else {
-            newForm = { type: 'candidate', position: "", contestants: [{name: '', party: 'republican'},{name: '', party: 'republican'}]};
+            newForm = { type: 'candidate', position: "", contestants: [{name: '', party: 'R'},{name: '', party: 'R'}]};
         }
 
         // Add the form to the selectedForms array
