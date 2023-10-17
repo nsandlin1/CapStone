@@ -6,8 +6,8 @@ import { toast, ToastContainer } from "react-toastify";
 export const Policy = ({ custKey, policyNum, policyName, handleChange}) => {
 
     return (
-        <div className="flex flex-col h-full w-[90%] rounded-xl bg-navy">
-            <div className="flex flex-row h-[20%] md:h-[30%] w-full justify-center items-center text-white font-bold md:text-4xl pt-2">
+        <div className="flex flex-col h-full w-[90%] rounded-xl bg-navy p-2">
+            <div className="flex flex-row h-[20%] md:h-[30%] w-full justify-center items-center text-white font-bold md:text-3xl pt-2">
                 {policyName}
             </div>
             <div className="flex flex-row h-[70%] w-full items-center justify-center md:gap-2 pt-4">
@@ -40,20 +40,20 @@ export const Policy = ({ custKey, policyNum, policyName, handleChange}) => {
 export const CandidateBallot = ({ custKey, ballotNum, position, candidates, handleChange }) => {
 
     return (
-        <div className="flex flex-col h-full w-[90%] rounded-xl bg-navy m-2">
-            <div className="flex flex-row h-[20%] md:h-[25%] w-full justify-center items-center text-white font-bold md:text-4xl pt-2">
+        <div className="flex flex-col h-full w-[90%] rounded-xl bg-navy m-2 p-2">
+            <div className="flex flex-row h-[20%] md:h-[25%] w-full justify-center items-center text-white font-bold md:text-3xl pt-2">
                 {position}
             </div>
             <div className="flex flex-col h-[75%] w-full items-center justify-center md:gap-2 pt-4 overflow-auto my-4">
                 {candidates.map((candidate, idx) =>
-                    <div key={idx} className="flex flex-row w-[50%] items-center justify-center md:text-3xl gap-4">
+                    <div key={idx} className="flex flex-row w-[50%] items-center justify-end md:text-3xl gap-4">
                         <input
                             className="hover:scale-110 hover:shadow-xl"
                             name={'candidateBallot'+ballotNum}
                             type='radio'
                             onChange={() => handleChange(custKey, candidate.candidate_id)} 
                         />
-                        <div className="flex w-[70%] text-white ">
+                        <div className="flex w-[65%] text-white ">
                             {candidate.name + '   (' + candidate.party + ')'}
                         </div>
                     </div>
@@ -66,6 +66,7 @@ export const CandidateBallot = ({ custKey, ballotNum, position, candidates, hand
 export const VoteOnBallot = ({ballotNum}) => {
 
     const [contests, setContests] = useState([]);
+    const [submitStatus, setSubmitStatus] = useState([]);
 
     useEffect(() => {
         // Define the API endpoint URL
@@ -82,8 +83,19 @@ export const VoteOnBallot = ({ballotNum}) => {
           });
     }, []);
 
-    const submitBallot = () => {
-        
+    const submitBallot = async () => {
+        const user = JSON.parse(localStorage.getItem('user'));
+        // Define the API endpoint URL
+        const apiUrl = `/api/classes/submit_ballot_votes?email=${user['email']}&votes=${JSON.stringify(contests)}&ballotNum=${ballotNum}`;
+        fetch(apiUrl)
+                .then((response) => response.json())
+                .then((data) => {
+                    // Update the state with the fetched data
+                    setSubmitStatus(data);
+                })
+                .catch((error) => {
+                    console.error('Error fetching data:', error);
+        });
     }
 
     const handleSelection = (contestNum, vote) => {
@@ -105,14 +117,15 @@ export const VoteOnBallot = ({ballotNum}) => {
 
         if (!unasnweredPoll){
             submitBallot();
+            if (submitStatus.success){
+                toast.success("Successfully submitted votes.");
+            }
         }
         else {
             toast.error('You have not cast a vote on all contest.');
             return;
         }
-
     }
-
 
     return (
         <div className="flex flex-col w-full h-full rounded-xl gap-2 p-2 justify-center items-center overflow-auto my-2">
@@ -172,7 +185,7 @@ export const StudentElectionCard = ({custKey, ballotNum, electionTitle='Test', v
                     </div>
                     <div className='flex w-[15%] items-center justify-end'>
                         <h1 className={votedOnElection} 
-                            onClick={() => onVote(ballotNum, custKey)}>
+                            onClick={voted == false ? () => onVote(ballotNum, custKey) : ''}>
                             {voted === false ? 'Take Quiz' : 'View Results'}
                         </h1>
                     </div>

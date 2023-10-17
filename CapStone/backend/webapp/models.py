@@ -323,7 +323,7 @@ class CandidateBallot(db.Model):
     ballot_id = Column(Integer, ForeignKey('ballots.id'))
     position = Column(String(200))
     pol_aff = Column(String(50))
-    votes_for = Column(String(200))
+    votes_for = Column(Integer)
     candidate = Column(String(100))
 
     def __init__(self, id, ballot_id, position, pol_aff, votes_for, candidate):
@@ -343,8 +343,8 @@ class PolicyBallot(db.Model):
     policy_num = Column(Integer, primary_key=True)
     ballot_id = Column(Integer, ForeignKey('ballots.id'))
     policy = Column(String(200))
-    votes_for = Column(String(200))
-    votes_against = Column(String(200))  
+    votes_for = Column(Integer)
+    votes_against = Column(Integer)  
 
     def __init__(self, pol_num, ballot_id, policy, votes_for, votes_against):
         self.pol_num = pol_num
@@ -354,7 +354,7 @@ class PolicyBallot(db.Model):
         self.votes_against = votes_against
 
     def __repr__(self):
-        return f'<PolicyBallot "{self.ballot_id, self.policy_num, self.policy}">'
+        return f'<PolicyBallot "{self.ballot_id, self.policy_num, self.policy, self.votes_for, self.votes_against}">'
 
 class ClassElection(db.Model):
     __tablename__ = 'class_elections'

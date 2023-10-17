@@ -163,8 +163,6 @@ export const TakeQuiz = ({quizId, quizTitle, takingQuiz}) => {
         }
         else {
             // Post, QuizId, Email, and Answers to backend
-            console.log(answers);
-            console.log(quizId);
             const user = JSON.parse(localStorage.getItem('user'));
             // Define the API endpoint URL
             const apiUrl = `/api/classes/submit_quiz?email=${user['email']}&answers=${JSON.stringify(answers)}&quizId=${quizId}`;

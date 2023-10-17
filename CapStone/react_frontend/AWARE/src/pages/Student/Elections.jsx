@@ -62,7 +62,7 @@ function Elections() {
                             <h1 className="text-navy text-2xl md:text-6xl pt-24 font-bold text-wrap whitespace-normal">You have not registered for any class</h1>
                         :
                         elections.map((election, idx) => (
-                            <div key={idx} className="flex w-full h-[50%] min-h-[20%] items-center justify-center">
+                            <div key={idx} className="flex w-full h-[20%] min-h-[20%] items-center justify-center">
                                     <StudentElectionCard 
                                         key = {idx}
                                         custKey = {idx}

@@ -19,8 +19,8 @@ export const ClassCard = ({classId, className, startTime, endTime, teacher, clas
     
     return (
         <div className={cardContainer}>
-            <div className='flex flex-col w-[100%] h-[100%] items-center justify-center' onClick={handleToggleCollapse}>
-                <div className={basicInfo}>
+            <div className='flex flex-col w-[100%] h-[100%] items-center justify-center'>
+                <div className={basicInfo} onClick={handleToggleCollapse} >
                     <div className='flex w-[20%] h-[100%] justify-center items-center'>
                         <h1 className='text-3xl text-white whitespace-nowrap'>
                             {className}

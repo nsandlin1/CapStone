@@ -566,7 +566,6 @@ def get_ballot_contests():
     # Dictionary to find where the contest for certain position is
     positions = {}
 
-
     print(candidate_contests)
 
     # Iterate through all candidates
@@ -601,3 +600,28 @@ def get_ballot_contests():
 
 
     return (jsonify(returnContests))
+
+
+# Submits a students votes
+@classes.route('/submit_ballot_votes')
+def submit_ballot_votes():
+
+    email = request.args.get('email')
+    votes = json.loads(request.args.get('votes'))
+    ballotNum = request.args.get('ballotNum')
+
+    for vote in votes:
+        if (vote['contestType'] == 'policy'):
+            policy = PolicyBallot.query.filter_by(policy_num=vote['policyNum']).first()
+            if (vote['vote'] == 'yay'):
+                policy.votes_for = policy.votes_for + 1 
+            elif (vote['vote'] == 'nay'):
+                policy.votes_against += 1
+            db.session.commit()
+            policy = PolicyBallot.query.filter_by(policy_num=vote['policyNum']).first()
+            print(policy)
+        else:
+            ...
+
+    return(jsonify({'success': 'Successfully submitted votes for the election'}))
+    ...
