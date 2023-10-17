@@ -5,17 +5,23 @@ import { StudentElectionCard } from "../../components/MockElections/StudentElect
 
 function Elections() {
 
-    const [elections, setElections] = useState([
-        {
-            id: 1,
-            class_election_title: 'Pencil Ban'
-        },
-        {
-            id: 2,
-            class_election_title: 'Presidential Election'
-        }
-    ]);
+    const [elections, setElections] = useState([]);
 
+    useEffect(() => {
+        const user = JSON.parse(localStorage.getItem('user'));
+        // Define the API endpoint URL
+        const apiUrl = `/api/classes/get_class_ballots?email=${user['email']}`;
+        // Fetch data from the API
+        fetch(apiUrl)
+          .then((response) => response.json())
+          .then((data) => {
+            // Update the state with the fetched data
+            setElections(data);
+          })
+          .catch((error) => {
+            console.error('Error fetching data:', error);
+          });
+    }, []);
 
     const availableQuizzesView = `${false ? 'hidden' : 'flex flex-col relative h-[85%] w-[95%] rounded-xl items-center justify-center bg-white mb-4 shadow-lg'}`
 
@@ -51,9 +57,9 @@ function Elections() {
                         elections.map((election, idx) => (
                                 <StudentElectionCard 
                                     key = {idx}
-                                    ballotNum = {election.id}
-                                    electionTitle = {election.class_election_title}
-                                    voted = {false}
+                                    ballotNum = {election.ballotNum}
+                                    electionTitle = {election.electionTitle}
+                                    voted = {election.voted}
                                 />
                             ))}
                     </div>

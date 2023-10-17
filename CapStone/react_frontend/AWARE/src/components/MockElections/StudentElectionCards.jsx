@@ -22,7 +22,7 @@ export const StudentElectionCard = ({ballotNum, electionTitle='Test', voted, onV
                     <div className='flex w-[15%] items-center justify-end'>
                         <h1 className={votedOnElection} 
                             onClick={() => console.log("Clicked")}>
-                            {voted === null ? 'Take Quiz' : 'Take Quiz'}
+                            {voted === false ? 'Take Quiz' : 'View Results'}
                         </h1>
                     </div>
                 </div>

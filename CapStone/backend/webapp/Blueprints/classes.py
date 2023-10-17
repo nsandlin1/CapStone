@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 from ..models import EnrolledClass, Ballot, Quiz, ClassElection, PolicyBallot, \
-                     CandidateBallot, Question, Choice, Student, Teacher, ClassQuiz, Question, StudentQuiz
+                     CandidateBallot, Question, Choice, Student, Teacher, ClassQuiz, Question, StudentQuiz, \
+                     StudentVote
 from ..extensions import db
 from ..schemas import enrolled_class_schema, enrolled_classes_schema, \
                       ballot_schema, ballots_schema, class_elections_schema, \
@@ -474,15 +475,13 @@ def get_assigned_quizzes():
 
     return (jsonify(class_and_quizzes))
 
-
+# Updates which classes a quiz is assigned to
 @classes.route('/update_quiz_assignments')
 def update_quiz_assignments():
     data = json.loads(request.args.get('data'))
 
     for clas in data['classes']:
         selected = clas['selected']
-
-        print(selected)
 
         classQuiz = ClassQuiz.query.filter_by(classid=clas['classId'], quizid=data['quizId']).all()
 
@@ -493,8 +492,43 @@ def update_quiz_assignments():
             ))
             db.session.commit()
         elif (classQuiz and not selected):
-            print(classQuiz[0])
             db.session.delete(classQuiz[0])
             db.session.commit()
 
     return (jsonify({'success': 'Changes successfully saved.'}))
+
+
+# Gets the ballots assigned to a students class, with a flag showing if the student has voted or not
+@classes.route('/get_class_ballots')
+def get_class_ballots():
+
+    student = request.args.get('email')
+    studentId = Student.query.filter_by(email=student).first()
+
+    # get class the student is enrolled in
+    studClass = get_student_class(student)
+    # checks if class was found for the specified student
+    if (studClass == -1):
+        # returns error if no class found
+        return (jsonify({'error': 'Could not find any classes for specified user.'}))
+
+    # Finds all ballots for a class
+    ballots = Ballot.query.filter_by(classid=studClass).all()
+
+    returnBallots = []
+
+    for ballot in ballots:
+        print(ballot.election_title)
+        hasVoted = StudentVote.query.filter_by(ballotid=ballot.id, studentid=studentId.id).all()
+        print(hasVoted)
+        voted = False
+        if (hasVoted):
+            voted = True
+
+        returnBallots.append({
+            'ballotNum': ballot.id,
+            'electionTitle': ballot.election_title,
+            'voted': voted
+        })
+
+    return (jsonify(returnBallots))
