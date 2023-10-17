@@ -24,7 +24,7 @@ const Candidate = ({index, form}) => {
                     onChange={(t) => form.party = t.target.value}>
                     <option value="R">Republican</option>
                     <option value="D">Democrat</option>
-                    <option value="D">Independent</option>
+                    <option value="I">Independent</option>
                 </select>
         </div>
     )

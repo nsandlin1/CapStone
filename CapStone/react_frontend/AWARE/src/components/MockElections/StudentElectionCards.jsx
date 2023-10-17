@@ -41,7 +41,7 @@ export const CandidateBallot = ({ custKey, ballotNum, position, candidates, hand
 
     return (
         <div className="flex flex-col h-full w-[90%] rounded-xl bg-navy m-2 p-2">
-            <div className="flex flex-row h-[20%] md:h-[25%] w-full justify-center items-center text-white font-bold md:text-3xl pt-2">
+            <div className="flex flex-row w-full justify-center items-center text-white font-bold md:text-3xl pt-2">
                 {position}
             </div>
             <div className="flex flex-col h-[75%] w-full items-center justify-center md:gap-2 pt-4 overflow-auto my-4">
