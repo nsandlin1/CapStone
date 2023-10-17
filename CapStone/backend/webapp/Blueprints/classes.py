@@ -642,4 +642,90 @@ def submit_ballot_votes():
     db.session.commit()
 
     return(jsonify({'success': 'Successfully submitted votes for the election'}))
+
+
+# Gets the results of a given election
+@classes.route('/get_election_results')
+def get_election_results():
+
+    # Get the requested ballot id
+    ballotid = request.args.get('ballotNum')
+
+    # Get all policy and candidate contests for an election
+    policy_contests = PolicyBallot.query.filter_by(ballot_id=ballotid).all()
+    candidate_contests = CandidateBallot.query.filter_by(ballot_id=ballotid).all()
+
+    # Contains:
+    # { All candidateContest with percentage of votes for each candidate }
+    # { All policyContest with percentage of votes for and against}
+    # { EligibleVotes: Int, TotalVote: Int}
+    returnArr = []
+
+    # Keep track of where the curent contest is in the return array 
+    index = 0
+    
+    # Iterate through all policies and add them to the return array
+    for policy in policy_contests:
+
+        totalCastedVotes = policy.votes_for + policy.votes_against
+
+        percentVotesFor = round((policy.votes_for/totalCastedVotes*100),2)
+        percentVotesAgainst = round((policy.votes_for/totalCastedVotes*100),2)
+
+        returnArr.append({
+            'votesFor': percentVotesFor,
+            'votesAgainst': percentVotesAgainst,
+            'contestType': 'policy',
+            'policyNum': policy.policy_num,
+            'policy': policy.policy
+        })
+        index += 1
+
+    # Dictionary to find where the contest for certain position is
+    positions = {}
+
+    # Iterate through all candidates
+    for candidate in candidate_contests:
+
+        # If the current candidates position does no appear in the dictionary already
+        # Add the contest to the return array and increment the index
+        if (candidate.position not in positions):
+
+            # Keep track of the positions index and total votes accounted for that position
+            positions[candidate.position] = [index, candidate.votes_for]
+
+            index += 1
+
+            returnArr.append({
+                'totalVotes': 0,
+                'contestNum': candidate.id,
+                'contestType': 'candidate',
+                'position': candidate.position,
+                'candidates': [{
+                    'name': candidate.candidate,
+                    'candidate_id': candidate.id,
+                    'party': candidate.pol_aff,
+                    'votesFor': candidate.votes_for
+                }]
+            })
+
+        # If the contest for that position already exists
+        # Find its position in the return array and append the current candidates name 
+        else:
+            idx = positions[candidate.position][0]
+
+            positions[candidate.position][1] += candidate.votes_for
+
+            returnArr[idx]['candidates'].append({
+                    'name': candidate.candidate,
+                    'candidate_id': candidate.id,
+                    'party': candidate.pol_aff,
+                    'votesFor': candidate.votes_for
+                })
+
+    for position in positions:
+        returnArr[positions[position][0]]['totalVotes'] += positions[position][1]
+        print(returnArr[positions[position][0]])
+
+    return(jsonify(returnArr))
     ...

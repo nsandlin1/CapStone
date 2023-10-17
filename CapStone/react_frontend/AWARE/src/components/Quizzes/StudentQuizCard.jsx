@@ -220,7 +220,6 @@ export const TakeQuiz = ({quizId, quizTitle, takingQuiz}) => {
             />
         </div>
     )
-
 }
 
 // Card that gives the student a quick glance at what quizzes they have coming up
