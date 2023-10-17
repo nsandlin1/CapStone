@@ -30,6 +30,10 @@ function Elections() {
         setVoting(true);
     }
 
+    function onViewResults() {
+
+    }
+
     const availableQuizzesView = `${voting ? 'hidden' : 'flex flex-col relative h-[85%] w-[95%] rounded-xl items-center justify-center bg-white mb-4 shadow-lg'}`
 
     return (
@@ -70,6 +74,7 @@ function Elections() {
                                         electionTitle = {election.electionTitle}
                                         voted = {election.voted}
                                         onVote = {onVote}
+                                        onViewResults = {onViewResults}
                                     />
                                 </div>
                             ))}

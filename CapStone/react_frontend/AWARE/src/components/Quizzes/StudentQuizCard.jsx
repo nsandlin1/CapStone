@@ -126,7 +126,6 @@ export const TakeQuiz = ({quizId, quizTitle, takingQuiz}) => {
         });  
         window.location.reload();
     }
-    
 
     // When user selects an answer for each question
     const handleQuestionAnswer = (idx, selection) => {
@@ -134,7 +133,6 @@ export const TakeQuiz = ({quizId, quizTitle, takingQuiz}) => {
         questions[idx].selected = selection;
         console.log(questions);
     }
-
 
     // Called when student clicks submit
     // Displays error message if student has not answered all questions

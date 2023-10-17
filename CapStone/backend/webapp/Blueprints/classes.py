@@ -610,6 +610,9 @@ def submit_ballot_votes():
     votes = json.loads(request.args.get('votes'))
     ballotNum = request.args.get('ballotNum')
 
+    studentId = Student.query.filter_by(email=email).first()
+
+
     # Iterate through the contests on the ballot
     for vote in votes:
         # Check the contest type
@@ -629,6 +632,13 @@ def submit_ballot_votes():
 
             candidateBallot.votes_for += 1
             
+    # Make a record that the student has voted on that election
+    db.session.add(StudentVote(
+        ballotNum,
+        studentId.id,
+        1
+    ))
+        
     db.session.commit()
 
     return(jsonify({'success': 'Successfully submitted votes for the election'}))

@@ -1,6 +1,7 @@
 import { AiOutlineConsoleSql } from "react-icons/ai";
 import { useState, useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
+import { wait } from "../../utils/wait";
 
 
 export const Policy = ({ custKey, policyNum, policyName, handleChange}) => {
@@ -117,15 +118,26 @@ export const VoteOnBallot = ({ballotNum}) => {
 
         if (!unasnweredPoll){
             submitBallot();
-            if (submitStatus.success){
-                toast.success("Successfully submitted votes.");
-            }
         }
         else {
             toast.error('You have not cast a vote on all contest.');
             return;
         }
     }
+
+    async function reload() {
+        await wait(2000, {
+            autoClose: 2000,
+        });  
+        window.location.reload();
+    }
+
+    useEffect(() => {
+        if (submitStatus.success){
+            toast.success("Successfully submitted votes.");
+            reload();
+        }
+    }, [submitStatus])
 
     return (
         <div className="flex flex-col w-full h-full rounded-xl gap-2 p-2 justify-center items-center overflow-auto my-2">
