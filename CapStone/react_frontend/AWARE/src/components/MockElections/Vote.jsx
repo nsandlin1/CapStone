@@ -14,7 +14,7 @@ export const Policy = ({ custKey, policyNum, policyName, handleChange}) => {
             <div className="flex flex-row h-[70%] w-full items-center justify-center md:gap-2 pt-4">
                 <div className="flex flex-col h-full w-[30%] gap-2">
                     <label className="flex justify-center text-white md:text-3xl">
-                        Yay
+                        Yae
                     </label>
                     <input 
                         name={'policy'+policyNum}

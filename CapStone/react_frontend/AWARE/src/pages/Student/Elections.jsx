@@ -38,6 +38,11 @@ function Elections() {
         setViewingResults(!viewingResults);
     }
 
+    function onBack() {
+        setCurrentBallot();
+        setViewingResults(false);
+    }
+
     const availableQuizzesView = `${voting || viewingResults ? 'hidden' : 'flex flex-col relative h-[85%] w-[95%] rounded-xl items-center justify-center bg-white mb-4 shadow-lg'}`
 
     return (
@@ -99,7 +104,7 @@ function Elections() {
                 : 
                     viewingResults ? 
                         <div className="flex flex-col relative h-[85%] w-[95%] rounded-xl items-center justify-center bg-white mb-4 shadow-lg">
-                            <ViewResults ballotNum={elections[currentBallot]['ballotNum']}/>
+                            <ViewResults ballotNum={elections[currentBallot]['ballotNum']} onBack={onBack}/>
                         </div> 
                     :
                         ''

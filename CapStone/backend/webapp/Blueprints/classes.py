@@ -654,12 +654,22 @@ def get_election_results():
     # Get all policy and candidate contests for an election
     policy_contests = PolicyBallot.query.filter_by(ballot_id=ballotid).all()
     candidate_contests = CandidateBallot.query.filter_by(ballot_id=ballotid).all()
+    classId = Ballot.query.filter_by(id=ballotid).all()
+
+    #enrolled_classid = EnrolledClass.query.filter_by(id=classId[0].classid).first()
+
+    num_students_vote = StudentVote.query.filter_by(ballotid=ballotid).count()
+
+    num_students_enrolled = Student.query.filter_by(enrolled_class=classId[0].classid).count()
+
 
     # Contains:
     # { All candidateContest with percentage of votes for each candidate }
     # { All policyContest with percentage of votes for and against}
     # { EligibleVotes: Int, TotalVote: Int}
-    returnArr = []
+    returnArr = {
+        'contests': []
+    }
 
     # Keep track of where the curent contest is in the return array 
     index = 0
@@ -672,7 +682,7 @@ def get_election_results():
         percentVotesFor = round((policy.votes_for/totalCastedVotes*100),2)
         percentVotesAgainst = round((policy.votes_against/totalCastedVotes*100),2)
 
-        returnArr.append({
+        returnArr['contests'].append({
             'votesFor': percentVotesFor,
             'votesAgainst': percentVotesAgainst,
             'contestType': 'policy',
@@ -696,7 +706,7 @@ def get_election_results():
 
             index += 1
 
-            returnArr.append({
+            returnArr['contests'].append({
                 'totalVotes': 0,
                 'contestNum': candidate.id,
                 'contestType': 'candidate',
@@ -716,7 +726,7 @@ def get_election_results():
 
             positions[candidate.position][1] += candidate.votes_for
 
-            returnArr[idx]['candidates'].append({
+            returnArr['contests'][idx]['candidates'].append({
                     'name': candidate.candidate,
                     'candidate_id': candidate.id,
                     'party': candidate.pol_aff,
@@ -724,7 +734,9 @@ def get_election_results():
                 })
 
     for position in positions:
-        returnArr[positions[position][0]]['totalVotes'] += positions[position][1]
-        print(returnArr[positions[position][0]])
+        returnArr['contests'][positions[position][0]]['totalVotes'] += positions[position][1]
+
+    returnArr['totalVotes'] = num_students_vote
+    returnArr['totalStudents'] = num_students_enrolled
 
     return(jsonify(returnArr))
