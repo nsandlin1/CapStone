@@ -4,6 +4,7 @@ import { PolicyButton, CandidateButton, CandidateFrom, PolicyForm } from './Ball
 import { MdOutlineCancel } from 'react-icons/md';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { wait } from '../../utils/wait';
 
 function CreateBallot({back, classid}) {
 
@@ -28,18 +29,6 @@ function CreateBallot({back, classid}) {
     const handleRemoveForm = (indexToRemove) => {
 
         setSelectedForms(selectedForms.filter((o, i) => indexToRemove !== i));
-
-        // if (indexToRemove == 0 || indexToRemove == selectedForms.length) {
-        //     console.log(selectedForms.slice(2,4));
-        //     setSelectedForms(selectedForms.slice(2,4));
-        // }
-
-        // if (selectedForms.length == 1){
-        //     console.log('here');
-        //     const updatedForms = [...selectedForms];
-        //     updatedForms.splice(1, index);
-        //     setSelectedForms(updatedForms);
-        // } else { setSelectedForms([])}
     };
 
     function emptyItem(l) {
@@ -61,6 +50,13 @@ function CreateBallot({back, classid}) {
         }
 
         return false
+    }
+
+    async function reload() {
+        await wait(2000, {
+            autoClose: 2000,
+        });  
+        window.location.reload();
     }
 
     function saveButtonClick() {
@@ -92,11 +88,13 @@ function CreateBallot({back, classid}) {
                 })
                 .then((response) => {
                     setRes(response)
+                    toast.success('Successfully created Mock Election. Refreshing page now.')
+                    reload()
                 })
         }
     }
     useEffect(() => {
-        back()
+        
     }, [res])
 
     return (
@@ -160,6 +158,7 @@ function CreateBallot({back, classid}) {
             </div>
             <ToastContainer  
                 position="top-center"
+                autoClose={1500}
             />
         </div>
     )

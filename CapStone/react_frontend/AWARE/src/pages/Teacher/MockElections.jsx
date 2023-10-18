@@ -126,7 +126,7 @@ function MockElections() {
                                             Elections
                                         </h1>
                                     </div> 
-                                    <div className='flex flex-row h-[90%] w-[100%] justify-center'>
+                                    <div className='flex flex-wrap flex-start content-start h-[90%] w-[100%] overflow-auto justify-center items-start'>
                                         {elections.map((e) => {
                                             return <MockElectionCard title={e.election_title}/>
                                         })}

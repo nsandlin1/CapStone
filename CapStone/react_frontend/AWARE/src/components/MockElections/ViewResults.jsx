@@ -83,7 +83,7 @@ export const CandidateContest = ({ position, totalVotes, candidates}) => {
                                 >
                                 <XAxis dataKey="name"/>
                                 <Tooltip />
-                        <Bar dataKey="votesFor" fill={alternatingColors} activeBar={<Rectangle fill="black" stroke="blue" />} />
+                        <Bar dataKey="votesFor" fill='#E64141' activeBar={<Rectangle fill="black" stroke="white" />} />
                     </BarChart>
                 </ResponsiveContainer>
             </div>
@@ -129,7 +129,7 @@ export const ViewResults = ({ ballotNum, onBack }) => {
                         </div>
                         <div className="flex flex-row w-full h-full items-center justify-center">
                             <div className="flex w-[50%] md:w-[25%] justify-start">
-                                Votes left to be Cast:
+                                Votes Left to be Cast:
                             </div>
                             <div className="flex w-[5%] justify-end">
                                 {(results['totalStudents'] - results['totalVotes'])} 
@@ -146,7 +146,7 @@ export const ViewResults = ({ ballotNum, onBack }) => {
                         <PolicyContest policyName={result.policy} votesFor={result.votesFor} votesAgainst={result.votesAgainst}/>
                     </div>
                     :
-                    <div className="flex bg-navy h-[55%] w-[45%] rounded-xl transition hover:scale-105 hover:shadow-xl">
+                    <div className="flex bg-navy h-[45%] w-[45%] rounded-xl transition hover:scale-105 hover:shadow-xl">
                         <CandidateContest position={result.position} totalVotes={result.totalVotes} candidates={result.candidates}/>
                     </div>
                 ))
