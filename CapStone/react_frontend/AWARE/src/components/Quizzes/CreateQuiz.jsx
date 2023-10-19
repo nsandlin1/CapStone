@@ -12,6 +12,7 @@ function CreateQuiz({back}) {
     const [questions, setQuestions] = useState([]);
     const [res, setRes] = useState("");
     const [dueDate, setDueDate] = useState(""); // <------- sending this to api 
+    var qDate = "";
 
     const handleAddQuestion = () => {
         // Create a new form object based on the selected type
@@ -52,7 +53,9 @@ function CreateQuiz({back}) {
         } else if (questions.length == 0) {
             toast.error("Cannot create empty quiz.")
         } else if (emptyQuestion(questions)) {
-            toast.error("You must fill in all parameters.")
+            toast.error("You must fill in all question parameters.")
+        } else if (dueDate == "" || dueDate == null) {
+            toast.error("Quiz must have a due date.")
         } else {
             console.log("here")
             const user = JSON.parse(localStorage.getItem('user'));
@@ -77,6 +80,15 @@ function CreateQuiz({back}) {
             back()
             window.location.reload();
         }
+    }
+
+
+    // time data '2023-10-22T21:31' does not match format '%m-%d-%Y %H:%M:%S'
+    function cleanInputDate(d) {
+        d = d.split('T')
+        d = d[0][5] + d[0][6] + '-' + d[0][8] + d[0][9] + '-' + d[0][0] + d[0][1] + d[0][2] + d[0][3] + ' ' + d[1] + ':00'
+        setDueDate(d)
+
     }
 
     return (
@@ -123,6 +135,19 @@ function CreateQuiz({back}) {
                     <div className='flex flex-row w-[100%] my-2 justify-center'>
                         <AddQButton onClick={() => handleAddQuestion()}/>
                     </div>
+                    <div className="flex items-center justify-center h-[30%] w-[40%]">
+                    <input
+                                className='my-4 rounded-xl h-[30%] w-[40%] md:w-[45%] border-black text-navy border-2 pl-2 border-navy transition hover:scale-105'
+                                type='datetime-local'
+                                id='startTime'
+                                name='startTime'
+                                min='7:00'
+                                max='21:00'
+                                onChange={(t) => {
+                                cleanInputDate(t.target.value);
+                                }}
+                            /></div>
+
                 </div>
             </div>
             <ToastContainer  

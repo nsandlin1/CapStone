@@ -12,6 +12,13 @@ function NewsCard( props ) {
       
         else if (words.length > 10) {
           const truncatedWords = words.slice(0, 10);
+          if (truncatedWords[9].endsWith('.') || truncatedWords[9].endsWith(',')) {
+            return truncatedWords.join(' ');
+          }
+          else if (truncatedWords[9] == "-") {
+            str = truncatedWords.join(' ');
+            return str.slice(0, -2) + "...";
+          }
           return truncatedWords.join(' ') + '...';
         }
 
@@ -44,28 +51,28 @@ function processDate(date) {
         hour = hour - 12;
         var am_pm = "PM";
     }
-    var new_date = month + "-" + day + "-" + year + ", " + hour + ":" + minute + " " + am_pm;
+    var new_date = month + "-" + day + "-" + year;
     return new_date;
 }
 
     return (
         <div className="news-card">
-            <div className="news-header">
+            <div className="news-header flex flex-col">
                 <div className="news-title">
                     {truncateString(props.title)}
                 </div>
-                <div className="news-date">
+                {/* <div className="news-date">
                     {processDate(props.date)}
-                </div>
+                </div> */}
                 <div className="news-source">
-                    <a href={props.link} target="_blank">{props.source}</a>
+                    <a href={props.link} target="_blank">{props.source + ", " + processDate(props.date)}</a>
                 </div>
             </div>
             <div className = "news-image">
                 <img src={props.image} alt="No image available"/>
             </div>
             <div className="news-content">
-                {handleNoText(props.text)}
+                {handleNoText(props.text.replace(/<[^>]*>/g, ''))}
             </div>
         </div>
     )

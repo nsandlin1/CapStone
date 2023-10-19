@@ -13,6 +13,7 @@ function Login({setRole, loginFun}) {
     const [password, setPassword] = useState("");
     const [response, setResponse] = useState({});
     const [tempRole, setTempRole] = useState();
+    const [loggedIn, setLoggedIn] = useState(false);
 
     const navigate = useNavigate();
 
@@ -23,8 +24,11 @@ function Login({setRole, loginFun}) {
         return false
     }
 
-    function submitLogin() {
-        event.preventDefault()
+    function submitLogin(flag=true) {
+        if (flag) {
+        event.preventDefault() 
+        }
+
         if (validate(email, password)) {
             var api_url = "/api/user/login"
             console.log("The url:", api_url)
@@ -84,7 +88,16 @@ function Login({setRole, loginFun}) {
                     }
                     else {
                         console.log("loggin em in")
-                        loginFun(email);
+                        toast.success("You have successfully registered. Signing you in now...");
+                        
+
+                        setTimeout(function(){
+                            submitLogin(false);
+                            loginFun(email);
+                            //location.reload();
+                         }, 3000); // 3000 milliseconds = 3 seconds
+                            
+
                     }
                 })
                 .catch(err => {
@@ -208,8 +221,9 @@ function Login({setRole, loginFun}) {
                         />
                     </animated.div>
                 )}
+
             </div>
-            <ToastContainer  
+            <ToastContainer autoClose={3000}  
                 position="top-center"
             />
         </div>

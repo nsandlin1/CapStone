@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Calendar as Cal } from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import { differenceInCalendarDays } from 'date-fns';
+import { differenceInCalendarDays, set } from 'date-fns';
 import { EventCard } from "../../components/EventCard";
 
 // template dict for holding election events
@@ -16,7 +16,22 @@ var eventsByMonth = {
   "July": [], 
   "August": [[1, "Washington Primary", 2024], [8, "Mississippi Primary", 2023]], 
   "September": [],
-  "October": [[14, "Louisiana Primary", 2023]], 
+  "October": [[14, "Louisiana Gubernatorial Election", 2023]], 
+  "November": [ [7, "Kentucky Gubernatorial Election", 2023], [7, "Mississippi Gubernatorial Election", 2023]], 
+  "December": [],
+}
+
+var quizzesByMonth = {
+  "January": [],
+  "February": [], 
+  "March": [],
+  "April": [],
+  "May": [],
+  "June": [],
+  "July": [], 
+  "August": [], 
+  "September": [],
+  "October": [], 
   "November": [], 
   "December": [],
 }
@@ -100,12 +115,16 @@ function convertStatetoCode(input) {
     }
 
     var str = arr.join(" ");
+    while (str.includes("Election") || str.includes("Gubernatorial") || str.includes("Primary")) { 
     str = str.replace("Primary", "Prim.")
     str = str.replace("General", "Gen.")
     str = str.replace("Special", "Spec.")
     str = str.replace("Election", "Elec.")
+    str = str.replace("Gubernatorial", "Gub.")
+    }
     return str;
 }
+
 
 // converts "01" -> "January"
 function convertToMonthName(monthCode) {
@@ -123,26 +142,50 @@ function convertToMonthName(monthCode) {
   }
 }
 
-function tileNames({ date, view }) {
+function tileNames({ date, view}) {
   if (view === 'month') {
     const month = date.toLocaleString('en-US', { month: 'long' });
+    //console.log(month);
     const day = date.getDate();
     const curYear = date.getFullYear();
-    const eventsForMonth = eventsByMonth[month];
+    const eventsForMonth = eventsByMonth[month] || [];
+    var str = "";
 
-    if (eventsForMonth) {
-      var str = "";
+    if (quizzesByMonth[month] != []) {
+      //console.log("True")
+      for (const [eventDay, eventName, year, time] of quizzesByMonth[month]) {
+        //console.log("QUIZNAME: " + eventName)
+        //console.log(eventDay);
+        if (day == eventDay && year == curYear) {
+          if (!(str.includes(eventName))) {
+          //console.log("SUCCESS");
+          if (str !== "") {
+            str += ", ";
+          }
+
+          if (eventName.includes("Quiz")) { str += eventName; }
+          else { str += eventName + " Quiz"; }
+        }
+        }
+      }
+     }
+
+    if (eventsByMonth[month] != []) {
+      
+      //console.log("API:", eventsByMonth[month])
       for (const [eventDay, eventName, year] of eventsForMonth) {
-        // console.log(eventName)
+        //console.log(year == curYear)
         if (day === eventDay && year == curYear) {
           if (str !== "") {
             str += ", ";
           }
+          
           str += eventName;
+          console.log("STR: " + str)
         }
       }
-      return <div className='text-xs md:text-lg' > 
-      <div className="h-16 md:h-auto">
+      return <div className='' > 
+      <div className="h-20 text-sm">
         { convertStatetoCode(str) }
       </div>
     </div>
@@ -153,6 +196,7 @@ function tileNames({ date, view }) {
 }
 
 function Calendar() {
+
   const [date, setDate] = useState(new Date());
   const [eventsForSelectedMonth, setEventsForSelectedMonth] = useState([]);
 
@@ -160,6 +204,108 @@ function Calendar() {
   const [events, setEvents] = useState([]);
   const [loadingEvents, setLoadingEvents] = useState(true);
   const [error, setError] = useState(null);
+  const [isContent, setIsContent] = useState(false);
+
+  const [quizzes, setQuizzes] = useState([]);
+    
+  function titleInEvents(title, month, grade=null) {
+    if (quizzesByMonth[month] == []) {
+      return false;
+    }
+    for (let quiz in quizzesByMonth[month]) {
+      console.log(grade);
+      console.log(quizzesByMonth[month])
+      if (quizzesByMonth[month][quiz][1] == title) {
+        if (quizzesByMonth[month][quiz][4] != grade)
+        {
+          quizzesByMonth[month][quiz][4] = grade;
+          setEventsForSelectedMonth(quizzesByMonth[month]);
+        }
+        return true;
+      }
+    }
+    return false;
+  }
+
+  function updateQMonths(quizzes) { 
+
+    setQuizzes(quizzes);
+    console.log(quizzes)
+    
+    for (var i = 0; i < quizzes.length; i++) {
+      //console.log("UPDATING QUIZZES: " + i) + quizzes[i]["name"];
+      var quizI = quizzes[i];
+      var qTitle = quizI["title"];
+      var qDate = quizI["due_date"]
+      qDate = qDate.split(" ");
+      var mth = qDate[2];
+      var Qday = qDate[1];
+      var Qyear = qDate[3];
+      var Qtime = qDate[4];
+      var Qsplit = Qtime.split(":");
+      Qtime = Qsplit[0] + ":" + Qsplit[1];
+      var grade = quizI["grade"];
+
+      // update quizzesByMonth by adding quiz to the correct month in date order
+      for (let key in quizzesByMonth) {
+        if (key.includes(mth)) {
+          if (quizzesByMonth[key].length == 0) {
+            quizzesByMonth[key].push([Qday, qTitle, Qyear, Qtime]);
+          }
+          else {
+            for (let quiz in quizzesByMonth[key]) {
+                if (!titleInEvents(qTitle, key, grade)) {
+                quizzesByMonth[key].push([Qday, quizI["title"], Qyear, Qtime, grade]);
+                }
+                else {
+                  if (quizzesByMonth[key] == []) {
+                    quizzesByMonth[key].push([Qday, quizI["title"], Qyear, Qtime, grade]);
+                  }
+                  else {
+                    if (quizzesByMonth[key][quiz][1] == qTitle) {
+                    quizzesByMonth[key][quiz][4] = grade;
+                    }
+                  }
+            }
+      }
+      //console.log("KEY == OCT: " + quizzesByMonth[key]);
+      }
+    }
+      }
+    }
+    //console.log("QUIZZES IN OCT: " + quizzesByMonth["October"]["name"]);
+  }
+
+   function callQuizAPI() {
+        //const apiUrl = '/api/quizzes/get_quizzes';
+        const user = JSON.parse(localStorage.getItem('user'));
+        //console.log(user["role"])
+        console.log("fetching quizzes")
+
+        if (user["role"] == "Student") {
+              // Define the API endpoint URL
+              const apiUrl = `/api/classes/get_student_quizzes?email=${user['email']}`;
+              // Fetch data from the API
+              fetch(apiUrl)
+                .then((response) => response.json())
+                .then((data) => {
+                  // Update the state with the fetched data
+                  updateQMonths(data);
+                  //console.log(data);
+                })
+                .catch((error) => {
+                  console.error('Error fetching news data:', error);
+          }); }
+
+          else { setQuizzes([])}
+          console.log((quizzes != [] && quizzes != null) ? "Quizzes: " + quizzes : "No quizzes found");
+
+          // if (quizzes != []) { // ins ert into quizzesByMonth (sort before inserting)
+          //   for(quiz in quizzes) {console.log(quiz)};
+          // }
+
+
+        }
 
     // Update the eventsByMonth dictionary with the events from the API
   function updateMonths(eventList, eventsByMonth) {
@@ -172,9 +318,9 @@ function Calendar() {
       var day = item.election_day.substring(8,10);
       var eventYear = item.election_day.substring(0,4);
       
-      if (!eventsByMonth[month]) {
-        eventsByMonth[month] = [];
-      }
+       if (!eventsByMonth[month]) {
+         eventsByMonth[month] = [];
+       }
 
       const targetArray = [parseInt(day), eventName, eventYear];
       const targetMonth = month;
@@ -183,16 +329,19 @@ function Calendar() {
       const found = monthEvents.some(event => JSON.stringify(event) === JSON.stringify(targetArray)); 
 
       if (!found) {
-        eventsByMonth[month].push([parseInt(day), eventName, eventYear]);
-      }
+         eventsByMonth[month].push([parseInt(day), eventName, eventYear]);
+         //setEventsForSelectedMonth(eventsByMonth[month]);
+       }
     })
 
     return eventsByMonth;
   }
 
   // API call to get events 
-  function getEventsList() {   
+  function getEventsList() {
+    callQuizAPI();   
     console.log("fetching events")
+    var api_url = '/api/news_and_elections/elections?';
     fetch(api_url)
         .then((response) => {
             if (!response.ok) {
@@ -204,7 +353,7 @@ function Calendar() {
         })
         .then((data) => {
             setEvents(data);
-            // console.log(data);
+            //console.log(data);
             eventsByMonth = updateMonths(data, eventsByMonth);
             setError(null);
         })
@@ -219,7 +368,7 @@ function Calendar() {
 }
   
 useEffect(() => {
-  if (events.length == 0) {
+  if (events.length == 0 || quizzes.length == 0) {
       getEventsList();
 
   }
@@ -228,15 +377,38 @@ useEffect(() => {
 
   useEffect(() => {
     // Collect events for the selected month whenever the month changes
+    
     const month = date.toLocaleString('en-US', { month: 'long' });
-    const eventsForMonth = eventsByMonth[month] || [];
-    setEventsForSelectedMonth(eventsForMonth);
-  }, [date]);
+    const year = date.getFullYear();
+    const eventsForMonth = quizzesByMonth[month] || []; // add a refresh and duplicate check here
+    setEventsForSelectedMonth(eventsForMonth.sort(function (a, b) { return a[0] - b[0] }));
+
+    if (eventsForMonth.length > 0) {
+      for (let i in eventsForMonth) {
+        console.log(eventsForMonth[i][2], year)
+        if (parseInt(eventsForMonth[i][2]) == parseInt(year)) {
+          setIsContent(true);
+          break;
+        }
+        else {
+          if (i == eventsForMonth.length - 1) {
+          setIsContent(false);
+        }
+      }
+      
+    }
+  }
+    else {
+      setIsContent(false);
+    }
+  }, [quizzes, eventsByMonth, date]);
 
   // Update the selected date when the month changes
   const handleDateChange = (value, event) => {
     if (value instanceof Date) {
+      console.log(value);
       setDate(value);
+      
     }
     else {setDate(value.activeStartDate)}
     //useEffect();
@@ -249,25 +421,37 @@ useEffect(() => {
         <h1 className="text-2xl md:text-4xl mx-auto font-bold mb-6 text-white">Upcoming Elections</h1>
       </div>
 
-      <div className="mx-auto flex h-[auto] flex-row p-4 border-8 border-black bgnavy shadow-lg rounded-lg">
+      <div className="mx-auto flex h-[auto] flex-row p-2 border-8 border-black bgnavy shadow-lg rounded-xl">
         <Cal
-          className="md:text-xl text-sm md:w-[50%] w-[full] h-[auto] bg-blue-200 rounded-xl shadow-md hover:shadow-lg border-8 border-blue-400 hover:border-blue-500"
+          className="md:w-[50%] w-[full] h-[full] bg-blue-200 rounded-lg shadow-md hover:shadow-lg border-8 border-blue-400 hover:border-blue-500"
           onChange={handleDateChange} // Update the selected date
           onActiveStartDateChange={handleDateChange} // Update the month when navigating
-          tileClassName="text-slate-600 text-md h-[8vh] mx-auto font-semibold rounded-lg hover:text-black"
+          tileClassName="text-slate-600 h-[8.5vh] mx-auto p-0 m-0 font-semibold rounded-lg hover:text-black"
           tileContent={tileNames}
         ></Cal>
 
-        {/* Use Tailwind CSS classes for conditional rendering */}
+        {!isContent ?  
+           (window.screen.width > 475) ? 
+        
+           <div className="w-[50%] flex-col ">
+        <div className="w-[100%] text-2xl m-2 text-white font-bold justify-center text-center"> You Have No Upcoming Quizzes this Month. </div>
+        </div>
+        : <div></div>
+        :
         <div className="w-[50%] h-[100%] flex-col justify-center hidden md:block">
-          <div className="w-[100%] text-4xl m-2 text-white font-bold flex justify-center">Elections this Month:</div>
+          <div className="w-[100%] text-4xl m-2 text-white font-bold flex justify-center">Upcoming Quizzes:</div>
           {eventsForSelectedMonth.map((event, index) => (
             <div key={index} className="w-[100%] text-xl font-bold flex justify-left">
-              <EventCard day={event[0]} month={date.toLocaleString('en-US', { month: 'long' })} year={event[2]} event={event[1]} calDate={date} />
+              <EventCard day={event[0]} month={date.toLocaleString('en-US', { month: 'long' })} year={event[2]} time={event[3]} event={event[1]} calDate={date} grade={event[4]} />
             </div>
           ))}
         </div>
+}
       </div>
+          
+
+
+
     </div>
   );
 }
