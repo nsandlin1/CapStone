@@ -277,14 +277,15 @@ def get_quiz_for_class(classId, studentEmail):
                 {
                     'quizId': quizInfo[0].id,
                     'title': quizInfo[0].title,
-                    'grade': student_quiz_exists.grade
+                    'grade': student_quiz_exists.grade,
+                    'due_date': quizInfo[0].due_date
                 }
             )
         else:
             db.session.add(StudentQuiz(
                 student[0].id,
                 quizInfo[0].id,
-                None
+                None,
             ))
             db.session.commit()
 
@@ -292,7 +293,8 @@ def get_quiz_for_class(classId, studentEmail):
                 {
                     'quizId': quizInfo[0].id,
                     'title': quizInfo[0].title,
-                    'grade': None
+                    'grade': None,
+                    'due_date': quizInfo[0].due_date,
                 }
             )
 
