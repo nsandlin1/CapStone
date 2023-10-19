@@ -22,9 +22,9 @@ const Candidate = ({index, form}) => {
                     type='option'
                     name='position'
                     onChange={(t) => form.party = t.target.value}>
-                    <option value="republican">Republican</option>
-                    <option value="democrat">Democrat</option>
-                    <option value="independent">Independent</option>
+                    <option value="R">Republican</option>
+                    <option value="D">Democrat</option>
+                    <option value="I">Independent</option>
                 </select>
         </div>
     )
@@ -38,7 +38,7 @@ export const CandidateFrom = ({index, form, onDelete}) => {
 
     const handleAddCandidate = () => {
         // Create a new form object based on the selected type
-        const newCandidate = {name: '', party: 'republican'};
+        const newCandidate = {name: '', party: 'R'};
         
         // Add the form to the selectedForms array
         form.contestants = [...candidates, newCandidate];
@@ -70,7 +70,7 @@ export const CandidateFrom = ({index, form, onDelete}) => {
 
     return (
         <form className="flex relative justify-center bg-zinc-400 my-2 w-[100%] h-[100%] items-center rounded-xl">
-           < MdOutlineCancel className='MockButtons absolute top-0 right-0' onClick={() => {onDelete()}}/> 
+           < MdOutlineCancel className='MockButtons absolute top-2 right-2' onClick={() => {onDelete()}}/> 
            <div className='flex flex-col'>
             <div className="flex relative flex-col w-[100%] h-[90%]"> 
                     <div className="flex flex-col md:flex-row mb-2 justify-center">
@@ -103,7 +103,7 @@ export const PolicyForm = ({onDelete, form}) => {
 
     return (
         <form className="flex justify-center bg-zinc-400 my-2 w-[100%] h-[100%] items-center rounded-xl">
-            < MdOutlineCancel className='MockButtons absolute top-0 right-0' onClick={() => {onDelete()}}/> 
+            < MdOutlineCancel className='MockButtons absolute top-3 right-2' onClick={() => {onDelete()}}/> 
             <div className="flex flex-col w-[100%]">
                 <div className="flex justify-center">
                     <label className="text-xl text-white">Policy: </label>

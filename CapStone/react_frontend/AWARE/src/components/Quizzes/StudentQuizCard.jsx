@@ -126,7 +126,6 @@ export const TakeQuiz = ({quizId, quizTitle, takingQuiz}) => {
         });  
         window.location.reload();
     }
-    
 
     // When user selects an answer for each question
     const handleQuestionAnswer = (idx, selection) => {
@@ -134,7 +133,6 @@ export const TakeQuiz = ({quizId, quizTitle, takingQuiz}) => {
         questions[idx].selected = selection;
         console.log(questions);
     }
-
 
     // Called when student clicks submit
     // Displays error message if student has not answered all questions
@@ -163,8 +161,6 @@ export const TakeQuiz = ({quizId, quizTitle, takingQuiz}) => {
         }
         else {
             // Post, QuizId, Email, and Answers to backend
-            console.log(answers);
-            console.log(quizId);
             const user = JSON.parse(localStorage.getItem('user'));
             // Define the API endpoint URL
             const apiUrl = `/api/classes/submit_quiz?email=${user['email']}&answers=${JSON.stringify(answers)}&quizId=${quizId}`;
@@ -224,7 +220,6 @@ export const TakeQuiz = ({quizId, quizTitle, takingQuiz}) => {
             />
         </div>
     )
-
 }
 
 // Card that gives the student a quick glance at what quizzes they have coming up

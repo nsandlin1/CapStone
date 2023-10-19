@@ -3,6 +3,7 @@ import MockElectionCard from '../../components/MockElections/ElectionCard';
 import { IoMdAdd } from 'react-icons/io';
 import { useTransition, animated } from '@react-spring/web';
 import CreateBallot from '../../components/MockElections/CreateBallot';
+import { ViewResults} from "../../components/MockElections/ViewResults";
 
 function MockElections() {
 
@@ -10,7 +11,9 @@ function MockElections() {
     const [isVisible, setVisibile] = useState(false);
     const [isClassSelected, setIsClassSelected] = useState(false);
     const [classData, setClassData] = useState([]);
-    const [elections, setElections] = useState([])
+    const [elections, setElections] = useState([]);
+    const [viewingResults, setViewingResults] = useState(false);
+    const [viewElection, setViewElection] = useState();
 
     // TODO: need to make fetch teacher-specific classes
     //       or query elections using the teacher also
@@ -96,6 +99,20 @@ function MockElections() {
         setVisibile(v => !v);
     }
 
+    const viewResults = (ballotNum) => {
+        setVisibile(false);
+        setViewingResults(true);
+        setViewElection(ballotNum);
+        console.log(ballotNum)
+    }
+
+    function onBack() {
+        setViewingResults(false);
+        Results(false);
+    }
+
+    const viewing = `${viewingResults ? 'bg-white' : 'bg-navy'} 'flex rounded-xl relative flex-col h-[95%] w-[80%] shadow-2xl justify-center items-center pt-4 rounded-xl'`
+
     return (
         <div className="flex flex-col justify-center items-center h-[91vh] w-[100%] pb-4 bg-slate-400">
             <div className='flex flex-row justify-left items-center h-[10%] w-[80%]'>
@@ -113,8 +130,11 @@ function MockElections() {
                 </div>
             </div>
             <div className='flex items-center justify-center h-[85%] w-[100%] bg-slate-400'>
-                <div className='flex relative flex-col h-[95%] w-[80%] shadow-2xl justify-center items-center pt-4 bg-navy rounded-xl'>
-                    { transitionElection((style, item) =>
+                <div className={viewing}>
+                    { viewingResults ? 
+                        <ViewResults ballotNum={viewElection} onBack={onBack}/>
+                    :
+                    transitionElection((style, item) =>
                         item &&
                     <animated.div style={style} className='absolute flex flex-col h-[100%] w-[100%]'>
                         { transitionClass((style, item) =>
@@ -126,9 +146,9 @@ function MockElections() {
                                             Elections
                                         </h1>
                                     </div> 
-                                    <div className='flex flex-row h-[90%] w-[100%] justify-center'>
+                                    <div className='flex flex-wrap flex-start content-start h-[90%] w-[100%] overflow-auto justify-center items-start'>
                                         {elections.map((e) => {
-                                            return <MockElectionCard title={e.election_title}/>
+                                            return <MockElectionCard title={e.election_title} electionNum={e.id} viewResults={viewResults}/>
                                         })}
                                         {console.log(elections)}
                                     </div>

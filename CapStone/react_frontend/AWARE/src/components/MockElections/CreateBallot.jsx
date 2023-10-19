@@ -4,6 +4,7 @@ import { PolicyButton, CandidateButton, CandidateFrom, PolicyForm } from './Ball
 import { MdOutlineCancel } from 'react-icons/md';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { wait } from '../../utils/wait';
 
 function CreateBallot({back, classid}) {
 
@@ -17,7 +18,7 @@ function CreateBallot({back, classid}) {
         if (formType == 'policy') {
             newForm = { type: 'policy', policy: ""};
         } else {
-            newForm = { type: 'candidate', position: "", contestants: [{name: '', party: 'republican'},{name: '', party: 'republican'}]};
+            newForm = { type: 'candidate', position: "", contestants: [{name: '', party: 'R'},{name: '', party: 'R'}]};
         }
 
         // Add the form to the selectedForms array
@@ -28,18 +29,6 @@ function CreateBallot({back, classid}) {
     const handleRemoveForm = (indexToRemove) => {
 
         setSelectedForms(selectedForms.filter((o, i) => indexToRemove !== i));
-
-        // if (indexToRemove == 0 || indexToRemove == selectedForms.length) {
-        //     console.log(selectedForms.slice(2,4));
-        //     setSelectedForms(selectedForms.slice(2,4));
-        // }
-
-        // if (selectedForms.length == 1){
-        //     console.log('here');
-        //     const updatedForms = [...selectedForms];
-        //     updatedForms.splice(1, index);
-        //     setSelectedForms(updatedForms);
-        // } else { setSelectedForms([])}
     };
 
     function emptyItem(l) {
@@ -61,6 +50,13 @@ function CreateBallot({back, classid}) {
         }
 
         return false
+    }
+
+    async function reload() {
+        await wait(2000, {
+            autoClose: 2000,
+        });  
+        window.location.reload();
     }
 
     function saveButtonClick() {
@@ -92,38 +88,48 @@ function CreateBallot({back, classid}) {
                 })
                 .then((response) => {
                     setRes(response)
+                    toast.success('Successfully created Mock Election. Refreshing page now.')
+                    reload()
                 })
         }
     }
     useEffect(() => {
-        back()
+        
     }, [res])
 
     return (
         <div className="flex flex-col w-[100%] h-[100%] bg-navy rounded-xl"> 
-            <div className='flex flex-row w-[100%] h-[10%]'>
-                <div className='flex w-[20%] md:w-[30%]'>
-                    < BiArrowBack className='MockButtons absolute fill-white top-2 md:top-1 left-4 md:left-10' onClick={back}/>
-                </div>
-                <div className='flex w-[60%] md:w-[40%] text-lg md:text-3xl text-white items-center justify-center'>
-                        Create Mock Election
-                </div>
-                <div className='flex w-[20%] md:w-[30%] h-[100%] justify-end pr-2 md:pr-10'>
-                    <button className='text-xl bg-white rounded-xl w-[90%] md:w-[30%]' onClick={saveButtonClick}>
-                        Save
-                    </button>
+            <div className='flex flex-row w-[100%] h-[20%]'>
+                <div className='flex flex-col w-full h-full items-center justify-center gap-2'>
+                    <div className='flex flex-row w-full '>
+                        <div className='flex w-[20%] md:w-[30%]'>
+                            < BiArrowBack className='MockButtons absolute fill-white top-2 md:top-1 left-4 md:left-10' onClick={back}/>
+                        </div>
+                        <div className='flex w-[60%] md:w-[40%] text-lg md:text-3xl text-white items-center justify-center'>
+                                Create Mock Election
+                        </div>
+                        <div className='flex w-[20%] md:w-[30%] h-[100%] justify-end pr-2 md:pr-10'>
+                            <button className='text-xl bg-white rounded-xl w-[90%] md:w-[30%]' onClick={saveButtonClick}>
+                                Save
+                            </button>
+                        </div>
+                    </div>
+                    <div className='flex flex-row w-full h-[80%] items-center justify-center'>
+                        {/* for election name */}
+                        < label className='text-base md:text-3xl lg:text-4xl w-[20%] md:w-[20%] text-white'>Election Title: </label>
+                        <input
+                            className="rounded-lg justify-center bg-white text-navy text-base md:text-2xl h-[100%] w-[60%] md:w-[70%] ml-4 pl-4 transition hover:scale-105"
+                            type='text'
+                            name='position'
+                            onChange={(t) => {
+                                setElectionName(t.target.value);
+                            }}
+                        />
+                    </div>
                 </div>
             </div>
-            {/* for election name */}
-            <input
-                className="w-[96%] h-[8%] ml-2 pl-2 rounded-lg justify-center text-2xl"
-                type='text'
-                name='position'
-                onChange={(e) =>{
-                    setElectionName(e.target.value)
-                }}
-            />
-            <div className='flex flex-col w-[100%] h-[90%] justify-center'>
+            
+            <div className='flex flex-col w-[100%] h-[80%] justify-center'>
                 <div className='flex flex-col w-[95%] h-[100%] items-center m-2 overflow-auto'>
                     <div className='flex flex-col w-[100%] md:w-[90%] items-center rounded-xl'>
                         {selectedForms.map((form, index) => (
@@ -152,6 +158,7 @@ function CreateBallot({back, classid}) {
             </div>
             <ToastContainer  
                 position="top-center"
+                autoClose={1500}
             />
         </div>
     )

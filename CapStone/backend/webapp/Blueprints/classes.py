@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 from ..models import EnrolledClass, Ballot, Quiz, ClassElection, PolicyBallot, \
-                     CandidateBallot, Question, Choice, Student, Teacher, ClassQuiz, Question, StudentQuiz
+                     CandidateBallot, Question, Choice, Student, Teacher, ClassQuiz, Question, StudentQuiz, \
+                     StudentVote, BallotInfo
 from ..extensions import db
 from ..schemas import enrolled_class_schema, enrolled_classes_schema, \
                       ballot_schema, ballots_schema, class_elections_schema, \
@@ -98,8 +99,8 @@ def create_ballot():
                 None,           # id
                 ballot_id,      # ballot id
                 form["policy"], # policy
-                None,           # votes for
-                None            # votes againse
+                0,           # votes for
+                0           # votes againse
             ))
             print('1 added')
         else:
@@ -109,11 +110,13 @@ def create_ballot():
                     None,                 # id
                     ballot_id,            # ballot id
                     form["position"],     # position
-                    None,                 # votes for
                     candidate["party"],   # pol aff
+                    0,                 # votes for
                     candidate["name"]     # candidate
                 ))
     db.session.commit()
+
+
 
     return jsonify({'ballot(s)-added': True})
 
@@ -476,15 +479,13 @@ def get_assigned_quizzes():
 
     return (jsonify(class_and_quizzes))
 
-
+# Updates which classes a quiz is assigned to
 @classes.route('/update_quiz_assignments')
 def update_quiz_assignments():
     data = json.loads(request.args.get('data'))
 
     for clas in data['classes']:
         selected = clas['selected']
-
-        print(selected)
 
         classQuiz = ClassQuiz.query.filter_by(classid=clas['classId'], quizid=data['quizId']).all()
 
@@ -495,8 +496,253 @@ def update_quiz_assignments():
             ))
             db.session.commit()
         elif (classQuiz and not selected):
-            print(classQuiz[0])
             db.session.delete(classQuiz[0])
             db.session.commit()
 
     return (jsonify({'success': 'Changes successfully saved.'}))
+
+
+# Gets the ballots assigned to a students class, with a flag showing if the student has voted or not
+@classes.route('/get_class_ballots')
+def get_class_ballots():
+
+    student = request.args.get('email')
+    studentId = Student.query.filter_by(email=student).first()
+
+    # get class the student is enrolled in
+    studClass = get_student_class(student)
+    # checks if class was found for the specified student
+    if (studClass == -1):
+        # returns error if no class found
+        return (jsonify({'error': 'Could not find any classes for specified user.'}))
+
+    # Finds all ballots for a class
+    ballots = Ballot.query.filter_by(classid=studClass).all()
+
+    returnBallots = []
+
+    for ballot in ballots:
+        print(ballot.election_title)
+        hasVoted = StudentVote.query.filter_by(ballotid=ballot.id, studentid=studentId.id).all()
+        print(hasVoted)
+        voted = False
+        if (hasVoted):
+            voted = True
+
+        returnBallots.append({
+            'ballotNum': ballot.id,
+            'electionTitle': ballot.election_title,
+            'voted': voted
+        })
+
+    return (jsonify(returnBallots))
+
+
+# Gets all contests for a given election
+@classes.route('/get_ballot_contests')
+def get_ballot_contests():
+
+    # Get the requested ballot id
+    ballotid = request.args.get('ballotNum')
+
+    # Get all policy and candidate contests for an election
+    policy_contests = PolicyBallot.query.filter_by(ballot_id=ballotid).all()
+    candidate_contests = CandidateBallot.query.filter_by(ballot_id=ballotid).all()
+
+    # Array of contests to be returned
+    returnContests = []
+
+    # Keep track of where the curent contest is in the return array 
+    index = 0
+    
+    # Iterate through all policies and add them to the return array
+    for policy in policy_contests:
+        returnContests.append({
+            'vote': None,
+            'contestType': 'policy',
+            'policyNum': policy.policy_num,
+            'policy': policy.policy
+        })
+        index += 1
+
+    # Dictionary to find where the contest for certain position is
+    positions = {}
+
+    print(candidate_contests)
+
+    # Iterate through all candidates
+    for candidate in candidate_contests:
+
+        # If the current candidates position does no appear in the dictionary already
+        # Add the contest to the return array and increment the index
+        if (candidate.position not in positions):
+            positions[candidate.position] = index
+            index += 1
+            returnContests.append({
+                'vote': None,
+                'contestNum': candidate.id,
+                'contestType': 'candidate',
+                'position': candidate.position,
+                'candidates': [{
+                    'name': candidate.candidate,
+                    'candidate_id': candidate.id,
+                    'party': candidate.pol_aff
+                }]
+            })
+
+        # If the contest for that position already exists
+        # Find its position in the return array and append the current candidates name 
+        else:
+            idx = positions[candidate.position]
+            returnContests[idx]['candidates'].append({
+                    'name': candidate.candidate,
+                    'candidate_id': candidate.id,
+                    'party': candidate.pol_aff
+                })
+
+
+    return (jsonify(returnContests))
+
+
+# Submits a students votes
+@classes.route('/submit_ballot_votes')
+def submit_ballot_votes():
+
+    email = request.args.get('email')
+    votes = json.loads(request.args.get('votes'))
+    ballotNum = request.args.get('ballotNum')
+
+    studentId = Student.query.filter_by(email=email).first()
+
+
+    # Iterate through the contests on the ballot
+    for vote in votes:
+        # Check the contest type
+        if (vote['contestType'] == 'policy'):
+
+            # Get policy ballot so we can update the votes for or against
+            policy = PolicyBallot.query.filter_by(policy_num=vote['policyNum']).first()
+            if (vote['vote'] == 'yay'):
+                policy.votes_for = policy.votes_for + 1 
+            elif (vote['vote'] == 'nay'):
+                policy.votes_against += 1
+
+        else:
+
+            # Get candidate ballot so we can add votes to the respective candidate
+            candidateBallot = CandidateBallot.query.filter_by(ballot_id=ballotNum, id=vote['vote']).first()
+
+            candidateBallot.votes_for += 1
+            
+    # Make a record that the student has voted on that election
+    db.session.add(StudentVote(
+        ballotNum,
+        studentId.id,
+        1
+    ))
+        
+    db.session.commit()
+
+    return(jsonify({'success': 'Successfully submitted votes for the election'}))
+
+
+# Gets the results of a given election
+@classes.route('/get_election_results')
+def get_election_results():
+
+    # Get the requested ballot id
+    ballotid = request.args.get('ballotNum')
+
+    # Get all policy and candidate contests for an election
+    policy_contests = PolicyBallot.query.filter_by(ballot_id=ballotid).all()
+    candidate_contests = CandidateBallot.query.filter_by(ballot_id=ballotid).all()
+    classId = Ballot.query.filter_by(id=ballotid).all()
+
+    #enrolled_classid = EnrolledClass.query.filter_by(id=classId[0].classid).first()
+
+    num_students_vote = StudentVote.query.filter_by(ballotid=ballotid).count()
+
+    num_students_enrolled = Student.query.filter_by(enrolled_class=classId[0].classid).count()
+
+
+    # Contains:
+    # { All candidateContest with percentage of votes for each candidate }
+    # { All policyContest with percentage of votes for and against}
+    # { EligibleVotes: Int, TotalVote: Int}
+    returnArr = {
+        'contests': []
+    }
+
+    # Keep track of where the curent contest is in the return array 
+    index = 0
+    
+    # Iterate through all policies and add them to the return array
+    for policy in policy_contests:
+
+        totalCastedVotes = policy.votes_for + policy.votes_against
+
+        if (totalCastedVotes != 0):
+            percentVotesFor = round((policy.votes_for/totalCastedVotes*100),2)
+            percentVotesAgainst = round((policy.votes_against/totalCastedVotes*100),2)
+        else:
+            percentVotesAgainst, percentVotesFor = 0, 0
+
+
+        returnArr['contests'].append({
+            'votesFor': percentVotesFor,
+            'votesAgainst': percentVotesAgainst,
+            'contestType': 'policy',
+            'policyNum': policy.policy_num,
+            'policy': policy.policy
+        })
+        index += 1
+
+    # Dictionary to find where the contest for certain position is
+    positions = {}
+
+    # Iterate through all candidates
+    for candidate in candidate_contests:
+
+        # If the current candidates position does no appear in the dictionary already
+        # Add the contest to the return array and increment the index
+        if (candidate.position not in positions):
+
+            # Keep track of the positions index and total votes accounted for that position
+            positions[candidate.position] = [index, candidate.votes_for]
+
+            index += 1
+
+            returnArr['contests'].append({
+                'totalVotes': 0,
+                'contestNum': candidate.id,
+                'contestType': 'candidate',
+                'position': candidate.position,
+                'candidates': [{
+                    'name': candidate.candidate,
+                    'candidate_id': candidate.id,
+                    'party': candidate.pol_aff,
+                    'votesFor': candidate.votes_for
+                }]
+            })
+
+        # If the contest for that position already exists
+        # Find its position in the return array and append the current candidates name 
+        else:
+            idx = positions[candidate.position][0]
+
+            positions[candidate.position][1] += candidate.votes_for
+
+            returnArr['contests'][idx]['candidates'].append({
+                    'name': candidate.candidate,
+                    'candidate_id': candidate.id,
+                    'party': candidate.pol_aff,
+                    'votesFor': candidate.votes_for
+                })
+
+    for position in positions:
+        returnArr['contests'][positions[position][0]]['totalVotes'] += positions[position][1]
+
+    returnArr['totalVotes'] = num_students_vote
+    returnArr['totalStudents'] = num_students_enrolled
+
+    return(jsonify(returnArr))

@@ -92,6 +92,9 @@ path:hover {
     .AddButtonMock {
         font-size: 28px;
     }
+    .BackArrowResults {
+        font-size: 28px;
+    }
   }
 
   @media only screen and (min-width: 400px) {
@@ -106,6 +109,9 @@ path:hover {
     }
     .AddButtonMock {
         font-size: 28px;
+    }
+    .BackArrowResults {
+        font-size: 36px;
     }
   }
 
@@ -154,6 +160,9 @@ path:hover {
     }
     .ClassesCollapseIcon {
         font-size: 48px;
+    }
+    .BackArrowResults {
+        font-size: 56px;
     }
   }
 
