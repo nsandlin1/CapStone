@@ -679,8 +679,12 @@ def get_election_results():
 
         totalCastedVotes = policy.votes_for + policy.votes_against
 
-        percentVotesFor = round((policy.votes_for/totalCastedVotes*100),2)
-        percentVotesAgainst = round((policy.votes_against/totalCastedVotes*100),2)
+        if (totalCastedVotes != 0):
+            percentVotesFor = round((policy.votes_for/totalCastedVotes*100),2)
+            percentVotesAgainst = round((policy.votes_against/totalCastedVotes*100),2)
+        else:
+            percentVotesAgainst, percentVotesFor = 0, 0
+
 
         returnArr['contests'].append({
             'votesFor': percentVotesFor,
