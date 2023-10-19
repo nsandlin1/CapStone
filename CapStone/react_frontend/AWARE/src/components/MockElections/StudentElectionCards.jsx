@@ -19,7 +19,7 @@ export const StudentElectionCard = ({custKey, ballotNum, electionTitle='Test', v
                     <div className='flex w-[15%] items-center justify-end'>
                         <h1 className={votedOnElection} 
                             onClick={voted == false ? () => onVote(ballotNum, custKey) : () => onViewResults(ballotNum)}>
-                            {voted === false ? 'Take Quiz' : 'View Results'}
+                            {voted === false ? 'Vote' : 'View Results'}
                         </h1>
                     </div>
                 </div>

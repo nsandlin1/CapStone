@@ -124,7 +124,7 @@ export const ViewResults = ({ ballotNum, onBack }) => {
                                 Total Votes:
                             </div>
                             <div className="flex w-[5%] justify-end">
-                                {results['totalVotes']}
+                                {results.length !== 0 ? results['totalVotes'] : ''}
                             </div>
                         </div>
                         <div className="flex flex-row w-full h-full items-center justify-center">
@@ -132,7 +132,7 @@ export const ViewResults = ({ ballotNum, onBack }) => {
                                 Votes Left to be Cast:
                             </div>
                             <div className="flex w-[5%] justify-end">
-                                {(results['totalStudents'] - results['totalVotes'])} 
+                                {results.length !== 0 ? (results['totalStudents'] - results['totalVotes']) : ''} 
                             </div>
                         </div>
                     </div>
@@ -142,11 +142,11 @@ export const ViewResults = ({ ballotNum, onBack }) => {
             { results.length !== 0 ?
                 results['contests'].map((result, idx) => (
                     result['contestType'] === 'policy' ?
-                    <div className="flex bg-navy h-[45%] w-[45%] rounded-xl transition hover:scale-105 hover:shadow-xl">
+                    <div key={idx} className="flex bg-navy h-[45%] w-[45%] rounded-xl transition hover:scale-105 hover:shadow-xl">
                         <PolicyContest policyName={result.policy} votesFor={result.votesFor} votesAgainst={result.votesAgainst}/>
                     </div>
                     :
-                    <div className="flex bg-navy h-[45%] w-[45%] rounded-xl transition hover:scale-105 hover:shadow-xl">
+                    <div key={idx} className="flex bg-navy h-[45%] w-[45%] rounded-xl transition hover:scale-105 hover:shadow-xl">
                         <CandidateContest position={result.position} totalVotes={result.totalVotes} candidates={result.candidates}/>
                     </div>
                 ))
