@@ -4,157 +4,161 @@ import { StateElectionsLegend } from "./Legends";
 
 function StateElectionsMap () {
 
+    const y2023 = "#d5b329"; // yellow
+    const y2024 = "#93c35e"; // green
+    const y2025 = "#520e82"; // purple
+    const y2026 = "#E64141"; // red
 
     const customize = {
         "AL": {
-            fill: "#d5b329"
+            fill: y2026
         },
         "AK": {
-            fill: "#93c35e"
+            fill: y2026
         },
         "AZ": {
-            fill: "#93c35e"
+            fill: y2026
         },
         "AR": {
-            fill: "#d5b329"
+            fill: y2026
         },
         "CA": {
-            fill: "#520e82"
+            fill: y2026
         },
         "CO": {
-            fill: "#520e82"
+            fill: y2026
         },
         "CT": {
-            fill: "#93c35e"
+            fill: y2026
         },
         "DE": {
-            fill: "#520e82"
+            fill: y2024
         },
         "FL": {
-            fill: "#d5b329"
+            fill: y2026
         },
         "GA": {
-            fill: "#520e82"
+            fill: y2026
         },
         "HI": {
-            fill: "#93c35e"
+            fill: y2026
         },
         "ID": {
-            fill: "#d5b329"
+            fill: y2026
         },
         "IL": {
-            fill: "#93c35e"
+            fill: y2026
         },
         "IN": {
-            fill: "#520e82"
+            fill: y2024
         },
         "IA": {
-            fill: "#d5b329"
+            fill: y2026
         },
         "KS": {
-            fill: "#520e82"
+            fill: y2026
         },
         "KY": {
-            fill: "#93c35e"
+            fill: y2023
         },
         "LA": {
-            fill: "#520e82"
+            fill: y2023
         },
         "ME": {
-            fill: "#d5b329"
+            fill: y2026
         },
         "MD": {
-            fill: "#93c35e"
+            fill: y2026
         },
         "MA": {
-            fill: "#520e82"
+            fill: y2026
         },
         "MI": {
-            fill: "#d5b329"
+            fill: y2026
         },
         "MN": {
-            fill: "#93c35e"
+            fill: y2026
         },
         "MS": {
-            fill: "#d5b329"
+            fill: y2023
         },
         "MO": {
-            fill: "#520e82"
+            fill: y2024
         },
         "MT": {
-            fill: "#93c35e"
+            fill: y2024
         },
         "NE": {
-            fill: "#d5b329"
+            fill: y2026
         },
         "NV": {
-            fill: "#520e82"
+            fill: y2026
         },
         "NH": {
-            fill: "#520e82"
+            fill: y2024
         },
         "NJ": {
-            fill: "#93c35e"
+            fill: y2025
         },
         "NM": {
-            fill: "#d5b329"
+            fill: y2026
         },
         "NY": {
-            fill: "#520e82"
+            fill: y2026
         },
         "NC": {
-            fill: "#93c35e"
+            fill: y2024
         },
         "ND": {
-            fill: "#520e82"
+            fill: y2024
         },
         "OH": {
-            fill: "#d5b329"
+            fill: y2026
         },
         "OK": {
-            fill: "#93c35e"
+            fill: y2026
         },
         "OR": {
-            fill: "#520e82"
+            fill: y2026
         },
         "PA": {
-            fill: "#d5b329"
+            fill: y2026
         },
         "RI": {
-            fill: "#93c35e"
+            fill: y2026
         },
         "SC": {
-            fill: "#520e82"
+            fill: y2026
         },
         "SD": {
-            fill: "#93c35e"
+            fill: y2026
         },
         "TN": {
-            fill: "#520e82"
+            fill: y2026
         },
         "TX": {
-            fill: "#d5b329"
+            fill: y2026
         },
         "UT": {
-            fill: "#520e82"
+            fill: y2024
         },
         "VT": {
-            fill: "#520e82"
+            fill: y2024
         },
         "VA": {
-            fill: "#93c35e"
+            fill: y2025
         },
         "WA": {
-            fill: "#d5b329"
+            fill: y2024
         },
         "WV": {
-            fill: "#520e82"
+            fill: y2024
         },
         "WI": {
-            fill: "#93c35e"
+            fill: y2026
         },
         "WY": {
-            fill: "#d5b329"
+            fill: y2026
         }
     };  
 

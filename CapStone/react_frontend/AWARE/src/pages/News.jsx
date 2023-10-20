@@ -5,7 +5,7 @@ function News() {
   const [news, setNews] = useState([]);
   const [loadingBills, setLoadingBills] = useState(true);
   const [error, setError] = useState(null);
-  var api_url = 'http://localhost:5000/api/news_and_elections/news_general?';
+  var api_url = '/api/news_and_elections/news_general?';
 
   function getNewsList() {   
     console.log("fetching news")

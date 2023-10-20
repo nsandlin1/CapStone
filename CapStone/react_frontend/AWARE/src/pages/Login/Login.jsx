@@ -13,6 +13,7 @@ function Login({setRole, loginFun}) {
     const [password, setPassword] = useState("");
     const [response, setResponse] = useState({});
     const [tempRole, setTempRole] = useState();
+    const [loggedIn, setLoggedIn] = useState(false);
 
     const navigate = useNavigate();
 
@@ -23,8 +24,11 @@ function Login({setRole, loginFun}) {
         return false
     }
 
-    function submitLogin() {
-        event.preventDefault()
+    function submitLogin(flag=true) {
+        if (flag) {
+        event.preventDefault() 
+        }
+
         if (validate(email, password)) {
             var api_url = "/api/user/login"
             console.log("The url:", api_url)
@@ -58,16 +62,22 @@ function Login({setRole, loginFun}) {
         }
     }
 
-    function submitRegister(role) {
+    function submitRegister(role, code) {
         event.preventDefault()
         if (validate(email, password)) {
-            console.log("Role in submit register" + role)
             var api_url = "/api/user/sign-up"
-            const requestOptions = {
-                method: 'POST',
-                mode: 'cors',
-                body: JSON.stringify({'email': email, 'password': password, 'role': role})
+            let requestOptions = {
+                    method: 'POST',
+                    mode: 'cors',
+                    body: JSON.stringify({'email': email, 'password': password, 'role': role})
             };
+            if (role === 'Student') {
+                requestOptions = {
+                    method: 'POST',
+                    mode: 'cors',
+                    body: JSON.stringify({'email': email, 'password': password, 'role': role, 'code': code})
+                };
+            }
             fetch(api_url, requestOptions)
                 .then(res => res.json())
                 .then(res => {
@@ -77,8 +87,17 @@ function Login({setRole, loginFun}) {
                         toast.error(res["Error"])
                     }
                     else {
-                        // console.log("Role is killing me in submit: " + role)
-                        setTempRole(role);
+                        console.log("loggin em in")
+                        toast.success("You have successfully registered. Signing you in now...");
+                        
+
+                        setTimeout(function(){
+                            submitLogin(false);
+                            loginFun(email);
+                            //location.reload();
+                         }, 3000); // 3000 milliseconds = 3 seconds
+                            
+
                     }
                 })
                 .catch(err => {
@@ -136,12 +155,16 @@ function Login({setRole, loginFun}) {
     })
 
     const handleLogin = () => {
-        setLogin(!login);
+        if (!register){
+            setLogin(!login);
+        }
         console.log(login);
     }
 
     const handleRegister = () => {
-        setRegister(!register);
+        if (!login){
+            setRegister(!register);
+        }
         console.log(register);
     }
 
@@ -155,7 +178,7 @@ function Login({setRole, loginFun}) {
                     <div className='flex text-xl md:text-3xl justify-center text-navy drop-shadow-xl'>
                         to
                     </div>
-                    <animated.div style={aware} className='text-8xl md:text-9xl text-red2 justify-center drop-shadow-xl'>
+                    <animated.div style={aware} className='text-7xl md:text-9xl text-red2 justify-center drop-shadow-xl'>
                             AWARE
                     </animated.div>
                 </div>
@@ -198,8 +221,9 @@ function Login({setRole, loginFun}) {
                         />
                     </animated.div>
                 )}
+
             </div>
-            <ToastContainer  
+            <ToastContainer autoClose={3000}  
                 position="top-center"
             />
         </div>

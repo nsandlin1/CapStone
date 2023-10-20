@@ -164,15 +164,17 @@ class EnrolledClass(db.Model):
     teacher = Column(String(30), ForeignKey('teachers.email'))
     start_time = Column(String(5))
     end_time = Column(String(5))
+    class_code = Column(String(6))
 
-    __table_args__ = (UniqueConstraint("name", "teacher", name="name_teacher_unique"),)
+    __table_args__ = (UniqueConstraint("name", "teacher", "start_time", name="class_teacher_time_unique"),)
 
-    def __init__(self, id, name, teacher, start_time, end_time):
+    def __init__(self, id, name, teacher, start_time, end_time, class_code):
         self.id = id
         self.name = name
         self.teacher = teacher
         self.start_time = start_time
         self.end_time = end_time
+        self.class_code = class_code
     
     def __repr__(self):
         return f'<EnrolledClass "{self.name}">'
@@ -221,33 +223,37 @@ class Student(db.Model):
     __tablename__ = 'students'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    username = Column(String(30), ForeignKey('users.username'))
+    email = Column(String(30), ForeignKey('users.email'))
     enrolled_class = Column(String(50), ForeignKey('enrolled_classes.id'))
 
-    __table_args__ = (UniqueConstraint("username", name="username_unique"),)
+    __table_args__ = (UniqueConstraint("email", name="email_unique"),)
 
-    def __init__(self, id, username, enrolled_class):
+    def __init__(self, id, email, enrolled_class):
         self.id = id
-        self.username = username
+        self.email = email
         self.enrolled_class = enrolled_class
     
     def __repr__(self):
-        return f'<Student "{self.id}, {self.username}">'
+        return f'<Student "{self.id}, {self.email}">'
 
 class Quiz(db.Model):
     __tablename__ = 'quizes'
 
     id = Column(Integer, primary_key=True)
+    teacher = Column(String(30), ForeignKey('teachers.id'))
     title = Column(String(50))
+    due_date = Column(DateTime)
 
     __table_args__ = (UniqueConstraint("title", name="title_unique"),)
 
-    def __init__(self, id, title):
+    def __init__(self, id, teacher, title, due_date):
         self.id = id
+        self.teacher = teacher
         self.title = title
+        self.due_date = due_date
 
     def __repr__(self):
-        return f'<Quiz "{self.id}, {self.title}">'
+        return f'<Quiz "{self.id}, {self.teacher}, {self.title}">'
     
 class Question(db.Model):
     __tablename__ = 'questions'
@@ -275,7 +281,7 @@ class Question(db.Model):
 class Choice(db.Model):
     __tablename__ = 'choices'
 
-    question_id = Column(Integer)
+    question_id = Column(Integer, ForeignKey('questions.question_id'))
     which = Column(String(1)) # A, B, C, etc.
     the_choice = Column(String(200))
 
@@ -289,7 +295,7 @@ class Choice(db.Model):
         self.the_choice = the_choice
 
     def __repr__(self):
-        ...
+        return f'<Choice "{self.question_id, self.which, self.the_choice}"'
 
 class Ballot(db.Model):
     __tablename__ = 'ballots'
@@ -317,7 +323,7 @@ class CandidateBallot(db.Model):
     ballot_id = Column(Integer, ForeignKey('ballots.id'))
     position = Column(String(200))
     pol_aff = Column(String(50))
-    votes_for = Column(String(200))
+    votes_for = Column(Integer)
     candidate = Column(String(100))
 
     def __init__(self, id, ballot_id, position, pol_aff, votes_for, candidate):
@@ -329,7 +335,7 @@ class CandidateBallot(db.Model):
         self.candidate = candidate
 
     def __repr__(self):
-        ...
+        return f'<CandidateBallot "{self.ballot_id, self.id, self.position, self.candidate, self.pol_aff, self.votes_for}">'
 
 class PolicyBallot(db.Model):
     __tablename__ = 'policy_ballots' 
@@ -337,8 +343,8 @@ class PolicyBallot(db.Model):
     policy_num = Column(Integer, primary_key=True)
     ballot_id = Column(Integer, ForeignKey('ballots.id'))
     policy = Column(String(200))
-    votes_for = Column(String(200))
-    votes_against = Column(String(200))  
+    votes_for = Column(Integer)
+    votes_against = Column(Integer)  
 
     def __init__(self, pol_num, ballot_id, policy, votes_for, votes_against):
         self.pol_num = pol_num
@@ -348,7 +354,7 @@ class PolicyBallot(db.Model):
         self.votes_against = votes_against
 
     def __repr__(self):
-        ...
+        return f'<PolicyBallot "{self.ballot_id, self.policy_num, self.policy, self.votes_for, self.votes_against}">'
 
 class ClassElection(db.Model):
     __tablename__ = 'class_elections'
@@ -368,7 +374,7 @@ class ClassElection(db.Model):
     def __repr__(self):
         return f'<Election "{self.classid}, {self.ballotid}">'
     
-class ClassQuiz:
+class ClassQuiz(db.Model):
     __tablename__ = 'class_quizzes'
 
     classid = Column(Integer, ForeignKey('enrolled_classes.id'))
@@ -385,12 +391,12 @@ class ClassQuiz:
     def __repr__(self):
         return f'<ClassQuiz "{self.classid}, {self.quizid}">'
 
-class StudentQuiz:
+class StudentQuiz(db.Model):
     __tablename__ = 'student_quizzes'
 
-    studentid = Column(Integer)
-    quizid = Column(Integer)
-    grade = Column(String(1))
+    studentid = Column(Integer, ForeignKey('students.id'))
+    quizid = Column(Integer, ForeignKey('quizes.id'))
+    grade = Column(Integer)
 
     __table_args__ = (
         PrimaryKeyConstraint(studentid, quizid),
@@ -404,7 +410,7 @@ class StudentQuiz:
     def __repr__(self):
         return f'<StudentQuiz "{self.studentid}, {self.quizid}">'
     
-class BallotInfo:
+class BallotInfo(db.Model):
     __tablename__ = 'ballot_info'
 
     ballotid = Column(Integer, ForeignKey('ballots.id'))
@@ -423,7 +429,7 @@ class BallotInfo:
     def __repr__(self):
         return f'<BallotInfo "{self.ballotid}, {self.candidateid}, {self.policy_number}">'
 
-class StudentVote:
+class StudentVote(db.Model):
     __tablename__ = 'student_votes'
 
     ballotid = Column(Integer, ForeignKey('ballots.id'))

@@ -4,13 +4,13 @@ const Choice = ({index, form}) => {
 
     return (
         <div className='flex w-full h-full'>
-            <div className='flex w-[25%]'>
-               <label className='text-xl text-navy '>
+            <div className='flex w-[40%] md:w-[30%] lg:w-[25%]'>
+               <label className='text-base lg:text-xl text-navy '>
                     Option {index +1}:
                 </label> 
             </div>
-            <div className='flex w-[65%]'> 
-                <input className='border-2 border-navy rounded-md w-full pl-2 text-xl text-navy'
+            <div className='flex w-[60%] md:w-[70%] lg:w-[75%]'> 
+                <input className='border-2 border-navy rounded-md w-full pl-2 text-base lg:text-xl text-navy'
                 onChange={(c) => {
                     form.answers[index+1] = c.target.value
                 }}
@@ -32,6 +32,7 @@ const MultipleChoice = ({form}) => {
         const newAnswer = {}
 
         setAnswers([...answers, newAnswer])
+        
     }
 
 
@@ -44,15 +45,15 @@ const MultipleChoice = ({form}) => {
                     </div>
                 ))}
             </div>
-            <div className='flex flex-row'>
-                <div className='flex w-[25%]'>
-                    <label className='text-xl font-bold text-navy'>
+            <div className='flex flex-row justify-start'>
+                <div className='flex w-[75%] lg:w-[25%]'>
+                    <label className='text-base lg:text-xl font-bold text-navy'>
                         Correct Option:
                     </label>
                 </div>
-                <div className='flex w-[75%]'>
+                <div className='flex w-[30%] lg:w-[75%] justify-end'>
                     <select
-                        className='rounded-md bg-white w-[30%] border-2 border-navy text-center'
+                        className='rounded-md bg-white sm:w-full lg:w-[30%] border-2 border-navy text-center'
                         type='option'
                         onChange={(o) => form.correct = o.target.value.toString()}
                     >
@@ -65,7 +66,7 @@ const MultipleChoice = ({form}) => {
                 </div>
             </div>
             <div className='flex w-full  justify-end'>
-                <div className='flex justify-center text-lg bg-white hover:cursor-pointer text-navy border-2 border-navy rounded-xl w-[30%]' onClick={() => handleAddAnswer()}>
+                <div className='flex justify-center text-sm sm:text-base lg:text-lg bg-white hover:cursor-pointer text-navy border-2 border-navy rounded-xl w-[90%] sm:w-[70%] lg:w-[30%]' onClick={() => handleAddAnswer()}>
                     Add Additional Answer
                 </div>
             </div>
@@ -82,28 +83,28 @@ const TF = ({form}) => {
     return (
         <div className="flex flex-row w-full justify-center">
             
-            <div className='flex flex-col w-[20%] items-center justify-center'>
-                <label className='text-navy font-bold text-2xl'>
+            <div className='flex flex-col w-[30%] md:w-[20%] items-center justify-center'>
+                <label className='text-navy font-bold text-base sm:text-2xl'>
                     True
                 </label>
                 <input
                     type='radio'
                     name='radAnswer'
                     onClick={() => {
-                        form.correct = "true"
+                        form.correct = "True"
                     }}
                 >
                 </input>
             </div>
-            <div className='flex flex-col w-[20%] items-center justify-center'>
-                <label className='text-navy font-bold text-2xl'>
+            <div className='flex flex-col w-[30%] md:w-[20%] items-center justify-center'>
+                <label className='text-navy font-bold text-base sm:text-2xl'>
                     False
                 </label>
                 <input
                     type='radio'
                     name='radAnswer'
                     onClick={() => {
-                        form.correct = "false"
+                        form.correct = "False"
                     }}
                 >
                 </input>
@@ -125,12 +126,12 @@ export const Question = ({index, form}) => {
 
     return (
         <div className='flex flex-col bg-white w-full h-[100%] p-4 space-y-4 rounded-xl'>
-            <div className='flex flex-row w-full text-navy '>
-                <div className="flex w-[25%] font-bold">
-                    <label className="text-2xl w-full"> Question {index + 1}: </label>
+            <div className='flex flex-row text-navy '>
+                <div className="flex w-[45%] md:w-[30%] lg:w-[25%] font-bold">
+                    <label className="text-sm sm:text-base lg:text-2xl w-full"> Question {index + 1}: </label>
                 </div>
-                <div className='flex w-[65%] justify-start'>
-                    <input className="text-2xl rounded-md pl-2 bg-white w-full border-2 border-navy"
+                <div className='flex w-[55%] md:w-[70%] lg:w-[75%] justify-start'>
+                    <input className="text-sm sm:text-base lg:text-2xl rounded-md pl-2 bg-white w-full border-2 border-navy"
                         onChange={(q) => {
                             form.question = q.target.value;
                         }}>
@@ -138,14 +139,14 @@ export const Question = ({index, form}) => {
                 </div>
             </div>
             <div className="flex flex-row">
-                <div className="flex whitespace-nowrap w-[25%]">
-                    <label className="text-xl font-bold text-navy pr-2 w-full]">
+                <div className="flex whitespace-nowrap w-[60%] sm:w-[50%] md:w-[30%] lg:w-[25%]">
+                    <label className="text-sm sm:text-base lg:text-xl lg:font-bold text-navy pr-2 w-full]">
                         Question Type:
                     </label>
                 </div>
-                <div className='flex w-[75%] justify-start'>
+                <div className='flex w-[40%] sm:w-[50%] md:w-[70%] lg:w-[75%] justify-start'>
                     <select
-                        className='rounded-md bg-white w-[30%] border-2 text-center border-navy'
+                        className='rounded-md bg-white w-full lg:w-[30%] text-sm lg:text-base border-2 text-center border-navy'
                         type='option'
                         onChange={handleSelectChange}
                     >
@@ -180,4 +181,3 @@ export const AddQButton = ({onClick}) => {
     )
 
 }
-

@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 
 export const StatePoliticians = ({ state, setState, states }) => {
 
-    var api_url = `http://127.0.0.1:5000//api/congress/state_members?state=${state}&branch=Senate`;
+    var api_url = `/api/congress/state_members?state=${state}&branch=Senate`;
     console.log(api_url);
     const [pols, setPols] = useState([]);
 
@@ -31,9 +31,9 @@ export const StatePoliticians = ({ state, setState, states }) => {
                 setError(err);
                 console.log(err)
             })
-            .finally(() => {
-                setLoading(false);
-            });
+            // .finally(() => {
+            //     setLoading(false);
+            // });
     }
 
     useEffect(() => {

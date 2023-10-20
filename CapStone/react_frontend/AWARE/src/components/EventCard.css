@@ -1,0 +1,64 @@
+.quiz-container {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f5f5f5;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  margin: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100px;
+  transition: box-shadow 0.3s, transform 0.3s;
+  cursor: pointer;
+}
+
+.quiz-container:hover {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+.event-title,
+.date-info,
+.grade-info {
+  width: 100%;
+}
+
+.event-title {
+  width: 30%;
+  font-size: 1.3em;
+  font-weight: bold;
+  color: #333; /* Adjust text color */
+}
+
+.date-info {
+  width: 50%;
+  font-size: 1.1em;
+  color: #555; /* Adjust text color */
+}
+
+.grade-info {
+  width: 20%;
+  font-size: 1.1em;
+  color: #555; /* Default text color */
+  transition: color 0.3s, font-weight 0.3s; /* Add font-weight transition */
+  font-weight: normal;
+}
+
+/* Add color changes and font-weight on hover based on grade value */
+.quiz-container:hover .event-title,
+.quiz-container:hover .date-info {
+  color: #007BFF; /* Change text color on hover */
+}
+
+.quiz-container:hover .grade-info {
+  font-weight: bold; /* Reset font weight on hover */
+
+  /* Change text color based on grade value */
+  color: #0F0; /* Dark green for 100-90 */
+  transition: color 0.3s;
+}
+
+.quiz-container:hover .grade-info:contains('N/A') {
+  color: #555; /* Reset text color for "N/A" grades */
+}

@@ -9,7 +9,6 @@ function Classes() {
     const [creating, setCreating] = useState(false);
     const [classesList, setClassesList] = useState([])
     const teacherEmail = JSON.parse(localStorage.getItem('user')).email
-    console.log(teacherEmail)
 
     function getClassesList() {
         console.log("fetching class list")
@@ -50,38 +49,40 @@ function Classes() {
     
 
     const buttonClass = `${creating ? '' : 'hover:scale-105'} rounded-xl transition bg-white w-[100%] h-[60%] shadow-lg`
+    const creatingOverlay = `${creating ? 'bg-yellow-400' : ''}`;
 
     return (
         <div className='flex flex-col h-[91vh] w-[100%] bg-slate-400 justify-center items-center'>
             <div className='flex flex-col h-[100%] w-[90%] rounded-xl items-center '>
-                <div className='flex flex-row h-[15%] w-[95%]'>
-                    <div className='flex justify-center w-[15%]  items-center'>
-                        <h1 className='text-5xl text-white drop-shadow-lg'>
+                <div className='flex flex-row h-[15%] w-[100%] rounded-xl'>
+                    <div className='flex justify-start w-[70%] md:w-[80%] items-center'>
+                        <h1 className='text-3xl md:text-4xl lg:text-5xl text-white drop-shadow-lg'>
                             Classes
                         </h1>
                     </div>
-                    <div className='w-[75%]'>
-                    </div>
-                    <div className='flex w-[10%] justify-center items-center'>
+                    <div className='flex w-[30%] md:w-[20%] justify-center items-center'>
                        <button className={buttonClass} onClick={() => handleCreateClass()}>
                             Add Class
                         </button>
                     </div>
                 </div>
-                    <div className='flex flex-col relative h-[85%] w-[95%] rounded-xl items-center justify-center bg-white mb-4 shadow-lg'>
-                        <div className='flex flex-row h-[10%] w-[95%] items-center'>
-                            <div className='flex w-[20%] justify-center'>
-                                <h1 className='text-3xl text-navy font-bold whitespace-nowrap '>
+                    <div className='flex flex-col relative h-[85%] w-[100%] rounded-xl items-center justify-center bg-white mb-4 shadow-lg'>
+                        <div className='flex flex-row h-[10%] w-[100%] items-center justify-between'>
+                            <div className='flex w-[33%] justify-start pl-3'>
+                                <h1 className='text-lg md:text-2xl lg:text-4xl text-navy font-bold whitespace-nowrap '>
                                     Class Title
                                 </h1> 
                             </div>
-                            <div className='flex w-[60%] justify-center items-center'>
-                                <h1 className='text-3xl text-navy font-bold whitespace-nowrap '>
+                            <div className='flex w-[34%] justify-center pl-4 items-center'>
+                                <h1 className='text-lg md:text-2xl lg:text-4xl text-navy font-bold whitespace-nowrap '>
                                     Class Time
                                 </h1> 
                             </div>
+                            <div className='flex w-[33%]'>
+
+                            </div>
                         </div>
-                        <div className='flex flex-wrap w-[100%] h-[90%] justify-center items-center overflow-auto'>
+                        <div className='flex flex-col flex-start w-[100%] h-[90%] items-center overflow-auto'>
                             {
                                 classesList.map((clas) => (
                                     // <div className='flex relative justify-center h-[100%] w-[98%] m-1 '>
@@ -92,6 +93,7 @@ function Classes() {
                                         startTime={clas.start_time}
                                         endTime={clas.end_time}
                                         teacher={clas.teacher}
+                                        classCode = {clas.class_code}
                                         creating={creating}
                                         isExpanded={expandedId === clas.id}
                                         toggleCollapse={() => handleToggleCollapse(clas.id)}

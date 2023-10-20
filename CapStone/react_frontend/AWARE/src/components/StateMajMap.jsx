@@ -6,7 +6,7 @@ import { StateMajLegend } from "./Legends";
 
 function StateMajMap() {
 
-    const api = "http://127.0.0.1:5000//api/congress/majority?branch=";
+    const api = "/api/congress/majority?branch=";
     const [majHouse, setMajHouse] = useState([]);
     const [majSenate, setMajSenate] = useState([]);
     const [state, setState] = useState(null);

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react"
 export const SenateReps = () => {
 
     var branch = "senate"
-    var api_url = `http://localhost:5000/api/congress/members?branch=senate`
+    var api_url = `/api/congress/members?branch=senate`
     
     const [pols, setPols] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -45,7 +45,7 @@ export const SenateReps = () => {
             if (!(pols[i].id in image_urls)) {
                 console.log("isnull");
                 (async function (index) {
-                    fetch(`http://localhost:5000/api/congress/member_image?id=${pols[index].id}`)
+                    fetch(`/api/congress/member_image?id=${pols[index].id}`)
                     .then((response) => {
                         if (!response.ok) {
                             throw new Error(

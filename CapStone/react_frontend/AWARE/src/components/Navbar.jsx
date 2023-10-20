@@ -3,6 +3,10 @@ import {CgProfile} from 'react-icons/cg'
 import {AiOutlineClose, AiOutlineMenu} from 'react-icons/ai'
 import { NavLink } from 'react-router-dom';
 
+function logout() {
+  localStorage.removeItem('user');
+  window.location.reload();
+}
 
 export const StuNavbar = () => {
   const [nav, setNav] = useState(false);
@@ -39,6 +43,9 @@ export const StuNavbar = () => {
           <NavLink to="/">Home</NavLink>
         </li>
         <li className='navitem p-4'>
+            <NavLink to="/Quiz">Quizzes</NavLink>
+          </li>
+        <li className='navitem p-4'>
           <NavLink to="/Calendar">Calendar</NavLink>
         </li>
         <li className='navitem p-4 whitespace-nowrap'>
@@ -53,10 +60,11 @@ export const StuNavbar = () => {
         <li className='navitem p-4'>
           <NavLink to="/News">News</NavLink>
         </li>
-        <li className='navitem p-4'>
-          <NavLink to="/Profile">
+        <li className='navitem p-4 font-bold hover:cursor-pointer' onClick={() => logout()}>
+          Logout
+          {/* <NavLink to="/Profile">
             <CgProfile size={28}/>
-          </NavLink>
+          </NavLink> */}
         </li>
       </ul>
       <div onClick={handleNav} className='block navbar:hidden'>
@@ -66,13 +74,13 @@ export const StuNavbar = () => {
         
         <div className='flex items-center'>
           <h1 className='w-full text-3xl font-bold text-white m-4 pt-3'>AWARE</h1>
-          <NavLink to="/Profile">
-            <CgProfile size={50} className='navitem m-4 pt-3'/>
-          </NavLink>
         </div>
         <ul className='pt-12 uppercase'>
           <li className='navitem p-4 border-b border-gray-600'>
             <NavLink to="/" onClick={handleNav}>Home</NavLink>
+          </li>
+          <li className='navitem p-4 border-b border-gray-600'>
+            <NavLink to="/Quiz" onClick={handleNav}>Quizzes</NavLink>
           </li>
           <li className='navitem p-4 border-b border-gray-600'>
             <NavLink to="/Calendar" onClick={handleNav}>Calendar</NavLink>
@@ -88,6 +96,9 @@ export const StuNavbar = () => {
           </li>
           <li className='navitem p-4 border-b border-gray-600'>
             <NavLink to="/News" onClick={handleNav}>News</NavLink>
+          </li>
+          <li className='navitem p-4 font-bold' onClick={() => logout()}>
+            Logout
           </li>
         </ul>
       </div>
@@ -136,10 +147,8 @@ export const TeachNavbar = () => {
         <li className='navitem p-4'>
           <NavLink to="/Classes">Classes</NavLink>
         </li>
-        <li className='navitem p-4'>
-          <NavLink to="/Profile">
-            <CgProfile size={28}/>
-          </NavLink>
+        <li className='navitem p-4 font-bold hover:cursor-pointer' onClick={() => logout()}>
+          Logout
         </li>
       </ul>
       <div onClick={handleNav} className='block navbar:hidden'>
@@ -149,9 +158,7 @@ export const TeachNavbar = () => {
         
         <div className='flex items-center'>
           <h1 className='w-full text-3xl font-bold text-white m-4 pt-3'>AWARE</h1>
-          <NavLink to="/Profile">
-            <CgProfile size={50} className='navitem m-4 pt-3'/>
-          </NavLink>
+
         </div>
         <ul className='pt-12 uppercase'>
           <li className='navitem p-4 border-b border-gray-600'>
@@ -162,6 +169,9 @@ export const TeachNavbar = () => {
           </li>
           <li className='navitem p-4 border-b border-gray-600'>
             <NavLink to="/Quizzes" onClick={handleNav}>Quizzes</NavLink>
+          </li>
+          <li className='navitem p-4' onClick={() => logout()}>
+            Logout
           </li>
         </ul>
       </div>
