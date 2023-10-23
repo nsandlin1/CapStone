@@ -108,11 +108,11 @@ function CreateQuiz({back}) {
                     </div>
                 </div>
                 <div className='flex flex-row justify-center items-center h-[40%] pt-2 w-full'>
-                    <label className='text-lg md:text-3xl w-[30%] md:w-[15%] text-white md:font-bold'>
+                    <label className='text-lg md:text-2xl lg:text-3xl w-[30%] md:w-[20%] lg:w-[20%] xl:w-[15%] text-white md:font-bold'>
                         Quiz Title: 
                     </label>
                     <input
-                        className="w-[60%] md:w-[75%] ml-2 pl-2 h-[70%] md:h-full rounded-lg justify-center text-lg md:text-2xl text-navy"
+                        className="w-[60%] md:w-[65%] lg:w-[70%] xl:w-[75%] ml-2 pl-2 h-[70%] md:h-full rounded-lg justify-center text-lg md:text-2xl text-navy"
                         type='text'
                         name='position'
                         onChange={(q) =>{
@@ -121,11 +121,11 @@ function CreateQuiz({back}) {
                     />
                 </div>
                 <div className="flex items-center justify-center h-[30%] pt-2 w-full">
-                    <label className='text-lg md:text-3xl w-[30%] md:w-[15%] text-white md:font-bold'>
+                    <label className='text-lg lg:text-3xl w-[30%]  md:w-[20%] lg:w-[20%] xl:w-[15%] text-white md:font-bold'>
                         Due Date:
                     </label>
                     <input
-                        className='my-4 rounded-xl h-[100%] w-[40%] md:w-[20%] border-black text-navy border-2 pl-2 border-navy transition hover:scale-105'
+                        className='my-4 rounded-xl h-[100%] w-[50%] sm:w-[40%] md:w-[35%] lg:w-[30%] xl:w-[20%] border-black text-navy border-2 pl-2 border-navy transition hover:scale-105'
                         type='datetime-local'
                         id='startTime'
                         name='startTime'
