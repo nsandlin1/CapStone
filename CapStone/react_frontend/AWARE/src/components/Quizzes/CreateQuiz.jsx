@@ -93,22 +93,22 @@ function CreateQuiz({back}) {
 
     return (
         <div className="flex flex-col w-[100%] h-[100%] bg-navy rounded-xl"> 
-            <div className='flex flex-col justify-center items-center w-[100%] h-[20%]'>
-                <div className='flex flex-row justify-center items-center w-[100%] h-[40%] md:h-[50%]'>
+            <div className='flex flex-col justify-center items-center w-[100%] h-[25%]'>
+                <div className='flex flex-row justify-center items-center w-[100%] h-[30%] md:h-[50%]'>
                     <div className='flex w-[20%] md:w-[30%]'>
                         < BiArrowBack className='MockButtons absolute fill-white top-2 md:top-3 left-4 md:left-10' onClick={back}/>
                     </div>
                     <div className='flex w-[60%] md:w-[40%] text-lg md:text-3xl text-white items-center justify-center'>
                             Create Quiz
                     </div>
-                    <div className='flex w-[20%] md:w-[30%] h-[100%] justify-end pr-2 md:pr-10'>
+                    <div className='flex w-[20%] md:w-[30%] h-[80%] justify-end pr-2 md:pr-10'>
                         <button className='text-xl bg-white rounded-xl w-[90%] md:w-[30%]' onClick={saveButton}>
                             Save
                         </button>
                     </div>
                 </div>
-                <div className='flex flex-row justify-center items-center h-[50%] pt-2 w-full'>
-                    <label className='text-lg md:text-4xl w-[30%] md:w-[15%] text-white md:font-bold'>
+                <div className='flex flex-row justify-center items-center h-[40%] pt-2 w-full'>
+                    <label className='text-lg md:text-3xl w-[30%] md:w-[15%] text-white md:font-bold'>
                         Quiz Title: 
                     </label>
                     <input
@@ -120,8 +120,24 @@ function CreateQuiz({back}) {
                         }}
                     />
                 </div>
+                <div className="flex items-center justify-center h-[30%] pt-2 w-full">
+                    <label className='text-lg md:text-3xl w-[30%] md:w-[15%] text-white md:font-bold'>
+                        Due Date:
+                    </label>
+                    <input
+                        className='my-4 rounded-xl h-[100%] w-[40%] md:w-[20%] border-black text-navy border-2 pl-2 border-navy transition hover:scale-105'
+                        type='datetime-local'
+                        id='startTime'
+                        name='startTime'
+                        min='7:00'
+                        max='21:00'
+                        onChange={(t) => {
+                        cleanInputDate(t.target.value);
+                        }}
+                    />
+                </div>
             </div>
-            <div className='flex flex-col w-[100%] h-[80%] items-center justify-center'>
+            <div className='flex flex-col w-[100%] h-[75%] items-center justify-center'>
                 <div className='flex flex-col w-[95%] h-[100%] items-center m-2 overflow-auto'>
                     <div className='flex flex-col w-[100%] md:w-[90%] items-center rounded-xl'>
                         {questions.map((form, index) => (
@@ -135,19 +151,6 @@ function CreateQuiz({back}) {
                     <div className='flex flex-row w-[100%] my-2 justify-center'>
                         <AddQButton onClick={() => handleAddQuestion()}/>
                     </div>
-                    <div className="flex items-center justify-center h-[30%] w-[40%]">
-                    <input
-                                className='my-4 rounded-xl h-[30%] w-[40%] md:w-[45%] border-black text-navy border-2 pl-2 border-navy transition hover:scale-105'
-                                type='datetime-local'
-                                id='startTime'
-                                name='startTime'
-                                min='7:00'
-                                max='21:00'
-                                onChange={(t) => {
-                                cleanInputDate(t.target.value);
-                                }}
-                            /></div>
-
                 </div>
             </div>
             <ToastContainer  
