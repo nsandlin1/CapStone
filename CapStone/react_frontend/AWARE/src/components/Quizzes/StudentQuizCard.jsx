@@ -225,24 +225,24 @@ export const TakeQuiz = ({quizId, quizTitle, takingQuiz}) => {
 // Card that gives the student a quick glance at what quizzes they have coming up
 export const QuizCard = ({quizNum, quizTitle, quizDDate, quizGrade, onTakeQuiz}) => {
 
-    const takenQuiz = `${quizGrade === null ? 'text-red-600' : 'text-white'} text-md 
+    const takenQuiz = `${quizGrade === null ? 'text-red-600' : 'text-white'} text-base 
                         md:text-xl lg:text-3xl  whitespace-nowrap hover:cursor-pointer`
 
     return (
-        <div className="flex h-[20%] hover:scale-105 hover:shadow-2xl w-[92%] rounded-xl pl-6 bg-navy m-1 transition ">
+        <div className="flex h-[20%] hover:scale-105 hover:shadow-2xl w-[97%] md:w-[92%] rounded-xl pl-2 md:pl-6 bg-navy m-1 transition ">
             <div className='flex flex-col w-[100%] h-[100%] items-center justify-center'>
                 <div className="flex flex-row w-[100%] h-full items-center justify-center">
-                    <div className='flex w-[20%] h-[100%] justify-center items-center'>
-                        <h1 className='text-md md:text-xl lg:text-3xl text-white whitespace-nowrap'>
+                    <div className='flex w-[25%] md:w-[15%] h-[100%] justify-start items-center'>
+                        <h1 className='text-base md:text-xl lg:text-3xl text-white whitespace-nowrap'>
                             {quizTitle}
                         </h1>
                     </div>
-                    <div className='flex w-[60%] justify-center items-center'>
-                        <h1 className='text-md md:text-xl lg:text-3xl text-white whitespace-nowrap'>
+                    <div className='flex w-[45%] md:w-[65%] justify-center items-center '>
+                        <h1 className='text-base md:text-xl lg:text-3xl text-white whitespace-wrap'>
                             {quizDDate}
                         </h1>
                     </div>
-                    <div className='flex w-[15%] items-center justify-end'>
+                    <div className='flex w-[30%] md:w-[15%] pr-2 md:pr-0 items-center justify-end'>
                         <h1 className={takenQuiz} 
                             onClick={() => onTakeQuiz(quizNum, quizTitle)}>
                             {quizGrade === null ? 'Take Quiz' : quizGrade + '%'}

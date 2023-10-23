@@ -157,11 +157,11 @@ export const ViewResults = ({ ballotNum, onBack }) => {
                 { results.length !== 0 ?
                     results['contests'].map((result, idx) => (
                         result['contestType'] === 'policy' ?
-                        <div key={idx} className="flex bg-navy h-[45%] w-[45%] rounded-xl transition hover:scale-105 hover:shadow-xl">
+                        <div key={idx} className="flex bg-navy h-[45%] w-[90%] md:w-[45%] rounded-xl transition hover:scale-105 hover:shadow-xl">
                             <PolicyContest policyName={result.policy} votesFor={result.votesFor} votesAgainst={result.votesAgainst}/>
                         </div>
                         :
-                        <div key={idx} className="flex bg-navy h-[45%] w-[45%] rounded-xl transition hover:scale-105 hover:shadow-xl">
+                        <div key={idx} className="flex bg-navy h-[45%] w-[90%] md:w-[45%] rounded-xl transition hover:scale-105 hover:shadow-xl">
                             <CandidateContest position={result.position} totalVotes={result.totalVotes} candidates={result.candidates}/>
                         </div>
                     ))

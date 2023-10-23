@@ -42,7 +42,11 @@ function StudentQuiz() {
         return;
     }
 
-    console.log(quizzes)
+    function dateFormatter(date) {
+        let newDate = new Date(date);
+        const options = { weekday: 'short', day: 'numeric', month: 'short', hour: 'numeric', minute: 'numeric' };
+        return (newDate.toLocaleString('en-US', options))
+    }
 
     const availableQuizzesView = `${takingQuiz ? 'hidden' : 'flex flex-col relative h-[85%] w-[95%] rounded-xl items-center justify-center bg-white mb-4 shadow-lg'}`
 
@@ -81,7 +85,7 @@ function StudentQuiz() {
                                     key = {idx}
                                     quizNum = {quiz.quizId}
                                     quizTitle = {quiz.title}
-                                    quizDDate = {quiz.quizDDate}
+                                    quizDDate = {dateFormatter(quiz.due_date)}
                                     quizGrade = {quiz.grade}
                                     onTakeQuiz = {quiz.grade == null ? handleTakeQuiz : handleViewGrade}
                                 />
