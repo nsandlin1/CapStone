@@ -1,17 +1,16 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { StuNavbar, TeachNavbar } from './components/Navbar.jsx';
-import Homepage from './pages/Homepage.jsx';
+import Homepage from './pages/Student/Homepage.jsx';
 import Calendar from './pages/Student/Calendar.jsx';
 import Politicians from './pages/Student/Politicians.jsx';
-import News from './pages/News.jsx';
+import News from './pages/Student/News.jsx';
 import Bills from './pages/Student/Bills.jsx';
 import './App.css'
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import { ProtectedRoutes, TeacherRoutes, StudentRoutes } from './utils/ProtectedRoutes.jsx';
 import Elections from './pages/Student/Elections.jsx';
 import Login from './pages/Login/Login.jsx'
-import Profile from './pages/Profile.jsx'
 import MockElections from './pages/Teacher/MockElections.jsx';
 import Classes from './pages/Teacher/Classes.jsx';
 import Quizzes from './pages/Teacher/Quizzes.jsx';

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Map from "../pages/PoliticianLanding";
+import Map from "../pages/Student/PoliticianLanding";
 import { StateElectionsLegend } from "./Legends";
 
 function StateElectionsMap () {
