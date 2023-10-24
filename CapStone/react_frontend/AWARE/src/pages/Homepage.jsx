@@ -1,21 +1,35 @@
-import { Wrapper } from "../components/widgets";
+import { useNavigate } from "react-router-dom";
+
+export const Widget = ({ page, pageLink }) =>{
+    
+    let navigate = useNavigate();
+    const navigateTo = (link) => {
+        navigate('/' + link);
+    }
+    return (
+        <div 
+            className="flex w-[30%] h-[45%] bgnavy rounded-xl justify-center items-center text-white 
+                       text-4xl hover:cursor-pointer transition hover:scale-105 hover:shadow-2xl" 
+            onClick={() => navigateTo(pageLink)}>
+            {page}
+        </div>
+    )
+}
 
 function Homepage() {
+
     return (
-        <div className="flex justify-center items-center h-[89vh] ">
-            <div className="flex justify-center w-[90%] h-[calc(100vh - var(--navbar-height))]">
-                <div className="left flex flex-col w-[50%] md:w-[70%] h-[80vh] ">
-                    <div className="toptwo flex flex-col md:flex-row p-2 gap-2 w-[100%] h-[55%]">
-                        <Wrapper width='w-[100%] md:w-[50%]' height="h-[100%]" color='bg-black'/>
-                        <Wrapper width='w-[100%] md:w-[50%]' height="h-[100%]" color='bg-black'/>
-                    </div>
-                    <div className="leftone flex justify-center p-2 h-[45%]">
-                        <Wrapper width='w-[100%]' height='h-[100%]' color='bg-black'/>
-                    </div>
-                </div>
-                <div className="right w-[50%] md:w-[30%] h-[80vh] p-2">
-                    <Wrapper width='w-[95%] md:w-[95%]' height='h-[100%]' color='bg-black'/>
-                </div>
+        <div className="flex flex-col justify-center items-center h-[91vh]">
+            <div className='flex h-[15%] w-[80%]'>
+                <h1 className='text-6xl font-bold text-navy'>Welcome to AWARE</h1>
+            </div>
+            <div className="flex flex-wrap justify-center items-center w-[80%] h-[65%] overflow-auto gap-6">
+                <Widget page={'Bills'} pageLink={'Bills'}/>
+                <Widget page={'Quizzes'} pageLink={'Quiz'}/>
+                <Widget page={'News'} pageLink={'News'}/>
+                <Widget page={'Calendar'} pageLink={'Calendar'}/>
+                <Widget page={'Elections'} pageLink={'Elections'}/>
+                <Widget page={'Politicians'} pageLink={'Politicians'}/>
             </div>
         </div>  
     )

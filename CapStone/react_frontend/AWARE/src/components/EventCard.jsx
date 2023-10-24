@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import './EventCard.css';
+import '../css/EventCard.css';
 import React, { useState, useEffect } from 'react';
 
 export const EventCard = ({ onClass, day, month, year, time, event, calDate, grade}) => {

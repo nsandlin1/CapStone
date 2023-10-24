@@ -418,12 +418,12 @@ useEffect(() => {
   return (
     <div className="p-4 bgblue h-[91vh]">
       <div className="bg-transparent p-2 m-2 flex justify-center">
-        <h1 className="text-2xl md:text-4xl mx-auto font-bold mb-6 text-white">Upcoming Elections</h1>
+        <h1 className="text-2xl md:text-4xl mx-auto font-bold mb-6 text-white">Upcoming Events</h1>
       </div>
 
-      <div className="mx-auto flex h-[auto] flex-row p-2 border-8 border-black bgnavy shadow-lg rounded-xl">
+      <div className="mx-auto flex h-[auto] flex-row p-2 bgnavy shadow-lg rounded-xl">
         <Cal
-          className="md:w-[50%] w-[full] h-[full] bg-blue-200 rounded-lg shadow-md hover:shadow-lg border-8 border-blue-400 hover:border-blue-500"
+          className="md:w-[50%] w-[full] h-[full] bg-blue-200 rounded-lg shadow-md hover:shadow-lg border-blue-400 rounded-xl hover:border-blue-500"
           onChange={handleDateChange} // Update the selected date
           onActiveStartDateChange={handleDateChange} // Update the month when navigating
           tileClassName="text-slate-600 h-[8.5vh] mx-auto p-0 m-0 font-semibold rounded-lg hover:text-black"

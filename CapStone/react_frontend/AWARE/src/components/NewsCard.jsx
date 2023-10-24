@@ -1,4 +1,4 @@
-import './NewsCard.css';
+import '../css/NewsCard.css';
 
 function NewsCard( props ) {
     //console.log(props.image)

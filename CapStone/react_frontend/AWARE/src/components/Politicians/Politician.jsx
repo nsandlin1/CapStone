@@ -1,9 +1,7 @@
-import { Fragment, useEffect, useState, useRef} from "react";
-import { Wrapper } from "../widgets";
+import { Fragment, useEffect, useState, useRef} from "react"; 
 import { FcCollapse } from "react-icons/fc";
 import { IoLogoFacebook, IoLogoTwitter, IoLogoYoutube, IoIosGlobe } from "react-icons/io";
 import { FaXTwitter } from "react-icons/fa6";
-import { Link } from 'react-router-dom';
 
 function borderColor(party) {
     if (party == 'D'){

@@ -37,11 +37,10 @@ export const StuNavbar = () => {
   return (
     <div className='navt bg-lightred'>
     <div className='navt flex justify-between items-center max-w-[80%] mx-auto px-4 pd-2 text-white bg-lightred'>
-      <h1 className='w-full text-3xl font-bold text-white'>AWARE</h1>
+      <h1 className='w-full text-3xl font-bold text-white'>
+          <NavLink to="/">AWARE</NavLink>
+      </h1>
       <ul className='navbar hidden navbar:flex '>
-        <li className='navitem p-4'>
-          <NavLink to="/">Home</NavLink>
-        </li>
         <li className='navitem p-4'>
             <NavLink to="/Quiz">Quizzes</NavLink>
           </li>

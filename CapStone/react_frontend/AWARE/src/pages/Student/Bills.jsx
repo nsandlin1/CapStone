@@ -87,20 +87,15 @@ function Bills() {
     return (
         <div className="flex flex-col items-center h-[91vh] pb-4 gap-1">
             <div className="flex flex-row items-center justify-center h-[10%] w-[90%]">
-                <div className="flex flex-row h-[100%] items-center rounded-xl gap-2 p-2 w-[80%] md:w-[90%]">
+                <div className="flex flex-row h-[100%] items-center rounded-xl gap-2 p-2 w-[80%] md:w-[80%]">
                     <FederalButton 
                         selected={selectedButton === 'federal'}
                         onClick={() => handleButtonClick('federal')}
-                    />
-                    <StateButton
-                        selected={selectedButton === 'state'}
-                        onClick={() => handleButtonClick('state')}
-                    />
-                        
+                    />  
                 </div>
                      <select id="lengths" onChange={(event) => handleSumLengthChange(event.target.value)} style={{ fontSize: '16px' }}
                         className="bgblue text-white border border-gray-300 rounded-lg 
-                                   focus:ring-blue-500 focus:border-blue-500 dark:text-white w-[20%] md:w-[10%] h-[75%] mt-1">
+                                   focus:ring-blue-500 focus:border-blue-500 dark:text-white w-[30%] md:w-[20%] h-[75%] mt-1">
                         <option defaultValue={"medium"} >Medium Summary</option>
                         <option value="small" >Short Summary</option>
                         <option value="big" >Long Summary</option>
@@ -109,7 +104,7 @@ function Bills() {
 
             <div className="flex flex-col md:flex-row items-center gap-3 w-[90%] h-[95%] rounded-xl bg-navy p-2">
 
-                <div className="flex flex-col p-2 gap-2 w-[100%] md:w-[25%] h-[20%] md:h-[100%] rounded-xl bg-navy md:bg-slate-300">
+                <div className="flex flex-col w-[100%] md:w-[25%] h-[20%] md:h-[100%] rounded-xl bg-navy md:bg-slate-300">
                     <div className="flex flex-wrap flex-col md:flex-row items-center justify-center rounded-xl h-[100%] md:bg-navy overflow-y-auto p-2 gap-2">
                         {loadingBills && <font color="#ffffff">Loading...</font>}
                         {error && <font color="#ffffff">There has been a problem loading bills.</font>}
@@ -128,16 +123,16 @@ function Bills() {
                 </div>
                 {billInfo === null ? 
                     <div className="flex-col p-2 w-[100%] md:w-[75%] h-[100%] overflow-y-auto rounded-xl bg-slate-200">
-                        <div className="flex h-[15%] rounded-xl items-center justify-center p-2 text-4xl">
+                        <div className="flex h-[15%] rounded-xl items-center justify-center p-2 md:text-4xl">
                             Select a Bill to view information
                         </div>
                         <div className="flex bg-lightblue h-[85%] text-white p-2 text-xl rounded-xl">
                         </div>
                     </div> :
                     <div className="flex-col p-2 w-[100%] md:w-[75%] h-[100%] rounded-xl overflow-hidden bg-slate-200">
-                        <div className="flex flex-col h-[15%] rounded-xl justify-center p-1 text-2xl">
-                            <p className="text-base md:text-xl">{truncateString(billInfo.title)}</p>
-                            <p className="text-sm md:text-xl py-2">Bill Number: {billInfo.number}</p>
+                        <div className="flex flex-col h-[15%] rounded-xl justify-center p-1">
+                            <p className="text-sm md:text-xl">{truncateString(billInfo.title)}</p>
+                            <p className="text-xs md:text-xl py-2">Bill Number: {billInfo.number}</p>
                         </div>
                         <div className="flex bg-lightblue h-[85%] text-white p-2 text-lg rounded-xl overflow-y-auto">
                             {console.log(billInfo.summary_long)}
