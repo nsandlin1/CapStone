@@ -3,11 +3,12 @@ import { IoIosArrowBack } from "react-icons/io";
 import  StatePolitician  from "./StateCard";
 import React, { useEffect, useState } from "react";
 
-export const StatePoliticians = ({ state, setState, states }) => {
+export const StatePoliticians = ({ state, setState, states, branch }) => {
 
-    var api_url = `/api/congress/state_members?state=${state}&branch=Senate`;
-    console.log(api_url);
+    var api_url = `/api/congress/state_members?state=${state}&branch=${branch}`;
+    const [error, setError] = useState([]);
     const [pols, setPols] = useState([]);
+
 
     function getPoliticiansList() {
         /*

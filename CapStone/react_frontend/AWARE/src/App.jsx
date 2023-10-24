@@ -80,10 +80,8 @@ function App() {
             <Route path="/Bills" element={<Bills />} exact/>
             <Route path="/Elections" element={<Elections />} exact/>
             <Route path="/Politicians" element={<Politicians />} exact/>
-            <Route path="/Bills" element={<Bills />} exact/>
             <Route path="/Map" element={<Map />} exact/>
             <Route path="/News" element={<News />} exact/>
-            <Route path="/Profile" element={<Profile/>} exact/>
             <Route path="/Quiz" element={<StudentQuiz />} exact/>
           </Route>
         </Route>

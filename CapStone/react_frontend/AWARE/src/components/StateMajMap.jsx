@@ -10,7 +10,7 @@ function StateMajMap() {
     const [majHouse, setMajHouse] = useState([]);
     const [majSenate, setMajSenate] = useState([]);
     const [state, setState] = useState(null);
-    const [branch, setBranch] = useState('senate');
+    const [branch, setBranch] = useState('Senate');
 
     function stateCallback (stateData) {
         setState(stateData)
@@ -459,21 +459,23 @@ function StateMajMap() {
         }
     });
 
+    console.log(majHouse)
+
     const branchSelected = "text-3xl hover:cursor-pointer text-black"
     const branchNotSelected = "text-3xl hover:cursor-pointer hover:text-zinc-700 text-zinc-400"
 
     return (
         <div className="flex h-[100%]">
             <div className="hidden w-[100%] items-center justify-center md:flex">
-            {state !== null ?  ( < StatePoliticians state={state} setState={setState} states={states}/> ) :
+            {state !== null ?  ( < StatePoliticians state={state} setState={setState} states={states} branch={branch}/>  ) :
                 <div>
                     <StateMajLegend/>
                     <div className="flex flex-row items-center justify-center gap-4 absolute top-8 left-[45%] w-[10%] h-[8%]">
-                        <div onClick={() => branchCange("senate")} className={branch === "senate" ? branchSelected : branchNotSelected}>Senate</div>
-                        <div onClick={() => branchCange("house")} className={branch === "house" ? branchSelected : branchNotSelected} >House</div>
+                        <div onClick={() => branchCange("Senate")} className={branch === "Senate" ? branchSelected : branchNotSelected}>Senate</div>
+                        <div onClick={() => branchCange("House")} className={branch === "House" ? branchSelected : branchNotSelected} >House</div>
                     </div>
                     <div className="hidden items-center justify-center md:flex w-[100%]">
-                        {branch === "house" ?
+                        {branch === "House" ?
                             <div>
                                 <div className="hidden 2xl:flex">
                                     < Map width="900px" height="700px" customize={customizeHouse} parentCallback={stateCallback}/> 
@@ -505,11 +507,11 @@ function StateMajMap() {
             </div>
             <div className="flex flex-col md:hidden w-[100%] h-[100%] bg-navy rounded-xl overflow-auto">
                 {console.log(state)}
-                {state !== null ?  ( < StatePoliticians state={state} setState={setState} states={states}/> ) :
+                {state !== null ?  ( < StatePoliticians state={state} setState={setState} states={states} branch={branch}/> ) :
                     <div className="gap-2 p-1">
                         {Object.entries(states).map(([key, value]) => 
                             <div className="h-[5%] py-1">
-                                <StateCard abbreviation={key} state={value} parentCallback={stateCallback} /> 
+                                <StateCard abbreviation={key} state={value} parentCallback={stateCallback}/> 
                             </div>
                         )}
                     </div>
