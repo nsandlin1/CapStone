@@ -42,10 +42,26 @@ function StudentQuiz() {
         return;
     }
 
+    function AMPM(t) {
+        var t_list = t.split(':');
+        var h = t_list[0];
+        var m = t_list[1];
+        if (h > 12) {
+            return (h-12) + ':' + m + ' PM';
+        } else {
+            return h + ':' + m + ' AM';
+        }
+}
+
     function dateFormatter(date) {
-        let newDate = new Date(date);
-        const options = { weekday: 'short', day: 'numeric', month: 'short', hour: 'numeric', minute: 'numeric' };
-        return (newDate.toLocaleString('en-US', options))
+        console.log(date);
+        // let newDate = new Date(date);
+        // console.log(newDate);
+        // const options = { weekday: 'short', day: 'numeric', month: 'short', hour: 'numeric', minute: 'numeric' };
+        
+        // return (newDate.toLocaleString('en-US', options))
+        var d_array = date.split(" ");
+        return d_array[0] + " " + d_array[1] + " " + d_array[2] + " " + d_array[3] + ", " + AMPM(d_array[4]);
     }
 
     const availableQuizzesView = `${takingQuiz ? 'hidden' : 'flex flex-col relative h-[85%] w-[95%] rounded-xl items-center justify-center bg-white mb-4 shadow-lg'}`
