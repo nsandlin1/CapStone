@@ -1,4 +1,4 @@
-import Map from "../pages/PoliticianLanding";
+import Map from "../pages/Student/PoliticianLanding";
 import React, { useEffect, useState } from "react";
 import { StatePoliticians } from "../components/StatePoliticians";
 import StateCard from "./SmallStateCards";
