@@ -36,7 +36,7 @@ export const LoginView = ({click, response, setEmail, setPassword, submit, login
                 <form className="flex flex-col w-full h-full items-center justify-center space-y-6">
                     <div className='flex flex-col md:flex-row w-full h-[20%] items-center justify-center'>
                         <label className="flex text-4xl md:w-[20%] justify-end pr-2">
-                            Email:
+                            Username:
                         </label>
                         <input className="text-xl md:text-3xl pl-4 text-navy justify-center rounded-lg w-[75%] md:w-[50%]"
                                 type='text'
@@ -62,9 +62,6 @@ export const LoginView = ({click, response, setEmail, setPassword, submit, login
                     
                 </form>
             </div>
-            <ToastContainer  
-                position="top-center"
-            />
         </div>
     )
 
@@ -143,7 +140,7 @@ export const RegisterView = ({click, response, email, setEmail, password, setPas
                 <form className="flex flex-col w-full h-full items-center justify-center">
                     <div className='flex flex-col md:flex-row w-full h-[20%] items-center justify-center'>
                         <label className="flex text-4xl md:w-[20%] justify-end pr-2">
-                            Email:
+                            Username:
                         </label>
                         <input className="text-3xl pl-4 text-navy rounded-lg w-[90%] md:w-[50%]"
                                 type='text'
