@@ -15,7 +15,6 @@ import MockElections from './pages/Teacher/MockElections.jsx';
 import Classes from './pages/Teacher/Classes.jsx';
 import Quizzes from './pages/Teacher/Quizzes.jsx';
 import StudentQuiz from './pages/Student/Quiz.jsx';
-import { ToastContainer, toast } from 'react-toastify';
 
 
 

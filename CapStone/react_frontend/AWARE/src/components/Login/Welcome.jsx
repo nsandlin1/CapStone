@@ -62,9 +62,6 @@ export const LoginView = ({click, response, setEmail, setPassword, submit, login
                     
                 </form>
             </div>
-            <ToastContainer  
-                position="top-center"
-            />
         </div>
     )
 
