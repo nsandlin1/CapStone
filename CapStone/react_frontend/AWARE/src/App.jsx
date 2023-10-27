@@ -58,7 +58,10 @@ function App() {
         user.role == 'Student' ?
           <StuNavbar />
           :
-          <TeachNavbar />
+          user.role == 'Teacher' ?
+            <TeachNavbar />
+            :
+            ''
         :
         ''
       }

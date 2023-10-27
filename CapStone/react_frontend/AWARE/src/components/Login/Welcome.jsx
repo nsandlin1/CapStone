@@ -67,7 +67,7 @@ export const LoginView = ({click, response, setEmail, setPassword, submit, login
 
 }
 
-export const RegisterView = ({click, response, email, setEmail, password, setPassword, submit, setRole}) => {
+export const RegisterView = ({click, response, email, setEmail, password, setPassword, submit}) => {
 
     const [roles, setRoles] = useState(["Select Option", "Teacher", "Student"]);
     const role = roles.map(role => role)
