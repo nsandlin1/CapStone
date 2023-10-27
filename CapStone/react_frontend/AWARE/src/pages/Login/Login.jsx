@@ -83,8 +83,8 @@ function Login({setRole, loginFun}) {
                 .then(res => {
                     setResponse(res);
                     console.log("res", res)
-                    if ("Error" in res) {
-                        toast.error(res["Error"])
+                    if ("error" in res) {
+                        toast.error(res["error"])
                     }
                     else {
                         console.log("loggin em in")
@@ -198,9 +198,7 @@ function Login({setRole, loginFun}) {
                             setEmail={setEmail} 
                             setPassword={setPassword} 
                             submit={submitLogin}
-                            // setLoggedIn={setLoggedIn}
                             login={loginFun}
-                            setRole={setRole}
                         />
                     </animated.div>
                 )}
@@ -217,7 +215,6 @@ function Login({setRole, loginFun}) {
                             submit={submitRegister}
                             // setLoggedIn={setLoggedIn}
                             login={loginFun}
-                            setRole={setRole}
                         />
                     </animated.div>
                 )}
