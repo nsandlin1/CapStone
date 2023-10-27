@@ -29,16 +29,14 @@ export const EventCard = ({ onClass, day, month, year, time, event, calDate, gra
 
 
     function AMPM(t) {
-    var am_pm = " AM";
-    var h = parseInt(t.slice(0,2));
-    var m = t.slice(2,5);
-    if (parseInt(t.slice(0,2)) > 12) {
-        h = h - 12;
-        var m=t.slice(2,5);
-
-        var am_pm = " PM";
-    }
-    return (h) + (m) + am_pm;
+        var t_list = t.split(':');
+        var h = t_list[0];
+        var m = t_list[1];
+        if (h > 12) {
+            return (h-12) + ':' + m + ' PM';
+        } else {
+            return h + ':' + m + ' AM';
+        }
 }
 
     if (event != null) {
