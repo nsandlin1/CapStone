@@ -16,6 +16,21 @@ export const ClassCard = ({classId, className, startTime, endTime, teacher, clas
         toggleCollapse();
       };
 
+      function cleanTimes(t) {
+        t = t.split(':');
+
+        let hours = t[0];
+        let minutes = t[1];
+        let AMPM = (hours >= 12) ? " P.M." : " A.M.";
+
+        if (hours == 0) {
+            hours = 12;
+        }
+        else if (hours > 12) {
+            hours -= 12;
+        }
+        return `${hours}:${minutes} ${AMPM}`;
+      } 
     
     return (
         <div className={cardContainer}>
@@ -28,7 +43,7 @@ export const ClassCard = ({classId, className, startTime, endTime, teacher, clas
                     </div>
                     <div className='flex w-[60%] justify-center items-center'>
                         <h1 className='text-3xl text-white whitespace-nowrap'>
-                            {startTime} - {endTime}
+                            {cleanTimes(startTime)} - {cleanTimes(endTime)}
                         </h1>
                     </div>
                     <div className='flex w-[15%] items-center justify-end'>
