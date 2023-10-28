@@ -64,6 +64,7 @@ function Login({setRole, loginFun}) {
 
     function submitRegister(role, code) {
         event.preventDefault()
+        console.log('registering')
         if (validate(email, password)) {
             var api_url = "/api/user/sign-up"
             let requestOptions = {
@@ -77,6 +78,10 @@ function Login({setRole, loginFun}) {
                     mode: 'cors',
                     body: JSON.stringify({'email': email, 'password': password, 'role': role, 'code': code})
                 };
+                if (code == "") {
+                    toast.error("Class code cannot be empty");
+                    return
+                }
             }
             fetch(api_url, requestOptions)
                 .then(res => res.json())
@@ -213,7 +218,6 @@ function Login({setRole, loginFun}) {
                             password={password}
                             setPassword={setPassword} 
                             submit={submitRegister}
-                            // setLoggedIn={setLoggedIn}
                             login={loginFun}
                         />
                     </animated.div>
