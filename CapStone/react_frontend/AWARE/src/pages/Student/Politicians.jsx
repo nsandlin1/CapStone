@@ -73,7 +73,7 @@ function Politicians() {
                                    focus:ring-blue-500 focus:border-blue-500 block w-[30%] h-[70%] p-2.5 dark:bgblue dark:bgblue
                                    dark:bgblue dark:text-white dark:focus:bgblue dark:focus:bgblue lg:w-[10%] lg:h-[60%]">
                         <option selected value={"politicians"} >Politicians</option>
-                        <option value="elections" >Elections</option>
+                        <option className=' hidden md:flex' value="elections" >Elections</option>
                     </select>
                     }   
             </div>
