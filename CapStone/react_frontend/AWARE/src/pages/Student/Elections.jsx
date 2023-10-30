@@ -11,6 +11,7 @@ function Elections() {
     const [voting, setVoting] = useState(false);
     const [currentBallot, setCurrentBallot] = useState();
     const [viewingResults, setViewingResults] = useState(false);
+    const [title, setTitle] = useState('');
 
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem('user'));
