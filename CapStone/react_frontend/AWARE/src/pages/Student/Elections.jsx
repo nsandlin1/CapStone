@@ -28,14 +28,16 @@ function Elections() {
           });
     }, []);
 
-    function onVote(key) {
+    function onVote(key, currTitle) {
         setCurrentBallot(key-1);
         setVoting(true);
+        setTitle(currTitle);
     }
 
-    function onViewResults(key) {
+    function onViewResults(key, currTitle) {
         setCurrentBallot(key-1)
         setViewingResults(!viewingResults);
+        setTitle(currTitle)
     }
 
     function onBack() {
@@ -45,6 +47,8 @@ function Elections() {
 
     const availableQuizzesView = `${voting || viewingResults ? 'hidden' : 'flex flex-col relative h-[85%] w-[95%] rounded-xl items-center justify-center bg-white mb-4 shadow-lg'}`
 
+    console.log()
+
     return (
         <div className='flex flex-col h-[91vh] w-[100%] bg-slate-400 justify-center items-center'>
             <div className='flex flex-col h-[100%] w-[90%] rounded-xl items-center'>
@@ -52,7 +56,7 @@ function Elections() {
                     <div className='text-3xl md:text-4xl lg:text-5xl text-white drop-shadow-lg'>
                         {voting || viewingResults? 
                             <h1>
-                                {elections[currentBallot]['electionTitle']}
+                                {title}{/* {elections[currentBallot]['electionTitle']} */}
                             </h1> 
                         : 
                             'Ballots'

@@ -37,12 +37,12 @@ export const ClassCard = ({classId, className, startTime, endTime, teacher, clas
             <div className='flex flex-col w-[100%] h-[100%] items-center justify-center'>
                 <div className={basicInfo} onClick={handleToggleCollapse} >
                     <div className='flex w-[20%] h-[100%] justify-center items-center'>
-                        <h1 className='text-3xl text-white whitespace-nowrap'>
+                        <h1 className='md:text-3xl text-white whitespace-wrap'>
                             {className}
                         </h1>
                     </div>
                     <div className='flex w-[60%] justify-center items-center'>
-                        <h1 className='text-3xl text-white whitespace-nowrap'>
+                        <h1 className='md:text-3xl text-white whitespace-wrap'>
                             {cleanTimes(startTime)} - {cleanTimes(endTime)}
                         </h1>
                     </div>
@@ -55,11 +55,11 @@ export const ClassCard = ({classId, className, startTime, endTime, teacher, clas
                     </div>
                 </div>
                 <div className={expandedInfo}>
-                    <div className="text-4xl">
+                    <div className="md:text-4xl">
                         Class code = {classCode}
                     </div>
                     <div className="flex justify-center">
-                        <button className="bg-white text-navy text-2xl rounded-xl w-[75%]">
+                        <button className="bg-white text-navy md:text-2xl rounded-xl w-[50%] md:w-[75%]">
                             View Students
                         </button>
                     </div>
