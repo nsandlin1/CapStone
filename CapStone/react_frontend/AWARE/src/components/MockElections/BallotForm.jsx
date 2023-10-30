@@ -11,7 +11,7 @@ const Candidate = ({index, form}) => {
         <div className="flex flex-col md:flex-row mt-2 justify-center">
             <label className="text-xl text-white pl-2">Name: </label>
                 <input
-                    className="w-[100%] md:w-[60%] h-[100%] ml-1 pl-2 rounded-lg justify-center text-2xl"
+                    className="w-[80%] md:w-[60%] h-[100%] ml-1 pl-2 rounded-lg justify-center text-2xl"
                     type='text'
                     name='position'
                     onChange={(t) => {form.name = t.target.value}}
@@ -74,7 +74,7 @@ export const CandidateFrom = ({index, form, onDelete}) => {
            <div className='flex flex-col'>
             <div className="flex relative flex-col w-[100%] h-[90%]"> 
                     <div className="flex flex-col md:flex-row mb-2 justify-center">
-                        <label className="text-xl text-white">Position: </label>
+                        <label className="pl-2 text-xl text-white">Position: </label>
                         <input
                             className="w-[75%] h-[100%] ml-2 pl-2 rounded-lg justify-center text-2xl"
                             type='text'
