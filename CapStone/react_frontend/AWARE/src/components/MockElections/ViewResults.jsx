@@ -108,13 +108,13 @@ export const CandidateContest = ({ position, totalVotes, candidates}) => {
 }
 
 
-export const ViewResults = ({ ballotNum, onBack }) => {
+export const ViewResults = ({ electionTitle, onBack }) => {
 
     const [results, setResults] = useState([]);
 
 
     useEffect(() => {
-        const api = `/api/classes/get_election_results?ballotNum=${ballotNum}`
+        const api = `/api/classes/get_election_results?electionTitle=${electionTitle}`
 
         fetch(api)
             .then((response) => response.json())
