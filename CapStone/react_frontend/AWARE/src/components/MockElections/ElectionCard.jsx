@@ -11,7 +11,7 @@ function MockElectionCard({title, electionNum, viewResults}) {
             <div className='flex w-full h-[40%] items-center justify-center text-sm md:text-lg'>
                 <button 
                     className='flex w-[60%] md:w-[30%] h-[80%] rounded-xl bg-lightblue text-white items-center justify-center'
-                    onClick={() => viewResults(electionNum)}>
+                    onClick={() => viewResults(title)}>
                     View Results
                 </button>
             </div>

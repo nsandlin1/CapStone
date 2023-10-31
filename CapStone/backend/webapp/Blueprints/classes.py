@@ -547,6 +547,8 @@ def get_ballot_contests():
 
     ballotid = Ballot.query.filter_by(election_title=electionTitle).first()
 
+    print(ballotid.id)
+
     # Get all policy and candidate contests for an election
     policy_contests = PolicyBallot.query.filter_by(ballot_id=ballotid.id).all()
     candidate_contests = CandidateBallot.query.filter_by(ballot_id=ballotid.id).all()
