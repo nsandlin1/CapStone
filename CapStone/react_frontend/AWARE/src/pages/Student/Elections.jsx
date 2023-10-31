@@ -30,13 +30,13 @@ function Elections() {
     }, []);
 
     function onVote(key, currTitle) {
-        setCurrentBallot(key-1);
+        setCurrentBallot(key);
         setVoting(true);
         setTitle(currTitle);
     }
 
     function onViewResults(key, currTitle) {
-        setCurrentBallot(key-1)
+        setCurrentBallot(key)
         setViewingResults(!viewingResults);
         setTitle(currTitle)
     }
@@ -87,6 +87,7 @@ function Elections() {
                         :
                         elections.map((election, idx) => (
                             <div key={idx} className="flex w-full h-[20%] min-h-[20%] items-center justify-center">
+                                    {console.log(idx)}
                                     <StudentElectionCard 
                                         key = {idx}
                                         custKey = {idx}
@@ -102,14 +103,16 @@ function Elections() {
                 </div>
                 {voting ? 
                     <div className="flex flex-col relative h-[85%] w-[95%] rounded-xl items-center justify-center bg-white mb-4 shadow-lg">
+                        {console.log(elections)}
                         <VoteOnBallot 
-                            ballotNum = {elections[currentBallot]['ballotNum']}
+                            electionTitle = {title}
+                            // ballotNum = {elections[currentBallot]['ballotNum']}
                         /> 
                     </div>
                 : 
                     viewingResults ? 
                         <div className="flex flex-col relative h-[85%] w-[95%] rounded-xl items-center justify-center bg-white mb-4 shadow-lg">
-                            <ViewResults ballotNum={elections[currentBallot]['ballotNum']} onBack={onBack}/>
+                            <ViewResults electionTitle={title} onBack={onBack}/>
                         </div> 
                     :
                         ''

@@ -64,14 +64,14 @@ export const CandidateBallot = ({ custKey, ballotNum, position, candidates, hand
     )
 }
 
-export const VoteOnBallot = ({ballotNum}) => {
+export const VoteOnBallot = ({electionTitle}) => {
 
     const [contests, setContests] = useState([]);
     const [submitStatus, setSubmitStatus] = useState([]);
 
     useEffect(() => {
         // Define the API endpoint URL
-        const apiUrl = `/api/classes/get_ballot_contests?ballotNum=${ballotNum}`;
+        const apiUrl = `/api/classes/get_ballot_contests?electionTitle=${electionTitle}`;
         // Fetch data from the API
         fetch(apiUrl)
           .then((response) => response.json())
@@ -87,7 +87,7 @@ export const VoteOnBallot = ({ballotNum}) => {
     const submitBallot = async () => {
         const user = JSON.parse(localStorage.getItem('user'));
         // Define the API endpoint URL
-        const apiUrl = `/api/classes/submit_ballot_votes?email=${user['email']}&votes=${JSON.stringify(contests)}&ballotNum=${ballotNum}`;
+        const apiUrl = `/api/classes/submit_ballot_votes?email=${user['email']}&votes=${JSON.stringify(contests)}&electionTitle=${electionTitle}`;
         fetch(apiUrl)
                 .then((response) => response.json())
                 .then((data) => {

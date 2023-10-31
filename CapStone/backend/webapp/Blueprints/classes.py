@@ -543,11 +543,13 @@ def get_class_ballots():
 def get_ballot_contests():
 
     # Get the requested ballot id
-    ballotid = request.args.get('ballotNum')
+    electionTitle = request.args.get('electionTitle')
+
+    ballotid = Ballot.query.filter_by(election_title=electionTitle).first()
 
     # Get all policy and candidate contests for an election
-    policy_contests = PolicyBallot.query.filter_by(ballot_id=ballotid).all()
-    candidate_contests = CandidateBallot.query.filter_by(ballot_id=ballotid).all()
+    policy_contests = PolicyBallot.query.filter_by(ballot_id=ballotid.id).all()
+    candidate_contests = CandidateBallot.query.filter_by(ballot_id=ballotid.id).all()
 
     # Array of contests to be returned
     returnContests = []
@@ -610,7 +612,11 @@ def submit_ballot_votes():
 
     email = request.args.get('email')
     votes = json.loads(request.args.get('votes'))
-    ballotNum = request.args.get('ballotNum')
+    electionTitle = request.args.get('electionTitle')
+    electionTitle = request.args.get('electionTitle')
+
+    ballotid = Ballot.query.filter_by(election_title=electionTitle).first()
+
 
     studentId = Student.query.filter_by(email=email).first()
 
@@ -630,13 +636,13 @@ def submit_ballot_votes():
         else:
 
             # Get candidate ballot so we can add votes to the respective candidate
-            candidateBallot = CandidateBallot.query.filter_by(ballot_id=ballotNum, id=vote['vote']).first()
+            candidateBallot = CandidateBallot.query.filter_by(ballot_id=ballotid.id, id=vote['vote']).first()
 
             candidateBallot.votes_for += 1
             
     # Make a record that the student has voted on that election
     db.session.add(StudentVote(
-        ballotNum,
+        ballotid.id,
         studentId.id,
         1
     ))
@@ -651,16 +657,20 @@ def submit_ballot_votes():
 def get_election_results():
 
     # Get the requested ballot id
-    ballotid = request.args.get('ballotNum')
+    electionTitle = request.args.get('electionTitle')
+
+    ballotid = Ballot.query.filter_by(election_title=electionTitle).first()
+
+    print(ballotid.id)
 
     # Get all policy and candidate contests for an election
-    policy_contests = PolicyBallot.query.filter_by(ballot_id=ballotid).all()
-    candidate_contests = CandidateBallot.query.filter_by(ballot_id=ballotid).all()
-    classId = Ballot.query.filter_by(id=ballotid).all()
+    policy_contests = PolicyBallot.query.filter_by(ballot_id=ballotid.id).all()
+    candidate_contests = CandidateBallot.query.filter_by(ballot_id=ballotid.id).all()
+    classId = Ballot.query.filter_by(id=ballotid.id).all()
 
     #enrolled_classid = EnrolledClass.query.filter_by(id=classId[0].classid).first()
 
-    num_students_vote = StudentVote.query.filter_by(ballotid=ballotid).count()
+    num_students_vote = StudentVote.query.filter_by(ballotid=ballotid.id).count()
 
     num_students_enrolled = Student.query.filter_by(enrolled_class=classId[0].classid).count()
 
