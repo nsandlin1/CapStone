@@ -28,7 +28,7 @@ def sign_up():
         class_code = data["code"]
 
     if User.query.get(email) != None:
-        return jsonify({'signed-up': False, 'error': 'Account with that Email Already Exists'}), 418
+        return jsonify({'signed-up': False, 'error': 'Account with that Username Already Exists'}), 418
     
 
     if role == "Teacher":
