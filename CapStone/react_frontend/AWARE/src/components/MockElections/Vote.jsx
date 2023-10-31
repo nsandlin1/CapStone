@@ -73,6 +73,7 @@ export const VoteOnBallot = ({electionTitle}) => {
         // Define the API endpoint URL
         const apiUrl = `/api/classes/get_ballot_contests?electionTitle=${electionTitle}`;
         // Fetch data from the API
+        console.log(electionTitle)
         fetch(apiUrl)
           .then((response) => response.json())
           .then((data) => {
