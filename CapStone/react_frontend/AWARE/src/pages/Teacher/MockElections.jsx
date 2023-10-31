@@ -103,7 +103,6 @@ function MockElections() {
         setVisibile(false);
         setViewingResults(true);
         setViewElection(electionTitle);
-        console.log(ballotNum)
     }
 
     function onBack() {
