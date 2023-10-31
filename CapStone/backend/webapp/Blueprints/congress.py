@@ -132,7 +132,7 @@ def get_bills():
                     summary_med = None
                     summary_long = None
 
-                if not Bill.query.get(bill["title"]):
+                if not Bill.query.get(bill["title"]) and not content == None:
                     bills.append(Bill(
                         bill["title"],
                         bill["number"],
