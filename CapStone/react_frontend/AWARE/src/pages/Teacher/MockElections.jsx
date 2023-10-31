@@ -99,10 +99,10 @@ function MockElections() {
         setVisibile(v => !v);
     }
 
-    const viewResults = (ballotNum) => {
+    const viewResults = (electionTitle) => {
         setVisibile(false);
         setViewingResults(true);
-        setViewElection(ballotNum);
+        setViewElection(electionTitle);
         console.log(ballotNum)
     }
 
@@ -132,7 +132,7 @@ function MockElections() {
             <div className='flex items-center justify-center h-[85%] w-[100%] bg-slate-400'>
                 <div className={viewing}>
                     { viewingResults ? 
-                        <ViewResults ballotNum={viewElection} onBack={onBack}/>
+                        <ViewResults electionTitle={viewElection} onBack={onBack}/>
                     :
                     transitionElection((style, item) =>
                         item &&
