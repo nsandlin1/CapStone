@@ -181,7 +181,7 @@ function tileNames({ date, view}) {
           }
           
           str += eventName;
-          console.log("STR: " + str)
+          //console.log("STR: " + str)
         }
       }
       return <div className='' > 
@@ -199,6 +199,20 @@ function Calendar() {
 
   const [date, setDate] = useState(new Date());
   const [eventsForSelectedMonth, setEventsForSelectedMonth] = useState([]);
+
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setScreenWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   var api_url = '/api/news_and_elections/elections?';
   const [events, setEvents] = useState([]);
@@ -385,7 +399,7 @@ useEffect(() => {
 
     if (eventsForMonth.length > 0) {
       for (let i in eventsForMonth) {
-        console.log(eventsForMonth[i][2], year)
+        //console.log(eventsForMonth[i][2], year)
         if (parseInt(eventsForMonth[i][2]) == parseInt(year)) {
           setIsContent(true);
           break;
@@ -406,7 +420,7 @@ useEffect(() => {
   // Update the selected date when the month changes
   const handleDateChange = (value, event) => {
     if (value instanceof Date) {
-      console.log(value);
+      //console.log(value);
       setDate(value);
       
     }
@@ -422,30 +436,42 @@ useEffect(() => {
       </div>
 
       <div className="mx-auto flex h-[auto] flex-row p-2 bgnavy shadow-lg rounded-xl">
+      {(screenWidth > 1375) ?
         <Cal
-          className="md:w-[50%] w-[full] h-[full] bg-blue-200 rounded-lg shadow-md hover:shadow-lg border-blue-400 rounded-xl hover:border-blue-500"
+          className="w-[50%] h-[full] bg-blue-200 rounded-lg shadow-md hover:shadow-lg border-blue-400 rounded-xl hover:border-blue-500"
           onChange={handleDateChange} // Update the selected date
           onActiveStartDateChange={handleDateChange} // Update the month when navigating
           tileClassName="text-slate-600 h-[8.5vh] mx-auto p-0 m-0 font-semibold rounded-lg hover:text-black"
           tileContent={tileNames}
         ></Cal>
+        
+        :
+        <Cal
+          className="w-[100%] h-[full] bg-blue-200 rounded-lg shadow-md hover:shadow-lg border-blue-400 rounded-xl hover:border-blue-500"
+          onChange={handleDateChange} // Update the selected date
+          onActiveStartDateChange={handleDateChange} // Update the month when navigating
+          tileClassName="text-slate-600 h-[8.5vh] mx-auto p-0 m-0 font-semibold rounded-lg hover:text-black"
+          tileContent={tileNames}
+      ></Cal>
+      }
 
-        {!isContent ?  
-           (window.screen.width > 475) ? 
+        {(!isContent && screenWidth > 1375) ?  
         
            <div className="w-[50%] flex-col ">
         <div className="w-[100%] text-2xl m-2 text-white font-bold justify-center text-center"> You Have No Upcoming Quizzes this Month. </div>
         </div>
-        : <div></div>
         :
+        (isContent && screenWidth > 1375) ?
         <div className="w-[50%] h-[100%] flex-col justify-center hidden md:block">
           <div className="w-[100%] text-4xl m-2 text-white font-bold flex justify-center">Upcoming Quizzes:</div>
           {eventsForSelectedMonth.map((event, index) => (
-            <div key={index} className="w-[100%] text-xl font-bold flex justify-left">
+            <div key={index} className="w-[100%] md:text-xl font-bold flex justify-left">
               <EventCard day={event[0]} month={date.toLocaleString('en-US', { month: 'long' })} year={event[2]} time={event[3]} event={event[1]} calDate={date} grade={event[4]} />
             </div>
           ))}
         </div>
+        : 
+        <div></div>
 }
       </div>
           
