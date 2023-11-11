@@ -1,14 +1,14 @@
 name: update
 
 on: 
-	push:
-		branches:
-			- main
+  push:
+    branches:
+      - main
 
 jobs:
-	build:
-		runs-on: ubuntu-latest
+  build:
+    runs-on: ubuntu-latest
 
-		steps:
-			- uses: actions/checkout@v2
-			- run: git pull
+    steps:
+      - uses: actions/checkout@v2
+      - run: git pull
